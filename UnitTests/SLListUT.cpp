@@ -69,10 +69,19 @@ void ClearTest()
 ////////////////////////////////
 void RemoveTest()
 {
-    // for (int i = 9; i >= 0; i--)
-    // {
-    //     assert(i == pMySLList->Remove())
-    // }
+    for (int i = 0; i < 10; i++)
+    {
+        pMySLList->InsertBack(i);
+    }
+
+    pMySLList->PrintList();
+
+    for (int i = 9; i >= 0; i--)
+    {
+        assert(pMySLList->GetLength() == i + 1);
+        int removedValue = pMySLList->Remove(i);
+        assert(i == removedValue);
+    }
 }
 
 ////////////////////////////////
@@ -101,6 +110,7 @@ int main(int argc, char* argv[])
     InsertAndGetTest();
     GetLengthTest();
     ClearTest();
+    RemoveTest();
 
     teardown();
 

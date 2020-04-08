@@ -109,7 +109,50 @@ public:
             pNextNode = pCurrentNode->next;
             delete pCurrentNode;
         }
+        this->head = nullptr;
         this->length = 0;
+    }
+
+    ////////////////////////////////
+    /// FUNCTION NAME: Remove
+    ///
+    /// @param index    Index to remove
+    /// @return Data stored at given index
+    /// @throw Index out of bounds
+    ////////////////////////////////
+    T Remove(int index)
+    {
+        // Bounds check
+        if (index > (length - 1)) throw "Index out of bounds";
+
+        Node* pOldNode;
+        // Edge case of removing head
+        if (index == 0)
+        {
+            pOldNode = this->head;
+            this->head = this->head->next;
+        }
+        else
+        {
+            Node* pPreviousNode = nullptr;
+            for (Node* pCurrentNode = head;
+                pCurrentNode != nullptr;
+                pCurrentNode = pCurrentNode->next)
+            {
+                if (index-- == 0)
+                {
+                    pOldNode = pCurrentNode;
+                    pPreviousNode->next = pCurrentNode->next;
+                    break;
+                }
+                pPreviousNode = pCurrentNode;
+            }
+        }
+        // Delete the node and return it's data;
+        T data = pOldNode->data;
+        delete pOldNode;
+        this->length--;
+        return data;
     }
 
     ////////////////////////////////
@@ -117,9 +160,26 @@ public:
     ///
     /// @returns Length of list
     ////////////////////////////////
-    int GetLength(void)
+    int GetLength(void) const
     {
         return this->length;
+    }
+
+    ////////////////////////////////
+    /// FUNCTION NAME: PrintList
+    ////////////////////////////////
+    void PrintList(void)
+    {
+        for (Node* pCurrentNode = head;
+                pCurrentNode != nullptr;
+                pCurrentNode = pCurrentNode->next)
+        {
+            std::cout << pCurrentNode->data;
+            if (pCurrentNode->next != nullptr)
+            {
+                std::cout << "->";
+            }
+        }
     }
 
 protected:
@@ -136,14 +196,13 @@ private:
     ////////////////////////////////
     typedef struct Node
     {
-        Node* next;
         T data;
+        Node* next;
 
-        Node(T data)
-        {
-            this->data = data;
-            this->next = nullptr;
-        }
+        Node(T data) :
+            data(data),
+            next(nullptr)
+        {}
     } Node;
 
     Node* head;
