@@ -56,6 +56,26 @@ void InsertAndGetTest()
 }
 
 ////////////////////////////////
+/// ClearTest Function
+////////////////////////////////
+void ClearTest()
+{
+    pMySLList->Clear();
+    assert(pMySLList->GetLength() == 0);
+}
+
+////////////////////////////////
+/// RemoveTest Function
+////////////////////////////////
+void RemoveTest()
+{
+    // for (int i = 9; i >= 0; i--)
+    // {
+    //     assert(i == pMySLList->Remove())
+    // }
+}
+
+////////////////////////////////
 /// GetLengthTest Function
 ////////////////////////////////
 void GetLengthTest()
@@ -80,6 +100,7 @@ int main(int argc, char* argv[])
 
     InsertAndGetTest();
     GetLengthTest();
+    ClearTest();
 
     teardown();
 

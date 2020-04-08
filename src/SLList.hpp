@@ -96,6 +96,23 @@ public:
     }
 
     ////////////////////////////////
+    /// FUNCTION NAME: Clear
+    ////////////////////////////////
+    void Clear(void)
+    {
+        Node* pNextNode;
+        for (Node* pCurrentNode = head;
+             pCurrentNode != nullptr;
+             pCurrentNode = pNextNode)
+        {
+            // Save the next node and delete current
+            pNextNode = pCurrentNode->next;
+            delete pCurrentNode;
+        }
+        this->length = 0;
+    }
+
+    ////////////////////////////////
     /// FUNCTION NAME: GetLength
     ///
     /// @returns Length of list

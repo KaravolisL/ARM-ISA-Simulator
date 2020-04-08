@@ -32,7 +32,10 @@
 *.app
 
 # CMake
-*/CMakeFiles
+CMakeFiles
 Makefile
 *.cmake 
 CMakeCache.txt
+
+# Unit Test results
+Testing

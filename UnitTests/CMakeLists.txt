@@ -8,3 +8,6 @@ include_directories("../src")
 
 # Add executables (Unit tests)
 add_executable(SLListUT SLListUT.cpp)
+
+# Add Unit Tests
+add_test(NAME SLListUT COMMAND SLListUT)

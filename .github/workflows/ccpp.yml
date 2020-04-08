@@ -17,5 +17,4 @@ jobs:
       run: |
         cd UnitTests
         cmake .
-        make
-        ./SLListUT
+        make test
