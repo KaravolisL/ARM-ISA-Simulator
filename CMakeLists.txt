@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.16)
 # Set the project name
 project(ARM_ISA_SIMULATOR)
 
+# Set compiler flags
+add_compile_options(-Wall -Weffc++ -pedantic -std=c++0x -fstack-protector)
+
 # Enable testing
 enable_testing()
 
