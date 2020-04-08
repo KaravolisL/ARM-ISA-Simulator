@@ -16,5 +16,6 @@ jobs:
     - name: UnitTests
       run: |
         cd UnitTests
-        g++ -o SLListUT SLListUT.cpp -I ../src
+        cmake .
+        make
         ./SLListUT
