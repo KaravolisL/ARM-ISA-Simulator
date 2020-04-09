@@ -7,6 +7,15 @@
 #ifndef SLLIST_HPP
 #define SLLIST_HPP
 
+// SYSTEM INCLUDES
+// (None)
+
+// C PROJECT INCLUDES
+// (None)
+
+// C++ PROJECT INCLUDES
+#include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
+
 ////////////////////////////////
 /// CLASS NAME: SLList
 ///
@@ -103,7 +112,7 @@ public:
     ///
     /// @param index   Index of element to return
     /// @return Element at given value
-    /// @throw Index out of bounds
+    /// @throw IndexOutOfBoundsException
     ////////////////////////////////
     T Get(int index)
     {
@@ -116,7 +125,7 @@ public:
                 return pCurrentNode->data;
             }
         }
-        throw "Index out of bounds";
+        throw IndexOutOfBoundsException();
     }
 
     ////////////////////////////////
@@ -142,12 +151,12 @@ public:
     ///
     /// @param index    Index to remove
     /// @return Data stored at given index
-    /// @throw Index out of bounds
+    /// @throw IndexOutOfBoundsException
     ////////////////////////////////
     T Remove(int index)
     {
         // Bounds check
-        if (index > (length - 1)) throw "Index out of bounds";
+        if (index > (length - 1)) throw IndexOutOfBoundsException();
 
         Node* pOldNode;
         // Edge case of removing head
@@ -203,6 +212,11 @@ public:
             {
                 std::cout << "->";
             }
+            else
+            {
+                std::cout << "\n";
+            }
+            
         }
     }
 

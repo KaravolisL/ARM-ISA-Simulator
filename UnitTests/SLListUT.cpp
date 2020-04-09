@@ -104,17 +104,16 @@ void RemoveTest()
         assert(i == removedValue);
     }
 
-    // TODO: Uncomment when exception is made
     // Test exception
-    // try
-    // {
-    //     pMySLList->Remove(100);
-    //     assert(false);
-    // }
-    // catch(const std::exception& e)
-    // {
-    //     std::cerr << e.what() << '\n';
-    // }
+    try
+    {
+        pMySLList->Remove(100);
+        assert(false);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 
 ////////////////////////////////
