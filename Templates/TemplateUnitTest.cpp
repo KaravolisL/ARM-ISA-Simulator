@@ -5,6 +5,7 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
+#include <assert.h>
 #include <iostream>
 
 // C PROJECT INCLUDES

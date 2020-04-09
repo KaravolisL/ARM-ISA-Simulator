@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
+# set(CMAKE_C_COMPILER "C:/MinGW/bin/gcc.exe")
+# set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")
+
 # Set the project name
 project(ARM_ISA_SIMULATOR)
 

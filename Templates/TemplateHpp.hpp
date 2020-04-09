@@ -1,0 +1,32 @@
+/////////////////////////////////
+/// <FILENAME>.hpp
+///
+/// @brief <Brief description>
+///
+/// @author <Author Name>
+/////////////////////////////////
+#ifndef <FILENAME>_HPP
+#define <FILENAME>_HPP
+
+// SYSTEM INCLUDES
+// (None)
+
+// C PROJECT INCLUDES
+// (None)
+
+// C++ PROJECT INCLUDES
+// (None)
+
+////////////////////////////////
+/// CLASS NAME: <CLASSNAME>
+///
+/// @brief <Brief description>
+////////////////////////////////
+
+
+    ////////////////////////////////
+    /// METHOD NAME: <METHOD NAME>
+    ////////////////////////////////
+
+
+#endif

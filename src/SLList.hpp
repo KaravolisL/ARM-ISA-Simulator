@@ -7,6 +7,12 @@
 #ifndef SLLIST_HPP
 #define SLLIST_HPP
 
+////////////////////////////////
+/// CLASS NAME: SLList
+///
+/// @brief Singly List class
+/// @param T type stored in list
+////////////////////////////////
 template <typename T>
 class SLList
 {
