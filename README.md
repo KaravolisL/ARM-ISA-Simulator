@@ -5,7 +5,7 @@ Simulator program for the ARM Instruction Set Architecture
 > TODO
 
 ## Build Status
-![](https://github.com/KaravolisL/ARM-ISA-Simulator/workflows/.github/workflows/main.yml/badge.svg)
+![Main CI](https://github.com/KaravolisL/ARM-ISA-Simulator/workflows/Main%20CI/badge.svg)
 
 ## Code style
 > TODO
