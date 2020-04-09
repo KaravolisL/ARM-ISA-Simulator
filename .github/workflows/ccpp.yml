@@ -18,11 +18,9 @@ jobs:
     - name: Change to build directory
       run: cd build
     - name: temp
-      run: |
-        ls ..
-        ls
-        cd ..
-        ls
+      run: pwd
+    - name: another
+      run: ls
     - name: Run CMake
       run: cmake ..
     - name: Build
