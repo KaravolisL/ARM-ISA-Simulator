@@ -7,10 +7,28 @@
 #ifndef SLLIST_HPP
 #define SLLIST_HPP
 
-
 template <typename T>
 class SLList
 {
+private:
+
+    ////////////////////////////////
+    /// DATA TYPE NAME: Node
+    ///
+    /// @brief Data type used to store
+    /// data in list and next node pointer
+    ////////////////////////////////
+    typedef struct Node
+    {
+        T data;
+        Node* next;
+
+        Node(T data) :
+            data(data),
+            next(nullptr)
+        {}
+    } Node;
+
 public:
 
     ////////////////////////////////
@@ -182,46 +200,103 @@ public:
         }
     }
 
+    // Forward declaration of iterator class
+    class SLListIterator;
+
+    ////////////////////////////////
+    /// FUNCTION NAME: GetBegin
+    ////////////////////////////////
+    SLListIterator GetBegin()
+    {
+        return SLListIterator(this->head);
+    }
+
+    ////////////////////////////////
+    /// FUNCTION NAME: GetEnd
+    ////////////////////////////////
+    SLListIterator GetEnd()
+    {
+        return SLListIterator(nullptr);
+    }
+
+    ////////////////////////////////
+    /// CLASS NAME: SLListIterator
+    ///
+    /// @brief Class used to iterate
+    /// through a linked list
+    ////////////////////////////////
+    class SLListIterator
+    {
+    public:
+        ////////////////////////////////
+        /// Constructor
+        ////////////////////////////////
+        SLListIterator() :
+            pNextNode(head)
+        {}
+
+        SLListIterator(Node* startingNode) :
+            pNextNode(startingNode)
+        {}
+
+        ////////////////////////////////
+        /// Assignment Operator
+        ////////////////////////////////
+        SLListIterator& operator=(Node* pNode)
+        { 
+            this->pNextNode = pNode; 
+            return *this; 
+        }
+
+        ////////////////////////////////
+        /// Prefix ++ Operator
+        //////////////////////////////// 
+        SLListIterator& operator++() 
+        { 
+            if (this->pNextNode != nullptr)
+            {
+                this->pNextNode = this->pNextNode->next;
+            }
+            return *this; 
+        } 
+  
+        ////////////////////////////////
+        /// Postfix ++ Operator
+        ////////////////////////////////
+        SLListIterator operator++(int) 
+        { 
+            SLListIterator iterator = *this; 
+            ++*this; 
+            return iterator; 
+        }
+
+        ////////////////////////////////
+        /// Not Equal Operator
+        ////////////////////////////////
+        bool operator!=(const SLListIterator& iterator) 
+        { 
+            return this->pNextNode != iterator.pNextNode; 
+        }
+
+        ////////////////////////////////
+        /// Dereference Operator
+        ////////////////////////////////
+        T operator*()
+        {
+            return this->pNextNode->data;
+        }
+
+    private:
+        SLList::Node* pNextNode;
+    };
+
 protected:
 
-
-
 private:
-
-    ////////////////////////////////
-    /// DATA TYPE NAME: Node
-    ///
-    /// @brief Data type used to store
-    /// data in list and next node pointer
-    ////////////////////////////////
-    typedef struct Node
-    {
-        T data;
-        Node* next;
-
-        Node(T data) :
-            data(data),
-            next(nullptr)
-        {}
-    } Node;
 
     Node* head;
     int length;
 
-    friend std::ostream& operator<< (std::ostream& stream, const SLList<T>& list)
-    {
-        for (Node* pCurrentNode = list.head;
-             pCurrentNode != nullptr;
-             pCurrentNode = pCurrentNode->next)
-        {
-            stream << pCurrentNode->data;
-            if (pCurrentNode->next != nullptr)
-            {
-                stream << "->";
-            }
-        }
-        return stream;
-    }
 };
 
 #endif

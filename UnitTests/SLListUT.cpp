@@ -18,6 +18,7 @@
 /// Test Objects
 ////////////////////////////////
 SLList<int>* pMySLList = new SLList<int>();
+SLList<int>::SLListIterator myListIterator = pMySLList->GetBegin();
 
 ////////////////////////////////
 /// Setup Function
@@ -53,6 +54,26 @@ void InsertAndGetTest()
     {
         assert(i == pMySLList->Get(i));
     }
+
+    // TODO: Uncomment when exception is made
+    // Test exception
+    // try
+    // {
+    //     pMySLList->Get(100);
+    //     assert(false);
+    // }
+    // catch(const std::exception& e)
+    // {
+    //     std::cerr << e.what() << '\n';
+    // }
+}
+
+////////////////////////////////
+/// GetLengthTest Function
+////////////////////////////////
+void GetLengthTest()
+{
+    assert(pMySLList->GetLength() == 20);
 }
 
 ////////////////////////////////
@@ -82,14 +103,38 @@ void RemoveTest()
         int removedValue = pMySLList->Remove(i);
         assert(i == removedValue);
     }
+
+    // TODO: Uncomment when exception is made
+    // Test exception
+    // try
+    // {
+    //     pMySLList->Remove(100);
+    //     assert(false);
+    // }
+    // catch(const std::exception& e)
+    // {
+    //     std::cerr << e.what() << '\n';
+    // }
 }
 
 ////////////////////////////////
-/// GetLengthTest Function
+/// IteratorTest Function
 ////////////////////////////////
-void GetLengthTest()
+void IteratorTest()
 {
-    assert(pMySLList->GetLength() == 20);
+    for (int i = 0; i < 10; i++)
+    {
+        pMySLList->InsertBack(i);
+    }
+
+    int i = 0;
+    for (myListIterator = pMySLList->GetBegin();
+         myListIterator != pMySLList->GetEnd();
+         myListIterator++)
+    {
+        assert(i == *myListIterator);
+        i++;
+    }
 }
 
 ////////////////////////////////
@@ -111,6 +156,7 @@ int main(int argc, char* argv[])
     GetLengthTest();
     ClearTest();
     RemoveTest();
+    IteratorTest();
 
     teardown();
 
