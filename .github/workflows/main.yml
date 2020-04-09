@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Main CI
 
 on:
   push:
@@ -13,18 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Make build directory
-      run: mkdir build
-    - name: Change to build directory
-      run: cd build
-    - name: cd build
-      run: cd build
-    - name: temp
-      run: pwd
-    - name: another
-      run: ls
     - name: Run CMake
-      run: cmake ..
+      run: cmake .
     - name: Build
       run: make
     - name: Unit Tests
