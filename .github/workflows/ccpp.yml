@@ -17,6 +17,8 @@ jobs:
       run: mkdir build
     - name: Change to build directory
       run: cd build
+    - name: temp
+      run: ls ..
     - name: Run CMake
       run: cmake ..
     - name: Build

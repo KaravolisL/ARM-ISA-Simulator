@@ -5,7 +5,7 @@ Simulator program for the ARM Instruction Set Architecture
 > TODO
 
 ## Build Status
-[![Actions Status](https://github.com/KaravolisL/ARM-ISA-Simulator/.github/workflows/ccpp.yml/badge.svg)](https://github.com/KaravolisL/ARM-ISA-Simulator/actions)
+![](https://github.com/actions/ARM-ISA-Simulator/workflows/.github/workflows/ccpp.yml/badge.svg)
 
 ## Code style
 > TODO
@@ -18,8 +18,8 @@ Simulator program for the ARM Instruction Set Architecture
 
 # Installation
 1. Clone Repository
-2. Run following commands:
-   ```mkdir build```
-   ```cd build```
-   ```cmake ..```
+2. Run following commands: \
+   ```mkdir build``` \
+   ```cd build``` \
+   ```cmake ..``` \
    ```make```
