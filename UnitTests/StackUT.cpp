@@ -58,26 +58,25 @@ void PopTest()
         assert(item == i);
     }
 
-    // TODO: Enable when exceptions are added
-    // try
-    // {
-    //     pMyStack->Pop();
-    //     assert(false);
-    // }
-    // catch(const std::exception& e)
-    // {
-    //     std::cerr << e.what() << '\n';
-    // }
+    try
+    {
+        pMyStack->Pop();
+        assert(false);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 
-    // try
-    // {
-    //     pMyStack->Peek();
-    //     assert(false);
-    // }
-    // catch(const std::exception& e)
-    // {
-    //     std::cerr << e.what() << '\n';
-    // }
+    try
+    {
+        pMyStack->Peek();
+        assert(false);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 
 ////////////////////////////////

@@ -56,7 +56,7 @@ public:
     E Pop()
     {
         // Bounds check
-        if (this->Size() == 0) throw "Empty Stack";
+        if (this->Size() == 0) throw EmptyStackException();
 
         // Remove and return the front of the list
         return m_Stack.Remove(0);
@@ -71,7 +71,7 @@ public:
     E Peek()
     {
         // Bounds check
-        if (this->Size() == 0) throw "Empty Stack";
+        if (this->Size() == 0) throw EmptyStackException();
 
         // Return front of list
         return m_Stack.Get(0);
@@ -92,6 +92,14 @@ private:
 
     /// SLList used to represent stack
     SLList<E> m_Stack;
+
+    struct EmptyStackException : public std::exception
+    {
+        const char* what() const throw()
+        {
+            return "Empty Stack Exception";
+        }
+    };
 };
 
 
