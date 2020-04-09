@@ -13,8 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Make build directory
+      run: mkdir build
+    - name: Change to build directory
+      run: cd build
     - name: Run CMake
-      run: cmake .
+      run: cmake ..
     - name: Build
       run: make
     - name: Unit Tests
