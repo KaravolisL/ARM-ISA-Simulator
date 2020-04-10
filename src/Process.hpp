@@ -1,46 +1,61 @@
+/////////////////////////////////
+/// @file Process.hpp
+///
+/// @brief Declarations for the Process
+/// class
+///
+/// @details This class is used to
+/// represent a program written by the user
+///
+/// @author Luke Karavolis
+/////////////////////////////////
 #ifndef PROCESS_HPP
 #define PROCESS_HPP
 
-/// Statndard includes
-#include <stack>
+/// Standard includes
+// (none)
 
 /// C Project includes
 // (none)
 
 /// C++ Project includes
-#include "Registers.hpp"
+#include "Registers.hpp" // For Registers struct
+#include "Stack.hpp" // For Stack
 
+////////////////////////////////
+/// @class Process
+///
+/// @brief Declarations for the 
+/// Process class
+////////////////////////////////
 class Process
 {
-    public:
+public:
+    /////////////////////////////////////
+    /// Constructor
+    /////////////////////////////////////
+    Process();
 
-        /////////////////////////////////////
-        /// Constructor
-        ///
-        ///
-        /////////////////////////////////////
-        Process();
+    ////////////////////////////////
+    /// METHOD NAME: Execute
+    ///
+    /// @brief Begins execution of instructions
+    ////////////////////////////////
+    void Execute();
 
-        /////////////////////////////////////
-        /// Destructor
-        ///
-        /////////////////////////////////////
-        ~Process();
-
-
-        int Main();
-
-    protected:
+protected:
 
 
+private:
 
+    /// Stack associated with this process
+    Stack<uint32_t> m_processStack;
 
-    private:
+    /// Registers associated with this process
+    Registers m_processRegisters;
 
-        std::stack<int>* m_pProcessStack;
-
-        Registers* m_pProcessRegisters;
-
+    /// Dictionary connecting labels and their line numbers
+    // DLB<int> m_labelDictionary;
 
 };
 

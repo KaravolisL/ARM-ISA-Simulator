@@ -1,7 +1,9 @@
 /////////////////////////////////
-/// <FILENAME>.hpp
+/// @file <FILENAME>.hpp
 ///
 /// @brief <Brief description>
+///
+/// @details <Detailed description>
 ///
 /// @author <Author Name>
 /////////////////////////////////
@@ -18,7 +20,7 @@
 // (None)
 
 ////////////////////////////////
-/// CLASS NAME: <CLASSNAME>
+/// @class <CLASSNAME>
 ///
 /// @brief <Brief description>
 ////////////////////////////////
