@@ -1,12 +1,11 @@
-name: Master CI
+name: Branch CI
 
 on:
   push:
-    branches: [ master ]
     paths-ignore:
     - 'docs/**'
-  pull_request:
-    branches: [ master ]
+    branches-ignore:
+    - 'master'
 
 jobs:
   build:
