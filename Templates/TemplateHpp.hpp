@@ -19,6 +19,9 @@
 // C++ PROJECT INCLUDES
 // (None)
 
+// FORWARD DECLARATIONS
+// (None)
+
 ////////////////////////////////
 /// @class <CLASSNAME>
 ///

@@ -12,15 +12,18 @@
 #ifndef PROCESS_HPP
 #define PROCESS_HPP
 
-/// Standard includes
+// SYSTEM INCLUDES
+#include <stdint.h> // For standard types
+
+// C PROJECT INCLUDES
 // (none)
 
-/// C Project includes
-// (none)
-
-/// C++ Project includes
+// C++ PROJECT INCLUDES
 #include "Registers.hpp" // For Registers struct
 #include "Stack.hpp" // For Stack
+
+// FORWARD DECLARATIONS
+// (None)
 
 ////////////////////////////////
 /// @class Process
@@ -34,7 +37,10 @@ public:
     /////////////////////////////////////
     /// Constructor
     /////////////////////////////////////
-    Process();
+    Process() :
+        m_processStack(Stack<uint32_t>()),
+        m_processRegisters(Registers())
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute

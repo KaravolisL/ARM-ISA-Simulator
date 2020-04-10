@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.16)
 project(UnitTests)
 
 # Add include path
-include_directories("../src")
+include_directories("../include")
 
 # Add executables (Unit tests)
 add_executable(SLListUT SLListUT.cpp)
