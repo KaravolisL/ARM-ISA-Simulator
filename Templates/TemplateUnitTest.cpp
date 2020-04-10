@@ -1,7 +1,9 @@
 /////////////////////////////////
-/// <FILENAME>
+/// @file <FILENAME>
 ///
 /// @brief Unit Test for <CLASS NAME>
+///
+/// @author <Author Name>
 /////////////////////////////////
 
 // SYSTEM INCLUDES
@@ -54,5 +56,7 @@ int main(int argc, char* argv[])
     ////////////////////////////////
 
     teardown();
+
+    std::cout << "<TEST CLASS> Unit Test Complete: SUCCESS";
     return 0;
 }
