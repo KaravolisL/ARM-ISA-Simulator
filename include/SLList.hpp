@@ -28,7 +28,7 @@ class SLList
 private:
 
     ////////////////////////////////
-    /// DATA TYPE NAME: Node
+    /// @struct Node
     ///
     /// @brief Data type used to store
     /// data in list and next node pointer

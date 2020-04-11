@@ -19,7 +19,7 @@
 // (None)
 
 ////////////////////////////////
-/// STRUCT NAME: IndexOutOfBoundsException
+/// @struct IndexOutOfBoundsException
 ///
 /// @brief Exception used for list data structures
 ////////////////////////////////

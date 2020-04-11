@@ -200,7 +200,7 @@ private:
     DLBNode* m_pRoot;
 
     ////////////////////////////////
-    /// STRUCT NAME: DLBNode
+    /// @struct KeyNotFoundException
     ///
     /// @brief Exception thrown when a key
     /// is not found in the trie
