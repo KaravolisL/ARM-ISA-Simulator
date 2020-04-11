@@ -13,7 +13,7 @@
 #define DLB_HPP
 
 // SYSTEM INCLUDES
-// (None)
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
@@ -200,7 +200,7 @@ private:
     DLBNode* m_pRoot;
 
     ////////////////////////////////
-    /// @struct KeyNotFoundException
+    /// @exception KeyNotFoundException
     ///
     /// @brief Exception thrown when a key
     /// is not found in the trie
