@@ -1,9 +1,7 @@
 /////////////////////////////////
-/// @file Process.cpp
+/// @file Main.cpp
 ///
-/// @brief Implementation of Process class
-///
-/// @copydetail Process 
+/// @brief Implementation of main
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -15,12 +13,17 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "Process.hpp"  // Header for class
+#include "Process.hpp"  // For Process
 
 ////////////////////////////////
-/// METHOD NAME: Process::Execute
+/// FUNCTION NAME: main
 ////////////////////////////////
-void Process::Execute()
+int main(int argc, char* argv[])
 {
-    
+    // Create empty Process
+    Process process = Process();
+
+    process.Execute();
+
+    return 0;
 }

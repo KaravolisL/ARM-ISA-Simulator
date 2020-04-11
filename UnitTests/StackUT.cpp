@@ -99,5 +99,7 @@ int main(int argc, char* argv[])
     PopTest();
 
     teardown();
+
+    std::cout << "Stack Unit Test Complete: SUCCESS";
     return 0;
 }

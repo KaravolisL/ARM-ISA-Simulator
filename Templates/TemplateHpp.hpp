@@ -1,7 +1,9 @@
 /////////////////////////////////
-/// <FILENAME>.hpp
+/// @file <FILENAME>.hpp
 ///
 /// @brief <Brief description>
+///
+/// @details <Detailed description>
 ///
 /// @author <Author Name>
 /////////////////////////////////
@@ -17,16 +19,27 @@
 // C++ PROJECT INCLUDES
 // (None)
 
+// FORWARD DECLARATIONS
+// (None)
+
 ////////////////////////////////
-/// CLASS NAME: <CLASSNAME>
+/// @class <CLASSNAME>
 ///
 /// @brief <Brief description>
 ////////////////////////////////
-
+class <CLASSNAME>
+{
+public:
 
     ////////////////////////////////
     /// METHOD NAME: <METHOD NAME>
     ////////////////////////////////
 
+protected:
+
+private:
+
+
+};
 
 #endif

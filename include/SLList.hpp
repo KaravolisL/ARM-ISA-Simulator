@@ -8,7 +8,7 @@
 #define SLLIST_HPP
 
 // SYSTEM INCLUDES
-// (None)
+#include <iostream> // For std::cout
 
 // C PROJECT INCLUDES
 // (None)
