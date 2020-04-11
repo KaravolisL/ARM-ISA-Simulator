@@ -27,11 +27,19 @@
 ///
 /// @brief <Brief description>
 ////////////////////////////////
-
+class <CLASSNAME>
+{
+public:
 
     ////////////////////////////////
     /// METHOD NAME: <METHOD NAME>
     ////////////////////////////////
 
+protected:
+
+private:
+
+
+};
 
 #endif
