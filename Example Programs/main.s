@@ -9,7 +9,7 @@ __main	PROC
 	
 	; Enable the clock for GPIOA, GPIOB
 	
-	LDR r0, =RCC_BASE;
+	LDR r0, =RCC_BASE
 	LDR r1, [r0, #RCC_AHB2ENR]
 	ORR	r1, #0x3
 	STR	r1, [r0, #RCC_AHB2ENR]
