@@ -23,14 +23,6 @@ namespace Io
 {
 
 ////////////////////////////////
-/// METHOD NAME: Io::FileParser::GetCurrentLine
-////////////////////////////////
-std::string& FileParser::GetCurrentLine()
-{
-    std::string line
-}
-
-////////////////////////////////
 /// METHOD NAME: Io::FileParser::CurrentLineType
 ////////////////////////////////
 LineType FileParser::CurrentLineType()
