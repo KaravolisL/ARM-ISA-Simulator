@@ -39,7 +39,7 @@ void PushTest()
         myQueue.Push(i);
         assert(myQueue.Peek() == 0);
     }
-    assert(myQueue.GetLength() == 10);
+    assert(myQueue.Size() == 10);
 }
 
 ////////////////////////////////
@@ -58,7 +58,7 @@ void PopTest()
         myQueue.Pop();
         assert(false);
     }
-    catch(const Queue::EmptyQueueException& e)
+    catch(const Queue<int>::EmptyQueueException& e)
     {
         std::cerr << e.what() << '\n';
     }
