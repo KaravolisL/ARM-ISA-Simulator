@@ -13,7 +13,8 @@
 #define LOGGER_HPP
 
 // SYSTEM INCLUDES
-// (None)
+#include <fstream>
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
@@ -34,28 +35,61 @@ public:
     ////////////////////////////////
     /// METHOD NAME: GetInstance
     ////////////////////////////////
-    Logger* GetInstance()
+    static Logger& GetInstance()
     {
-        if (m_pInstance == nullptr)
-        {
-            m_pInstance = new Logger();
-        }
-        return m_pInstance;
+        /// Singleton instance
+        static Logger* instance = new Logger();
+        return *instance;
     }
+
+    ////////////////////////////////
+    /// @enum LogLevel
+    ////////////////////////////////
+    enum LogLevel
+    {
+        INFO,
+        DEBUG,
+        ERROR
+    };
+
+    ////////////////////////////////
+    /// METHOD NAME: Log
+    ////////////////////////////////
+    void Log(const char* msg, LogLevel logLevel = INFO);
+
+    ////////////////////////////////
+    /// METHOD NAME: Close
+    ////////////////////////////////
+    void Close() { m_logStream.close(); }
 
 protected:
 
 private:
+
+    /// File name to output
+    const char* LOG_FILENAME = "Debug.log";
+
+    /// Output file stream
+    std::ofstream m_logStream;
 
     ////////////////////////////////
     /// Constructer
     ///
     /// @note Private to ensure singleton
     ////////////////////////////////
-    Logger() {}
+    Logger() :
+        m_logStream(std::ofstream(LOG_FILENAME, std::ofstream::out))
+    {}
 
-    /// Singleton instance
-    static Logger* m_pInstance;
+    ////////////////////////////////
+    /// Copy Constructer
+    ////////////////////////////////
+    Logger(Logger const&);
+
+    ////////////////////////////////
+    /// Assignment operator
+    ////////////////////////////////
+    Logger& operator=(Logger const&);
 
 };
 
