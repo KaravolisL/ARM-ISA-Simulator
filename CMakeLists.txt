@@ -15,4 +15,4 @@ enable_testing()
 
 # Add subdirectories
 add_subdirectory (src)
-add_subdirectory (UnitTests)
+add_subdirectory (tests)
