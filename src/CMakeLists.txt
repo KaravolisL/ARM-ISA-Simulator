@@ -10,8 +10,12 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 # Set source files
 set(SOURCES
     Process.cpp
+    Logger.cpp
     Main.cpp
 )
+
+# Make library
+add_library(src_library STATIC ${SOURCES})
 
 # Add executable
 add_executable(ARM-ISA-SIMULATOR ${SOURCES})
