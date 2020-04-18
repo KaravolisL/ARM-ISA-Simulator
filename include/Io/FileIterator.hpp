@@ -1,9 +1,10 @@
 /////////////////////////////////
 /// @file FileIterator.hpp
 ///
-/// @brief <Brief description>
+/// @brief Declarations for FileIterator class
 ///
-/// @details <Detailed description>
+/// @details This class is used to iterate
+/// through the lines of a given file
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -11,6 +12,7 @@
 #define FILE_ITERATOR_HPP
 
 // SYSTEM INCLUDES
+#include <fstream>
 #include <string>
 
 // C PROJECT INCLUDES
@@ -27,8 +29,6 @@ namespace Io
 
 ////////////////////////////////
 /// @class Io::FileIterator
-///
-/// @brief <Brief description>
 ////////////////////////////////
 class FileIterator
 {
@@ -37,20 +37,59 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    FileIterator() :
+    FileIterator(const std::string& fileName) :
+        m_fileStream(std::ifstream(fileName, std::ifstream::in)),
+        m_currentLine("")
     {} 
 
     ////////////////////////////////
-    /// METHOD NAME: <METHOD NAME>
+    /// METHOD NAME: Next
+    ///
+    /// @brief Returns the next line in the file
+    ///
+    /// @returns Next line in file
+    /// @throw EndOfFileException
     ////////////////////////////////
+    std::string& Next();
+
+    ////////////////////////////////
+    /// METHOD NAME: HasNext
+    ///
+    /// @returns Whether there are more lines in the file
+    ////////////////////////////////
+    bool HasNext();
+
+    ////////////////////////////////
+    /// METHOD NAME: GoToLine
+    ///
+    /// @brief Resets iterator to a given line
+    ///
+    /// @param[in] lineNumber   Number of line to go to
+    /// @returns Line that was seeked to
+    /// @throw EndOfFileException
+    ////////////////////////////////
+    std::string& GoToLine(int lineNumber);
+
+    ////////////////////////////////
+    /// @struct EndOfFileException
+    ////////////////////////////////
+    struct EndOfFileException : public std::exception
+    {
+        const char* what() const throw()
+        {
+            return "End of File Exception";
+        }
+    };
 
 protected:
 
 private:
 
-    /// Next line
-    std::string& m_rNextLine;
+    /// Input file stream for main file containing assembly
+    std::ifstream m_fileStream;
 
+    /// Current line
+    std::string m_currentLine;
 
 };
 
