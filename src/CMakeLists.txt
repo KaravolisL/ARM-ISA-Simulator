@@ -20,11 +20,14 @@ add_subdirectory(Io)
 # Make libraries
 add_library(logger_library STATIC Logger.cpp)
 
+add_library(keyword_dict STATIC KeywordDict.cpp)
+
 # Add executable
 add_executable(ARM-ISA-SIMULATOR ${SOURCES})
 
 # Link in libraries
-target_link_libraries(ARM-ISA-SIMULATOR 
+target_link_libraries(ARM-ISA-SIMULATOR
                       PRIVATE logger_library
-                      PRIVATE io_library                      
+                      PRIVATE io_library
+                      PRIVATE keyword_dict
 )

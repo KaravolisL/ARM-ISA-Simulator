@@ -20,7 +20,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-// (None)
+#include "LineTypes.hpp" // For LineType enum
 
 // FORWARD DECLARATIONS
 // (None)
@@ -41,20 +41,6 @@ public:
     /// @param rLine    Reference to line to be parsed
     ////////////////////////////////
     LineParser(std::string& rLine);
-
-    ////////////////////////////////
-    /// @enum LineType
-    ///
-    /// @brief Types of possible lines
-    ////////////////////////////////
-    enum LineType
-    {
-        INCLUDE,
-        LABEL,
-        INSTRUCTION,
-        COMMENT,
-        INVALID
-    };
 
     ////////////////////////////////
     /// METHOD NAME: GetLineType

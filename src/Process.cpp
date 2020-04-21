@@ -18,6 +18,7 @@
 #include "Process.hpp"  // Header for class
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "LineParser.hpp" // For Io::LineParser
+#include "LineTypes.hpp" // For Io::LineTypes enum
 
 ////////////////////////////////
 /// METHOD NAME: Process::Initialize
@@ -37,11 +38,11 @@ void Process::Initialize(const char* filename)
         // Determine how to handle the current line
         switch (lineParser.GetLineType())
         {
-            case Io::LineParser::LineType::INCLUDE:
+            case Io::LineType::INCLUDE:
                 break;
-            case Io::LineParser::LineType::LABEL:
+            case Io::LineType::LABEL:
                 break;
-            case Io::LineParser::LineType::COMMENT:
+            case Io::LineType::COMMENT:
             default:
                 break;
         }

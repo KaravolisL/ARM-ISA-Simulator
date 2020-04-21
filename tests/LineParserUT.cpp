@@ -15,6 +15,7 @@
 
 // C++ PROJECT INCLUDES
 #include "LineParser.hpp"  // Test class
+#include "KeywordDict.hpp" // For KeywordDict class
 
 ////////////////////////////////
 /// Test Objects
@@ -29,7 +30,8 @@ std::string lines[] = {" INCLUDE exampleFile.s ;My comment",
 ////////////////////////////////
 void setup()
 {
-
+    // Initialize the Keyword dictionary
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -37,12 +39,13 @@ void setup()
 ////////////////////////////////
 void GetLineTypeTest()
 {
-    for (int i = 0 ; i < 1; i++)
+    for (int i = 0 ; i < 4; i++)
     {
         // Construct a line parser using the ith line
         Io::LineParser lineParser(lines[i]);
 
-        Io::LineParser::LineType lineType = lineParser.GetLineType();
+        Io::LineType lineType = lineParser.GetLineType();
+        std::cout << "lineType = " << lineType << '\n';
         assert(lineType == i);
     }
 }

@@ -14,6 +14,7 @@
 
 // C++ PROJECT INCLUDES
 #include "Process.hpp"  // For Process
+#include "KeywordDict.hpp" // For KeywordDict class
 
 ////////////////////////////////
 /// FUNCTION NAME: main
@@ -25,6 +26,9 @@ int main(int argc, char* argv[])
         std::cout << "Invalid command line arguments";
         exit(EXIT_FAILURE);
     }
+
+    // Initialize the keyword dictionary
+    KeywordDict::GetInstance().Initialize();
 
     // Create empty Process
     Process process = Process();
