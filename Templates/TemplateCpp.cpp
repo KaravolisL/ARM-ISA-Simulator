@@ -3,7 +3,7 @@
 ///
 /// @brief <Brief description>
 ///
-/// @details <Detailed description>
+/// @copydetail <CLASS NAME>
 ///
 /// @author <Author Name>
 /////////////////////////////////
