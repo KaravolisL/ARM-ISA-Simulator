@@ -50,8 +50,6 @@ public:
     ///
     /// @param key      Key to be added
     /// @param value    Value to be associated with key
-    /// @return Value previously associated with given key
-    /// @retval nullptr     - No value was stored previously
     ////////////////////////////////
     void Insert(const std::string& key, const T value)
     {
@@ -169,6 +167,20 @@ public:
         }
     }
 
+    ////////////////////////////////
+    /// @exception KeyNotFoundException
+    ///
+    /// @brief Exception thrown when a key
+    /// is not found in the trie
+    ////////////////////////////////
+    struct KeyNotFoundException : public std::exception
+    {
+        const char* what() const throw()
+        {
+            return "Key Not Found Exception";
+        }
+    };
+
 protected:
 
 
@@ -198,20 +210,6 @@ private:
 
     /// Root of the DLB trie
     DLBNode* m_pRoot;
-
-    ////////////////////////////////
-    /// @exception KeyNotFoundException
-    ///
-    /// @brief Exception thrown when a key
-    /// is not found in the trie
-    ////////////////////////////////
-    struct KeyNotFoundException : public std::exception
-    {
-        const char* what() const throw()
-        {
-            return "Key Not Found Exception";
-        }
-    };
 
     ////////////////////////////////
     /// METHOD NAME: FindOrAddNode
