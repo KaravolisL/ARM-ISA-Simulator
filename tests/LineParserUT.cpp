@@ -20,10 +20,12 @@
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
+// Strings are placed in order of LineType enum
 std::string lines[] = {" INCLUDE exampleFile.s ;My comment",
                        "Label",
                        "ADD R1, R2, R3",
-                       "; Just a comment" };
+                       "; Just a comment",
+                       "CONSTANT_NAME EQU 0x500" };
 
 ////////////////////////////////
 /// Setup Function
@@ -39,7 +41,7 @@ void setup()
 ////////////////////////////////
 void GetLineTypeTest()
 {
-    for (int i = 0 ; i < 4; i++)
+    for (int i = 0 ; i < 5; i++)
     {
         // Construct a line parser using the ith line
         Io::LineParser lineParser(lines[i]);

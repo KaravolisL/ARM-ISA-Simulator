@@ -31,6 +31,8 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("AREA", Io::LineType::AREA);
     m_keywordDict.Insert("EXPORT", Io::LineType::EXPORT);
     m_keywordDict.Insert("ENTRY", Io::LineType::ENTRY);
+    m_keywordDict.Insert("EQU", Io::LineType::EQU);
+    m_keywordDict.Insert("DCB", Io::LineType::DCB);
 
     // Instructions
     m_keywordDict.Insert("ADD", Io::LineType::INSTRUCTION);

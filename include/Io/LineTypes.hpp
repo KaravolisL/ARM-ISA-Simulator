@@ -39,11 +39,13 @@ enum LineType
     LABEL,
     INSTRUCTION,
     COMMENT,
+    EQU,
     AREA,
     EXPORT,
     ENTRY,
     ALIGN,
     END,
+    DCB,
     INVALID
 };
 

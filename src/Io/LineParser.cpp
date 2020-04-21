@@ -18,6 +18,7 @@
 
 // C++ PROJECT INCLUDES
 #include "LineParser.hpp" // Header for class
+#include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
 #include "LineTypes.hpp"  // For LineType enum
 #include "KeywordDict.hpp" // For KeywordDict class
 
@@ -47,10 +48,17 @@ LineType LineParser::GetLineType()
     // Look for the keyword in the keyword dictionary
     LineType lineType = KeywordDict::GetInstance().Get(token);
 
-    // Label may be returned for a label line or an EQU instruction
+    // Label may be returned for a label, EQU, or memory directive
     if (lineType == LineType::LABEL)
     {
-        // label vs. EQU
+        if (m_rLine.find("EQU") != std::string::npos)
+        {
+            lineType = LineType::EQU;
+        }
+        else if (m_rLine.find("DCB") != std::string::npos)
+        {
+            lineType = LineType::DCB;
+        }
     }
 
     return lineType;
@@ -72,6 +80,8 @@ void LineParser::GetToken(int index, std::string& rToken)
     {
         pToken = strtok(NULL, " ,");
     }
+
+    if (pToken == NULL) throw new IndexOutOfBoundsException();
 
     // Store string in given parameter
     rToken = std::string(pToken);
