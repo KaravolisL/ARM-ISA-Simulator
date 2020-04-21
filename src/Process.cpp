@@ -16,8 +16,8 @@
 
 // C++ PROJECT INCLUDES
 #include "Process.hpp"  // Header for class
-#include "FileParser.hpp" // For Io::FileParser
-#include "LineTypes.hpp" // For Io::LineType enum
+#include "FileIterator.hpp" // For Io::FileIterator
+#include "LineParser.hpp" // For Io::LineParser
 
 ////////////////////////////////
 /// METHOD NAME: Process::Initialize
@@ -26,15 +26,28 @@ void Process::Initialize(const char* filename)
 {
     std::cout << filename << "\n";
 
-    Io::FileParser fileParser(filename);
+    Io::FileIterator mainFileIterator(filename);
 
-    switch (fileParser.CurrentLineType())
+    // For every line of the file...
+    while (mainFileIterator.HasNext())
     {
-        case Io::LineType::INCLUDE:
-            break;
-        default:
-            break;
+        // Create a line parser using the next line
+        Io::LineParser lineParser(mainFileIterator.Next());
+
+        // Determine how to handle the current line
+        switch (lineParser.GetLineType())
+        {
+            case Io::LineParser::LineType::INCLUDE:
+                break;
+            case Io::LineParser::LineType::LABEL:
+                break;
+            case Io::LineParser::LineType::COMMENT:
+            default:
+                break;
+        }
     }
+
+    
 }
 
 ////////////////////////////////
