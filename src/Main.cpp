@@ -30,13 +30,13 @@ int main(int argc, char* argv[])
     // Initialize the keyword dictionary
     KeywordDict::GetInstance().Initialize();
 
-    // Create empty Process
-    Process process = Process();
+    // Create empty Process in heap
+    Process* pProcess = new Process();
 
     // Initalize the process using the given file
-    process.Initialize(argv[1]);
+    pProcess->Initialize(argv[1]);
 
-    process.Execute();
+    pProcess->Execute();
 
     return 0;
 }

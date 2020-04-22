@@ -18,6 +18,7 @@
 
 // C++ PROJECT INCLUDES
 #include "LineParser.hpp" // Header for class
+#include "ExpressionParser.hpp" // For Io::ExpressionParser
 #include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
 #include "LineTypes.hpp"  // For LineType enum
 #include "KeywordDict.hpp" // For KeywordDict class
@@ -62,6 +63,30 @@ LineType LineParser::GetLineType()
     }
 
     return lineType;
+}
+
+////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetValue
+////////////////////////////////
+int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary)
+{
+    std::string token;
+    GetToken(2, token);
+
+    if (token[0] != '(')
+    {
+        // Convert the hex string to an integer
+        unsigned int x = std::stoul(token, nullptr, 16);
+        return static_cast<int>(x);
+    }
+    else
+    {
+        // Constant is an expression
+        std::string expression = m_rLine.substr(m_rLine.find_first_of('('));
+        ExpressionParser exParser(expression, rConstantsDictionary);
+
+        return exParser.Evaluate();
+    }
 }
 
 ////////////////////////////////

@@ -10,6 +10,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Io")
 
 # Set source files
 set(SOURCES
+    ExpressionParser.cpp
     LineParser.cpp
     FileIterator.cpp
 )

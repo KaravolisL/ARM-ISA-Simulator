@@ -13,6 +13,7 @@
 #define LINE_PARSER_HPP
 
 // SYSTEM INCLUDES
+#include <assert.h>
 #include <stdint.h>
 #include <string>
 
@@ -20,6 +21,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "DLB.hpp" // For DLB class
 #include "LineTypes.hpp" // For LineType enum
 
 // FORWARD DECLARATIONS
@@ -53,14 +55,46 @@ public:
     LineType GetLineType();
 
     ////////////////////////////////
-    /// METHOD NAME: GetInstruction
+    /// METHOD NAME: GetFileName
     ///
-    /// @brief Retrieves the instruction 
-    /// from the line being parsed
+    /// @brief Retrieves the file name 
+    /// following an include directive
     ///
-    /// 
+    /// @param[out] rFileName    Name of file to be included
     ////////////////////////////////
-    void GetInstruction();
+    void GetFileName(std::string& rFileName)
+    {
+        assert(GetLineType() == LineType::INCLUDE);
+        GetToken(1, rFileName);
+    }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetLabel
+    ///
+    /// @brief Retrieves the label 
+    /// following an EQU directive or
+    /// from a label line
+    ///
+    /// @param[out] rLabel    Label on line
+    ////////////////////////////////
+    void GetLabel(std::string& rLabel)
+    {
+        assert(GetLineType() == LineType::INCLUDE ||
+               GetLineType() == LineType::EQU);
+        GetToken(0, rLabel);
+    }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetValue
+    ///
+    /// @brief Retrieves the value included
+    /// in an EQU directive
+    ///
+    /// @param[in] rConstantsDictionary     Reference to constants dictionary
+    ///                                     that's being created
+    /// @returns value as int
+    ////////////////////////////////
+    int GetValue(DLB<uint32_t>& rConstantsDictionary);
 
 protected:
 

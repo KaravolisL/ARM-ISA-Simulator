@@ -69,6 +69,13 @@ public:
     ////////////////////////////////
     void Step();
 
+    ////////////////////////////////
+    /// METHOD NAME: GetConstantsDictionary
+    ///
+    /// @return Constants dictionary
+    ////////////////////////////////
+    DLB<uint32_t>& GetConstantsDictionary() { return m_constantsDictionary; }
+
 protected:
 
 

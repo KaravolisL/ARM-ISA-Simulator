@@ -19,36 +19,49 @@
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "LineParser.hpp" // For Io::LineParser
 #include "LineTypes.hpp" // For Io::LineTypes enum
+#include "Logger.hpp" // For Logger class
 
 ////////////////////////////////
 /// METHOD NAME: Process::Initialize
 ////////////////////////////////
 void Process::Initialize(const char* filename)
 {
-    std::cout << filename << "\n";
+    Logger::GetInstance().Log(filename);
 
-    Io::FileIterator mainFileIterator(filename);
+    Io::FileIterator fileIterator(filename);
 
     // For every line of the file...
-    while (mainFileIterator.HasNext())
+    while (fileIterator.HasNext())
     {
         // Create a line parser using the next line
-        Io::LineParser lineParser(mainFileIterator.Next());
+        Io::LineParser lineParser(fileIterator.Next());
 
         // Determine how to handle the current line
         switch (lineParser.GetLineType())
         {
             case Io::LineType::INCLUDE:
+            {
+                std::string fileName;
+                lineParser.GetFileName(fileName);
+                // Recurse on the include file
+                Initialize(fileName.c_str());
                 break;
-            case Io::LineType::LABEL:
+            }
+            case Io::LineType::EQU:
+            {
+                std::string constantName;
+                lineParser.GetLabel(constantName);
+
+                int value = lineParser.GetValue(m_constantsDictionary);
+
+                m_constantsDictionary.Insert(constantName, value);
                 break;
+            }
             case Io::LineType::COMMENT:
             default:
                 break;
         }
     }
-
-    
 }
 
 ////////////////////////////////
