@@ -96,6 +96,13 @@ public:
     ////////////////////////////////
     int GetValue(DLB<uint32_t>& rConstantsDictionary);
 
+    ////////////////////////////////
+    /// METHOD NAME: GetLine
+    ///
+    /// @returns Line being parsed
+    ////////////////////////////////
+    std::string& GetLine() const { return m_rLine; }
+
 protected:
 
 private:
@@ -116,6 +123,13 @@ private:
     /// @brief Strips the line of trailing comments
     ////////////////////////////////
     void StripComment();
+
+    ////////////////////////////////
+    /// METHOD NAME: LeadingTrim
+    ///
+    /// @brief Strips the leading white space
+    ////////////////////////////////
+    void LeadingTrim();
 
     /// Reference to line being parsed
     std::string& m_rLine;

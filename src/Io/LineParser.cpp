@@ -32,8 +32,9 @@ namespace Io
 LineParser::LineParser(std::string& rLine) :
     m_rLine(rLine)
 {
-    // Strip comment when constructed
+    // Strip comment and whitespace when constructed
     this->StripComment();
+    this->LeadingTrim();
 }
 
 ////////////////////////////////
@@ -48,6 +49,8 @@ LineType LineParser::GetLineType()
 
     // Look for the keyword in the keyword dictionary
     LineType lineType = KeywordDict::GetInstance().Get(token);
+
+    std::cout << token << '\n';
 
     // Label may be returned for a label, EQU, or memory directive
     if (lineType == LineType::LABEL)
@@ -112,7 +115,7 @@ void LineParser::GetToken(int index, std::string& rToken)
 }
 
 ////////////////////////////////
-/// METHOD NAME: Io::FileParser::StripComment
+/// METHOD NAME: Io::LineParser::StripComment
 ////////////////////////////////
 void LineParser::StripComment()
 {
@@ -126,6 +129,16 @@ void LineParser::StripComment()
     {
         m_rLine = m_rLine.substr(0, semicolonPos);
     }
+}
+
+////////////////////////////////
+/// METHOD NAME: Io::LineParser::LeadingTrim
+////////////////////////////////
+void LineParser::LeadingTrim()
+{
+    static const std::string WHITESPACE = " \n\r\t\f\v";
+	size_t start = m_rLine.find_first_not_of(WHITESPACE);
+	m_rLine = (start == std::string::npos) ? "" : m_rLine.substr(start);
 }
 
 } // Io

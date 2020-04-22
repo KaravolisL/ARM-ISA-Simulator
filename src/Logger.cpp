@@ -41,4 +41,7 @@ void Logger::Log(const char* msg, Logger::LogLevel logLevel)
 
     // Print message
     m_logStream << msg << "\n";
+
+    // Flush the log
+    m_logStream.flush();
 }
