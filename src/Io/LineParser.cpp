@@ -70,23 +70,18 @@ LineType LineParser::GetLineType()
 ////////////////////////////////
 int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary)
 {
-    std::string token;
-    GetToken(2, token);
+    std::string expression;
+    GetToken(2, expression);
 
-    if (token[0] != '(')
+    // Make the expression the entire enclosure if necessary
+    if (expression[0] == '(')
     {
-        // Convert the hex string to an integer
-        unsigned int x = std::stoul(token, nullptr, 0);
-        return static_cast<int>(x);
+        expression = m_rLine.substr(m_rLine.find_first_of('('));
     }
-    else
-    {
-        // Constant is an expression
-        std::string expression = m_rLine.substr(m_rLine.find_first_of('('));
-        ExpressionParser exParser(expression, rConstantsDictionary);
 
-        return exParser.Evaluate();
-    }
+    // Create an expression parser and evaluate
+    ExpressionParser exParser(expression, rConstantsDictionary);
+    return exParser.Evaluate();
 }
 
 ////////////////////////////////
