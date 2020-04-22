@@ -76,7 +76,7 @@ int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary)
     if (token[0] != '(')
     {
         // Convert the hex string to an integer
-        unsigned int x = std::stoul(token, nullptr, 16);
+        unsigned int x = std::stoul(token, nullptr, 0);
         return static_cast<int>(x);
     }
     else

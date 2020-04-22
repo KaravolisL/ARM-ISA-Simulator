@@ -32,7 +32,7 @@ int ExpressionParser::Evaluate()
     int leftInt;
     try
     {
-        leftInt = static_cast<int>(std::stoul(leftOperand, nullptr, 16));
+        leftInt = static_cast<int>(std::stoul(leftOperand, nullptr, 0));
     }
     catch (const std::invalid_argument& e)
     {
@@ -55,7 +55,7 @@ int ExpressionParser::Evaluate()
     int rightInt;
     try
     {
-        rightInt = static_cast<int>(std::stoul(rightOperand, nullptr, 16));
+        rightInt = static_cast<int>(std::stoul(rightOperand, nullptr, 0));
     }
     catch (const std::invalid_argument& e)
     {

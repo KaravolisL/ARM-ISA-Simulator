@@ -121,6 +121,13 @@ void GetValueTest()
     value = lineParser4.GetValue(constants);
     std::cout << value << '\n';
     assert(value == 160);
+
+    newLine = std::string("constant EQU ( -20 )");
+    Io::LineParser lineParser5(newLine);
+
+    value = lineParser5.GetValue(constants);
+    std::cout << value << '\n';
+    assert(value == -20);
 }
 
 ////////////////////////////////
