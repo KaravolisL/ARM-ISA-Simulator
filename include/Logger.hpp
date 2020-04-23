@@ -54,8 +54,16 @@ public:
 
     ////////////////////////////////
     /// METHOD NAME: Log
+    ///
+    /// @param msg      Message to log
+    /// @param logLevel Level at which to print in log
     ////////////////////////////////
     void Log(const char* msg, LogLevel logLevel = INFO);
+
+    ////////////////////////////////
+    /// METHOD NAME: Log
+    ////////////////////////////////
+    void Log(std::string& msg, LogLevel logLevel = INFO);
 
     ////////////////////////////////
     /// METHOD NAME: Close

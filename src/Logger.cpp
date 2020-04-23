@@ -45,3 +45,11 @@ void Logger::Log(const char* msg, Logger::LogLevel logLevel)
     // Flush the log
     m_logStream.flush();
 }
+
+////////////////////////////////
+/// METHOD NAME: Log
+////////////////////////////////
+void Logger::Log(std::string& msg, Logger::LogLevel logLevel)
+{
+    this->Log(msg.c_str(), logLevel);
+}
