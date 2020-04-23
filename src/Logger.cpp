@@ -49,7 +49,15 @@ void Logger::Log(const char* msg, Logger::LogLevel logLevel)
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(std::string& msg, Logger::LogLevel logLevel)
+void Logger::Log(std::string& rMsg, Logger::LogLevel logLevel)
+{
+    this->Log(rMsg.c_str(), logLevel);
+}
+
+////////////////////////////////
+/// METHOD NAME: Log
+////////////////////////////////
+void Logger::Log(std::string msg, Logger::LogLevel logLevel)
 {
     this->Log(msg.c_str(), logLevel);
 }

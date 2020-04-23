@@ -43,6 +43,7 @@ std::string& FileIterator::Next()
     } 
 
     std::getline(m_fileStream, m_currentLine);
+    m_lineNumber++;
 
     return m_currentLine;
 }
@@ -53,6 +54,7 @@ std::string& FileIterator::Next()
 std::string& FileIterator::GoToLine(int lineNumber)
 {
     m_fileStream.seekg(0);
+    m_lineNumber = 0;
     for (int i = 0; i < lineNumber; i++)
     {
         // Iterate through the lines

@@ -63,7 +63,12 @@ public:
     ////////////////////////////////
     /// METHOD NAME: Log
     ////////////////////////////////
-    void Log(std::string& msg, LogLevel logLevel = INFO);
+    void Log(std::string& rMsg, LogLevel logLevel = INFO);
+
+    ////////////////////////////////
+    /// METHOD NAME: Log
+    ////////////////////////////////
+    void Log(std::string msg, LogLevel logLevel = INFO);
 
     ////////////////////////////////
     /// METHOD NAME: Close

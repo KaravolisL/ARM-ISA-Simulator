@@ -39,7 +39,8 @@ public:
     ////////////////////////////////
     FileIterator(const std::string& fileName) :
         m_fileStream(std::ifstream(fileName, std::ifstream::in)),
-        m_currentLine("")
+        m_currentLine(""),
+        m_lineNumber(0)
     {} 
 
     ////////////////////////////////
@@ -71,6 +72,11 @@ public:
     std::string& GoToLine(int lineNumber);
 
     ////////////////////////////////
+    /// METHOD NAME: GetLineNumber
+    ////////////////////////////////
+    int GetLineNumber() { return m_lineNumber; }
+
+    ////////////////////////////////
     /// @struct EndOfFileException
     ////////////////////////////////
     struct EndOfFileException : public std::exception
@@ -90,6 +96,9 @@ private:
 
     /// Current line
     std::string m_currentLine;
+
+    /// Line number
+    int m_lineNumber;
 
 };
 
