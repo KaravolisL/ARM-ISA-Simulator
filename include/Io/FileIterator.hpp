@@ -77,6 +77,11 @@ public:
     int GetLineNumber() { return m_lineNumber; }
 
     ////////////////////////////////
+    /// METHOD NAME: GetCurrentLine
+    ////////////////////////////////
+    std::string& GetCurrentLine() { return m_currentLine;}
+
+    ////////////////////////////////
     /// @struct EndOfFileException
     ////////////////////////////////
     struct EndOfFileException : public std::exception
