@@ -28,7 +28,7 @@ class SLList
 private:
 
     ////////////////////////////////
-    /// DATA TYPE NAME: Node
+    /// @struct Node
     ///
     /// @brief Data type used to store
     /// data in list and next node pointer
@@ -307,6 +307,8 @@ public:
         }
 
     private:
+
+        /// Pointer to the next element in the list
         SLList::Node* pNextNode;
     };
 
@@ -314,7 +316,10 @@ protected:
 
 private:
 
+    /// Pointer to the head of the list
     Node* head;
+
+    /// Number of elements in the list
     int length;
 
 };

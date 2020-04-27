@@ -19,6 +19,7 @@
 // (none)
 
 // C++ PROJECT INCLUDES
+#include "DLB.hpp" // For DLB
 #include "Registers.hpp" // For Registers struct
 #include "Stack.hpp" // For Stack
 
@@ -39,8 +40,20 @@ public:
     /////////////////////////////////////
     Process() :
         m_processStack(Stack<uint32_t>()),
-        m_processRegisters(Registers())
+        m_processRegisters(Registers()),
+        m_labelDictionary(DLB<uint32_t>()),
+        m_constantsDictionary(DLB<uint32_t>())
     {}
+
+    ////////////////////////////////
+    /// METHOD NAME: Initialize
+    ///
+    /// @brief Initializes the process given
+    /// code in a file
+    ///
+    /// @param filename     Name of file containing assembly code
+    ////////////////////////////////
+    void Initialize(const char* filename);
 
     ////////////////////////////////
     /// METHOD NAME: Execute
@@ -48,6 +61,20 @@ public:
     /// @brief Begins execution of instructions
     ////////////////////////////////
     void Execute();
+
+    ////////////////////////////////
+    /// METHOD NAME: Step
+    ///
+    /// @brief Executes the next instruction
+    ////////////////////////////////
+    void Step();
+
+    ////////////////////////////////
+    /// METHOD NAME: GetConstantsDictionary
+    ///
+    /// @return Constants dictionary
+    ////////////////////////////////
+    DLB<uint32_t>& GetConstantsDictionary() { return m_constantsDictionary; }
 
 protected:
 
@@ -61,7 +88,10 @@ private:
     Registers m_processRegisters;
 
     /// Dictionary connecting labels and their line numbers
-    // DLB<int> m_labelDictionary;
+    DLB<uint32_t> m_labelDictionary;
+
+    /// Dictionary used for defined constants
+    DLB<uint32_t> m_constantsDictionary;
 
 };
 

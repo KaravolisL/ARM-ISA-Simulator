@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file LoggerUT.cpp
+/// @file FileParserUT.cpp
 ///
-/// @brief Unit Test for Logger
+/// @brief Unit Test for FileParser
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -9,16 +9,19 @@
 // SYSTEM INCLUDES
 #include <assert.h>
 #include <iostream>
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "Logger.hpp"  // Test class
+#include "FileParser.hpp"  // Test class
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
+Io::FileParser fileParser("../Example Programs/main.s");
+std::string testString = "INCLUDE constants.s   ; My comment";
 
 ////////////////////////////////
 /// Setup Function
@@ -29,23 +32,11 @@ void setup()
 }
 
 ////////////////////////////////
-/// LogTest Function
+/// StripCommentTest Function
 ////////////////////////////////
-void LogTest()
+void StripCommentTest()
 {
-    LOG_INFO("Test INFO Log");
-    LOG_DEBUG("Test DEBUG Log");
-    LOG_ERROR("Test ERROR Log");
-
-    std::ifstream logFile("Debug.log", std::ifstream::in);
-    std::string line;
-
-    std::getline(logFile, line);
-    assert(line == "INFO: LoggerUT.cpp : Line 36 : Test INFO Log");
-    std::getline(logFile, line);
-    assert(line == "DEBUG: LoggerUT.cpp : Line 37 : Test DEBUG Log");
-    std::getline(logFile, line);
-    assert(line == "ERROR: LoggerUT.cpp : Line 38 : Test ERROR Log");
+    
 }
 
 ////////////////////////////////
@@ -53,7 +44,7 @@ void LogTest()
 ////////////////////////////////
 void teardown()
 {
-    Logger::GetInstance().Close();
+
 }
 
 ////////////////////////////////
@@ -63,10 +54,10 @@ int main(int argc, char* argv[])
 {
     setup();
 
-    LogTest();
+    StripCommentTest();
 
     teardown();
 
-    std::cout << "Logger Unit Test Complete: SUCCESS";
+    std::cout << "FileParser Unit Test Complete: SUCCESS";
     return 0;
 }
