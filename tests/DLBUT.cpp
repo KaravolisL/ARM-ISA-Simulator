@@ -51,6 +51,17 @@ void GetTest()
         int item = myDLB.Get(keys[i]);
         assert(item == i);
     }
+
+    try
+    {
+        myDLB.Get("A");
+        assert(false);
+    }
+    catch(const DLB<int>::KeyNotFoundException& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
 }
 
 ////////////////////////////////
@@ -60,6 +71,7 @@ void ContainsTest()
 {
     assert(myDLB.Contains(keys[0]));
     assert(!myDLB.Contains("BAD KEY"));
+    assert(!myDLB.Contains("AB"));
 }
 
 ////////////////////////////////

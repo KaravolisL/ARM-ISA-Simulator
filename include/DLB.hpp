@@ -82,6 +82,7 @@ public:
 
         // Store the value in the terminating node
         pCurrentNode->value = value;
+        pCurrentNode->terminating = true;
     }
 
     ////////////////////////////////
@@ -137,6 +138,12 @@ public:
             {
                 pCurrentNode = pCurrentNode->pChild;
             }
+        }
+
+        // If this node is not terminating, the key doesn't exist
+        if (!pCurrentNode->terminating)
+        {
+            throw KeyNotFoundException();
         }
 
         // return the current node's value
@@ -199,12 +206,14 @@ private:
         T value;
         DLBNode* pRightSib;
         DLBNode* pChild;
+        bool terminating;
 
         DLBNode(char character) :
             character(character),
             value(),
             pRightSib(nullptr),
-            pChild(nullptr)
+            pChild(nullptr),
+            terminating(false)
         {}
     };
 
