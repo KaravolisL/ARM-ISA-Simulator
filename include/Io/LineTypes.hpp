@@ -1,13 +1,6 @@
 /////////////////////////////////
 /// @file LineTypes.hpp
 ///
-/// @brief Enum for line types in a file
-///
-/// @details This enum is used by both the FileParser
-/// class and the Process class in order to 
-/// determine how the current line that's being parsed
-/// should be handled
-///
 /// @author Luke Karavolis
 /////////////////////////////////
 #ifndef LINE_TYPE_HPP
@@ -31,7 +24,12 @@ namespace Io
 ////////////////////////////////
 /// @enum LineType
 ///
-/// @brief <Brief description>
+/// @brief Enum for line types in a file
+///
+/// @details This enum is used by both the FileParser
+/// class and the Process class in order to 
+/// determine how the current line that's being parsed
+/// should be handled
 ////////////////////////////////
 enum LineType
 {
