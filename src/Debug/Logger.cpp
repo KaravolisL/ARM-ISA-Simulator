@@ -9,7 +9,6 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
 #include <cstdarg>
 #include <string>
 
@@ -17,6 +16,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "Assert.hpp" // For ASSERT
 #include "Logger.hpp" // Header for class
 
 ////////////////////////////////
@@ -37,7 +37,7 @@ void Logger::Log(const char* msg, Logger::LogLevel logLevel)
             m_logStream << "ERROR: ";
             break;
         default:
-            assert(false);
+            ASSERT(false, "logLevel = %d", logLevel);
     }
 
     // Print message
