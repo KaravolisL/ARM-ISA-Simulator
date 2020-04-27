@@ -33,9 +33,19 @@ void setup()
 ////////////////////////////////
 void LogTest()
 {
-    Logger::GetInstance().Log("Test INFO log", Logger::LogLevel::INFO);
-    Logger::GetInstance().Log("Test DEBUG log", Logger::LogLevel::DEBUG);
-    Logger::GetInstance().Log("Test ERROR log", Logger::LogLevel::ERROR);
+    LOG_INFO("Test INFO Log");
+    LOG_DEBUG("Test DEBUG Log");
+    LOG_ERROR("Test ERROR Log");
+
+    std::ifstream logFile("Debug.log", std::ifstream::in);
+    std::string line;
+
+    std::getline(logFile, line);
+    assert(line == "INFO: LoggerUT.cpp : Line 36 : Test INFO Log");
+    std::getline(logFile, line);
+    assert(line == "DEBUG: LoggerUT.cpp : Line 37 : Test DEBUG Log");
+    std::getline(logFile, line);
+    assert(line == "ERROR: LoggerUT.cpp : Line 38 : Test ERROR Log");
 }
 
 ////////////////////////////////
