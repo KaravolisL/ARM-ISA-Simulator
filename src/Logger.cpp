@@ -10,6 +10,7 @@
 
 // SYSTEM INCLUDES
 #include <assert.h>
+#include <cstdarg>
 #include <string>
 
 // C PROJECT INCLUDES
@@ -49,15 +50,29 @@ void Logger::Log(const char* msg, Logger::LogLevel logLevel)
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(std::string& rMsg, Logger::LogLevel logLevel)
+void Logger::Log(std::string msg, Logger::LogLevel logLevel)
 {
-    this->Log(rMsg.c_str(), logLevel);
+    this->Log(msg.c_str(), logLevel);
 }
 
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(std::string msg, Logger::LogLevel logLevel)
+void Logger::Log(int numStrings, ...)
 {
-    this->Log(msg.c_str(), logLevel);
+    // Initialize valist
+    va_list valist;
+    va_start(valist, numStrings);
+
+    // Concatenate given strings
+    std::string concatString = "";
+    for (int i = 0; i < numStrings; i++)
+    {
+        concatString.append(va_arg(valist, char*));
+    }
+
+    // Clean up memory
+    va_end(valist);
+
+    this->Log(concatString);
 }

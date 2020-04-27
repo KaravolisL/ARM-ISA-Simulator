@@ -15,6 +15,7 @@
 // SYSTEM INCLUDES
 #include <fstream>
 #include <string>
+#include <string.h>
 
 // C PROJECT INCLUDES
 // (None)
@@ -24,6 +25,18 @@
 
 // FORWARD DECLARATIONS
 // (None)
+
+// Utility Macros
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#define S1(x) #x
+#define S2(x) S1(x)
+#define LOCATION std::string(__FILENAME__) + " : Line " + S2(__LINE__)
+#define LOG_MESSAGE( msg ) std::string(LOCATION) + " : " + msg
+
+// Log Macros
+#define LOG_DEBUG( msg ) Logger::GetInstance().Log((LOG_MESSAGE(msg)), Logger::LogLevel::DEBUG)
+#define LOG_INFO( msg ) Logger::GetInstance().Log((LOG_MESSAGE(msg)), Logger::LogLevel::INFO)
+#define LOG_ERROR( msg ) Logger::GetInstance().Log((LOG_MESSAGE(msg)), Logger::LogLevel::ERROR)
 
 ////////////////////////////////
 /// @class Logger
@@ -63,12 +76,12 @@ public:
     ////////////////////////////////
     /// METHOD NAME: Log
     ////////////////////////////////
-    void Log(std::string& rMsg, LogLevel logLevel = INFO);
+    void Log(std::string msg, LogLevel logLevel = INFO);
 
     ////////////////////////////////
     /// METHOD NAME: Log
     ////////////////////////////////
-    void Log(std::string msg, LogLevel logLevel = INFO);
+    void Log(int numStrings, ...);
 
     ////////////////////////////////
     /// METHOD NAME: Close
