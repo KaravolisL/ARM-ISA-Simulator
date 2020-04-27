@@ -17,7 +17,7 @@ add_executable(FileIteratorUT FileIteratorUT.cpp)
 target_link_libraries(FileIteratorUT PRIVATE io_library)
 
 add_executable(LineParserUT LineParserUT.cpp)
-target_link_libraries(LineParserUT PRIVATE io_library keyword_dict)
+target_link_libraries(LineParserUT PRIVATE io_library keyword_dict logger_library)
 
 
 # Add Unit Tests
