@@ -16,7 +16,6 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "Assert.hpp"
 #include "Process.hpp"  // Header for class
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "LineParser.hpp" // For Io::LineParser

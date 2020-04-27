@@ -18,9 +18,8 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "Assert.hpp" // For Assert functions
+#include "Assert.hpp" // Header for functions
 #include "Logger.hpp" // For Logger class
-
 
 ////////////////////////////////
 /// FUNCTION NAME: Assert
@@ -35,55 +34,58 @@ void Assert(bool expr, const char* fileName, int lineNumber, int numArgs, ...)
 
     // Concatenate given strings
     std::stringstream concatString;
-    concatString << "file " << fileName << " : line " << lineNumber << " : ";
+    concatString << fileName << " : Line " << lineNumber << " : ";
     
-    // Print out the message filling in the given parameters
-    char* msg = (va_arg(valist, char*));
-    while (*msg != '\0')
+    if (numArgs > 0)
     {
-        if (*msg == '%')
+        // Print out the message filling in the given parameters
+        char* msg = (va_arg(valist, char*));
+        while (*msg != '\0')
         {
-            switch(*(++msg))
+            if (*msg == '%')
             {
-                case 'd':
-                case 'i':
-                case 'c':
+                switch(*(++msg))
                 {
-                    int value = va_arg(valist, int);
-                    concatString << value;
-                    break;
+                    case 'd':
+                    case 'i':
+                    case 'c':
+                    {
+                        int value = va_arg(valist, int);
+                        concatString << value;
+                        break;
+                    }
+                    case 'f':
+                    {
+                        float value = va_arg(valist, double);
+                        concatString << value;
+                        break;
+                    }
+                    case 's':
+                    {
+                        char* value = va_arg(valist, char*);
+                        concatString << value;
+                        break;
+                    }
+                    case 'p':
+                    {
+                        void* value = va_arg(valist, void*);
+                        concatString << value;
+                        break;
+                    }
+                    default:
+                        concatString << "Unknown format";
                 }
-                case 'f':
-                {
-                    float value = va_arg(valist, double);
-                    concatString << value;
-                    break;
-                }
-                case 's':
-                {
-                    char* value = va_arg(valist, char*);
-                    concatString << value;
-                    break;
-                }
-                case 'p':
-                {
-                    void* value = va_arg(valist, void*);
-                    concatString << value;
-                    break;
-                }
-                default:
-                    concatString << "Unknown format";
             }
+            else
+            {
+                concatString << *msg;
+            }
+            msg++;
         }
-        else
-        {
-            concatString << *msg;
-        }
-        msg++;
-    }
 
-    // Clean up memory
-    va_end(valist);
+        // Clean up memory
+        va_end(valist);
+    }
 
     Logger::GetInstance().Log(concatString.str(), Logger::LogLevel::ERROR);
 
