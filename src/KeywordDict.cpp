@@ -36,6 +36,7 @@ void KeywordDict::Initialize()
 
     // Instructions
     m_keywordDict.Insert("ADD", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("B", Io::LineType::INSTRUCTION);
 }
 
 ////////////////////////////////

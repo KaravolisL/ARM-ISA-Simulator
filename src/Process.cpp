@@ -37,7 +37,6 @@ void Process::Initialize(const char* filename)
         // Create a line parser using the next line
         Io::LineParser lineParser(fileIterator.Next());
         LOG_DEBUG(lineParser.GetLine());
-        LOG_DEBUG(fileIterator.GetCurrentLine());
 
         // Determine how to handle the current line
         switch (lineParser.GetLineType())
@@ -55,15 +54,45 @@ void Process::Initialize(const char* filename)
                 std::string constantName;
                 lineParser.GetLabel(constantName);
 
+                // We pass the constants dictionary in case it is already a constant
                 int value = lineParser.GetValue(m_constantsDictionary);
 
                 m_constantsDictionary.Insert(constantName, value);
                 break;
             }
+            case Io::LineType::LABEL:
+            {
+                std::string label;
+                lineParser.GetLabel(label);
+
+                LOG_DEBUG(label);
+
+                // Check if the label was already defined
+                if (m_labelDictionary.Contains(label))
+                {
+                    // TODO: Throw labeled redefinition exception
+                }
+
+                m_labelDictionary.Insert(label, fileIterator.GetLineNumber());
+            }
             case Io::LineType::COMMENT:
+            case Io::LineType::AREA:
+            case Io::LineType::EXPORT:
+            case Io::LineType::END:
+            case Io::LineType::ENTRY:
+            case Io::LineType::ALIGN:
             default:
                 break;
         }
+    }
+
+    try
+    {
+        std::cout << m_labelDictionary.Get("sto");
+    }
+    catch (std::exception& e)
+    {
+        std::cout << "Caught";
     }
 }
 

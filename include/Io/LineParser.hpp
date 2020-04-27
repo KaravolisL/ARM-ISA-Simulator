@@ -80,7 +80,8 @@ public:
     void GetLabel(std::string& rLabel)
     {
         assert(GetLineType() == LineType::INCLUDE ||
-               GetLineType() == LineType::EQU);
+               GetLineType() == LineType::EQU ||
+               GetLineType() == LineType::LABEL);
         GetToken(0, rLabel);
     }
 
