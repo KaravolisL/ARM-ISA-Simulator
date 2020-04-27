@@ -10,6 +10,7 @@
 
 // SYSTEM INCLUDES
 #include <iostream>
+#include <string.h>
 
 // C PROJECT INCLUDES
 // (None)
@@ -26,7 +27,7 @@
 ////////////////////////////////
 void Process::Initialize(const char* filename)
 {
-    Logger::GetInstance().Log(filename);
+    LOG_INFO(filename);
 
     Io::FileIterator fileIterator(filename);
 
@@ -35,16 +36,18 @@ void Process::Initialize(const char* filename)
     {
         // Create a line parser using the next line
         Io::LineParser lineParser(fileIterator.Next());
+        LOG_DEBUG(lineParser.GetLine());
+        LOG_DEBUG(fileIterator.GetCurrentLine());
 
         // Determine how to handle the current line
         switch (lineParser.GetLineType())
         {
             case Io::LineType::INCLUDE:
             {
-                std::string fileName;
-                lineParser.GetFileName(fileName);
+                std::string newFileName;
+                lineParser.GetFileName(newFileName);
                 // Recurse on the include file
-                Initialize(fileName.c_str());
+                Initialize(newFileName.c_str());
                 break;
             }
             case Io::LineType::EQU:
