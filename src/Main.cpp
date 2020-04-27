@@ -14,16 +14,29 @@
 
 // C++ PROJECT INCLUDES
 #include "Process.hpp"  // For Process
+#include "KeywordDict.hpp" // For KeywordDict class
 
 ////////////////////////////////
 /// FUNCTION NAME: main
 ////////////////////////////////
 int main(int argc, char* argv[])
 {
-    // Create empty Process
-    Process process = Process();
+    if (argc != 2)
+    {
+        std::cout << "Invalid command line arguments";
+        exit(EXIT_FAILURE);
+    }
 
-    process.Execute();
+    // Initialize the keyword dictionary
+    KeywordDict::GetInstance().Initialize();
+
+    // Create empty Process in heap
+    Process* pProcess = new Process();
+
+    // Initalize the process using the given file
+    pProcess->Initialize(argv[1]);
+
+    pProcess->Execute();
 
     return 0;
 }

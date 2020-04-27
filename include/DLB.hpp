@@ -13,7 +13,7 @@
 #define DLB_HPP
 
 // SYSTEM INCLUDES
-// (None)
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
@@ -50,8 +50,6 @@ public:
     ///
     /// @param key      Key to be added
     /// @param value    Value to be associated with key
-    /// @return Value previously associated with given key
-    /// @retval nullptr     - No value was stored previously
     ////////////////////////////////
     void Insert(const std::string& key, const T value)
     {
@@ -84,6 +82,7 @@ public:
 
         // Store the value in the terminating node
         pCurrentNode->value = value;
+        pCurrentNode->terminating = true;
     }
 
     ////////////////////////////////
@@ -141,6 +140,12 @@ public:
             }
         }
 
+        // If this node is not terminating, the key doesn't exist
+        if (!pCurrentNode->terminating)
+        {
+            throw KeyNotFoundException();
+        }
+
         // return the current node's value
         return pCurrentNode->value;
     }
@@ -169,6 +174,20 @@ public:
         }
     }
 
+    ////////////////////////////////
+    /// @exception KeyNotFoundException
+    ///
+    /// @brief Exception thrown when a key
+    /// is not found in the trie
+    ////////////////////////////////
+    struct KeyNotFoundException : public std::exception
+    {
+        const char* what() const throw()
+        {
+            return "Key Not Found Exception";
+        }
+    };
+
 protected:
 
 
@@ -187,31 +206,19 @@ private:
         T value;
         DLBNode* pRightSib;
         DLBNode* pChild;
+        bool terminating;
 
         DLBNode(char character) :
             character(character),
             value(),
             pRightSib(nullptr),
-            pChild(nullptr)
+            pChild(nullptr),
+            terminating(false)
         {}
     };
 
     /// Root of the DLB trie
     DLBNode* m_pRoot;
-
-    ////////////////////////////////
-    /// STRUCT NAME: DLBNode
-    ///
-    /// @brief Exception thrown when a key
-    /// is not found in the trie
-    ////////////////////////////////
-    struct KeyNotFoundException : public std::exception
-    {
-        const char* what() const throw()
-        {
-            return "Key Not Found Exception";
-        }
-    };
 
     ////////////////////////////////
     /// METHOD NAME: FindOrAddNode
