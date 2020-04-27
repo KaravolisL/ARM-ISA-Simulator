@@ -125,11 +125,11 @@ private:
     void StripComment();
 
     ////////////////////////////////
-    /// METHOD NAME: LeadingTrim
+    /// METHOD NAME: WhitespaceTrim
     ///
-    /// @brief Strips the leading white space
+    /// @brief Strips the leading and trailing white space
     ////////////////////////////////
-    void LeadingTrim();
+    void WhitespaceTrim();
 
     /// Reference to line being parsed
     std::string& m_rLine;

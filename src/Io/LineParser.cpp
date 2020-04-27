@@ -22,6 +22,7 @@
 #include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
 #include "LineTypes.hpp"  // For LineType enum
 #include "KeywordDict.hpp" // For KeywordDict class
+#include "Logger.hpp"
 
 namespace Io
 {
@@ -34,7 +35,8 @@ LineParser::LineParser(std::string& rLine) :
 {
     // Strip comment and whitespace when constructed
     this->StripComment();
-    this->LeadingTrim();
+    // Must be done after stripping the comment
+    this->WhitespaceTrim();
 }
 
 ////////////////////////////////
@@ -49,8 +51,6 @@ LineType LineParser::GetLineType()
 
     // Look for the keyword in the keyword dictionary
     LineType lineType = KeywordDict::GetInstance().Get(token);
-
-    std::cout << token << '\n';
 
     // Label may be returned for a label, EQU, or memory directive
     if (lineType == LineType::LABEL)
@@ -93,8 +93,10 @@ int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary)
 void LineParser::GetToken(int index, std::string& rToken)
 {
     // Copy line so it can be modified
-    char* lineCopy = new char[m_rLine.length()];
-    m_rLine.copy(lineCopy, m_rLine.length(), 0);
+    char* lineCopy = new char[m_rLine.length() + 1];
+    assert(m_rLine.copy(lineCopy, m_rLine.length(), 0) == m_rLine.length());
+    // Copy doesn't add the null terminator
+    lineCopy[m_rLine.length()] = '\0';
 
     char* pToken = strtok(lineCopy, " ,");
 
@@ -132,13 +134,15 @@ void LineParser::StripComment()
 }
 
 ////////////////////////////////
-/// METHOD NAME: Io::LineParser::LeadingTrim
+/// METHOD NAME: Io::LineParser::WhitespaceTrim
 ////////////////////////////////
-void LineParser::LeadingTrim()
+void LineParser::WhitespaceTrim()
 {
     static const std::string WHITESPACE = " \n\r\t\f\v";
 	size_t start = m_rLine.find_first_not_of(WHITESPACE);
 	m_rLine = (start == std::string::npos) ? "" : m_rLine.substr(start);
+    size_t end = m_rLine.find_last_not_of(WHITESPACE);
+	m_rLine = (end == std::string::npos) ? "" : m_rLine.substr(0, end + 1);
 }
 
 } // Io
