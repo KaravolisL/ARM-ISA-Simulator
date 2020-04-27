@@ -9,7 +9,6 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
 #include <iostream>
 #include <string.h>
 
@@ -18,11 +17,11 @@
 
 // C++ PROJECT INCLUDES
 #include "LineParser.hpp" // Header for class
+#include "Assert.hpp" // For ASSERT
 #include "ExpressionParser.hpp" // For Io::ExpressionParser
 #include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
 #include "LineTypes.hpp"  // For LineType enum
 #include "KeywordDict.hpp" // For KeywordDict class
-#include "Logger.hpp"
 
 namespace Io
 {
@@ -94,7 +93,7 @@ void LineParser::GetToken(int index, std::string& rToken)
 {
     // Copy line so it can be modified
     char* lineCopy = new char[m_rLine.length() + 1];
-    assert(m_rLine.copy(lineCopy, m_rLine.length(), 0) == m_rLine.length());
+    ASSERT(m_rLine.copy(lineCopy, m_rLine.length(), 0) == m_rLine.length(), "Failed to copy string");
     // Copy doesn't add the null terminator
     lineCopy[m_rLine.length()] = '\0';
 
@@ -113,7 +112,7 @@ void LineParser::GetToken(int index, std::string& rToken)
 
     delete[] lineCopy;
 
-    assert(pToken != NULL);
+    ASSERT(pToken != NULL);
 }
 
 ////////////////////////////////

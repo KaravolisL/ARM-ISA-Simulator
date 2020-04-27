@@ -76,6 +76,7 @@ void Process::Initialize(const char* filename)
                 m_labelDictionary.Insert(label, fileIterator.GetLineNumber());
             }
             case Io::LineType::COMMENT:
+            case Io::LineType::INSTRUCTION:
             case Io::LineType::AREA:
             case Io::LineType::EXPORT:
             case Io::LineType::END:
@@ -84,15 +85,6 @@ void Process::Initialize(const char* filename)
             default:
                 break;
         }
-    }
-
-    try
-    {
-        std::cout << m_labelDictionary.Get("sto");
-    }
-    catch (std::exception& e)
-    {
-        std::cout << "Caught";
     }
 }
 

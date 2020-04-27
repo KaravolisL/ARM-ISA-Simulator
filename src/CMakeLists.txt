@@ -6,7 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Set include directory
 include_directories("${PROJECT_SOURCE_DIR}/include")
-include_directories("../include/Io")
+include_directories("${PROJECT_SOURCE_DIR}/include/Io")
+include_directories("${PROJECT_SOURCE_DIR}/include/Debug")
 
 # Set source files
 set(SOURCES
@@ -16,10 +17,9 @@ set(SOURCES
 
 # Add subdirectoy
 add_subdirectory(Io)
+add_subdirectory(Debug)
 
 # Make libraries
-add_library(logger_library STATIC Logger.cpp)
-
 add_library(keyword_dict STATIC KeywordDict.cpp)
 
 # Add executable
@@ -27,7 +27,7 @@ add_executable(ARM-ISA-SIMULATOR ${SOURCES})
 
 # Link in libraries
 target_link_libraries(ARM-ISA-SIMULATOR
-                      PRIVATE logger_library
+                      PRIVATE debug_lib
                       PRIVATE io_library
                       PRIVATE keyword_dict
 )
