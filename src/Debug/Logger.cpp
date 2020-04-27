@@ -9,8 +9,8 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <cstdarg>
 #include <string>
+#include <sstream>
 
 // C PROJECT INCLUDES
 // (None)
@@ -22,7 +22,7 @@
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(const char* msg, Logger::LogLevel logLevel)
+void Logger::Log(std::string& rMsg, Logger::LogLevel logLevel)
 {
     // Print log level
     switch (logLevel)
@@ -41,7 +41,7 @@ void Logger::Log(const char* msg, Logger::LogLevel logLevel)
     }
 
     // Print message
-    m_logStream << msg << "\n";
+    m_logStream << rMsg << "\n";
 
     // Flush the log
     m_logStream.flush();
@@ -50,29 +50,23 @@ void Logger::Log(const char* msg, Logger::LogLevel logLevel)
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(std::string msg, Logger::LogLevel logLevel)
+void Logger::Log(const char* fileName, int lineNumber, Logger::LogLevel logLevel, int numArgs, ...)
 {
-    this->Log(msg.c_str(), logLevel);
-}
+    // Concatenate given strings
+    std::stringstream concatStream;
+    concatStream << fileName << " : Line " << lineNumber << " : ";
 
-////////////////////////////////
-/// METHOD NAME: Log
-////////////////////////////////
-void Logger::Log(int numStrings, ...)
-{
     // Initialize valist
     va_list valist;
-    va_start(valist, numStrings);
+    va_start(valist, numArgs);
 
     // Concatenate given strings
-    std::string concatString = "";
-    for (int i = 0; i < numStrings; i++)
-    {
-        concatString.append(va_arg(valist, char*));
-    }
+    concatStream << format(numArgs, valist);
 
     // Clean up memory
     va_end(valist);
 
-    this->Log(concatString);
+    // Have to copy it because of how .str() works
+    std::string concatString = concatStream.str();
+    this->Log(concatString, logLevel);
 }
