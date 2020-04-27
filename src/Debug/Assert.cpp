@@ -10,9 +10,9 @@
 
 // SYSTEM INCLUDES
 #include <assert.h>
-#include <cstdarg>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
@@ -28,68 +28,25 @@ void Assert(bool expr, const char* fileName, int lineNumber, int numArgs, ...)
 {
     if (expr) return;
 
+    // Concatenate given strings
+    std::stringstream concatStream;
+    concatStream << fileName << " : Line " << lineNumber << " : ";
+
     // Initialize valist
     va_list valist;
     va_start(valist, numArgs);
 
-    // Concatenate given strings
-    std::stringstream concatString;
-    concatString << fileName << " : Line " << lineNumber << " : ";
-    
-    if (numArgs > 0)
-    {
-        // Print out the message filling in the given parameters
-        char* msg = (va_arg(valist, char*));
-        while (*msg != '\0')
-        {
-            if (*msg == '%')
-            {
-                switch(*(++msg))
-                {
-                    case 'd':
-                    case 'i':
-                    case 'c':
-                    {
-                        int value = va_arg(valist, int);
-                        concatString << value;
-                        break;
-                    }
-                    case 'f':
-                    {
-                        float value = va_arg(valist, double);
-                        concatString << value;
-                        break;
-                    }
-                    case 's':
-                    {
-                        char* value = va_arg(valist, char*);
-                        concatString << value;
-                        break;
-                    }
-                    case 'p':
-                    {
-                        void* value = va_arg(valist, void*);
-                        concatString << value;
-                        break;
-                    }
-                    default:
-                        concatString << "Unknown format";
-                }
-            }
-            else
-            {
-                concatString << *msg;
-            }
-            msg++;
-        }
+    // Format and concatenate the remaining
+    concatStream << format(numArgs, valist);
 
-        // Clean up memory
-        va_end(valist);
-    }
+    // Clean up memory
+    va_end(valist);
 
-    Logger::GetInstance().Log(concatString.str(), Logger::LogLevel::ERROR);
+    // We have to copy it because of how .str() works
+    std::string concatString = concatStream.str();
+    Logger::GetInstance().Log(concatString, Logger::LogLevel::ERROR);
 
-    std::cout << "Assertion failed: " << concatString.str() << '\n';
+    std::cout << "Assertion failed: " << concatString << '\n';
     std::cout << "See Debug.log for more details\n";
 
     assert(expr);

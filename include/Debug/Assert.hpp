@@ -20,23 +20,12 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-// (None)
+#include "DebugUtil.hpp"
 
 // FORWARD DECLARATIONS
 // (None)
 
-// Macros
-#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-
-// Accept any number of args >= N, but expand to just the Nth one. In this case,
-// we have settled on 9 as N. We could pick a different number by adjusting
-// the count of throwaway args before N. Note that this macro is preceded by
-// an underscore--it's an implementation detail, not something we expect people
-// to call directly.
-#define _GET_NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, N, ...) N
-
-// Count how many args are in a variadic macro. Only works for up to N-1 args.
-#define _COUNT_VARARGS(...) _GET_NTH_ARG("ignored", ##__VA_ARGS__, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+// MACROS
 
 /// This macro is to be used to in place of the traditional assert statement
 /// in order to pass along more information in the case that the expression is

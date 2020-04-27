@@ -36,7 +36,7 @@ void Process::Initialize(const char* filename)
     {
         // Create a line parser using the next line
         Io::LineParser lineParser(fileIterator.Next());
-        LOG_DEBUG(lineParser.GetLine());
+        LOG_DEBUG(lineParser.GetLine().c_str());
 
         // Determine how to handle the current line
         switch (lineParser.GetLineType())
@@ -65,7 +65,7 @@ void Process::Initialize(const char* filename)
                 std::string label;
                 lineParser.GetLabel(label);
 
-                LOG_DEBUG(label);
+                LOG_DEBUG(label.c_str());
 
                 // Check if the label was already defined
                 if (m_labelDictionary.Contains(label))

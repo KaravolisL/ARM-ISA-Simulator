@@ -21,22 +21,15 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-// (None)
+#include "DebugUtil.hpp" // For util macros
 
 // FORWARD DECLARATIONS
 // (None)
 
-// Utility Macros
-#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-#define S1(x) #x
-#define S2(x) S1(x)
-#define LOCATION std::string(__FILENAME__) + " : Line " + S2(__LINE__)
-#define LOG_MESSAGE( msg ) std::string(LOCATION) + " : " + msg
-
 // Log Macros
-#define LOG_DEBUG( msg ) Logger::GetInstance().Log((LOG_MESSAGE(msg)), Logger::LogLevel::DEBUG)
-#define LOG_INFO( msg ) Logger::GetInstance().Log((LOG_MESSAGE(msg)), Logger::LogLevel::INFO)
-#define LOG_ERROR( msg ) Logger::GetInstance().Log((LOG_MESSAGE(msg)), Logger::LogLevel::ERROR)
+#define LOG_DEBUG( ... ) Logger::GetInstance().Log(__FILENAME__, __LINE__, Logger::LogLevel::DEBUG, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
+#define LOG_INFO( ... ) Logger::GetInstance().Log(__FILENAME__, __LINE__, Logger::LogLevel::INFO, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
+#define LOG_ERROR( ... ) Logger::GetInstance().Log(__FILENAME__, __LINE__, Logger::LogLevel::ERROR, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
 
 ////////////////////////////////
 /// @class Logger
@@ -68,20 +61,32 @@ public:
     ////////////////////////////////
     /// METHOD NAME: Log
     ///
-    /// @param msg      Message to log
-    /// @param logLevel Level at which to print in log
+    /// @brief This version is used for the
+    /// log macro. It's called after finding
+    /// the number of arguments
+    ///
+    /// @warning This method is only to be used through the macro
+    /// defined above.
+    ///
+    /// @param fileName     Name of file where assert is placed
+    /// @param lineNumber   Line on which assert is placed
+    /// @param logLevel     Level at which to print message
+    /// @param numArgs      Number of arguments passed in additionally
+    /// @param ...          Format string followed by replacement variables
     ////////////////////////////////
-    void Log(const char* msg, LogLevel logLevel = INFO);
+    void Log(const char* fileName, int lineNumber, LogLevel logLevel, int numArgs, ...);
 
     ////////////////////////////////
     /// METHOD NAME: Log
+    ///
+    /// @brief This version is used for the
+    /// log macro. It's called after finding
+    /// the number of arguments
+    ///
+    /// @param rMsg          Message to output
+    /// @param logLevel     Level at which to print message
     ////////////////////////////////
-    void Log(std::string msg, LogLevel logLevel = INFO);
-
-    ////////////////////////////////
-    /// METHOD NAME: Log
-    ////////////////////////////////
-    void Log(int numStrings, ...);
+    void Log(std::string& rMsg, LogLevel logLevel);
 
     ////////////////////////////////
     /// METHOD NAME: Close
