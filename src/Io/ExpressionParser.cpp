@@ -9,6 +9,7 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
+#include <assert.h>
 #include <iostream>
 #include <string.h>
 #include <stdexcept>
@@ -18,6 +19,7 @@
 
 // C++ PROJECT INCLUDES
 #include "ExpressionParser.hpp" // Header for class
+#include "Logger.hpp"
 
 namespace Io
 {
@@ -28,6 +30,7 @@ namespace Io
 int ExpressionParser::Evaluate()
 {
     char* leftOperand = strtok(const_cast<char*>(m_expression.c_str()), " ()");
+    assert(leftOperand != nullptr);
 
     int leftInt;
     try
