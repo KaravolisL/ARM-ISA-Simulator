@@ -91,6 +91,27 @@ public:
     ////////////////////////////////
     DLB<uint32_t>& GetConstantsDictionary() { return m_constantsDictionary; }
 
+    ////////////////////////////////
+    /// METHOD NAME: GetProcessStack
+    ///
+    /// @return Process Stack
+    ////////////////////////////////
+    Stack<Register>& GetProcessStack() { return m_processStack; }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetProcessRegisters
+    ///
+    /// @return Process registers
+    ////////////////////////////////
+    Registers& GetProcessRegisters() { return m_processRegisters; }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetFileIterator
+    ///
+    /// @return File Iterator
+    ////////////////////////////////
+    Io::FileIterator* GetFileIterator() { return m_pFileIterator; }
+
 protected:
 
 
