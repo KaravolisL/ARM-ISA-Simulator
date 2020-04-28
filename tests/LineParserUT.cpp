@@ -16,6 +16,7 @@
 // C++ PROJECT INCLUDES
 #include "LineParser.hpp"  // Test class
 #include "KeywordDict.hpp" // For KeywordDict class
+#include "SLList.hpp" // For SLList
 
 ////////////////////////////////
 /// Test Objects
@@ -131,6 +132,26 @@ void GetValueTest()
 }
 
 ////////////////////////////////
+/// GetArgumentsTest Function
+////////////////////////////////
+void GetArgumentsTest()
+{
+    Io::LineParser lineParser(lines[2]);
+    SLList<std::string> arguments;
+
+    lineParser.GetArguments(arguments);
+
+    SLList<std::string>::SLListIterator it = arguments.GetBegin();
+
+    std::cout << *it << '\n';
+    assert(*(it++) == "R1");
+    std::cout << *it << '\n';
+    assert(*(it++) == "R2");
+    std::cout << *it << '\n';
+    assert(*it == "R3");
+}
+
+////////////////////////////////
 /// Teardown Function
 ////////////////////////////////
 void teardown()
@@ -149,6 +170,7 @@ int main(int argc, char* argv[])
     GetFileNameTest();
     GetLabelTest();
     GetValueTest();
+    GetArgumentsTest();
 
     teardown();
 

@@ -24,7 +24,10 @@
 #include "Stack.hpp" // For Stack
 
 // FORWARD DECLARATIONS
-// (None)
+namespace Io
+{
+    class FileIterator;
+}
 
 ////////////////////////////////
 /// @class Process
@@ -42,7 +45,8 @@ public:
         m_processStack(Stack<uint32_t>()),
         m_processRegisters(Registers()),
         m_labelDictionary(DLB<uint32_t>()),
-        m_constantsDictionary(DLB<uint32_t>())
+        m_constantsDictionary(DLB<uint32_t>()),
+        m_pFileIterator(nullptr)
     {}
 
     ////////////////////////////////
@@ -54,6 +58,17 @@ public:
     /// @param filename     Name of file containing assembly code
     ////////////////////////////////
     void Initialize(const char* filename);
+
+    ////////////////////////////////
+    /// METHOD NAME: PrepareForExecution
+    ///
+    /// @brief Following initialization, the process needs
+    /// to be prepared for execution. This includes setting
+    /// up registers, the stack, and file iterators
+    ///
+    /// @param filename     Name of file containing main
+    ////////////////////////////////
+    void PrepareForExecution(const char* filename);
 
     ////////////////////////////////
     /// METHOD NAME: Execute
@@ -76,13 +91,34 @@ public:
     ////////////////////////////////
     DLB<uint32_t>& GetConstantsDictionary() { return m_constantsDictionary; }
 
+    ////////////////////////////////
+    /// METHOD NAME: GetProcessStack
+    ///
+    /// @return Process Stack
+    ////////////////////////////////
+    Stack<Register>& GetProcessStack() { return m_processStack; }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetProcessRegisters
+    ///
+    /// @return Process registers
+    ////////////////////////////////
+    Registers& GetProcessRegisters() { return m_processRegisters; }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetFileIterator
+    ///
+    /// @return File Iterator
+    ////////////////////////////////
+    Io::FileIterator* GetFileIterator() { return m_pFileIterator; }
+
 protected:
 
 
 private:
 
     /// Stack associated with this process
-    Stack<uint32_t> m_processStack;
+    Stack<Register> m_processStack;
 
     /// Registers associated with this process
     Registers m_processRegisters;
@@ -92,6 +128,9 @@ private:
 
     /// Dictionary used for defined constants
     DLB<uint32_t> m_constantsDictionary;
+
+    /// File Iterator used during execution
+    Io::FileIterator* m_pFileIterator;
 
 };
 

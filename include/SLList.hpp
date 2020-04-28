@@ -42,6 +42,9 @@ private:
             data(data),
             next(nullptr)
         {}
+
+        Node& operator=(Node const&);
+        Node(Node const&);
     } Node;
 
 public:
@@ -53,7 +56,6 @@ public:
         head(nullptr),
         length(0)
     {}
-
 
     ////////////////////////////////
     /// FUNCTION NAME: InsertFront

@@ -15,9 +15,6 @@ set(SOURCES
     Main.cpp
 )
 
-# Make library
-add_library(src_library STATIC ${SOURCES})
-
 # Add subdirectoy
 add_subdirectory(Io)
 add_subdirectory(Debug)

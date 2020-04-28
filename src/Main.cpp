@@ -36,7 +36,10 @@ int main(int argc, char* argv[])
     // Initalize the process using the given file
     pProcess->Initialize(argv[1]);
 
-    pProcess->Execute();
+    // Prepare the process for execution
+    pProcess->PrepareForExecution(argv[1]);
+
+    pProcess->Step();
 
     return 0;
 }

@@ -25,7 +25,8 @@
 #include "LineTypes.hpp" // For LineType enum
 
 // FORWARD DECLARATIONS
-// (None)
+template<typename T>
+class SLList;
 
 namespace Io
 {
@@ -43,6 +44,15 @@ public:
     /// @param rLine    Reference to line to be parsed
     ////////////////////////////////
     LineParser(std::string& rLine);
+
+    ////////////////////////////////
+    /// METHOD NAME: SetLine
+    ///
+    /// @brief Updates the line being parsed
+    ///
+    /// @param[in] rNewLine     New line to be parsed
+    ////////////////////////////////
+    void SetLine(std::string& rNewLine);
 
     ////////////////////////////////
     /// METHOD NAME: GetLineType
@@ -84,6 +94,29 @@ public:
                GetLineType() == LineType::LABEL);
         GetToken(0, rLabel);
     }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetInstruction
+    ///
+    /// @brief Retrieves the instruction keyword
+    ///
+    /// @param[out] rInstruction    Instruction keyword
+    ////////////////////////////////
+    void GetInstruction(std::string& rInstruction)
+    {
+        assert(GetLineType() == LineType::INSTRUCTION);
+        GetToken(0, rInstruction);
+    }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetArguments
+    ///
+    /// @brief Retrieves the arguments following
+    /// an instruction
+    ///
+    /// @param[out] rArguments    List of arguments
+    ////////////////////////////////
+    void GetArguments(SLList<std::string>& rArguments);
 
     ////////////////////////////////
     /// METHOD NAME: GetValue

@@ -86,6 +86,28 @@ void Process::Initialize(const char* filename)
                 break;
         }
     }
+
+    LOG_INFO("Process Initialization Complete");
+}
+
+////////////////////////////////
+/// METHOD NAME: Process::PrepareForExecution
+////////////////////////////////
+void Process::PrepareForExecution(const char* filename)
+{
+    // Initialize the PC
+    try
+    {
+        m_processRegisters.PC = m_labelDictionary.Get("__main");
+    }
+    catch(const DLB<uint32_t>::KeyNotFoundException& e)
+    {
+        // TODO: Throw compiler error
+    }
+
+    // Create the file iterator and send it to the line of the pc
+    m_pFileIterator = new Io::FileIterator(filename);
+    m_pFileIterator->GoToLine(m_processRegisters.PC);
 }
 
 ////////////////////////////////
@@ -101,5 +123,22 @@ void Process::Execute()
 ////////////////////////////////
 void Process::Step()
 {
-    
+    // Move to the next instruction
+    Io::LineParser lineParser(m_pFileIterator->Next());
+    while (lineParser.GetLineType() != Io::LineType::INSTRUCTION)
+    {
+        lineParser.SetLine(m_pFileIterator->Next());
+    }
+
+    LOG_DEBUG("Executing %s", m_pFileIterator->GetCurrentLine().c_str());
+
+    std::string instruction;
+    lineParser.GetInstruction(instruction);
+
+    // InstructionIface* pInstruction = InstructionRepository::GetInstruction(instruction);
+
+    SLList<std::string> arguments;
+    lineParser.GetArguments(arguments);
+
+    // pInstruction->Execute(arguments, this);
 }

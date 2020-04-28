@@ -6,6 +6,8 @@
 	ENTRY			
 				
 __main	PROC
+
+	MOV r0, #1
 	
 	; Enable the clock for GPIOA, GPIOB
 	

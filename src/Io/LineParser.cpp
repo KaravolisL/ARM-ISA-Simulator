@@ -22,6 +22,7 @@
 #include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
 #include "LineTypes.hpp"  // For LineType enum
 #include "KeywordDict.hpp" // For KeywordDict class
+#include "SLList.hpp" // For SLList
 
 namespace Io
 {
@@ -35,6 +36,16 @@ LineParser::LineParser(std::string& rLine) :
     // Strip comment and whitespace when constructed
     this->StripComment();
     // Must be done after stripping the comment
+    this->WhitespaceTrim();
+}
+
+////////////////////////////////
+/// METHOD NAME: Io::LineParser::SetLine
+////////////////////////////////
+void LineParser::SetLine(std::string& rNewLine)
+{
+    m_rLine = rNewLine;
+    this->StripComment();
     this->WhitespaceTrim();
 }
 
@@ -87,6 +98,28 @@ int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary)
 }
 
 ////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetArguments
+////////////////////////////////
+void LineParser::GetArguments(SLList<std::string>& rArguments)
+{
+    // Start with the second token in the line
+    int i = 1;
+    while (true)
+    {
+        std::string token;
+        try
+        {
+            GetToken(i++, token);
+        }
+        catch(const IndexOutOfBoundsException& e)
+        {
+            break;
+        }
+        rArguments.InsertBack(token);
+    }
+}
+
+////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetToken
 ////////////////////////////////
 void LineParser::GetToken(int index, std::string& rToken)
@@ -105,7 +138,7 @@ void LineParser::GetToken(int index, std::string& rToken)
         pToken = strtok(NULL, " ,");
     }
 
-    if (pToken == NULL) throw new IndexOutOfBoundsException();
+    if (pToken == NULL) throw IndexOutOfBoundsException();
 
     // Store string in given parameter
     rToken = std::string(pToken);
