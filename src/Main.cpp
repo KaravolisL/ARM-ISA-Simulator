@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     // Prepare the process for execution
     pProcess->PrepareForExecution(argv[1]);
 
-    pProcess->Execute();
+    pProcess->Step();
 
     return 0;
 }

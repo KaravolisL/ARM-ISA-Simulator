@@ -86,6 +86,8 @@ void Process::Initialize(const char* filename)
                 break;
         }
     }
+
+    LOG_INFO("Process Initialization Complete");
 }
 
 ////////////////////////////////
@@ -121,5 +123,22 @@ void Process::Execute()
 ////////////////////////////////
 void Process::Step()
 {
-    
+    // Move to the next instruction
+    Io::LineParser lineParser(m_pFileIterator->Next());
+    while (lineParser.GetLineType() != Io::LineType::INSTRUCTION)
+    {
+        lineParser.SetLine(m_pFileIterator->Next());
+    }
+
+    LOG_DEBUG("Executing %s", m_pFileIterator->GetCurrentLine().c_str());
+
+    std::string instruction;
+    lineParser.GetInstruction(instruction);
+
+    // InstructionIface* pInstruction = InstructionRepository::GetInstruction(instruction);
+
+    SLList<std::string> arguments;
+    lineParser.GetArguments(arguments);
+
+    // pInstruction->Execute(arguments, this);
 }
