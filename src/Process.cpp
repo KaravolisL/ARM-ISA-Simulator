@@ -89,6 +89,26 @@ void Process::Initialize(const char* filename)
 }
 
 ////////////////////////////////
+/// METHOD NAME: Process::PrepareForExecution
+////////////////////////////////
+void Process::PrepareForExecution(const char* filename)
+{
+    // Initialize the PC
+    try
+    {
+        m_processRegisters.PC = m_labelDictionary.Get("__main");
+    }
+    catch(const DLB<uint32_t>::KeyNotFoundException& e)
+    {
+        // TODO: Throw compiler error
+    }
+
+    // Create the file iterator and send it to the line of the pc
+    m_pFileIterator = new Io::FileIterator(filename);
+    m_pFileIterator->GoToLine(m_processRegisters.PC);
+}
+
+////////////////////////////////
 /// METHOD NAME: Process::Execute
 ////////////////////////////////
 void Process::Execute()
