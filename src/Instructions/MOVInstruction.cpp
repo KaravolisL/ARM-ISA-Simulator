@@ -41,6 +41,7 @@ void MOVInstruction::Execute(SLList<std::string>& rArguments, Process& rProcess)
         case 'r':
         case 'R':
         {
+            // Get the value in the register
             int sourceReg = atoi(srcString.substr(1).c_str());
             source = rProcess.GetProcessRegisters().genRegs[sourceReg];
             break;
