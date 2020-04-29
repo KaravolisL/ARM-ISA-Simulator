@@ -40,6 +40,8 @@ int main(int argc, char* argv[])
     pProcess->PrepareForExecution(argv[1]);
 
     pProcess->Step();
+    pProcess->Step();
+    pProcess->Step();
 
     return 0;
 }

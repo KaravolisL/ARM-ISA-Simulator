@@ -29,7 +29,7 @@
 ////////////////////////////////
 void Process::Initialize(const char* filename)
 {
-    LOG_INFO(filename);
+    LOG_INFO("Initializing file %s", filename);
 
     Io::FileIterator fileIterator(filename);
 
@@ -38,7 +38,6 @@ void Process::Initialize(const char* filename)
     {
         // Create a line parser using the next line
         Io::LineParser lineParser(fileIterator.Next());
-        LOG_DEBUG(lineParser.GetLine().c_str());
 
         // Determine how to handle the current line
         switch (lineParser.GetLineType())
@@ -67,8 +66,6 @@ void Process::Initialize(const char* filename)
                 std::string label;
                 lineParser.GetLabel(label);
 
-                LOG_DEBUG(label.c_str());
-
                 // Check if the label was already defined
                 if (m_labelDictionary.Contains(label))
                 {
@@ -89,7 +86,7 @@ void Process::Initialize(const char* filename)
         }
     }
 
-    LOG_INFO("Process Initialization Complete");
+    LOG_INFO("Initialization of %s Complete", filename);
 }
 
 ////////////////////////////////
@@ -143,4 +140,6 @@ void Process::Step()
     lineParser.GetArguments(arguments);
 
     pInstruction->Execute(arguments, *this);
+
+    LOG_DEBUG("%d, %d", m_processRegisters.genRegs[1], m_processRegisters.genRegs[2]);
 }
