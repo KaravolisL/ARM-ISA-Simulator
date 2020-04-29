@@ -32,4 +32,5 @@ target_link_libraries(ARM-ISA-SIMULATOR
                       PRIVATE debug_lib
                       PRIVATE io_library
                       PRIVATE keyword_dict
+                      PRIVATE instr_lib
 )

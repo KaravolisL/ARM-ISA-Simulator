@@ -9,7 +9,7 @@
 #define INSTRUCTION_IFACE_HPP
 
 // SYSTEM INCLUDES
-// (None)
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
@@ -22,11 +22,6 @@ template <typename T>
 class SLList;
 
 class Process;
-
-namespace std
-{
-    class string;
-}
 
 ////////////////////////////////
 /// @class InstructionIface

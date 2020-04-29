@@ -5,13 +5,13 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 
 # Set source files
 set(SOURCES
-    
+    InstructionRepository.cpp
 )
 
 # Make libraries
-# add_library(instr_lib STATIC ${SOURCES})
+add_library(instr_lib STATIC ${SOURCES})
 
 # Link in libraries
-# target_link_libraries(instr_lib
-#                       PRIVATE debug_lib
-# )
+target_link_libraries(instr_lib
+                      PRIVATE debug_lib
+)
