@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include/Io")
 include_directories("${PROJECT_SOURCE_DIR}/include/Debug")
+include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 
 # Set source files
 set(SOURCES
@@ -18,6 +19,7 @@ set(SOURCES
 # Add subdirectoy
 add_subdirectory(Io)
 add_subdirectory(Debug)
+add_subdirectory(Instructions)
 
 # Make libraries
 add_library(keyword_dict STATIC KeywordDict.cpp)
@@ -30,4 +32,5 @@ target_link_libraries(ARM-ISA-SIMULATOR
                       PRIVATE debug_lib
                       PRIVATE io_library
                       PRIVATE keyword_dict
+                      PRIVATE instr_lib
 )

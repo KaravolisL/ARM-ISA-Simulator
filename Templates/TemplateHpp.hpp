@@ -3,8 +3,6 @@
 ///
 /// @brief <Brief description>
 ///
-/// @details <Detailed description>
-///
 /// @author <Author Name>
 /////////////////////////////////
 #ifndef <FILENAME>_HPP
@@ -26,6 +24,8 @@
 /// @class <CLASSNAME>
 ///
 /// @brief <Brief description>
+///
+/// @details <Detailed description>
 ////////////////////////////////
 class <CLASSNAME>
 {
