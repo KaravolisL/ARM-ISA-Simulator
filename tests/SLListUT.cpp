@@ -55,17 +55,16 @@ void InsertAndGetTest()
         assert(i == pMySLList->Get(i));
     }
 
-    // TODO: Uncomment when exception is made
     // Test exception
-    // try
-    // {
-    //     pMySLList->Get(100);
-    //     assert(false);
-    // }
-    // catch(const std::exception& e)
-    // {
-    //     std::cerr << e.what() << '\n';
-    // }
+    try
+    {
+        pMySLList->Get(100);
+        assert(false);
+    }
+    catch(const IndexOutOfBoundsException& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 
 ////////////////////////////////
