@@ -15,7 +15,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-// (None)
+#include "DLB.hpp" // For DLB
 
 // FORWARD DECLARATIONS
 class InstructionIface;
@@ -41,6 +41,13 @@ public:
     }
 
     ////////////////////////////////
+    /// METHOD NAME: Initialize
+    ///
+    /// @brief Builds the instruction keyword dictionary
+    ////////////////////////////////
+    void Initialize();
+
+    ////////////////////////////////
     /// METHOD NAME: GetInstruction
     ///
     /// @brief Retrieves an instance from
@@ -49,18 +56,23 @@ public:
     /// @param[in] rInstruction     Type of instruction to retrieve
     /// @return Instance of matching instruction
     ////////////////////////////////
-    static InstructionIface* GetInstruction(const std::string& rInstruction); 
+    InstructionIface* GetInstruction(const std::string& rInstruction); 
 
 protected:
 
 private:
+
+    /// DLB containing pairs of instruction keyword : instances of instruction class
+    DLB<InstructionIface*> m_instructionDict;
 
     ////////////////////////////////
     /// Constructor
     ///
     /// @note Private to ensure singleton
     ////////////////////////////////
-    InstructionRepository() {}
+    InstructionRepository() :
+        m_instructionDict(DLB<InstructionIface*>())
+    {}
 
     ////////////////////////////////
     /// Copy Constructer

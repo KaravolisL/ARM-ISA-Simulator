@@ -92,6 +92,13 @@ public:
     DLB<uint32_t>& GetConstantsDictionary() { return m_constantsDictionary; }
 
     ////////////////////////////////
+    /// METHOD NAME: GetLabelDictionary
+    ///
+    /// @return Label dictionary
+    ////////////////////////////////
+    DLB<uint32_t>& GetLabelDictionary() { return m_labelDictionary; }
+
+    ////////////////////////////////
     /// METHOD NAME: GetProcessStack
     ///
     /// @return Process Stack
@@ -110,7 +117,14 @@ public:
     ///
     /// @return File Iterator
     ////////////////////////////////
-    Io::FileIterator* GetFileIterator() { return m_pFileIterator; }
+    Io::FileIterator* GetFileIterator() const { return m_pFileIterator; }
+
+    ////////////////////////////////
+    /// METHOD NAME: SetFileIterator
+    ///
+    /// @param[in] pFileIterator
+    ////////////////////////////////
+    void SetFileIterator(Io::FileIterator* pFileIterator) { m_pFileIterator = pFileIterator; }
 
 protected:
 

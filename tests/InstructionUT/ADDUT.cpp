@@ -1,5 +1,5 @@
 /////////////////////////////////
-/// @file ADDUT.cpp
+/// @file AddUT.cpp
 ///
 /// @brief Unit Test for ADDInstruction
 ///
