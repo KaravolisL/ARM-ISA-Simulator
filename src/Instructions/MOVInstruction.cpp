@@ -20,7 +20,7 @@
 ////////////////////////////////
 /// METHOD NAME: MOVInstruction::Execute 
 ////////////////////////////////
-void MOVInstruction::Execute(SLList<std::string>& rArguments, Process& rProcess)
+void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
     // Get destination from arguments
     std::string destString = rArguments.Get(0);

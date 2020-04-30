@@ -44,7 +44,7 @@ public:
     /// @param[in] rArguments   List of arguments to be used by the instruction
     /// @param[in,out] rProcess Process that this instruction is apart of
     ////////////////////////////////
-    virtual void Execute(SLList<std::string>& rArguments, Process& rProcess) = 0;
+    virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess) = 0;
 
 protected:
 
