@@ -116,7 +116,7 @@ public:
     /// @return Element at given value
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
-    T Get(int index)
+    T Get(int index) const
     {
         for (Node* pCurrentNode = head;
              pCurrentNode != nullptr;
@@ -203,7 +203,7 @@ public:
     ////////////////////////////////
     /// FUNCTION NAME: PrintList
     ////////////////////////////////
-    void PrintList(void)
+    void PrintList(void) const
     {
         for (Node* pCurrentNode = head;
                 pCurrentNode != nullptr;
@@ -303,7 +303,7 @@ public:
         ////////////////////////////////
         /// Dereference Operator
         ////////////////////////////////
-        T operator*()
+        T operator*() const
         {
             return this->pNextNode->data;
         }
