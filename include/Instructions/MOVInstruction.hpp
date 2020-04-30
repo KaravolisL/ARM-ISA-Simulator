@@ -23,8 +23,7 @@
 ////////////////////////////////
 /// @class MOVInstruction
 ///
-/// @brief Fully virtual class used by 
-/// specific instruction classes
+/// @brief Class to represent MOV instruction
 ////////////////////////////////
 class MOVInstruction : public InstructionIface
 {
@@ -44,7 +43,7 @@ public:
     /// @param[in] rArguments   List of arguments to be used by the instruction
     /// @param[in,out] rProcess Process that this instruction is apart of
     ////////////////////////////////
-    void Execute(SLList<std::string>& rArguments, Process& rProcess);
+    void Execute(const SLList<std::string>& rArguments, Process& rProcess);
 
 protected:
 
