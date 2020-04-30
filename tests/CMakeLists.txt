@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.16)
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include/Debug")
 include_directories("${PROJECT_SOURCE_DIR}/include/Io")
+include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
+
+include_directories("${PROJECT_SOURCE_DIR}/tests/support")
 
 # Add executables (Unit tests)
 add_executable(SLListUT SLListUT.cpp)
@@ -20,6 +23,12 @@ target_link_libraries(FileIteratorUT PRIVATE io_library)
 add_executable(LineParserUT LineParserUT.cpp)
 target_link_libraries(LineParserUT PRIVATE io_library keyword_dict debug_lib)
 
+add_executable(ADDUT InstructionUT/ADDUT.cpp)
+target_link_libraries(ADDUT PRIVATE instr_lib)
+
+add_executable(MOVUT InstructionUT/MOVUT.cpp)
+target_link_libraries(MOVUT PRIVATE instr_lib)
+
 # Add Unit Tests
 add_test(NAME SLListUT COMMAND SLListUT)
 add_test(NAME StackUT COMMAND StackUT)
@@ -30,3 +39,6 @@ add_test(NAME LoggerUT COMMAND LoggerUT)
 
 add_test(NAME FileIteratorUT COMMAND FileIteratorUT)
 add_test(NAME LineParserUT COMMAND LineParserUT)
+
+add_test(NAME ADDUT COMMAND ADDUT)
+add_test(NAME MOVUT COMMAND MOVUT)

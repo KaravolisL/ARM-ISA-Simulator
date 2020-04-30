@@ -70,7 +70,7 @@ public:
     /// @returns Element at front of queue
     /// @throw EmptyQueueException
     ////////////////////////////////
-    T Peek()
+    T Peek() const
     {
         // Bounds check
         if (this->Size() == 0) throw EmptyQueueException();
@@ -82,7 +82,7 @@ public:
     ////////////////////////////////
     /// METHOD NAME: Size
     ////////////////////////////////
-    int Size()
+    int Size() const
     {
         return m_Queue.GetLength();
     }

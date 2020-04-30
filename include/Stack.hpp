@@ -68,7 +68,7 @@ public:
     /// @returns Element on top of stack
     /// @throw EmptyStackException
     ////////////////////////////////
-    E Peek()
+    E Peek() const
     {
         // Bounds check
         if (this->Size() == 0) throw EmptyStackException();
@@ -80,7 +80,7 @@ public:
     ////////////////////////////////
     /// METHOD NAME: Size
     ////////////////////////////////
-    int Size()
+    int Size() const
     {
         return m_Stack.GetLength();
     }

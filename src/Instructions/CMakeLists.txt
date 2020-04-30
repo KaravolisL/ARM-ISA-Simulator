@@ -5,7 +5,9 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 
 # Set source files
 set(SOURCES
+    ADDInstruction.cpp
     InstructionRepository.cpp
+    MOVInstruction.cpp
 )
 
 # Make libraries

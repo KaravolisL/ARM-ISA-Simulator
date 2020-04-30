@@ -111,7 +111,7 @@ public:
     /// @return Value associated with given key
     /// @throw KeyNotFoundException
     ////////////////////////////////
-    T Get(const std::string& key)
+    T Get(const std::string& key) const
     {
         DLBNode* pCurrentNode = m_pRoot;
         for (std::size_t i = 0; i < key.length(); i++)
@@ -161,7 +161,7 @@ public:
     /// @retval true     - A value exists
     /// @retval false    - No value exists
     ////////////////////////////////
-    bool Contains(const std::string& key)
+    bool Contains(const std::string& key) const
     {
         try
         {
