@@ -34,10 +34,6 @@ void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
         case '#':
             source = static_cast<uint32_t>(std::stoul(srcString.substr(1).c_str(), nullptr, 0));
             break;
-        case '=':
-            // Get the constant from the dictionary
-            source = rProcess.GetConstantsDictionary().Get(srcString.substr(1));
-            break;
         case 'r':
         case 'R':
         {

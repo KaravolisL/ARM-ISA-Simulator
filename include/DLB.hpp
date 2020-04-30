@@ -161,7 +161,7 @@ public:
     /// @retval true     - A value exists
     /// @retval false    - No value exists
     ////////////////////////////////
-    bool Contains(const std::string& key)
+    bool Contains(const std::string& key) const
     {
         try
         {
