@@ -111,7 +111,7 @@ public:
     /// @return Value associated with given key
     /// @throw KeyNotFoundException
     ////////////////////////////////
-    T Get(const std::string& key)
+    T Get(const std::string& key) const
     {
         DLBNode* pCurrentNode = m_pRoot;
         for (std::size_t i = 0; i < key.length(); i++)

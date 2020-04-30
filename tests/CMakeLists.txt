@@ -26,6 +26,9 @@ target_link_libraries(LineParserUT PRIVATE io_library keyword_dict debug_lib)
 add_executable(ADDUT InstructionUT/ADDUT.cpp)
 target_link_libraries(ADDUT PRIVATE instr_lib)
 
+add_executable(MOVUT InstructionUT/MOVUT.cpp)
+target_link_libraries(MOVUT PRIVATE instr_lib)
+
 # Add Unit Tests
 add_test(NAME SLListUT COMMAND SLListUT)
 add_test(NAME StackUT COMMAND StackUT)
@@ -38,3 +41,4 @@ add_test(NAME FileIteratorUT COMMAND FileIteratorUT)
 add_test(NAME LineParserUT COMMAND LineParserUT)
 
 add_test(NAME ADDUT COMMAND ADDUT)
+add_test(NAME MOVUT COMMAND MOVUT)
