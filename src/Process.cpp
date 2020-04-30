@@ -134,7 +134,7 @@ void Process::Step()
     std::string instruction;
     lineParser.GetInstruction(instruction);
 
-    InstructionIface* pInstruction = InstructionRepository::GetInstruction(instruction);
+    InstructionIface* pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction);
 
     SLList<std::string> arguments;
     lineParser.GetArguments(arguments);

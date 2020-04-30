@@ -22,6 +22,9 @@
 ////////////////////////////////
 void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
+    // TODO: Enable when InvalidArgumentsException is created
+    // if (rArguments.GetLength() > 2) throw InvalidArgumentsException()
+
     // Get destination from arguments
     std::string destString = rArguments.Get(0);
     Register destination = atoi(destString.substr(1).c_str());

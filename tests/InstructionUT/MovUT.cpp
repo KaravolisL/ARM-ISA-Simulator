@@ -1,5 +1,5 @@
 /////////////////////////////////
-/// @file MOVUT.cpp
+/// @file MovUT.cpp
 ///
 /// @brief Unit Test for MOVInstruction
 ///

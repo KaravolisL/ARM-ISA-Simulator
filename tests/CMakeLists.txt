@@ -8,6 +8,9 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 
 include_directories("${PROJECT_SOURCE_DIR}/tests/support")
 
+# Add subdirectory
+add_subdirectory(support)
+
 # Add executables (Unit tests)
 add_executable(SLListUT SLListUT.cpp)
 add_executable(StackUT StackUT.cpp)
@@ -23,11 +26,14 @@ target_link_libraries(FileIteratorUT PRIVATE io_library)
 add_executable(LineParserUT LineParserUT.cpp)
 target_link_libraries(LineParserUT PRIVATE io_library keyword_dict debug_lib)
 
-add_executable(ADDUT InstructionUT/ADDUT.cpp)
-target_link_libraries(ADDUT PRIVATE instr_lib)
+add_executable(AddUT InstructionUT/AddUT.cpp)
+target_link_libraries(AddUT PRIVATE instr_lib)
 
-add_executable(MOVUT InstructionUT/MOVUT.cpp)
-target_link_libraries(MOVUT PRIVATE instr_lib)
+add_executable(MovUT InstructionUT/MovUT.cpp)
+target_link_libraries(MovUT PRIVATE instr_lib)
+
+add_executable(BranchUT InstructionUT/BranchUT.cpp)
+target_link_libraries(BranchUT PRIVATE instr_lib support)
 
 # Add Unit Tests
 add_test(NAME SLListUT COMMAND SLListUT)
@@ -40,5 +46,6 @@ add_test(NAME LoggerUT COMMAND LoggerUT)
 add_test(NAME FileIteratorUT COMMAND FileIteratorUT)
 add_test(NAME LineParserUT COMMAND LineParserUT)
 
-add_test(NAME ADDUT COMMAND ADDUT)
-add_test(NAME MOVUT COMMAND MOVUT)
+add_test(NAME AddUT COMMAND AddUT)
+add_test(NAME MovUT COMMAND MovUT)
+add_test(NAME BranchUT COMMAND BranchUT)
