@@ -36,6 +36,7 @@ void ADDInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
     }
     else
     {
+        // Set the destination to the sum of the sources
         uint32_t source2 = this->GetSource(rArguments.Get(2), rProcess);
         rProcess.GetProcessRegisters().genRegs[destination] = source1 + source2;
     }
