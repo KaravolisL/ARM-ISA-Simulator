@@ -28,6 +28,7 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("INCLUDE", Io::LineType::INCLUDE);
     m_keywordDict.Insert("ALIGN", Io::LineType::ALIGN);
     m_keywordDict.Insert("END", Io::LineType::END);
+    m_keywordDict.Insert("ENDP", Io::LineType::ENDP);
     m_keywordDict.Insert("AREA", Io::LineType::AREA);
     m_keywordDict.Insert("EXPORT", Io::LineType::EXPORT);
     m_keywordDict.Insert("ENTRY", Io::LineType::ENTRY);

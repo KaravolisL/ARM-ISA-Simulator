@@ -9,9 +9,10 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
     - uses: actions/checkout@v2
@@ -21,3 +22,8 @@ jobs:
       run: make
     - name: Unit Tests
       run: make test
+    - name: Upload test results
+      uses: actions/upload-artifact@v1
+      with:
+        name: Test Results
+        path: Testing/Temporary/LastTest.log

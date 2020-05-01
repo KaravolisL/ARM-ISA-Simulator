@@ -43,6 +43,7 @@ enum LineType
     ENTRY,
     ALIGN,
     END,
+    ENDP,
     DCB,
     INVALID
 };

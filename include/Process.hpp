@@ -81,8 +81,10 @@ public:
     /// METHOD NAME: Step
     ///
     /// @brief Executes the next instruction
+    ///
+    /// @return Whether program has reached the end
     ////////////////////////////////
-    void Step();
+    bool Step();
 
     ////////////////////////////////
     /// METHOD NAME: GetConstantsDictionary
