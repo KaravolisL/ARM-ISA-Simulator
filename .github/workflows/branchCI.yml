@@ -21,6 +21,7 @@ jobs:
     - name: test
       run: |
         ls -al
+        ls -al src
         ls -al tests
         ls -al tests/IntegrationTests
         python tests/IntegrationTests/simple_program_test.py
