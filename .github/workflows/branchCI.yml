@@ -19,7 +19,7 @@ jobs:
     - name: Build
       run: make
     - name: test
-      run: pwd
+      run: ls
     - name: Unit Tests
       run: make test
     - name: PWD
