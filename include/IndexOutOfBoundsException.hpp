@@ -1,5 +1,5 @@
 /////////////////////////////////
-/// IndexOutOfBoundsException.hpp
+/// @file IndexOutOfBoundsException.hpp
 ///
 /// @brief Exception used for list data
 /// structures when an index > length - 1

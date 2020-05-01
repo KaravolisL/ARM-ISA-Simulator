@@ -34,10 +34,20 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("EQU", Io::LineType::EQU);
     m_keywordDict.Insert("DCB", Io::LineType::DCB);
 
+    // TODO: Use InstructionRepository to populate this part
     // Instructions
     m_keywordDict.Insert("ADD", Io::LineType::INSTRUCTION);
     m_keywordDict.Insert("B", Io::LineType::INSTRUCTION);
     m_keywordDict.Insert("MOV", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("LDR", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("BIC", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("ORR", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("LSL", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("SUBS", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("STR", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("BEQ", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("CMP", Io::LineType::INSTRUCTION);
+    m_keywordDict.Insert("AND", Io::LineType::INSTRUCTION);
 }
 
 ////////////////////////////////
