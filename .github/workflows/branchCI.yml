@@ -18,6 +18,8 @@ jobs:
       run: cmake .
     - name: Build
       run: make
+    - name: test
+      run: pwd
     - name: Unit Tests
       run: make test
     - name: PWD
