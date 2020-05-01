@@ -8,6 +8,9 @@ CONSTANTS_FILE_NAME = "Constants.s"
 
 def find(name, path):
     for root, dirs, files in os.walk(path):
+        print('root = ' + root)
+        print('dirs = ' + dirs)
+        print('files = ' + files)
         if name in files:
             return os.path.join(root, name)
 
