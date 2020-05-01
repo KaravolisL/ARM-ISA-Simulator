@@ -23,9 +23,9 @@ jobs:
     - name: Unit Tests
       run: make test
     - name: PWD
-      run: pwd
+      run: ls -al
     - name: Upload test results
       uses: actions/upload-artifact@v1
       with:
         name: Test Results
-        path: LastTest.log
+        path: src/Testing/Temporary/LastTest.log
