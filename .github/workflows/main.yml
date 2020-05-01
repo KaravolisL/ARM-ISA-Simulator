@@ -21,3 +21,8 @@ jobs:
       run: make
     - name: Unit Tests
       run: make test
+    - name: Upload test results
+      uses: actions/upload-artifact@v1
+      with:
+        name: Test Results
+        path: Testing/Temporary/LastTest.log
