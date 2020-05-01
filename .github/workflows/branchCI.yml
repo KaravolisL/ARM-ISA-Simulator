@@ -18,6 +18,14 @@ jobs:
       run: cmake .
     - name: Build
       run: make
+  
+  test:
+
+    runs-on: ubuntu-latest
+
+    continue-on-error: true
+
+    steps:
     - name: Unit Tests
       run: make test
     - name: Upload test results
