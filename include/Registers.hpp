@@ -34,12 +34,34 @@ typedef struct Registers
     Register LR;
     Register PC;
     Register SP;
+    Register CPSR;
 
     Registers() :
         LR(0),
         PC(0),
-        SP(0)
+        SP(0),
+        CPSR(0)
     {}
+
+    /////////////////////////////////
+    /// METHOD NAME: GetNegativeFlag
+    /////////////////////////////////
+    bool GetNegativeFlag() { return (CPSR & ~(0x8000000)) != 0; }
+
+    /////////////////////////////////
+    /// METHOD NAME: GetZeroFlag
+    /////////////////////////////////
+    bool GetZeroFlag() { return (CPSR & ~(0x40000000)) != 0; }
+
+    /////////////////////////////////
+    /// METHOD NAME: GetCarryFlag
+    /////////////////////////////////
+    bool GetCarryFlag() { return (CPSR & ~(0x200000000)) != 0; }
+
+    /////////////////////////////////
+    /// METHOD NAME: GetOverflowFlag
+    /////////////////////////////////
+    bool GetOverflowFlag() { return (CPSR & ~(0x10000000)) != 0; }
 
 } Registers;
 
