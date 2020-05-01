@@ -40,7 +40,7 @@ struct LabelRedefinitionException : public std::exception
 
 private:
 
-    /// Line that caused the exception
+    /// Message to print when exception is thrown
     std::string m_message;
 };
 

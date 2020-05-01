@@ -14,8 +14,10 @@
 
 // C++ PROJECT INCLUDES
 #include "ADDInstruction.hpp" // Header for class
+#include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
+#include "FileIterator.hpp" // For Io::FileIterator
 
 ////////////////////////////////
 /// METHOD NAME: ADDInstruction::Execute 
@@ -66,8 +68,8 @@ uint32_t ADDInstruction::GetSource(const std::string& rSrcString, Process& rProc
             break;
         }
         default:
-            // TODO: "Compiler" exception
-            break;
+            throw InvalidSyntaxException(rProcess.GetFileIterator()->GetCurrentLine(),
+                                         rProcess.GetProcessRegisters().PC);
     }
     return source;
 }

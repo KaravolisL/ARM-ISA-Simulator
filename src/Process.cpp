@@ -24,6 +24,7 @@
 #include "LineTypes.hpp" // For Io::LineTypes enum
 #include "LabelRedefinitionException.hpp" // For LabelRedefinitionException
 #include "Logger.hpp" // For Logger class
+#include "NoMainException.hpp" // For NoMainException
 
 ////////////////////////////////
 /// METHOD NAME: Process::Initialize
@@ -102,7 +103,7 @@ void Process::PrepareForExecution(const char* filename)
     }
     catch(const DLB<uint32_t>::KeyNotFoundException& e)
     {
-        // TODO: Throw compiler error
+        throw NoMainException();
     }
 
     // Create the file iterator and send it to the line of the pc
