@@ -133,12 +133,13 @@ void LineParser::GetToken(int index, std::string& rToken)
     char* pToken = strtok(lineCopy, " ,");
 
     // Iterate through tokens
-    for (int i = 0; i < index; i++)
+    int i;
+    for (i = 0; i < index; i++)
     {
         pToken = strtok(NULL, " ,");
     }
 
-    if (pToken == NULL) throw IndexOutOfBoundsException();
+    if (pToken == NULL) throw IndexOutOfBoundsException(i);
 
     // Store string in given parameter
     rToken = std::string(pToken);

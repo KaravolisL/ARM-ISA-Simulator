@@ -127,7 +127,7 @@ public:
                 return pCurrentNode->data;
             }
         }
-        throw IndexOutOfBoundsException();
+        throw IndexOutOfBoundsException(index);
     }
 
     ////////////////////////////////
@@ -158,7 +158,7 @@ public:
     T Remove(int index)
     {
         // Bounds check
-        if (index > (length - 1)) throw IndexOutOfBoundsException();
+        if (index > (length - 1)) throw IndexOutOfBoundsException(index);
 
         Node* pOldNode;
         // Edge case of removing head

@@ -24,13 +24,35 @@
 ////////////////////////////////
 struct InvalidSyntaxException : public std::exception
 {
-    InvalidSyntaxException(std::string& rLine, int lineNumber) :
+    InvalidSyntaxException(const char* pMsg, const std::string& rLine, const int lineNumber) :
         m_message()
     {
-        m_message = std::string("Invalid syntax\nLine ");
+        m_message = std::string(pMsg);
+        m_message.append("\n");
         m_message.append(std::to_string(lineNumber));
         m_message.append(": ");
         m_message.append(rLine);
+    }
+
+    InvalidSyntaxException(const std::string& rLine, const int lineNumber) :
+        m_message()
+    {
+        InvalidSyntaxException("Invalid syntax", rLine, lineNumber);
+    }
+
+    InvalidSyntaxException(const char* pMsg, const std::string& info) :
+        m_message()
+    {
+        m_message = std::string(pMsg);
+        m_message.append("\n");
+        m_message.append(info);
+    }
+
+    InvalidSyntaxException(const char* pMsg) :
+        m_message()
+    {
+        m_message = std::string(pMsg);
+        m_message.append("\n");
     }
 
     const char* what() const throw()

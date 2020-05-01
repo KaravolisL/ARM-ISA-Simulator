@@ -24,8 +24,9 @@
 ////////////////////////////////
 void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
-    // TODO: Enable when InvalidArgumentsException is created
-    // if (rArguments.GetLength() > 2) throw InvalidArgumentsException()
+    if (rArguments.GetLength() > 2) throw InvalidSyntaxException("Invalid Arguments",
+                                                                 rProcess.GetFileIterator()->GetCurrentLine(),
+                                                                 rProcess.GetFileIterator()->GetLineNumber());
 
     // Get destination from arguments
     std::string destString = rArguments.Get(0);
