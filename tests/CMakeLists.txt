@@ -52,3 +52,6 @@ add_test(NAME LineParserUT COMMAND LineParserUT)
 add_test(NAME AddUT COMMAND AddUT)
 add_test(NAME MovUT COMMAND MovUT)
 add_test(NAME BranchUT COMMAND BranchUT)
+
+include(FindPythonInterp)
+add_test(NAME test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/test.py)
