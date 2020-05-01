@@ -14,6 +14,7 @@
 
 // C++ PROJECT INCLUDES
 #include "BInstruction.hpp" // Header for class
+#include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For FileIterator
@@ -23,8 +24,9 @@
 ////////////////////////////////
 void BInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
-    // TODO: Enable when InvalidArgumentsException is created
-    // if (rArguments.GetLength() > 2) throw InvalidArgumentsException()
+    if (rArguments.GetLength() > 2) throw InvalidSyntaxException("Invalid Arguments",
+                                                                 rProcess.GetFileIterator()->GetCurrentLine(),
+                                                                 rProcess.GetFileIterator()->GetLineNumber());
 
     // Get label from arguments
     std::string labelString = rArguments.Get(0);
@@ -35,8 +37,9 @@ void BInstruction::Execute(const SLList<std::string>& rArguments, Process& rProc
     }
     catch(const DLB<uint32_t>::KeyNotFoundException& e)
     {
-        // TODO: Enable when compiler exceptions are created
-        // throw LabelNotFoundException();
+        throw InvalidSyntaxException("Label Not Found",
+                                     rProcess.GetFileIterator()->GetCurrentLine(),
+                                     rProcess.GetFileIterator()->GetLineNumber());
     }
     
     // Set the new PC and "jump" to that location

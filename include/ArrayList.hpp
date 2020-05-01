@@ -62,7 +62,7 @@ public:
     ////////////////////////////////
     T Get(int index) const
     {
-        if (index >= m_length || index < 0) throw IndexOutOfBoundsException();
+        if (index >= m_length || index < 0) throw IndexOutOfBoundsException(index);
         
         return m_list[index];
     }
@@ -77,7 +77,7 @@ public:
     ////////////////////////////////
     T Replace(int index, T element)
     {
-        if (index >= m_length || index < 0) throw IndexOutOfBoundsException();
+        if (index >= m_length || index < 0) throw IndexOutOfBoundsException(index);
         
         T oldValue = m_list[index];
         m_list[index] = element;
@@ -93,7 +93,7 @@ public:
     ////////////////////////////////
     void Insert(int index, T element)
     {
-        if (index > m_length || index < 0) throw IndexOutOfBoundsException();
+        if (index > m_length || index < 0) throw IndexOutOfBoundsException(index);
 
         // If the array is filled, resize it
         if (this->GetSize() == m_length)
@@ -129,7 +129,7 @@ public:
     T Remove(int index)
     {
         // Bounds check
-        if (index > (m_length - 1)) throw IndexOutOfBoundsException();
+        if (index > (m_length - 1)) throw IndexOutOfBoundsException(index);
 
         T oldValue = m_list[index];
 

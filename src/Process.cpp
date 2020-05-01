@@ -22,6 +22,7 @@
 #include "InstructionRepository.hpp" // For InstructionRepository
 #include "LineParser.hpp" // For Io::LineParser
 #include "LineTypes.hpp" // For Io::LineTypes enum
+#include "AssemblingException.hpp" // For AssemblingException
 #include "Logger.hpp" // For Logger class
 
 ////////////////////////////////
@@ -69,7 +70,7 @@ void Process::Initialize(const char* filename)
                 // Check if the label was already defined
                 if (m_labelDictionary.Contains(label))
                 {
-                    // TODO: Throw labeled redefinition exception
+                    throw AssemblingException("Label Redefinition Error", lineParser.GetLine(), fileIterator.GetLineNumber());
                 }
 
                 m_labelDictionary.Insert(label, fileIterator.GetLineNumber());
@@ -101,7 +102,7 @@ void Process::PrepareForExecution(const char* filename)
     }
     catch(const DLB<uint32_t>::KeyNotFoundException& e)
     {
-        // TODO: Throw compiler error
+        throw AssemblingException("No __main label");
     }
 
     // Create the file iterator and send it to the line of the pc
@@ -114,7 +115,10 @@ void Process::PrepareForExecution(const char* filename)
 ////////////////////////////////
 void Process::Execute()
 {
-    
+    while (true)
+    {
+        this->Step();
+    }
 }
 
 ////////////////////////////////
@@ -140,6 +144,4 @@ void Process::Step()
     lineParser.GetArguments(arguments);
 
     pInstruction->Execute(arguments, *this);
-
-    LOG_DEBUG("%d, %d", m_processRegisters.genRegs[1], m_processRegisters.genRegs[2]);
 }

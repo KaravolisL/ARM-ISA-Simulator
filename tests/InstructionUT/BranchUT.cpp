@@ -16,6 +16,7 @@
 // C++ PROJECT INCLUDES
 #include "BInstruction.hpp"  // Test class
 #include "SLList.hpp"
+#include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
 
@@ -52,21 +53,19 @@ void BranchTest()
     assert(myProc.GetProcessRegisters().PC == 10);
     arguments.Clear();
 
-    // TODO: Enable test when LabelNotFoundException is created
     // B BadLabel
-    // arguments.InsertBack("BadLabel");
+    arguments.InsertBack("BadLabel");
 
-    // try
-    // {
-    //     branch.Execute(arguments, myProc);
-    //     assert(false);
-    // }
-    // catch (const LabelNotFoundException& e)
-    // {
-    //     std::cout << e.what();
-    // }
-
-    // arguments.Clear();
+    try
+    {
+        branch.Execute(arguments, myProc);
+        assert(false);
+    }
+    catch (const InvalidSyntaxException& e)
+    {
+        std::cout << e.what();
+    }
+    arguments.Clear();
 }
 
 ////////////////////////////////

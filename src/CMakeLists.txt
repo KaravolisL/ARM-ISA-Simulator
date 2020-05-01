@@ -9,6 +9,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include/Io")
 include_directories("${PROJECT_SOURCE_DIR}/include/Debug")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
+include_directories("${PROJECT_SOURCE_DIR}/include/Exceptions")
 
 # Set source files
 set(SOURCES

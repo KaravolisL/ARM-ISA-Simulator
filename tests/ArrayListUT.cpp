@@ -54,7 +54,7 @@ void AppendAndGetTest()
     }
     catch(const IndexOutOfBoundsException& e)
     {
-        std::cerr << e.what() << '\n';
+        // std::cerr << e.what() << '\n';
     }
 }
 

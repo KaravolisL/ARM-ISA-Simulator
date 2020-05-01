@@ -14,16 +14,19 @@
 
 // C++ PROJECT INCLUDES
 #include "MOVInstruction.hpp" // Header for class
+#include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
+#include "FileIterator.hpp" // For Io::FileIterator
 
 ////////////////////////////////
 /// METHOD NAME: MOVInstruction::Execute 
 ////////////////////////////////
 void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
-    // TODO: Enable when InvalidArgumentsException is created
-    // if (rArguments.GetLength() > 2) throw InvalidArgumentsException()
+    if (rArguments.GetLength() > 2) throw InvalidSyntaxException("Invalid Arguments",
+                                                                 rProcess.GetFileIterator()->GetCurrentLine(),
+                                                                 rProcess.GetFileIterator()->GetLineNumber());
 
     // Get destination from arguments
     std::string destString = rArguments.Get(0);
@@ -46,7 +49,8 @@ void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
             break;
         }
         default:
-            // TODO: "Compiler" exception
+            throw InvalidSyntaxException(rProcess.GetFileIterator()->GetCurrentLine(),
+                                         rProcess.GetProcessRegisters().PC);
             break;
     }
 

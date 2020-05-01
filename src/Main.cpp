@@ -43,10 +43,7 @@ int main(int argc, char* argv[])
     // Prepare the process for execution
     pProcess->PrepareForExecution(argv[1]);
 
-    for (int i = 0; i < 200; i++)
-    {
-        pProcess->Step();
-    }
+    pProcess->Execute();
     
     return 0;
 }

@@ -15,6 +15,7 @@
 // C++ PROJECT INCLUDES
 #include "Assert.hpp" // For ASSERT
 #include "InstructionRepository.hpp" // Header for class
+#include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "MOVInstruction.hpp" // For MOV
 #include "ADDInstruction.hpp" // For ADD
 #include "BInstruction.hpp" // For B
@@ -48,7 +49,7 @@ InstructionIface* InstructionRepository::GetInstruction(const std::string& rInst
     }
     catch(const DLB<InstructionIface*>::KeyNotFoundException& e)
     {
-        // TODO: Instruction not supported error
+        throw InvalidSyntaxException("Instruction not supported", rInstruction);
     }
 
     ASSERT(pInstructionIface != nullptr);
