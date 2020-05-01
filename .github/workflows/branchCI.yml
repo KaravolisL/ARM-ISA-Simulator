@@ -18,17 +18,8 @@ jobs:
       run: cmake .
     - name: Build
       run: make
-    - name: test
-      run: |
-        ls -al
-        ls -al src
-        ls -al tests
-        ls -al tests/IntegrationTests
-        python tests/IntegrationTests/simple_program_test.py
     - name: Unit Tests
       run: make test
-    - name: PWD
-      run: ls -al
     - name: Upload test results
       uses: actions/upload-artifact@v1
       with:

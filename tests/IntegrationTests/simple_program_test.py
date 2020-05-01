@@ -3,10 +3,12 @@ import sys
 import subprocess
 
 PROJECT_ROOT = r"../.."
+
 if (sys.platform == 'win32'):
     EXECUTABLE_NAME = "ARM-ISA-SIMULATOR.exe"
 else:
     EXECUTABLE_NAME = "ARM-ISA-SIMULATOR"
+
 TEST_PROGRAM_NAME = "SampleProgram.s"
 CONSTANTS_FILE_NAME = "Constants.s"
 
