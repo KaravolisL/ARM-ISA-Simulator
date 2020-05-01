@@ -1,16 +1,17 @@
 import os
+import sys
 import subprocess
 
 PROJECT_ROOT = r"../.."
-EXECUTABLE_NAME = "ARM-ISA-SIMULATOR.exe"
+if (sys.platform == 'win32'):
+    EXECUTABLE_NAME = "ARM-ISA-SIMULATOR.exe"
+else:
+    EXECUTABLE_NAME = "ARM-ISA-SIMULATOR"
 TEST_PROGRAM_NAME = "SampleProgram.s"
 CONSTANTS_FILE_NAME = "Constants.s"
 
 def find(name, path):
     for root, dirs, files in os.walk(path):
-        print('root = ' + root)
-        print('dirs = ' + dirs)
-        print('files = ' + files)
         if name in files:
             return os.path.join(root, name)
 
