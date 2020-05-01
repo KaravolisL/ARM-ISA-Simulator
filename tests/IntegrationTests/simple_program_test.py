@@ -60,7 +60,10 @@ if __name__ == '__main__':
     file.close()
 
     # Execute simulator
-    program = subprocess.run(["./" + EXECUTABLE_NAME, TEST_PROGRAM_NAME])
+    if (sys.platform == 'win32'):
+        program = subprocess.run(["./" + EXECUTABLE_NAME, TEST_PROGRAM_NAME])
+    else:
+        program = subprocess.call([EXECUTABLE_NAME, TEST_PROGRAM_NAME])
 
     assert(program.returncode == 0), "Program did not execute successfully"
 
