@@ -116,6 +116,9 @@ void Process::PrepareForExecution(const char* filename)
 void Process::Execute()
 {
     while (this->Step()) {}
+    {
+        this->Step();
+    }
 }
 
 ////////////////////////////////
@@ -142,6 +145,5 @@ bool Process::Step()
     lineParser.GetArguments(arguments);
 
     pInstruction->Execute(arguments, *this);
-
     return true;
 }
