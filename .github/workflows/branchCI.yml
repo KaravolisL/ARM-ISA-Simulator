@@ -19,7 +19,11 @@ jobs:
     - name: Build
       run: make
     - name: test
-      run: ls
+      run: |
+        ls -al
+        ls -al tests
+        ls -al tests/IntegrationTests
+        python tests/IntegrationTests/simple_program_test.py
     - name: Unit Tests
       run: make test
     - name: PWD
