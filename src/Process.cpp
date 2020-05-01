@@ -22,9 +22,8 @@
 #include "InstructionRepository.hpp" // For InstructionRepository
 #include "LineParser.hpp" // For Io::LineParser
 #include "LineTypes.hpp" // For Io::LineTypes enum
-#include "LabelRedefinitionException.hpp" // For LabelRedefinitionException
+#include "AssemblingException.hpp" // For AssemblingException
 #include "Logger.hpp" // For Logger class
-#include "NoMainException.hpp" // For NoMainException
 
 ////////////////////////////////
 /// METHOD NAME: Process::Initialize
@@ -71,7 +70,7 @@ void Process::Initialize(const char* filename)
                 // Check if the label was already defined
                 if (m_labelDictionary.Contains(label))
                 {
-                    throw LabelRedefinitionException(lineParser.GetLine(), fileIterator.GetLineNumber());
+                    throw AssemblingException("Label Redefinition Error", lineParser.GetLine(), fileIterator.GetLineNumber());
                 }
 
                 m_labelDictionary.Insert(label, fileIterator.GetLineNumber());
@@ -103,7 +102,7 @@ void Process::PrepareForExecution(const char* filename)
     }
     catch(const DLB<uint32_t>::KeyNotFoundException& e)
     {
-        throw NoMainException();
+        throw AssemblingException("No __main label");
     }
 
     // Create the file iterator and send it to the line of the pc

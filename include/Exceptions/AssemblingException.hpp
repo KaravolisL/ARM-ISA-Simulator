@@ -1,5 +1,5 @@
 /////////////////////////////////
-/// @file LabelRedefinitionException.hpp
+/// @file AssemblingException.hpp
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -17,20 +17,26 @@
 // (None)
 
 ////////////////////////////////
-/// @struct LabelRedefinitionException
+/// @struct AssemblingException
 ///
-/// @brief Exception used when a label has
-/// already been defined in a program
+/// @brief Exception used prior to program
+/// execution
 ////////////////////////////////
-struct LabelRedefinitionException : public std::exception
+struct AssemblingException : public std::exception
 {
-    LabelRedefinitionException(std::string& rLine, int lineNumber) :
+    AssemblingException(const char* pMsg, const std::string& rLine, const int lineNumber) :
         m_message()
     {
-        m_message = std::string("Label already defined\nLine ");
-        m_message.append(std::to_string(lineNumber));
+        m_message = std::string(pMsg);
+        m_message.append("\n Line " + std::to_string(lineNumber));
         m_message.append(": ");
         m_message.append(rLine);
+    }
+
+    AssemblingException(const char* pMsg) :
+        m_message()
+    {
+        m_message = std::string(pMsg);
     }
 
     const char* what() const throw()
