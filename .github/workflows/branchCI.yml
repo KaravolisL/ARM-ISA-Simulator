@@ -28,4 +28,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Test Results
-        path: src/Testing/Temporary/LastTest.log
+        path: Testing/Temporary/LastTest.log
