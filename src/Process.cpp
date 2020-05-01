@@ -115,21 +115,19 @@ void Process::PrepareForExecution(const char* filename)
 ////////////////////////////////
 void Process::Execute()
 {
-    while (true)
-    {
-        this->Step();
-    }
+    while (this->Step()) {}
 }
 
 ////////////////////////////////
 /// METHOD NAME: Process::Step
 ////////////////////////////////
-void Process::Step()
+bool Process::Step()
 {
     // Move to the next instruction
     Io::LineParser lineParser(m_pFileIterator->Next());
     while (lineParser.GetLineType() != Io::LineType::INSTRUCTION)
     {
+        if (lineParser.GetLineType() == Io::LineType::ENDP) return false;
         lineParser.SetLine(m_pFileIterator->Next());
     }
 
@@ -144,4 +142,6 @@ void Process::Step()
     lineParser.GetArguments(arguments);
 
     pInstruction->Execute(arguments, *this);
+
+    return true;
 }

@@ -54,4 +54,4 @@ add_test(NAME MovUT COMMAND MovUT)
 add_test(NAME BranchUT COMMAND BranchUT)
 
 include(FindPythonInterp)
-add_test(NAME test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/test.py)
+add_test(NAME simple_program_test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/simple_program_test.py)
