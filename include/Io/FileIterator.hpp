@@ -19,7 +19,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-// (None)
+#include "AssemblingException.hpp" // For AssemblingException
 
 // FORWARD DECLARATIONS
 // (None)
@@ -41,7 +41,9 @@ public:
         m_fileStream(std::ifstream(fileName, std::ifstream::in)),
         m_currentLine(""),
         m_lineNumber(0)
-    {} 
+    {
+        if (!m_fileStream.is_open()) { throw AssemblingException("File not found", fileName, 0); }
+    } 
 
     ////////////////////////////////
     /// METHOD NAME: Next
