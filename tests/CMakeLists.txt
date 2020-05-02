@@ -37,6 +37,9 @@ target_link_libraries(MovUT PRIVATE instr_lib)
 add_executable(BranchUT InstructionUT/BranchUT.cpp)
 target_link_libraries(BranchUT PRIVATE instr_lib support)
 
+add_executable(CmpUT InstructionUT/CmpUT.cpp)
+target_link_libraries(CmpUT PRIVATE instr_lib)
+
 # Add Unit Tests
 add_test(NAME SLListUT COMMAND SLListUT)
 add_test(NAME ArrayListUT COMMAND ArrayListUT)
@@ -52,6 +55,7 @@ add_test(NAME LineParserUT COMMAND LineParserUT)
 add_test(NAME AddUT COMMAND AddUT)
 add_test(NAME MovUT COMMAND MovUT)
 add_test(NAME BranchUT COMMAND BranchUT)
+add_test(NAME CmpUT COMMAND CmpUT)
 
 include(FindPythonInterp)
 add_test(NAME simple_program_test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/simple_program_test.py)

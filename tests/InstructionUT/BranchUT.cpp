@@ -36,7 +36,11 @@ void setup()
 
     myProc.GetLabelDictionary().Insert("MyLabel", 10);
 
-    Io::FileIterator* pFileIterator = new Io::FileIterator("Test File");
+    std::ofstream myOStream("TestFile.txt", std::ofstream::out);
+    myOStream << "Test Line";
+    myOStream.close();
+
+    Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
 }
 

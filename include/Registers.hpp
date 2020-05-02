@@ -46,22 +46,62 @@ typedef struct Registers
     /////////////////////////////////
     /// METHOD NAME: GetNegativeFlag
     /////////////////////////////////
-    bool GetNegativeFlag() { return (CPSR & ~(0x8000000)) != 0; }
+    bool GetNegativeFlag() { return (CPSR & 0x80000000) != 0; }
+
+    /////////////////////////////////
+    /// METHOD NAME: SetNegativeFlag
+    /////////////////////////////////
+    void SetNegativeFlag() { CPSR |= 0x80000000; }
+
+    /////////////////////////////////
+    /// METHOD NAME: ClearNegativeFlag
+    /////////////////////////////////
+    void ClearNegativeFlag() { CPSR &= ~(0x80000000); }
 
     /////////////////////////////////
     /// METHOD NAME: GetZeroFlag
     /////////////////////////////////
-    bool GetZeroFlag() { return (CPSR & ~(0x40000000)) != 0; }
+    bool GetZeroFlag() { return (CPSR & 0x40000000) != 0; }
+
+    /////////////////////////////////
+    /// METHOD NAME: SetZeroFlag
+    /////////////////////////////////
+    void SetZeroFlag() { CPSR |= 0x40000000; }
+
+    /////////////////////////////////
+    /// METHOD NAME: ClearZeroFlag
+    /////////////////////////////////
+    void ClearZeroFlag() { CPSR &= ~(0x40000000); }
 
     /////////////////////////////////
     /// METHOD NAME: GetCarryFlag
     /////////////////////////////////
-    bool GetCarryFlag() { return (CPSR & ~(0x200000000)) != 0; }
+    bool GetCarryFlag() { return (CPSR & 0x20000000) != 0; }
+
+    /////////////////////////////////
+    /// METHOD NAME: SetCarryFlag
+    /////////////////////////////////
+    void SetCarryFlag() { CPSR |= 0x20000000; }
+
+    /////////////////////////////////
+    /// METHOD NAME: ClearCarryFlag
+    /////////////////////////////////
+    void ClearCarryFlag() { CPSR &= ~(0x20000000); }
 
     /////////////////////////////////
     /// METHOD NAME: GetOverflowFlag
     /////////////////////////////////
-    bool GetOverflowFlag() { return (CPSR & ~(0x10000000)) != 0; }
+    bool GetOverflowFlag() { return (CPSR & 0x10000000) != 0; }
+
+    /////////////////////////////////
+    /// METHOD NAME: SetOverflowFlag
+    /////////////////////////////////
+    void SetOverflowFlag() { CPSR |= 0x10000000; }
+
+    /////////////////////////////////
+    /// METHOD NAME: ClearOverflowFlag
+    /////////////////////////////////
+    void ClearOverflowFlag() { CPSR &= ~(0x10000000); }
 
 } Registers;
 
