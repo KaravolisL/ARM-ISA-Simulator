@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file AddUT.cpp
+/// @file EorUT.cpp
 ///
-/// @brief Unit Test for ADDInstruction
+/// @brief Unit Test for EORInstruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,14 +14,14 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "ADDInstruction.hpp"  // Test class
+#include "EORInstruction.hpp"  // Test class
 #include "SLList.hpp"
 #include "Process.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-ADDInstruction add = ADDInstruction();
+EORInstruction eor = EORInstruction();
 Process myProc = Process();
 SLList<std::string> arguments = SLList<std::string>();
 
@@ -37,52 +37,52 @@ void setup()
 }
 
 ////////////////////////////////
-/// AddRegsTest Function
+/// EorRegsTest Function
 ////////////////////////////////
-void AddRegsTest()
+void EorRegsTest()
 {
-    // ADD R0, R1, R2
+    // ORR R0, R1, R2
     arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-    arguments.InsertBack("R2");
+    arguments.InsertBack("R5");
+    arguments.InsertBack("R7");
 
-    add.Execute(arguments, myProc);
+    eor.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 3);
+    assert(myProc.GetProcessRegisters().genRegs[0] == 2);
     arguments.Clear();
 
-    // ADD R0, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
+    // ORR R0, R1
+    arguments.InsertBack("R8");
+    arguments.InsertBack("R9");
 
-    add.Execute(arguments, myProc);
+    eor.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 4);
+    assert(myProc.GetProcessRegisters().genRegs[8] == 1);
     arguments.Clear();
 }
 
 ////////////////////////////////
-/// AddLiterals Function
+/// EorLiterals Function
 ////////////////////////////////
-void AddLiterals()
+void EorLiterals()
 {
     // ADD R0, R1, #0xA
     arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0xA");
+    arguments.InsertBack("R5");
+    arguments.InsertBack("#0xF");
 
-    add.Execute(arguments, myProc);
+    eor.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 11);
+    assert(myProc.GetProcessRegisters().genRegs[0] == 10);
     arguments.Clear();
 
     // ADD R0, #x11
     arguments.InsertBack("R1");
-    arguments.InsertBack("#0x11");
+    arguments.InsertBack("#0x13");
 
-    add.Execute(arguments, myProc);
+    eor.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[1] == 18);
+    assert(myProc.GetProcessRegisters().genRegs[1] == 0x12);
     arguments.Clear();
 }
 
@@ -101,11 +101,11 @@ int main(int argc, char* argv[])
 {
     setup();
 
-    AddRegsTest();
-    AddLiterals();
+    EorRegsTest();
+    EorLiterals();
 
     teardown();
 
-    std::cout << "ADDInstruction Unit Test Complete: SUCCESS";
+    std::cout << "ORRInstruction Unit Test Complete: SUCCESS";
     return 0;
 }

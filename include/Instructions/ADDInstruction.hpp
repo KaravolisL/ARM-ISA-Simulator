@@ -15,7 +15,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "InstructionIface.hpp" // For InstructionIface
+#include "InstructionBase.hpp" // For InstructionBase
 
 // FORWARD DECLARATIONS
 // (None)
@@ -25,7 +25,7 @@
 ///
 /// @brief Class to represent ADD instruction
 ////////////////////////////////
-class ADDInstruction : public InstructionIface
+class ADDInstruction : public InstructionBase
 {
 public:
 
@@ -51,17 +51,6 @@ public:
 protected:
 
 private:
-
-    ////////////////////////////////
-    /// METHOD NAME: GetSource
-    ///
-    /// @brief Parses an argument
-    ///
-    /// @param[in] rSrcString   Argument to be parsed
-    /// @param[in,out] rProcess Process that this instruction is apart of
-    /// @return Argument as a representative integer
-    ////////////////////////////////
-    uint32_t GetSource(const std::string& rSrcString, Process& rProcess);
 
 };
 

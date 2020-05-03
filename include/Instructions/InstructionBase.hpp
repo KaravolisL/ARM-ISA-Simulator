@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file InstructionIface.hpp
+/// @file InstructionBase.hpp
 ///
-/// @brief Declaration of interface class
+/// @brief Declaration of InstructionBase class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef INSTRUCTION_IFACE_HPP
-#define INSTRUCTION_IFACE_HPP
+#ifndef INSTRUCTION_BASE_HPP
+#define INSTRUCTION_BASE_HPP
 
 // SYSTEM INCLUDES
 #include <string>
@@ -24,19 +24,19 @@ class SLList;
 class Process;
 
 ////////////////////////////////
-/// @class InstructionIface
+/// @class InstructionBase
 ///
-/// @brief Fully virtual class used by 
+/// @brief Base class used by 
 /// specific instruction classes
 ////////////////////////////////
-class InstructionIface
+class InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Deconstructor
     ////////////////////////////////
-    virtual ~InstructionIface() {}
+    virtual ~InstructionBase() {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
@@ -48,8 +48,19 @@ public:
 
 protected:
 
-private:
+    ////////////////////////////////
+    /// METHOD NAME: ParseArgument
+    ///
+    /// @brief Interprets a given string as an integer
+    /// This could be either a # followed by a literal,
+    /// a register, or a = follow by a constant.
+    ///
+    /// @param[in] rArguments   Argument to be parsed into integer
+    /// @param[in,out] rProcess Process that this instruction is apart of
+    ////////////////////////////////
+    uint32_t ParseArgument(const std::string& rArgument, Process& rProcess);
 
+private:
 
 };
 

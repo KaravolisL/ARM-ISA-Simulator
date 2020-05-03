@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file ADDInstruction.cpp
+/// @file BICInstruction.cpp
 ///
-/// @brief Implementation for ADDInstruction
+/// @brief Implementation for BICInstruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -13,15 +13,15 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "ADDInstruction.hpp" // Header for class
+#include "BICInstruction.hpp" // Header for class
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For Io::FileIterator
 
 ////////////////////////////////
-/// METHOD NAME: ADDInstruction::Execute 
+/// METHOD NAME: BICInstruction::Execute 
 ////////////////////////////////
-void ADDInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
+void BICInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
     // Get destination from arguments
     std::string destString = rArguments.Get(0);
@@ -32,13 +32,13 @@ void ADDInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
 
     if (rArguments.GetLength() == 2)
     {
-        // Add source to destination
-        rProcess.GetProcessRegisters().genRegs[destination] += source1;
+        // And the source with the destination
+        rProcess.GetProcessRegisters().genRegs[destination] &= ~(source1);
     }
     else
     {
-        // Set the destination to the sum of the sources
+        // And the sources and overwrite the destination
         uint32_t source2 = this->ParseArgument(rArguments.Get(2), rProcess);
-        rProcess.GetProcessRegisters().genRegs[destination] = source1 + source2;
+        rProcess.GetProcessRegisters().genRegs[destination] = source1 & ~(source2);
     }
 }

@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file CMPInstruction.hpp
+/// @file ANDInstruction.hpp
 ///
-/// @brief Declaration of CMPInstruction class
+/// @brief Declaration of ANDInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef CMP_INSTRUCTION_HPP
-#define CMP_INSTRUCTION_HPP
+#ifndef AND_INSTRUCTION_HPP
+#define AND_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 #include <string>
@@ -21,24 +21,24 @@
 // (None)
 
 ////////////////////////////////
-/// @class CMPInstruction
+/// @class ANDInstruction
 ///
-/// @brief Class to represent CMP instruction
+/// @brief Class to represent AND instruction
 ////////////////////////////////
-class CMPInstruction : public InstructionBase
+class ANDInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    CMPInstruction() {}
+    ANDInstruction() {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Subtracts the given arguments
-    /// and sets the flags accordingly
+    /// @brief Logical ands the arguments
+    /// and places it in the first argument
     ///
     /// @param[in] rArguments   List of arguments to be used by the instruction
     /// @param[in,out] rProcess Process that this instruction is apart of
@@ -48,7 +48,6 @@ public:
 protected:
 
 private:
-
 
 };
 

@@ -40,19 +40,19 @@ void InstructionRepository::Initialize()
 ////////////////////////////////
 /// METHOD NAME: InstructionRepository::GetInstruction 
 ////////////////////////////////
-InstructionIface* InstructionRepository::GetInstruction(const std::string& rInstruction)
+InstructionBase* InstructionRepository::GetInstruction(const std::string& rInstruction)
 {
-    InstructionIface* pInstructionIface;
+    InstructionBase* pInstructionBase;
     try
     {
-        pInstructionIface = m_instructionDict.Get(rInstruction);
+        pInstructionBase = m_instructionDict.Get(rInstruction);
     }
-    catch(const DLB<InstructionIface*>::KeyNotFoundException& e)
+    catch(const DLB<InstructionBase*>::KeyNotFoundException& e)
     {
         throw InvalidSyntaxException("Instruction not supported", rInstruction);
     }
 
-    ASSERT(pInstructionIface != nullptr);
+    ASSERT(pInstructionBase != nullptr);
     
-    return pInstructionIface;
+    return pInstructionBase;
 }

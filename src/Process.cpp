@@ -18,7 +18,7 @@
 // C++ PROJECT INCLUDES
 #include "Process.hpp"  // Header for class
 #include "FileIterator.hpp" // For Io::FileIterator
-#include "InstructionIface.hpp" // For InstructionIface
+#include "InstructionBase.hpp" // For InstructionBase
 #include "InstructionRepository.hpp" // For InstructionRepository
 #include "LineParser.hpp" // For Io::LineParser
 #include "LineTypes.hpp" // For Io::LineTypes enum
@@ -136,7 +136,7 @@ bool Process::Step()
     std::string instruction;
     lineParser.GetInstruction(instruction);
 
-    InstructionIface* pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction);
+    InstructionBase* pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction);
 
     SLList<std::string> arguments;
     lineParser.GetArguments(arguments);

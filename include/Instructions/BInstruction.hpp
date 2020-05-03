@@ -15,7 +15,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "InstructionIface.hpp" // For InstructionIface
+#include "InstructionBase.hpp" // For InstructionBase
 
 // FORWARD DECLARATIONS
 // (None)
@@ -25,7 +25,7 @@
 ///
 /// @brief Class to represent B instruction
 ////////////////////////////////
-class BInstruction : public InstructionIface
+class BInstruction : public InstructionBase
 {
 public:
 

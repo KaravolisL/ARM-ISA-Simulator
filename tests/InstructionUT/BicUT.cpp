@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file AddUT.cpp
+/// @file BicUT.cpp
 ///
-/// @brief Unit Test for ADDInstruction
+/// @brief Unit Test for BICInstruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,14 +14,14 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "ADDInstruction.hpp"  // Test class
+#include "BICInstruction.hpp"  // Test class
 #include "SLList.hpp"
 #include "Process.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-ADDInstruction add = ADDInstruction();
+BICInstruction bic = BICInstruction();
 Process myProc = Process();
 SLList<std::string> arguments = SLList<std::string>();
 
@@ -37,52 +37,52 @@ void setup()
 }
 
 ////////////////////////////////
-/// AddRegsTest Function
+/// BicRegsTest Function
 ////////////////////////////////
-void AddRegsTest()
+void BicRegsTest()
 {
-    // ADD R0, R1, R2
+    // ORR R0, R5, R1
     arguments.InsertBack("R0");
+    arguments.InsertBack("R5");
     arguments.InsertBack("R1");
-    arguments.InsertBack("R2");
 
-    add.Execute(arguments, myProc);
+    bic.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 3);
+    assert(myProc.GetProcessRegisters().genRegs[0] == 0b0100);
     arguments.Clear();
 
-    // ADD R0, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
+    // ORR R7, R9
+    arguments.InsertBack("R7"); // 0b0111
+    arguments.InsertBack("R9"); // 0b1001
 
-    add.Execute(arguments, myProc);
+    bic.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 4);
+    assert(myProc.GetProcessRegisters().genRegs[7] == 0b0110);
     arguments.Clear();
 }
 
 ////////////////////////////////
-/// AddLiterals Function
+/// BicLiterals Function
 ////////////////////////////////
-void AddLiterals()
+void BicLiterals()
 {
-    // ADD R0, R1, #0xA
+    // ADD R0, R5, #0xA
     arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0xA");
+    arguments.InsertBack("R5"); // 0b0101
+    arguments.InsertBack("#0xB"); // 0b1011
 
-    add.Execute(arguments, myProc);
+    bic.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 11);
+    assert(myProc.GetProcessRegisters().genRegs[0] == 0b0100);
     arguments.Clear();
 
-    // ADD R0, #x11
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0x11");
+    // ADD R10, #xF
+    arguments.InsertBack("R10");
+    arguments.InsertBack("#0xF");
 
-    add.Execute(arguments, myProc);
+    bic.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[1] == 18);
+    assert(myProc.GetProcessRegisters().genRegs[10] == 0x0);
     arguments.Clear();
 }
 
@@ -101,11 +101,11 @@ int main(int argc, char* argv[])
 {
     setup();
 
-    AddRegsTest();
-    AddLiterals();
+    BicRegsTest();
+    BicLiterals();
 
     teardown();
 
-    std::cout << "ADDInstruction Unit Test Complete: SUCCESS";
+    std::cout << "BICInstruction Unit Test Complete: SUCCESS";
     return 0;
 }

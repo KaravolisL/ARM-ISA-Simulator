@@ -33,26 +33,7 @@ void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
     Register destination = atoi(destString.substr(1).c_str());
 
     // Get source from arguments
-    std::string srcString = rArguments.Get(1);
-    uint32_t source;
-    switch (srcString[0])
-    {
-        case '#':
-            source = static_cast<uint32_t>(std::stoul(srcString.substr(1).c_str(), nullptr, 0));
-            break;
-        case 'r':
-        case 'R':
-        {
-            // Get the value in the register
-            int sourceReg = atoi(srcString.substr(1).c_str());
-            source = rProcess.GetProcessRegisters().genRegs[sourceReg];
-            break;
-        }
-        default:
-            throw InvalidSyntaxException(rProcess.GetFileIterator()->GetCurrentLine(),
-                                         rProcess.GetProcessRegisters().PC);
-            break;
-    }
+    uint32_t source = ParseArgument(rArguments.Get(1), rProcess);
 
     // Perform the move
     rProcess.GetProcessRegisters().genRegs[destination] = source;
