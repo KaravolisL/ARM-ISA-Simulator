@@ -12,6 +12,7 @@ set(SOURCES
     InstructionBase.cpp
     InstructionRepository.cpp
     MOVInstruction.cpp
+    ORRInstruction.cpp
 )
 
 # Make libraries
