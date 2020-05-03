@@ -9,6 +9,7 @@ set(SOURCES
     ANDInstruction.cpp
     BInstruction.cpp
     CMPInstruction.cpp
+    EORInstruction.cpp
     InstructionBase.cpp
     InstructionRepository.cpp
     MOVInstruction.cpp
