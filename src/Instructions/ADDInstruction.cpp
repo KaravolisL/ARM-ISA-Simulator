@@ -14,7 +14,6 @@
 
 // C++ PROJECT INCLUDES
 #include "ADDInstruction.hpp" // Header for class
-#include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For Io::FileIterator

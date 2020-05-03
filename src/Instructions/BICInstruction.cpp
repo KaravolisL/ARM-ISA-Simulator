@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file EORInstruction.cpp
+/// @file BICInstruction.cpp
 ///
-/// @brief Implementation for EORInstruction
+/// @brief Implementation for BICInstruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -13,15 +13,15 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "EORInstruction.hpp" // Header for class
+#include "BICInstruction.hpp" // Header for class
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For Io::FileIterator
 
 ////////////////////////////////
-/// METHOD NAME: EORInstruction::Execute 
+/// METHOD NAME: BICInstruction::Execute 
 ////////////////////////////////
-void EORInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
+void BICInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
     // Get destination from arguments
     std::string destString = rArguments.Get(0);
@@ -33,12 +33,12 @@ void EORInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
     if (rArguments.GetLength() == 2)
     {
         // And the source with the destination
-        rProcess.GetProcessRegisters().genRegs[destination] ^= source1;
+        rProcess.GetProcessRegisters().genRegs[destination] &= ~(source1);
     }
     else
     {
         // And the sources and overwrite the destination
         uint32_t source2 = this->ParseArgument(rArguments.Get(2), rProcess);
-        rProcess.GetProcessRegisters().genRegs[destination] = source1 ^ source2;
+        rProcess.GetProcessRegisters().genRegs[destination] = source1 & ~(source2);
     }
 }
