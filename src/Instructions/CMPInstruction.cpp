@@ -32,29 +32,11 @@ void CMPInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
 
     // Get first register from arguments
     std::string arg1Str = rArguments.Get(0);
-    int32_t arg1 = rProcRegs.genRegs[atoi(arg1Str.substr(1).c_str())];
+    int32_t arg1 = static_cast<int32_t>(ParseArgument(arg1Str, rProcess));
 
     // Second argument can be register or literal
     std::string arg2Str = rArguments.Get(1);
-    int32_t arg2;
-    switch (arg2Str[0])
-    {
-        case '#':
-            arg2 = static_cast<uint32_t>(std::stoul(arg2Str.substr(1).c_str(), nullptr, 0));
-            break;
-        case 'r':
-        case 'R':
-        {
-            // Get the value in the register
-            int sourceReg = atoi(arg2Str.substr(1).c_str());
-            arg2 = rProcRegs.genRegs[sourceReg];
-            break;
-        }
-        default:
-            throw InvalidSyntaxException(rProcess.GetFileIterator()->GetCurrentLine(),
-                                         rProcRegs.PC);
-            break;
-    }
+    int32_t arg2 = static_cast<int32_t>(ParseArgument(arg2Str, rProcess));
 
     int32_t signedResult = arg1 - arg2;
     uint32_t unsignedResult = static_cast<uint32_t>(arg1) - static_cast<uint32_t>(arg2);
@@ -85,5 +67,4 @@ void CMPInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
     {
         rProcRegs.SetCarryFlag();
     }
-    
 }

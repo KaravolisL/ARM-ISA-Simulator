@@ -18,7 +18,7 @@
 #include "DLB.hpp" // For DLB
 
 // FORWARD DECLARATIONS
-class InstructionIface;
+class InstructionBase;
 
 ////////////////////////////////
 /// @class InstructionRepository
@@ -56,14 +56,14 @@ public:
     /// @param[in] rInstruction     Type of instruction to retrieve
     /// @return Instance of matching instruction
     ////////////////////////////////
-    InstructionIface* GetInstruction(const std::string& rInstruction); 
+    InstructionBase* GetInstruction(const std::string& rInstruction); 
 
 protected:
 
 private:
 
     /// DLB containing pairs of instruction keyword : instances of instruction class
-    DLB<InstructionIface*> m_instructionDict;
+    DLB<InstructionBase*> m_instructionDict;
 
     ////////////////////////////////
     /// Constructor
@@ -71,7 +71,7 @@ private:
     /// @note Private to ensure singleton
     ////////////////////////////////
     InstructionRepository() :
-        m_instructionDict(DLB<InstructionIface*>())
+        m_instructionDict(DLB<InstructionBase*>())
     {}
 
     ////////////////////////////////

@@ -6,8 +6,10 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 # Set source files
 set(SOURCES
     ADDInstruction.cpp
+    ANDInstruction.cpp
     BInstruction.cpp
     CMPInstruction.cpp
+    InstructionBase.cpp
     InstructionRepository.cpp
     MOVInstruction.cpp
 )

@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file AddUT.cpp
+/// @file AndUT.cpp
 ///
-/// @brief Unit Test for ADDInstruction
+/// @brief Unit Test for ANDInstruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,14 +14,14 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "ADDInstruction.hpp"  // Test class
+#include "ANDInstruction.hpp"  // Test class
 #include "SLList.hpp"
 #include "Process.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-ADDInstruction add = ADDInstruction();
+ANDInstruction and_instruction = ANDInstruction();
 Process myProc = Process();
 SLList<std::string> arguments = SLList<std::string>();
 
@@ -34,57 +34,45 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-
-    myProc.GetConstantsDictionary().Insert("MY_CONSTANT", 10);
 }
 
 ////////////////////////////////
-/// AddRegsTest Function
+/// AndRegTest Function
 ////////////////////////////////
-void AddRegsTest()
+void AndRegTest()
 {
-    // ADD R0, R1, R2
-    arguments.InsertBack("R0");
+    // AND R1, R2, R3
     arguments.InsertBack("R1");
     arguments.InsertBack("R2");
+    arguments.InsertBack("R3");
 
-    add.Execute(arguments, myProc);
+    and_instruction.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 3);
+    assert(myProc.GetProcessRegisters().genRegs[1] == 2);
     arguments.Clear();
 
-    // ADD R0, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
+    // AND R4, R5
+    arguments.InsertBack("R4");
+    arguments.InsertBack("R5");
 
-    add.Execute(arguments, myProc);
+    and_instruction.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 4);
+    assert(myProc.GetProcessRegisters().genRegs[4] == 4);
     arguments.Clear();
 }
 
 ////////////////////////////////
-/// AddLiterals Function
+/// AndLiteralTest Function
 ////////////////////////////////
-void AddLiterals()
+void AndLiteralTest()
 {
-    // ADD R0, R1, #0xA
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0xA");
+    // AND R7, #3
+    arguments.InsertBack("R7");
+    arguments.InsertBack("#3");
 
-    add.Execute(arguments, myProc);
+    and_instruction.Execute(arguments, myProc);
 
-    assert(myProc.GetProcessRegisters().genRegs[0] == 11);
-    arguments.Clear();
-
-    // ADD R0, #x11
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0x11");
-
-    add.Execute(arguments, myProc);
-
-    assert(myProc.GetProcessRegisters().genRegs[1] == 18);
+    assert(myProc.GetProcessRegisters().genRegs[7] == 3);
     arguments.Clear();
 }
 
@@ -103,11 +91,11 @@ int main(int argc, char* argv[])
 {
     setup();
 
-    AddRegsTest();
-    AddLiterals();
+    AndRegTest();
+    AndLiteralTest();
 
     teardown();
 
-    std::cout << "ADDInstruction Unit Test Complete: SUCCESS";
+    std::cout << "ANDInstruction Unit Test Complete: SUCCESS";
     return 0;
 }
