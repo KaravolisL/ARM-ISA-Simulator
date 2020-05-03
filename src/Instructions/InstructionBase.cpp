@@ -30,7 +30,16 @@ uint32_t InstructionBase::ParseArgument(const std::string& rArgument, Process& r
             arg = static_cast<uint32_t>(std::stoul(rArgument.substr(1).c_str(), nullptr, 0));
             break;
         case '=':
-            arg = rProcess.GetConstantsDictionary().Get(rArgument.substr(1));
+            try
+            {
+                arg = rProcess.GetConstantsDictionary().Get(rArgument.substr(1));
+            }
+            catch (const DLB<uint32_t>::KeyNotFoundException& e)
+            {
+                throw InvalidSyntaxException("Constant not found",
+                                             rProcess.GetFileIterator()->GetCurrentLine(),
+                                             rProcess.GetProcessRegisters().PC);
+            }
             break;
         case 'r':
         case 'R':
