@@ -42,14 +42,14 @@ void AppendAndGetTest()
 
     for (int i = 0; i < 15; i++)
     {
-        assert(myArrayList.Get(i) == i);
+        assert(myArrayList[i] == i);
     }
 
     myArrayList.PrintList();
 
     try
     {
-        myArrayList.Get(15);
+        myArrayList[15];
         assert(false);
     }
     catch(const IndexOutOfBoundsException& e)
@@ -71,12 +71,12 @@ void GetLengthTest()
 ////////////////////////////////
 void ReplaceTest()
 {
-    myArrayList.Replace(0, 100);
-    assert(myArrayList.Get(0) == 100);
+    myArrayList[0] = 100;
+    assert(myArrayList[0] == 100);
 
     try
     {
-        myArrayList.Replace(100, 100);
+        myArrayList[100] = 100;
         assert(false);
     }
     catch(const IndexOutOfBoundsException& e)
@@ -105,14 +105,14 @@ void InsertTest()
     }
 
     myArrayList.Insert(0, 100);
-    assert(myArrayList.Get(0) == 100);
+    assert(myArrayList[0] == 100);
     for (int i = 1; i < 11; i++)
     {
-        assert(myArrayList.Get(i) == i - 1);
+        assert(myArrayList[i] == i - 1);
     }
 
     myArrayList.Insert(11, 11);
-    assert(myArrayList.Get(11) == 11);
+    assert(myArrayList[11] == 11);
 }
 
 ////////////////////////////////
@@ -124,13 +124,13 @@ void RemoveTest()
 
     int value = myArrayList.Remove(0);
     assert(value == 100);
-    assert(myArrayList.Get(0) == 11);
+    assert(myArrayList[0] == 11);
 
     myArrayList.PrintList();
 
     value = myArrayList.Remove(10);
     assert(value == 9);
-    assert(myArrayList.Get(9) == 8);
+    assert(myArrayList[9] == 8);
 
     try
     {

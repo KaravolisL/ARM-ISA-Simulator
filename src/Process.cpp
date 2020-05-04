@@ -38,7 +38,7 @@ void Process::Initialize(const char* filename)
     while (fileIterator.HasNext())
     {
         // Create a line parser using the next line
-        Io::LineParser lineParser(fileIterator.Next());
+        Io::LineParser lineParser(&fileIterator.Next());
 
         // Determine how to handle the current line
         switch (lineParser.GetLineType())
@@ -70,7 +70,7 @@ void Process::Initialize(const char* filename)
                 // Check if the label was already defined
                 if (m_labelDictionary.Contains(label))
                 {
-                    throw AssemblingException("Label Redefinition Error", lineParser.GetLine(), fileIterator.GetLineNumber());
+                    throw AssemblingException("Label Redefinition Error", *(lineParser.GetLine()), fileIterator.GetLineNumber());
                 }
 
                 m_labelDictionary.Insert(label, fileIterator.GetLineNumber());
@@ -124,11 +124,11 @@ void Process::Execute()
 bool Process::Step()
 {
     // Move to the next instruction
-    Io::LineParser lineParser(m_pFileIterator->Next());
+    Io::LineParser lineParser(&m_pFileIterator->Next());
     while (lineParser.GetLineType() != Io::LineType::INSTRUCTION)
     {
         if (lineParser.GetLineType() == Io::LineType::ENDP) return false;
-        lineParser.SetLine(m_pFileIterator->Next());
+        lineParser.SetLine(&m_pFileIterator->Next());
     }
 
     LOG_DEBUG("Executing %s", m_pFileIterator->GetCurrentLine().c_str());
