@@ -14,6 +14,7 @@
 
 // SYSTEM INCLUDES
 #include <stdint.h> // For standard types
+#include <ios>
 
 // C PROJECT INCLUDES
 // (none)
@@ -85,6 +86,24 @@ public:
     /// @return Whether program has reached the end
     ////////////////////////////////
     bool Step();
+
+    ////////////////////////////////
+    /// METHOD NAME: PrintSummary
+    ///
+    /// @brief Prints information regarding the
+    /// values held in registers
+    ////////////////////////////////
+    void PrintSummary(std::ios_base& (*func)(std::ios_base&))
+    {
+        for (int i = 0; i < 13; i++)
+        {
+            std::cout << "R" << std::dec << i << " = " << (*func) << m_processRegisters.genRegs[i] << '\n';
+        }
+        std::cout << "LR = " << (*func) << m_processRegisters.LR << '\n';
+        std::cout << "PC = " << (*func) << m_processRegisters.PC << '\n';
+        std::cout << "SP = " << (*func) << m_processRegisters.SP << '\n';
+        std::cout << "CPSR = " << (*func) << m_processRegisters.CPSR << '\n';
+    }
 
     ////////////////////////////////
     /// METHOD NAME: GetConstantsDictionary

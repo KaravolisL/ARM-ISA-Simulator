@@ -28,7 +28,7 @@ struct InvalidSyntaxException : public std::exception
         m_message()
     {
         m_message = std::string(pMsg);
-        m_message.append("\n");
+        m_message.append("\nLine ");
         m_message.append(std::to_string(lineNumber));
         m_message.append(": ");
         m_message.append(rLine);
@@ -37,7 +37,11 @@ struct InvalidSyntaxException : public std::exception
     InvalidSyntaxException(const std::string& rLine, const int lineNumber) :
         m_message()
     {
-        InvalidSyntaxException("Invalid syntax", rLine, lineNumber);
+        m_message = std::string("Invalid Syntax");
+        m_message.append("\nLine ");
+        m_message.append(std::to_string(lineNumber));
+        m_message.append(": ");
+        m_message.append(rLine);
     }
 
     InvalidSyntaxException(const char* pMsg, const std::string& info) :
