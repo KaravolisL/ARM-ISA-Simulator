@@ -19,6 +19,7 @@ add_executable(ArrayListUT ArrayListUT.cpp)
 add_executable(StackUT StackUT.cpp)
 add_executable(QueueUT QueueUT.cpp)
 add_executable(DLBUT DLBUT.cpp)
+add_executable(HashMapUT HashMapUT.cpp)
 
 add_executable(LoggerUT LoggerUT.cpp)
 target_link_libraries(LoggerUT PRIVATE debug_lib)
@@ -35,6 +36,7 @@ add_test(NAME ArrayListUT COMMAND ArrayListUT)
 add_test(NAME StackUT COMMAND StackUT)
 add_test(NAME QueueUT COMMAND QueueUT)
 add_test(NAME DLBUT COMMAND DLBUT)
+add_test(NAME HashMapUT COMMAND HashMapUT)
 
 add_test(NAME LoggerUT COMMAND LoggerUT)
 
