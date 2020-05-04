@@ -54,34 +54,17 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: Get
+    /// FUNCTION NAME: operator[]
     ///
     /// @param index   Index of element to return
     /// @return Element at given value
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
-    T Get(int index) const
+    T& operator[](int index) const
     {
         if (index >= m_length || index < 0) throw IndexOutOfBoundsException(index);
         
         return m_list[index];
-    }
-
-    ////////////////////////////////
-    /// FUNCTION NAME: Replace
-    ///
-    /// @param[in] index     Index at which to insert element
-    /// @param[in] element   Element to be inserted
-    /// @return Element previously at index
-    /// @throw IndexOutOfBoundsException
-    ////////////////////////////////
-    T Replace(int index, T element)
-    {
-        if (index >= m_length || index < 0) throw IndexOutOfBoundsException(index);
-        
-        T oldValue = m_list[index];
-        m_list[index] = element;
-        return oldValue;
     }
 
     ////////////////////////////////
