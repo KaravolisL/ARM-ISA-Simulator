@@ -41,18 +41,18 @@ public:
     ////////////////////////////////
     /// Constructor
     ///
-    /// @param rLine    Reference to line to be parsed
+    /// @param pLine    Reference to line to be parsed
     ////////////////////////////////
-    LineParser(std::string& rLine);
+    LineParser(std::string* pLine);
 
     ////////////////////////////////
     /// METHOD NAME: SetLine
     ///
     /// @brief Updates the line being parsed
     ///
-    /// @param[in] rNewLine     New line to be parsed
+    /// @param[in] pNewLine     New line to be parsed
     ////////////////////////////////
-    void SetLine(std::string& rNewLine);
+    void SetLine(std::string* pNewLine);
 
     ////////////////////////////////
     /// METHOD NAME: GetLineType
@@ -135,7 +135,7 @@ public:
     ///
     /// @returns Line being parsed
     ////////////////////////////////
-    std::string& GetLine() const { return m_rLine; }
+    std::string* GetLine() const { return m_pLine; }
 
 protected:
 
@@ -165,8 +165,8 @@ private:
     ////////////////////////////////
     void WhitespaceTrim();
 
-    /// Reference to line being parsed
-    std::string& m_rLine;
+    /// Pointer to line being parsed
+    std::string* m_pLine;
 
 };
 

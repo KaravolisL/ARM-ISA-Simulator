@@ -53,7 +53,7 @@ void GetLineTypeTest()
     for (int i = 0 ; i < 5; i++)
     {
         // Construct a line parser using the ith line
-        Io::LineParser lineParser(lines[i]);
+        Io::LineParser lineParser(&lines[i]);
 
         Io::LineType lineType = lineParser.GetLineType();
         std::cout << "lineType = " << lineType << '\n';
@@ -66,7 +66,7 @@ void GetLineTypeTest()
 ////////////////////////////////
 void GetFileNameTest()
 {
-    Io::LineParser lineParser(lines[0]);
+    Io::LineParser lineParser(&lines[0]);
 
     std::string fileName;
     lineParser.GetFileName(fileName);
@@ -79,7 +79,7 @@ void GetFileNameTest()
 ////////////////////////////////
 void GetLabelTest()
 {
-    Io::LineParser lineParser(lines[4]);
+    Io::LineParser lineParser(&lines[4]);
 
     std::string label;
     lineParser.GetLabel(label);
@@ -92,7 +92,7 @@ void GetLabelTest()
 ////////////////////////////////
 void GetValueTest()
 {
-    Io::LineParser lineParser(lines[4]);
+    Io::LineParser lineParser(&lines[4]);
 
     int value = lineParser.GetValue(constants);
     std::cout << value << '\n';
@@ -100,35 +100,35 @@ void GetValueTest()
     assert(value == 1280);
 
     std::string newLine("CONSTANT EQU (0x5 << 2)");
-    Io::LineParser lineParser1(newLine);
+    Io::LineParser lineParser1(&newLine);
 
     value = lineParser1.GetValue(constants);
     std::cout << value << '\n';
     assert(value == 20);
 
     newLine = std::string("constant EQU ( myConstant )");
-    Io::LineParser lineParser2(newLine);
+    Io::LineParser lineParser2(&newLine);
 
     value = lineParser2.GetValue(constants);
     std::cout << value << '\n';
     assert(value == 5);
 
     newLine = std::string("constant EQU ( 0x2 << myConstant )");
-    Io::LineParser lineParser3(newLine);
+    Io::LineParser lineParser3(&newLine);
 
     value = lineParser3.GetValue(constants);
     std::cout << value << '\n';
     assert(value == 64);
 
     newLine = std::string("constant EQU ( myConstant << myConstant )");
-    Io::LineParser lineParser4(newLine);
+    Io::LineParser lineParser4(&newLine);
 
     value = lineParser4.GetValue(constants);
     std::cout << value << '\n';
     assert(value == 160);
 
     newLine = std::string("constant EQU ( -20 )");
-    Io::LineParser lineParser5(newLine);
+    Io::LineParser lineParser5(&newLine);
 
     value = lineParser5.GetValue(constants);
     std::cout << value << '\n';
@@ -140,7 +140,7 @@ void GetValueTest()
 ////////////////////////////////
 void GetArgumentsTest()
 {
-    Io::LineParser lineParser(lines[2]);
+    Io::LineParser lineParser(&lines[2]);
     SLList<std::string> arguments;
 
     lineParser.GetArguments(arguments);
