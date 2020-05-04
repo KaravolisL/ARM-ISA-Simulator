@@ -1,5 +1,5 @@
 /////////////////////////////////
-/// Stack.hpp
+/// @file Stack.hpp
 ///
 /// @brief Declaration and implementation
 /// of a stack data structure backed
@@ -20,7 +20,7 @@
 #include "SLList.hpp"       // For SLList<T>
 
 ////////////////////////////////
-/// CLASS NAME: Stack
+/// @class Stack
 ///
 /// @brief Stack data structure backed
 /// by a singly linked list
@@ -85,6 +85,20 @@ public:
         return m_Stack.GetLength();
     }
 
+    ////////////////////////////////
+    /// @struct EmptyStackException
+    ///
+    /// @brief Exception used when operations
+    /// are done on an empty stack
+    ////////////////////////////////
+    struct EmptyStackException : public std::exception
+    {
+        const char* what() const throw()
+        {
+            return "Empty Stack Exception";
+        }
+    };
+
 protected:
 
 
@@ -93,13 +107,6 @@ private:
     /// SLList used to represent stack
     SLList<E> m_Stack;
 
-    struct EmptyStackException : public std::exception
-    {
-        const char* what() const throw()
-        {
-            return "Empty Stack Exception";
-        }
-    };
 };
 
 
