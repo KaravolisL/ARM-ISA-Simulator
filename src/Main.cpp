@@ -44,6 +44,8 @@ int main(int argc, char* argv[])
     pProcess->PrepareForExecution(argv[1]);
 
     pProcess->Execute();
+
+    pProcess->PrintSummary(&std::hex);
     
     return 0;
 }
