@@ -17,7 +17,9 @@
 
 // C++ PROJECT INCLUDES
 #include "KeywordDict.hpp" // Header for class
+#include "InstructionRepository.hpp" // For InstructionRepository
 #include "LineTypes.hpp" // For LineTypes enum
+#include "Logger.hpp" // For LOG_INFO
 
 ////////////////////////////////
 /// METHOD NAME: KeywordDict::Initialize
@@ -35,20 +37,23 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("EQU", Io::LineType::EQU);
     m_keywordDict.Insert("DCB", Io::LineType::DCB);
 
-    // TODO: Use InstructionRepository to populate this part
     // Instructions
-    m_keywordDict.Insert("ADD", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("B", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("MOV", Io::LineType::INSTRUCTION);
+    SLList<std::string> instructionList = InstructionRepository::GetInstance().GetInstructionStrings();
+
+    for (SLList<std::string>::SLListIterator it = instructionList.GetBegin();
+         it != instructionList.GetEnd(); it++)
+    {
+        m_keywordDict.Insert(*it, Io::LineType::INSTRUCTION);
+    }
+
+    // The following instructions are not implemented yet :(
     m_keywordDict.Insert("LDR", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("BIC", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("ORR", Io::LineType::INSTRUCTION);
     m_keywordDict.Insert("LSL", Io::LineType::INSTRUCTION);
     m_keywordDict.Insert("SUBS", Io::LineType::INSTRUCTION);
     m_keywordDict.Insert("STR", Io::LineType::INSTRUCTION);
     m_keywordDict.Insert("BEQ", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("CMP", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("AND", Io::LineType::INSTRUCTION);
+
+    LOG_INFO("Keyword dictionary initialized");
 }
 
 ////////////////////////////////
