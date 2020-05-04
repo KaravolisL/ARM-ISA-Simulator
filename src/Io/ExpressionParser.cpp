@@ -39,7 +39,7 @@ int ExpressionParser::Evaluate()
     catch (const std::invalid_argument& e)
     {
         // left operand must already be a constant
-        leftInt = m_rConstants.Get(leftOperand);
+        leftInt = m_pConstants->Get(leftOperand);
     }
     
     // Get operation
@@ -62,7 +62,7 @@ int ExpressionParser::Evaluate()
     catch (const std::invalid_argument& e)
     {
         // right operand must already be a constant
-        rightInt = m_rConstants.Get(rightOperand);
+        rightInt = m_pConstants->Get(rightOperand);
     }
 
     if (strcmp(operation, "<<") == 0)

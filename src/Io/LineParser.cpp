@@ -93,7 +93,7 @@ int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary)
     }
 
     // Create an expression parser and evaluate
-    ExpressionParser exParser(expression, rConstantsDictionary);
+    ExpressionParser exParser(expression, &rConstantsDictionary);
     return exParser.Evaluate();
 }
 

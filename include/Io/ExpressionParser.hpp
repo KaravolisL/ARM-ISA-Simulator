@@ -39,9 +39,9 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    ExpressionParser(std::string expression, DLB<uint32_t>& rConstants) :
+    ExpressionParser(std::string expression, DLB<uint32_t>* pConstants) :
         m_expression(expression),
-        m_rConstants(rConstants)
+        m_pConstants(pConstants)
     {}
 
     ////////////////////////////////
@@ -61,7 +61,17 @@ private:
     std::string m_expression;
 
     /// Constants dictionary to be used
-    DLB<uint32_t>& m_rConstants;
+    DLB<uint32_t>* m_pConstants;
+
+    ////////////////////////////////
+    /// Copy Constructer
+    ////////////////////////////////
+    ExpressionParser(ExpressionParser const&);
+
+    ////////////////////////////////
+    /// Assignment operator
+    ////////////////////////////////
+    ExpressionParser& operator=(ExpressionParser const&);
 
 };
 
