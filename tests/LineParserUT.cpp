@@ -16,6 +16,7 @@
 // C++ PROJECT INCLUDES
 #include "LineParser.hpp"  // Test class
 #include "KeywordDict.hpp" // For KeywordDict class
+#include "InstructionRepository.hpp"
 #include "SLList.hpp" // For SLList
 
 ////////////////////////////////
@@ -34,6 +35,9 @@ DLB<uint32_t> constants = DLB<uint32_t>();
 ////////////////////////////////
 void setup()
 {
+    // Initialize the instruction repository
+    InstructionRepository::GetInstance().Initialize();
+
     // Initialize the Keyword dictionary
     KeywordDict::GetInstance().Initialize();
 

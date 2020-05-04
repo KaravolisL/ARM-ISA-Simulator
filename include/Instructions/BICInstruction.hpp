@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file EORInstruction.hpp
+/// @file BICInstruction.hpp
 ///
-/// @brief Declaration of EORInstruction class
+/// @brief Declaration of BICInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef EOR_INSTRUCTION_HPP
-#define EOR_INSTRUCTION_HPP
+#ifndef BIC_INSTRUCTION_HPP
+#define BIC_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 #include <string>

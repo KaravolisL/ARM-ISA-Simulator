@@ -159,7 +159,7 @@ public:
     ///
     /// @return A linked list of the keys in the hash map
     ////////////////////////////////
-    SLList<std::string> GetKeys()
+    SLList<std::string> GetKeys() const
     {
         SLList<std::string> keysList = SLList<std::string>();
         for (uint32_t i = 0; i < m_size; i++)
