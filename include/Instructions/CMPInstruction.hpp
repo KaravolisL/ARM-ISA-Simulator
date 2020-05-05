@@ -40,10 +40,9 @@ public:
     /// @brief Subtracts the given arguments
     /// and sets the flags accordingly
     ///
-    /// @param[in] rArguments   List of arguments to be used by the instruction
-    /// @param[in,out] rProcess Process that this instruction is apart of
+    /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
-    void Execute(const SLList<std::string>& rArguments, Process& rProcess);
+    void Execute(const SLList<std::string>& rArguments, Process& rProcess, bool flagged);
 
 protected:
 

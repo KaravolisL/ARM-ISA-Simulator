@@ -22,7 +22,7 @@
 ////////////////////////////////
 /// METHOD NAME: BInstruction::Execute 
 ////////////////////////////////
-void BInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
+void BInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess, bool flagged)
 {
     if (rArguments.GetLength() > 2) throw InvalidSyntaxException("Invalid Arguments",
                                                                  rProcess.GetFileIterator()->GetCurrentLine(),

@@ -43,8 +43,9 @@ public:
     ///
     /// @param[in] rArguments   List of arguments to be used by the instruction
     /// @param[in,out] rProcess Process that this instruction is apart of
+    /// @param[in] flagged      Whether the instruction must set the flags within CPSR
     ////////////////////////////////
-    virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess) = 0;
+    virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess, bool flagged) = 0;
 
 protected:
 

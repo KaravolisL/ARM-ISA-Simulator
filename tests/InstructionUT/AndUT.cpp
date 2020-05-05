@@ -46,7 +46,7 @@ void AndRegTest()
     arguments.InsertBack("R2");
     arguments.InsertBack("R3");
 
-    and_instruction.Execute(arguments, myProc);
+    and_instruction.Execute(arguments, myProc, false);
 
     assert(myProc.GetProcessRegisters().genRegs[1] == 2);
     arguments.Clear();
@@ -55,7 +55,7 @@ void AndRegTest()
     arguments.InsertBack("R4");
     arguments.InsertBack("R5");
 
-    and_instruction.Execute(arguments, myProc);
+    and_instruction.Execute(arguments, myProc, false);
 
     assert(myProc.GetProcessRegisters().genRegs[4] == 4);
     arguments.Clear();
@@ -70,9 +70,38 @@ void AndLiteralTest()
     arguments.InsertBack("R7");
     arguments.InsertBack("#3");
 
-    and_instruction.Execute(arguments, myProc);
+    and_instruction.Execute(arguments, myProc, false);
 
     assert(myProc.GetProcessRegisters().genRegs[7] == 3);
+    arguments.Clear();
+}
+
+////////////////////////////////
+/// AndsTest Function
+////////////////////////////////
+void AndsTest()
+{
+    // ANDS R3, #0
+    arguments.InsertBack("R3");
+    arguments.InsertBack("#0");
+
+    and_instruction.Execute(arguments, myProc, true);
+
+    assert(myProc.GetProcessRegisters().GetZeroFlag());
+    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    arguments.Clear();
+
+    // "MOV" R5, #0xFFFFFFFF
+    myProc.GetProcessRegisters().genRegs[5] = 0xFFFFFFFF;
+
+    // ANDS R5, #0xFFFF0000
+    arguments.InsertBack("r5");
+    arguments.InsertBack("#0xFFFF0000");
+
+    and_instruction.Execute(arguments, myProc, true);
+
+    assert(!myProc.GetProcessRegisters().GetZeroFlag());
+    assert(myProc.GetProcessRegisters().GetNegativeFlag());
     arguments.Clear();
 }
 
@@ -93,6 +122,7 @@ int main(int argc, char* argv[])
 
     AndRegTest();
     AndLiteralTest();
+    AndsTest();
 
     teardown();
 

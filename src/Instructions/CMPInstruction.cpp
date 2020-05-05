@@ -22,7 +22,7 @@
 ////////////////////////////////
 /// METHOD NAME: CMPInstruction::Execute 
 ////////////////////////////////
-void CMPInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
+void CMPInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess, bool flagged)
 {
     if (rArguments.GetLength() > 2) throw InvalidSyntaxException("Invalid Arguments",
                                                                  rProcess.GetFileIterator()->GetCurrentLine(),

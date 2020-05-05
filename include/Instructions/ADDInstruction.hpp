@@ -43,10 +43,9 @@ public:
     /// the destination. Otherwise, the two sources
     /// will be added and the destination replaced by the sum
     ///
-    /// @param[in] rArguments   List of arguments to be used by the instruction
-    /// @param[in,out] rProcess Process that this instruction is apart of
+    /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
-    void Execute(const SLList<std::string>& rArguments, Process& rProcess);
+    void Execute(const SLList<std::string>& rArguments, Process& rProcess, bool flagged);
 
 protected:
 

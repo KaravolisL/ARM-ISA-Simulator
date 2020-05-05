@@ -46,7 +46,7 @@ void AddRegsTest()
     arguments.InsertBack("R1");
     arguments.InsertBack("R2");
 
-    add.Execute(arguments, myProc);
+    add.Execute(arguments, myProc, false);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 3);
     arguments.Clear();
@@ -55,7 +55,7 @@ void AddRegsTest()
     arguments.InsertBack("R0");
     arguments.InsertBack("R1");
 
-    add.Execute(arguments, myProc);
+    add.Execute(arguments, myProc, false);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 4);
     arguments.Clear();
@@ -71,7 +71,7 @@ void AddLiterals()
     arguments.InsertBack("R1");
     arguments.InsertBack("#0xA");
 
-    add.Execute(arguments, myProc);
+    add.Execute(arguments, myProc, false);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 11);
     arguments.Clear();
@@ -80,9 +80,69 @@ void AddLiterals()
     arguments.InsertBack("R1");
     arguments.InsertBack("#0x11");
 
-    add.Execute(arguments, myProc);
+    add.Execute(arguments, myProc, false);
 
     assert(myProc.GetProcessRegisters().genRegs[1] == 18);
+    arguments.Clear();
+}
+
+////////////////////////////////
+/// AddsTest Function
+////////////////////////////////
+void AddsTest()
+{
+    // Reset registers
+    setup();
+
+    // ADDS R0, R0
+    arguments.InsertBack("R0");
+    arguments.InsertBack("R0");
+
+    add.Execute(arguments, myProc, true);
+
+    assert(myProc.GetProcessRegisters().GetZeroFlag());
+    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    assert(!myProc.GetProcessRegisters().GetCarryFlag());
+    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+    arguments.Clear();
+
+    // ADDS R0, #-2
+    arguments.InsertBack("R0");
+    arguments.InsertBack("#-2");
+
+    add.Execute(arguments, myProc, true);
+
+    assert(!myProc.GetProcessRegisters().GetZeroFlag());
+    assert(myProc.GetProcessRegisters().GetNegativeFlag());
+    assert(!myProc.GetProcessRegisters().GetCarryFlag());
+    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+    arguments.Clear();
+
+    // ADDS R10, #0xFFFFFFFF
+    arguments.InsertBack("R10");
+    arguments.InsertBack("#0xFFFFFFFF");
+
+    add.Execute(arguments, myProc, true);
+
+    assert(!myProc.GetProcessRegisters().GetZeroFlag());
+    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    assert(myProc.GetProcessRegisters().GetCarryFlag());
+    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+    arguments.Clear();
+
+    // "MOV" R1, #0x40000000
+    myProc.GetProcessRegisters().genRegs[1] = 0x40000000;
+
+    // ADDS R1, #0x40000000
+    arguments.InsertBack("R1");
+    arguments.InsertBack("#0x40000000");
+
+    add.Execute(arguments, myProc, true);
+
+    assert(!myProc.GetProcessRegisters().GetZeroFlag());
+    assert(myProc.GetProcessRegisters().GetNegativeFlag());
+    assert(!myProc.GetProcessRegisters().GetCarryFlag());
+    assert(myProc.GetProcessRegisters().GetOverflowFlag());
     arguments.Clear();
 }
 
@@ -103,6 +163,7 @@ int main(int argc, char* argv[])
 
     AddRegsTest();
     AddLiterals();
+    AddsTest();
 
     teardown();
 
