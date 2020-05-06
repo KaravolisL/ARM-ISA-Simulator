@@ -46,7 +46,7 @@ typedef struct Registers
     /////////////////////////////////
     /// METHOD NAME: GetNegativeFlag
     /////////////////////////////////
-    bool GetNegativeFlag() { return (CPSR & 0x80000000) != 0; }
+    bool GetNegativeFlag() const { return (CPSR & 0x80000000) != 0; }
 
     /////////////////////////////////
     /// METHOD NAME: SetNegativeFlag
@@ -61,7 +61,7 @@ typedef struct Registers
     /////////////////////////////////
     /// METHOD NAME: GetZeroFlag
     /////////////////////////////////
-    bool GetZeroFlag() { return (CPSR & 0x40000000) != 0; }
+    bool GetZeroFlag() const { return (CPSR & 0x40000000) != 0; }
 
     /////////////////////////////////
     /// METHOD NAME: SetZeroFlag
@@ -76,7 +76,7 @@ typedef struct Registers
     /////////////////////////////////
     /// METHOD NAME: GetCarryFlag
     /////////////////////////////////
-    bool GetCarryFlag() { return (CPSR & 0x20000000) != 0; }
+    bool GetCarryFlag() const { return (CPSR & 0x20000000) != 0; }
 
     /////////////////////////////////
     /// METHOD NAME: SetCarryFlag
@@ -91,7 +91,7 @@ typedef struct Registers
     /////////////////////////////////
     /// METHOD NAME: GetOverflowFlag
     /////////////////////////////////
-    bool GetOverflowFlag() { return (CPSR & 0x10000000) != 0; }
+    bool GetOverflowFlag() const { return (CPSR & 0x10000000) != 0; }
 
     /////////////////////////////////
     /// METHOD NAME: SetOverflowFlag
