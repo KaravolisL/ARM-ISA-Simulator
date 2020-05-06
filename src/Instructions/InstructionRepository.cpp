@@ -150,22 +150,46 @@ bool InstructionRepository::CheckConditionalCode(std::string& rInstruction, cons
         if (!rRegisters.GetZeroFlag()) execute = true;
         break;
     case ConditionalCode::GT:
+        if (rRegisters.GetZeroFlag() && (rRegisters.GetNegativeFlag() == rRegisters.GetOverflowFlag())) execute = true;
+        break;
     case ConditionalCode::LT:
+        if (rRegisters.GetNegativeFlag() != rRegisters.GetOverflowFlag()) execute = true;
+        break;
     case ConditionalCode::GE:
+        if (rRegisters.GetNegativeFlag() == rRegisters.GetOverflowFlag()) execute = true;
+        break;
     case ConditionalCode::LE:
+        if ((rRegisters.GetNegativeFlag() != rRegisters.GetOverflowFlag()) || rRegisters.GetZeroFlag()) execute = true;
+        break;
     case ConditionalCode::CS:
+        if (rRegisters.GetCarryFlag()) execute = true;
+        break;
     case ConditionalCode::CC:
+        if (!rRegisters.GetCarryFlag()) execute = true;
+        break;
     case ConditionalCode::MI:
+        if (rRegisters.GetNegativeFlag()) execute = true;
+        break;
     case ConditionalCode::PL:
+        if (!rRegisters.GetNegativeFlag()) execute = true;
+        break;
     case ConditionalCode::AL:
         execute = true;
         break;
     case ConditionalCode::NV:
         break;
     case ConditionalCode::VS:
+        if (rRegisters.GetOverflowFlag()) execute = true;
+        break;
     case ConditionalCode::VC:
+        if (!rRegisters.GetOverflowFlag()) execute = true;
+        break;
     case ConditionalCode::HI:
+        if (rRegisters.GetCarryFlag() && !rRegisters.GetZeroFlag()) execute = true;
+        break;
     case ConditionalCode::LS:
+        if (!rRegisters.GetCarryFlag() || !rRegisters.GetZeroFlag()) execute = true;
+        break;
     
     default:
         ASSERT("Invalid conditional code: %d", code);
