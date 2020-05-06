@@ -45,7 +45,7 @@ void CompareTest()
     arguments.InsertBack("R10");
     arguments.InsertBack("#10");
 
-    cmp.Execute(arguments, myProc, false);
+    cmp.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
@@ -57,7 +57,7 @@ void CompareTest()
     arguments.InsertBack("R10");
     arguments.InsertBack("#6");
 
-    cmp.Execute(arguments, myProc, false);
+    cmp.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
@@ -69,7 +69,7 @@ void CompareTest()
     arguments.InsertBack("R10");
     arguments.InsertBack("#16");
 
-    cmp.Execute(arguments, myProc, false);
+    cmp.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == true);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
@@ -81,7 +81,7 @@ void CompareTest()
     arguments.InsertBack("R0");
     arguments.InsertBack("#0");
 
-    cmp.Execute(arguments, myProc, false);
+    cmp.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == true);

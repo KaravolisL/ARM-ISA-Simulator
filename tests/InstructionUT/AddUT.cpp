@@ -46,7 +46,7 @@ void AddRegsTest()
     arguments.InsertBack("R1");
     arguments.InsertBack("R2");
 
-    add.Execute(arguments, myProc, false);
+    add.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 3);
     arguments.Clear();
@@ -55,7 +55,7 @@ void AddRegsTest()
     arguments.InsertBack("R0");
     arguments.InsertBack("R1");
 
-    add.Execute(arguments, myProc, false);
+    add.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 4);
     arguments.Clear();
@@ -71,7 +71,7 @@ void AddLiterals()
     arguments.InsertBack("R1");
     arguments.InsertBack("#0xA");
 
-    add.Execute(arguments, myProc, false);
+    add.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 11);
     arguments.Clear();
@@ -80,7 +80,7 @@ void AddLiterals()
     arguments.InsertBack("R1");
     arguments.InsertBack("#0x11");
 
-    add.Execute(arguments, myProc, false);
+    add.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[1] == 18);
     arguments.Clear();
@@ -94,11 +94,14 @@ void AddsTest()
     // Reset registers
     setup();
 
+    // Set flagged
+    add.SetFlagged();
+
     // ADDS R0, R0
     arguments.InsertBack("R0");
     arguments.InsertBack("R0");
 
-    add.Execute(arguments, myProc, true);
+    add.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
@@ -110,7 +113,7 @@ void AddsTest()
     arguments.InsertBack("R0");
     arguments.InsertBack("#-2");
 
-    add.Execute(arguments, myProc, true);
+    add.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
@@ -122,7 +125,7 @@ void AddsTest()
     arguments.InsertBack("R10");
     arguments.InsertBack("#0xFFFFFFFF");
 
-    add.Execute(arguments, myProc, true);
+    add.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
@@ -137,7 +140,7 @@ void AddsTest()
     arguments.InsertBack("R1");
     arguments.InsertBack("#0x40000000");
 
-    add.Execute(arguments, myProc, true);
+    add.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());

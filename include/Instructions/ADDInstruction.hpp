@@ -45,7 +45,7 @@ public:
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
-    void Execute(const SLList<std::string>& rArguments, Process& rProcess, bool flagged);
+    void Execute(const SLList<std::string>& rArguments, Process& rProcess);
 
 protected:
 

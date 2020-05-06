@@ -136,19 +136,11 @@ bool Process::Step()
     std::string instruction;
     lineParser.GetInstruction(instruction);
 
-    // Determine if the instruction needs to set the flags
-    bool flagged = false;
-    if (instruction.at(instruction.length() - 1) == 's')
-    {
-        flagged = true;
-        instruction.pop_back();
-    }
-
     InstructionBase* pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction);
 
     SLList<std::string> arguments;
     lineParser.GetArguments(arguments);
 
-    pInstruction->Execute(arguments, *this, flagged);
+    pInstruction->Execute(arguments, *this);
     return true;
 }

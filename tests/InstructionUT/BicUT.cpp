@@ -46,7 +46,7 @@ void BicRegsTest()
     arguments.InsertBack("R5");
     arguments.InsertBack("R1");
 
-    bic.Execute(arguments, myProc, false);
+    bic.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 0b0100);
     arguments.Clear();
@@ -55,7 +55,7 @@ void BicRegsTest()
     arguments.InsertBack("R7"); // 0b0111
     arguments.InsertBack("R9"); // 0b1001
 
-    bic.Execute(arguments, myProc, false);
+    bic.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[7] == 0b0110);
     arguments.Clear();
@@ -71,7 +71,7 @@ void BicLiterals()
     arguments.InsertBack("R5"); // 0b0101
     arguments.InsertBack("#0xB"); // 0b1011
 
-    bic.Execute(arguments, myProc, false);
+    bic.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 0b0100);
     arguments.Clear();
@@ -80,7 +80,7 @@ void BicLiterals()
     arguments.InsertBack("R10");
     arguments.InsertBack("#0xF");
 
-    bic.Execute(arguments, myProc, false);
+    bic.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[10] == 0x0);
     arguments.Clear();
@@ -94,11 +94,14 @@ void BicsTest()
     // Reset registers
     setup();
 
+    // Set flagged
+    bic.SetFlagged();
+
     // BICS R1, R1
     arguments.InsertBack("R1");
     arguments.InsertBack("R1");
 
-    bic.Execute(arguments, myProc, true);
+    bic.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
@@ -111,7 +114,7 @@ void BicsTest()
     arguments.InsertBack("R5");
     arguments.InsertBack("#0xF");
 
-    bic.Execute(arguments, myProc, true);
+    bic.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());

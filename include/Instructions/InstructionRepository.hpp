@@ -56,7 +56,7 @@ public:
     /// @param[in] rInstruction     Type of instruction to retrieve
     /// @return Instance of matching instruction
     ////////////////////////////////
-    InstructionBase* GetInstruction(const std::string& rInstruction);
+    InstructionBase* GetInstruction(std::string& rInstruction);
 
     ////////////////////////////////
     /// METHOD NAME: GetInstructionStrings

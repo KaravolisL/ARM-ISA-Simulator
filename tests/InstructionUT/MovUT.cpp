@@ -45,7 +45,7 @@ void MovRegTest()
     arguments.InsertBack("R0");
     arguments.InsertBack("R1");
 
-    mov.Execute(arguments, myProc, false);
+    mov.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 1);
     arguments.Clear();
@@ -60,7 +60,7 @@ void MovLiteralTest()
     arguments.InsertBack("R0");
     arguments.InsertBack("#0xFF");
 
-    mov.Execute(arguments, myProc, false);
+    mov.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 0xFF);
     arguments.Clear();
@@ -71,11 +71,14 @@ void MovLiteralTest()
 ////////////////////////////////
 void MovsTest()
 {
+    // Set flagged
+    mov.SetFlagged();
+
     // MOVS R0, #0
     arguments.InsertBack("R0");
     arguments.InsertBack("#0");
 
-    mov.Execute(arguments, myProc, true);
+    mov.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
@@ -85,7 +88,7 @@ void MovsTest()
     arguments.InsertBack("R0");
     arguments.InsertBack("#0xFFFFFFFF");
 
-    mov.Execute(arguments, myProc, true);
+    mov.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());

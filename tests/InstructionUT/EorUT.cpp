@@ -46,7 +46,7 @@ void EorRegsTest()
     arguments.InsertBack("R5");
     arguments.InsertBack("R7");
 
-    eor.Execute(arguments, myProc, false);
+    eor.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 2);
     arguments.Clear();
@@ -55,7 +55,7 @@ void EorRegsTest()
     arguments.InsertBack("R8");
     arguments.InsertBack("R9");
 
-    eor.Execute(arguments, myProc, false);
+    eor.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[8] == 1);
     arguments.Clear();
@@ -71,7 +71,7 @@ void EorLiterals()
     arguments.InsertBack("R5");
     arguments.InsertBack("#0xF");
 
-    eor.Execute(arguments, myProc, false);
+    eor.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[0] == 10);
     arguments.Clear();
@@ -80,7 +80,7 @@ void EorLiterals()
     arguments.InsertBack("R1");
     arguments.InsertBack("#0x13");
 
-    eor.Execute(arguments, myProc, false);
+    eor.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[1] == 0x12);
     arguments.Clear();
@@ -94,11 +94,14 @@ void EorsTest()
     // Reset registers
     setup();
 
+    // Set flagged
+    eor.SetFlagged();
+
     // EORS R1, R1
     arguments.InsertBack("R1");
     arguments.InsertBack("R1");
 
-    eor.Execute(arguments, myProc, true);
+    eor.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
@@ -108,7 +111,7 @@ void EorsTest()
     arguments.InsertBack("R2");
     arguments.InsertBack("#0xFFFFFFFF");
 
-    eor.Execute(arguments, myProc, true);
+    eor.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());

@@ -46,7 +46,7 @@ void AndRegTest()
     arguments.InsertBack("R2");
     arguments.InsertBack("R3");
 
-    and_instruction.Execute(arguments, myProc, false);
+    and_instruction.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[1] == 2);
     arguments.Clear();
@@ -55,7 +55,7 @@ void AndRegTest()
     arguments.InsertBack("R4");
     arguments.InsertBack("R5");
 
-    and_instruction.Execute(arguments, myProc, false);
+    and_instruction.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[4] == 4);
     arguments.Clear();
@@ -70,7 +70,7 @@ void AndLiteralTest()
     arguments.InsertBack("R7");
     arguments.InsertBack("#3");
 
-    and_instruction.Execute(arguments, myProc, false);
+    and_instruction.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[7] == 3);
     arguments.Clear();
@@ -81,11 +81,14 @@ void AndLiteralTest()
 ////////////////////////////////
 void AndsTest()
 {
+    // Set flagged
+    and_instruction.SetFlagged();
+
     // ANDS R3, #0
     arguments.InsertBack("R3");
     arguments.InsertBack("#0");
 
-    and_instruction.Execute(arguments, myProc, true);
+    and_instruction.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
@@ -98,7 +101,7 @@ void AndsTest()
     arguments.InsertBack("r5");
     arguments.InsertBack("#0xFFFF0000");
 
-    and_instruction.Execute(arguments, myProc, true);
+    and_instruction.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());

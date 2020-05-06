@@ -52,7 +52,7 @@ void BranchTest()
     // B MyLabel
     arguments.InsertBack("MyLabel");
 
-    branch.Execute(arguments, myProc, false);
+    branch.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().PC == 10);
     arguments.Clear();
@@ -62,7 +62,7 @@ void BranchTest()
 
     try
     {
-        branch.Execute(arguments, myProc, false);
+        branch.Execute(arguments, myProc);
         assert(false);
     }
     catch (const InvalidSyntaxException& e)

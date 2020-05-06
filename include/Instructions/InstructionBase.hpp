@@ -34,6 +34,13 @@ class InstructionBase
 public:
 
     ////////////////////////////////
+    /// Constructor
+    ////////////////////////////////
+    InstructionBase() :
+        m_flagged(false)
+    {}
+
+    ////////////////////////////////
     /// Deconstructor
     ////////////////////////////////
     virtual ~InstructionBase() {}
@@ -43,9 +50,18 @@ public:
     ///
     /// @param[in] rArguments   List of arguments to be used by the instruction
     /// @param[in,out] rProcess Process that this instruction is apart of
-    /// @param[in] flagged      Whether the instruction must set the flags within CPSR
     ////////////////////////////////
-    virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess, bool flagged) = 0;
+    virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess) = 0;
+
+    ////////////////////////////////
+    /// METHOD NAME: SetFlagged
+    ////////////////////////////////
+    void SetFlagged() { m_flagged = true; }
+
+    ////////////////////////////////
+    /// METHOD NAME: ClearFlagged
+    ////////////////////////////////
+    void ClearFlagged() { m_flagged = false; }
 
 protected:
 
@@ -60,6 +76,9 @@ protected:
     /// @param[in,out] rProcess Process that this instruction is apart of
     ////////////////////////////////
     uint32_t ParseArgument(const std::string& rArgument, Process& rProcess);
+
+    /// Flag to determine whether flags need to be set following instruction execution
+    bool m_flagged;
 
 private:
 

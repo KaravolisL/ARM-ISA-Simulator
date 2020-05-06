@@ -22,7 +22,7 @@
 ////////////////////////////////
 /// METHOD NAME: MOVInstruction::Execute 
 ////////////////////////////////
-void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess, bool flagged)
+void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
     if (rArguments.GetLength() > 2) throw InvalidSyntaxException("Invalid Arguments",
                                                                  rProcess.GetFileIterator()->GetCurrentLine(),
@@ -39,7 +39,7 @@ void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
     Registers& regs =  rProcess.GetProcessRegisters();
     regs.genRegs[destination] = source;
 
-    if (flagged)
+    if (m_flagged)
     {
         (regs.genRegs[destination] & 0x80000000) != 0 ? regs.SetNegativeFlag() : regs.ClearNegativeFlag();
          regs.genRegs[destination] == 0 ? regs.SetZeroFlag() : regs.ClearZeroFlag();
