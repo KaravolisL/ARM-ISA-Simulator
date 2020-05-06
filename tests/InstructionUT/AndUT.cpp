@@ -77,6 +77,38 @@ void AndLiteralTest()
 }
 
 ////////////////////////////////
+/// AndsTest Function
+////////////////////////////////
+void AndsTest()
+{
+    // Set flagged
+    and_instruction.SetFlagged();
+
+    // ANDS R3, #0
+    arguments.InsertBack("R3");
+    arguments.InsertBack("#0");
+
+    and_instruction.Execute(arguments, myProc);
+
+    assert(myProc.GetProcessRegisters().GetZeroFlag());
+    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    arguments.Clear();
+
+    // "MOV" R5, #0xFFFFFFFF
+    myProc.GetProcessRegisters().genRegs[5] = 0xFFFFFFFF;
+
+    // ANDS R5, #0xFFFF0000
+    arguments.InsertBack("r5");
+    arguments.InsertBack("#0xFFFF0000");
+
+    and_instruction.Execute(arguments, myProc);
+
+    assert(!myProc.GetProcessRegisters().GetZeroFlag());
+    assert(myProc.GetProcessRegisters().GetNegativeFlag());
+    arguments.Clear();
+}
+
+////////////////////////////////
 /// Teardown Function
 ////////////////////////////////
 void teardown()
@@ -93,6 +125,7 @@ int main(int argc, char* argv[])
 
     AndRegTest();
     AndLiteralTest();
+    AndsTest();
 
     teardown();
 

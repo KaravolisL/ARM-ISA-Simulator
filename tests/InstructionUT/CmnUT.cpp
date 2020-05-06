@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file AddUT.cpp
+/// @file CmnUT.cpp
 ///
-/// @brief Unit Test for ADDInstruction
+/// @brief Unit Test for CMNInstruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,14 +14,14 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "ADDInstruction.hpp"  // Test class
+#include "CMNInstruction.hpp"  // Test class
 #include "SLList.hpp"
 #include "Process.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-ADDInstruction add = ADDInstruction();
+CMNInstruction cmn = CMNInstruction();
 Process myProc = Process();
 SLList<std::string> arguments = SLList<std::string>();
 
@@ -37,71 +37,15 @@ void setup()
 }
 
 ////////////////////////////////
-/// AddRegsTest Function
+/// CmnTest Function
 ////////////////////////////////
-void AddRegsTest()
+void CmnTest()
 {
-    // ADD R0, R1, R2
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-    arguments.InsertBack("R2");
-
-    add.Execute(arguments, myProc);
-
-    assert(myProc.GetProcessRegisters().genRegs[0] == 3);
-    arguments.Clear();
-
-    // ADD R0, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-
-    add.Execute(arguments, myProc);
-
-    assert(myProc.GetProcessRegisters().genRegs[0] == 4);
-    arguments.Clear();
-}
-
-////////////////////////////////
-/// AddLiterals Function
-////////////////////////////////
-void AddLiterals()
-{
-    // ADD R0, R1, #0xA
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0xA");
-
-    add.Execute(arguments, myProc);
-
-    assert(myProc.GetProcessRegisters().genRegs[0] == 11);
-    arguments.Clear();
-
-    // ADD R0, #x11
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0x11");
-
-    add.Execute(arguments, myProc);
-
-    assert(myProc.GetProcessRegisters().genRegs[1] == 18);
-    arguments.Clear();
-}
-
-////////////////////////////////
-/// AddsTest Function
-////////////////////////////////
-void AddsTest()
-{
-    // Reset registers
-    setup();
-
-    // Set flagged
-    add.SetFlagged();
-
-    // ADDS R0, R0
+    // CMN R0, R0
     arguments.InsertBack("R0");
     arguments.InsertBack("R0");
 
-    add.Execute(arguments, myProc);
+    cmn.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
@@ -109,11 +53,11 @@ void AddsTest()
     assert(!myProc.GetProcessRegisters().GetOverflowFlag());
     arguments.Clear();
 
-    // ADDS R0, #-2
+    // CMN R0, #-2
     arguments.InsertBack("R0");
     arguments.InsertBack("#-2");
 
-    add.Execute(arguments, myProc);
+    cmn.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
@@ -121,11 +65,11 @@ void AddsTest()
     assert(!myProc.GetProcessRegisters().GetOverflowFlag());
     arguments.Clear();
 
-    // ADDS R10, #0xFFFFFFFF
+    // CMN R10, #0xFFFFFFFF
     arguments.InsertBack("R10");
     arguments.InsertBack("#0xFFFFFFFF");
 
-    add.Execute(arguments, myProc);
+    cmn.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
@@ -136,11 +80,11 @@ void AddsTest()
     // "MOV" R1, #0x40000000
     myProc.GetProcessRegisters().genRegs[1] = 0x40000000;
 
-    // ADDS R1, #0x40000000
+    // CMN R1, #0x40000000
     arguments.InsertBack("R1");
     arguments.InsertBack("#0x40000000");
 
-    add.Execute(arguments, myProc);
+    cmn.Execute(arguments, myProc);
 
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
@@ -164,12 +108,10 @@ int main(int argc, char* argv[])
 {
     setup();
 
-    AddRegsTest();
-    AddLiterals();
-    AddsTest();
+    CmnTest();
 
     teardown();
 
-    std::cout << "ADDInstruction Unit Test Complete: SUCCESS";
+    std::cout << "CMNInstruction Unit Test Complete: SUCCESS";
     return 0;
 }

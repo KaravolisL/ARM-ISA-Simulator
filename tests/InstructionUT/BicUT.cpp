@@ -41,7 +41,7 @@ void setup()
 ////////////////////////////////
 void BicRegsTest()
 {
-    // ORR R0, R5, R1
+    // BIC R0, R5, R1
     arguments.InsertBack("R0");
     arguments.InsertBack("R5");
     arguments.InsertBack("R1");
@@ -51,7 +51,7 @@ void BicRegsTest()
     assert(myProc.GetProcessRegisters().genRegs[0] == 0b0100);
     arguments.Clear();
 
-    // ORR R7, R9
+    // BIC R7, R9
     arguments.InsertBack("R7"); // 0b0111
     arguments.InsertBack("R9"); // 0b1001
 
@@ -66,7 +66,7 @@ void BicRegsTest()
 ////////////////////////////////
 void BicLiterals()
 {
-    // ADD R0, R5, #0xA
+    // BIC R0, R5, #0xB
     arguments.InsertBack("R0");
     arguments.InsertBack("R5"); // 0b0101
     arguments.InsertBack("#0xB"); // 0b1011
@@ -76,13 +76,48 @@ void BicLiterals()
     assert(myProc.GetProcessRegisters().genRegs[0] == 0b0100);
     arguments.Clear();
 
-    // ADD R10, #xF
+    // BIC R10, #xF
     arguments.InsertBack("R10");
     arguments.InsertBack("#0xF");
 
     bic.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[10] == 0x0);
+    arguments.Clear();
+}
+
+////////////////////////////////
+/// BicsTest Function
+////////////////////////////////
+void BicsTest()
+{
+    // Reset registers
+    setup();
+
+    // Set flagged
+    bic.SetFlagged();
+
+    // BICS R1, R1
+    arguments.InsertBack("R1");
+    arguments.InsertBack("R1");
+
+    bic.Execute(arguments, myProc);
+
+    assert(myProc.GetProcessRegisters().GetZeroFlag());
+    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    arguments.Clear();
+
+    // "MOV" R5, #0xFFFFFFFF
+    myProc.GetProcessRegisters().genRegs[5] = 0xFFFFFFFF;
+
+    // BICS R5, #0xF
+    arguments.InsertBack("R5");
+    arguments.InsertBack("#0xF");
+
+    bic.Execute(arguments, myProc);
+
+    assert(!myProc.GetProcessRegisters().GetZeroFlag());
+    assert(myProc.GetProcessRegisters().GetNegativeFlag());
     arguments.Clear();
 }
 
@@ -103,6 +138,7 @@ int main(int argc, char* argv[])
 
     BicRegsTest();
     BicLiterals();
+    BicsTest();
 
     teardown();
 

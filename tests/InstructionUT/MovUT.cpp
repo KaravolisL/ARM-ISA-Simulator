@@ -67,6 +67,35 @@ void MovLiteralTest()
 }
 
 ////////////////////////////////
+/// MovsTest Function
+////////////////////////////////
+void MovsTest()
+{
+    // Set flagged
+    mov.SetFlagged();
+
+    // MOVS R0, #0
+    arguments.InsertBack("R0");
+    arguments.InsertBack("#0");
+
+    mov.Execute(arguments, myProc);
+
+    assert(myProc.GetProcessRegisters().GetZeroFlag());
+    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    arguments.Clear();
+
+    // MOVS R0, #0xFFFFFFFF
+    arguments.InsertBack("R0");
+    arguments.InsertBack("#0xFFFFFFFF");
+
+    mov.Execute(arguments, myProc);
+
+    assert(!myProc.GetProcessRegisters().GetZeroFlag());
+    assert(myProc.GetProcessRegisters().GetNegativeFlag());
+    arguments.Clear();
+}
+
+////////////////////////////////
 /// Teardown Function
 ////////////////////////////////
 void teardown()
@@ -83,6 +112,7 @@ int main(int argc, char* argv[])
 
     MovRegTest();
     MovLiteralTest();
+    MovsTest();
 
     teardown();
 

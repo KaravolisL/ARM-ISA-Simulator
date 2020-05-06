@@ -30,15 +30,23 @@ void EORInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
     // Get source from arguments
     uint32_t source1 = this->ParseArgument(rArguments.Get(1), rProcess);
 
+    Registers& regs = rProcess.GetProcessRegisters();
+
     if (rArguments.GetLength() == 2)
     {
         // And the source with the destination
-        rProcess.GetProcessRegisters().genRegs[destination] ^= source1;
+        regs.genRegs[destination] ^= source1;
     }
     else
     {
         // And the sources and overwrite the destination
         uint32_t source2 = this->ParseArgument(rArguments.Get(2), rProcess);
-        rProcess.GetProcessRegisters().genRegs[destination] = source1 ^ source2;
+        regs.genRegs[destination] = source1 ^ source2;
+    }
+
+    if (m_flagged)
+    {
+        (regs.genRegs[destination] & 0x80000000) != 0 ? regs.SetNegativeFlag() : regs.ClearNegativeFlag();
+        regs.genRegs[destination] == 0 ? regs.SetZeroFlag() : regs.ClearZeroFlag();
     }
 }

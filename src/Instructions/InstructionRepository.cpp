@@ -59,8 +59,16 @@ void InstructionRepository::Initialize()
 ////////////////////////////////
 /// METHOD NAME: InstructionRepository::GetInstruction 
 ////////////////////////////////
-InstructionBase* InstructionRepository::GetInstruction(const std::string& rInstruction)
+InstructionBase* InstructionRepository::GetInstruction(std::string& rInstruction)
 {
+    // Determine if the instruction needs to set the flags
+    bool flagged = false;
+    if (rInstruction.at(rInstruction.length() - 1) == 's')
+    {
+        flagged = true;
+        rInstruction.pop_back();
+    }
+
     InstructionBase* pInstructionBase;
     try
     {
@@ -70,6 +78,9 @@ InstructionBase* InstructionRepository::GetInstruction(const std::string& rInstr
     {
         throw InvalidSyntaxException("Instruction not supported", rInstruction);
     }
+
+    // Configure instruction
+    flagged ? pInstructionBase->SetFlagged() : pInstructionBase->ClearFlagged();
 
     ASSERT(pInstructionBase != nullptr);
     

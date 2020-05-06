@@ -66,7 +66,7 @@ void OrrRegsTest()
 ////////////////////////////////
 void OrrLiterals()
 {
-    // ADD R0, R1, #0xA
+    // ORR R0, R5, #0xF
     arguments.InsertBack("R0");
     arguments.InsertBack("R5");
     arguments.InsertBack("#0xF");
@@ -76,13 +76,45 @@ void OrrLiterals()
     assert(myProc.GetProcessRegisters().genRegs[0] == 15);
     arguments.Clear();
 
-    // ADD R0, #x11
+    // ORR R1, #x12
     arguments.InsertBack("R1");
     arguments.InsertBack("#0x12");
 
     orr.Execute(arguments, myProc);
 
     assert(myProc.GetProcessRegisters().genRegs[1] == 0x13);
+    arguments.Clear();
+}
+
+////////////////////////////////
+/// OrrsTest Function
+////////////////////////////////
+void OrrsTest()
+{
+    // Reset registers
+    setup();
+
+    // Set flagged
+    orr.SetFlagged();
+
+    // ORRS R1, R2, #0x80000000
+    arguments.InsertBack("R1");
+    arguments.InsertBack("R2");
+    arguments.InsertBack("#0x80000000");
+
+    orr.Execute(arguments, myProc);
+
+    assert(myProc.GetProcessRegisters().GetNegativeFlag());
+    arguments.Clear();
+
+    // ORRS R0, #0
+    arguments.InsertBack("R0");
+    arguments.InsertBack("#0");
+
+    orr.Execute(arguments, myProc);
+
+    assert(myProc.GetProcessRegisters().GetZeroFlag());
+    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
     arguments.Clear();
 }
 
@@ -103,6 +135,7 @@ int main(int argc, char* argv[])
 
     OrrRegsTest();
     OrrLiterals();
+    OrrsTest();
 
     teardown();
 

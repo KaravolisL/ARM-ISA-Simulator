@@ -93,7 +93,7 @@ public:
     /// @brief Prints information regarding the
     /// values held in registers
     ////////////////////////////////
-    void PrintSummary(std::ios_base& (*func)(std::ios_base&))
+    void PrintSummary(std::ios_base& (*func)(std::ios_base&) = &std::dec)
     {
         for (int i = 0; i < 13; i++)
         {

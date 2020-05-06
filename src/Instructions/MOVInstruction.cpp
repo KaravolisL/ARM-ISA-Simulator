@@ -36,5 +36,12 @@ void MOVInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
     uint32_t source = ParseArgument(rArguments.Get(1), rProcess);
 
     // Perform the move
-    rProcess.GetProcessRegisters().genRegs[destination] = source;
+    Registers& regs =  rProcess.GetProcessRegisters();
+    regs.genRegs[destination] = source;
+
+    if (m_flagged)
+    {
+        (regs.genRegs[destination] & 0x80000000) != 0 ? regs.SetNegativeFlag() : regs.ClearNegativeFlag();
+         regs.genRegs[destination] == 0 ? regs.SetZeroFlag() : regs.ClearZeroFlag();
+    }
 }
