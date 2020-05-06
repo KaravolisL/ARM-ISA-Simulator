@@ -141,6 +141,7 @@ bool InstructionRepository::CheckConditionalCode(std::string& rInstruction, cons
     bool execute = false;
     ConditionalCode code = m_conditionalCodeDict.Get(codeStr);
 
+    // Determine whether the instruction should be executed or not
     switch (code)
     {
     case ConditionalCode::EQ:
