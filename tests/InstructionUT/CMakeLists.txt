@@ -22,6 +22,9 @@ target_link_libraries(BranchUT PRIVATE instr_lib support)
 add_executable(CmpUT CmpUT.cpp)
 target_link_libraries(CmpUT PRIVATE instr_lib)
 
+add_executable(CmnUT CmnUT.cpp)
+target_link_libraries(CmnUT PRIVATE instr_lib)
+
 add_executable(AndUT AndUT.cpp)
 target_link_libraries(AndUT PRIVATE instr_lib)
 
@@ -39,6 +42,7 @@ add_test(NAME AddUT COMMAND AddUT)
 add_test(NAME MovUT COMMAND MovUT)
 add_test(NAME BranchUT COMMAND BranchUT)
 add_test(NAME CmpUT COMMAND CmpUT)
+add_test(NAME CmnUT COMMAND CmnUT)
 add_test(NAME AndUT COMMAND AndUT)
 add_test(NAME OrrUT COMMAND OrrUT)
 add_test(NAME EorUT COMMAND EorUT)

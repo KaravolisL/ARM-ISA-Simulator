@@ -9,7 +9,7 @@
 #define MOV_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
-#include <string>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
