@@ -136,7 +136,7 @@ bool Process::Step()
     std::string instruction;
     lineParser.GetInstruction(instruction);
 
-    InstructionBase* pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction);
+    InstructionBase* pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction, *this);
 
     SLList<std::string> arguments;
     lineParser.GetArguments(arguments);
