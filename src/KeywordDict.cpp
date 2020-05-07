@@ -46,12 +46,12 @@ void KeywordDict::Initialize()
     {
         // For every instruction, add the base, base + s, base + conditional, base + s + conditional
         m_keywordDict.Insert(*it, Io::LineType::INSTRUCTION);
-        m_keywordDict.Insert(*it + 's', Io::LineType::INSTRUCTION);
+        m_keywordDict.Insert(*it + 'S', Io::LineType::INSTRUCTION);
         for (SLList<std::string>::SLListIterator condIt = conditionalCodeList.GetBegin();
              condIt != conditionalCodeList.GetEnd(); condIt++)
         {
             m_keywordDict.Insert(*it + *condIt, Io::LineType::INSTRUCTION);
-            m_keywordDict.Insert(*it + 's' + *condIt, Io::LineType::INSTRUCTION);
+            m_keywordDict.Insert(*it + 'S' + *condIt, Io::LineType::INSTRUCTION);
         }
     }
 
