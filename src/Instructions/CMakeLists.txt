@@ -14,6 +14,7 @@ set(SOURCES
     Logic/ANDInstruction.cpp
     FlowCtrl/BInstruction.cpp
     FlowCtrl/BLInstruction.cpp
+    FlowCtrl/BXInstruction.cpp
     Logic/BICInstruction.cpp
     Comparison/CMNInstruction.cpp
     Comparison/CMPInstruction.cpp
