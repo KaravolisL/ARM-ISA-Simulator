@@ -69,6 +69,13 @@ public:
     ////////////////////////////////
     SLList<std::string> GetInstructionStrings() const { return m_instructionDict.GetKeys(); }
 
+    ////////////////////////////////
+    /// METHOD NAME: GetConditionalCodeStrings
+    ///
+    /// @return A list containing the conditional codes as strings
+    ////////////////////////////////
+    SLList<std::string> GetConditionalCodeStrings() const { return m_conditionalCodeDict.GetKeys(); }
+
 protected:
 
 private:

@@ -39,11 +39,20 @@ void KeywordDict::Initialize()
 
     // Instructions
     SLList<std::string> instructionList = InstructionRepository::GetInstance().GetInstructionStrings();
+    SLList<std::string> conditionalCodeList = InstructionRepository::GetInstance().GetConditionalCodeStrings();
 
     for (SLList<std::string>::SLListIterator it = instructionList.GetBegin();
          it != instructionList.GetEnd(); it++)
     {
+        // For every instruction, add the base, base + s, base + conditional, base + s + conditional
         m_keywordDict.Insert(*it, Io::LineType::INSTRUCTION);
+        m_keywordDict.Insert(*it + 'S', Io::LineType::INSTRUCTION);
+        for (SLList<std::string>::SLListIterator condIt = conditionalCodeList.GetBegin();
+             condIt != conditionalCodeList.GetEnd(); condIt++)
+        {
+            m_keywordDict.Insert(*it + *condIt, Io::LineType::INSTRUCTION);
+            m_keywordDict.Insert(*it + 'S' + *condIt, Io::LineType::INSTRUCTION);
+        }
     }
 
     // The following instructions are not implemented yet :(
@@ -51,7 +60,6 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("LSL", Io::LineType::INSTRUCTION);
     m_keywordDict.Insert("SUBS", Io::LineType::INSTRUCTION);
     m_keywordDict.Insert("STR", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("BEQ", Io::LineType::INSTRUCTION);
 
     LOG_INFO("Keyword dictionary initialized");
 }

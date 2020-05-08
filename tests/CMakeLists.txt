@@ -43,3 +43,4 @@ add_test(NAME LineParserUT COMMAND LineParserUT)
 
 include(FindPythonInterp)
 add_test(NAME simple_program_test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/simple_program_test.py)
+add_test(NAME conditional_program_test COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/conditional_program_test.py)

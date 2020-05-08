@@ -92,12 +92,13 @@ InstructionBase* InstructionRepository::GetInstruction(std::string& rInstruction
 {
     if (CheckConditionalCode(rInstruction, rProcess.GetProcessRegisters()) == false)
     {
+        LOG_DEBUG("Do not execute this instruction");
         return &f_NOP;
     }
 
     // Determine if the instruction needs to set the flags
     bool flagged = false;
-    if (rInstruction.at(rInstruction.length() - 1) == 's')
+    if (rInstruction.at(rInstruction.length() - 1) == 'S')
     {
         flagged = true;
         rInstruction.pop_back();
@@ -127,19 +128,33 @@ InstructionBase* InstructionRepository::GetInstruction(std::string& rInstruction
 bool InstructionRepository::CheckConditionalCode(std::string& rInstruction, const Registers& rRegisters)
 {
     std::string codeStr;
-    // The instruction should be executed if it doesn't have a conditional code
-    if (rInstruction.length() <= 2)
-    {
-        return true;
-    }
-    else
+    // This mess of logic ensures that only instructions with valid conditional codes
+    // proceed through the function. If the instruction is longer than 4 characters,
+    // the last two characters are checked against condition codes. Otherwise, if 
+    // the instruction starts with a B, and it's long enough to have a condition code
+    // then it's last two characters are checked
+    if (rInstruction.length() >= 5)
     {
         codeStr = rInstruction.substr(rInstruction.length() - 2);
         if (!m_conditionalCodeDict.Contains(codeStr)) return true;
     }
+    else
+    {
+        if (rInstruction[0] == 'B' && rInstruction.length() >= 3)
+        {
+            codeStr = rInstruction.substr(rInstruction.length() - 2);
+            if (!m_conditionalCodeDict.Contains(codeStr)) return true;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
     bool execute = false;
     ConditionalCode code = m_conditionalCodeDict.Get(codeStr);
+
+    LOG_DEBUG("Checking flags : CPSR = %d", rRegisters.CPSR);
 
     // Determine whether the instruction should be executed or not
     switch (code)
@@ -151,7 +166,7 @@ bool InstructionRepository::CheckConditionalCode(std::string& rInstruction, cons
         if (!rRegisters.GetZeroFlag()) execute = true;
         break;
     case ConditionalCode::GT:
-        if (rRegisters.GetZeroFlag() && (rRegisters.GetNegativeFlag() == rRegisters.GetOverflowFlag())) execute = true;
+        if (!rRegisters.GetZeroFlag() && (rRegisters.GetNegativeFlag() == rRegisters.GetOverflowFlag())) execute = true;
         break;
     case ConditionalCode::LT:
         if (rRegisters.GetNegativeFlag() != rRegisters.GetOverflowFlag()) execute = true;
