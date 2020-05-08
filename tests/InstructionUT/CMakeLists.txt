@@ -8,11 +8,13 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Io")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Arithmetic")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Comparison")
-include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/FlowCtrl")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Logic")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Other")
 
 include_directories("${PROJECT_SOURCE_DIR}/tests/support")
+
+# Add Subdirectories
+add_subdirectory(FlowCtrlUT)
 
 # Add executables (Unit tests)
 add_executable(AddUT AddUT.cpp)
@@ -20,9 +22,6 @@ target_link_libraries(AddUT PRIVATE instr_lib)
 
 add_executable(MovUT MovUT.cpp)
 target_link_libraries(MovUT PRIVATE instr_lib)
-
-add_executable(BranchUT BranchUT.cpp)
-target_link_libraries(BranchUT PRIVATE instr_lib support)
 
 add_executable(CmpUT CmpUT.cpp)
 target_link_libraries(CmpUT PRIVATE instr_lib)
@@ -45,7 +44,6 @@ target_link_libraries(BicUT PRIVATE instr_lib)
 # Add Unit Tests
 add_test(NAME AddUT COMMAND AddUT)
 add_test(NAME MovUT COMMAND MovUT)
-add_test(NAME BranchUT COMMAND BranchUT)
 add_test(NAME CmpUT COMMAND CmpUT)
 add_test(NAME CmnUT COMMAND CmnUT)
 add_test(NAME AndUT COMMAND AndUT)

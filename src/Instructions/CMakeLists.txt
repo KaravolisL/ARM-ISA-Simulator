@@ -13,6 +13,7 @@ set(SOURCES
     Arithmetic/ADDInstruction.cpp
     Logic/ANDInstruction.cpp
     FlowCtrl/BInstruction.cpp
+    FlowCtrl/BLInstruction.cpp
     Logic/BICInstruction.cpp
     Comparison/CMNInstruction.cpp
     Comparison/CMPInstruction.cpp
