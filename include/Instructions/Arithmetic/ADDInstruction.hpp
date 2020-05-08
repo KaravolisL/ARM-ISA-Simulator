@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file CMPInstruction.hpp
+/// @file ADDInstruction.hpp
 ///
-/// @brief Declaration of CMPInstruction class
+/// @brief Declaration of ADDInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef CMP_INSTRUCTION_HPP
-#define CMP_INSTRUCTION_HPP
+#ifndef ADD_INSTRUCTION_HPP
+#define ADD_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -21,24 +21,29 @@
 // (None)
 
 ////////////////////////////////
-/// @class CMPInstruction
+/// @class ADDInstruction
 ///
-/// @brief Class to represent CMP instruction
+/// @brief Class to represent ADD instruction
 ////////////////////////////////
-class CMPInstruction : public InstructionBase
+class ADDInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    CMPInstruction() {}
+    ADDInstruction() :
+        InstructionBase(InstructionType::ARITHMETIC)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Subtracts the given arguments
-    /// and sets the flags accordingly
+    /// @brief Adds two arguments and places
+    /// in the first argument. If two arguments
+    /// are given, the source will be added onto
+    /// the destination. Otherwise, the two sources
+    /// will be added and the destination replaced by the sum
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
@@ -47,7 +52,6 @@ public:
 protected:
 
 private:
-
 
 };
 

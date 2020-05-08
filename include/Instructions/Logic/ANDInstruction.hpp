@@ -1,15 +1,15 @@
 /////////////////////////////////
-/// @file BInstruction.hpp
+/// @file ANDInstruction.hpp
 ///
-/// @brief Declaration of BInstruction class
+/// @brief Declaration of ANDInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef B_INSTRUCTION_HPP
-#define B_INSTRUCTION_HPP
+#ifndef AND_INSTRUCTION_HPP
+#define AND_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
-#include <string>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
@@ -21,24 +21,26 @@
 // (None)
 
 ////////////////////////////////
-/// @class BInstruction
+/// @class ANDInstruction
 ///
-/// @brief Class to represent B instruction
+/// @brief Class to represent AND instruction
 ////////////////////////////////
-class BInstruction : public InstructionBase
+class ANDInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    BInstruction() {}
+    ANDInstruction() :
+        InstructionBase(InstructionType::LOGIC)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Set the PC to the value associated
-    /// with the given label
+    /// @brief Logical ands the arguments
+    /// and places it in the first argument
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
@@ -47,7 +49,6 @@ public:
 protected:
 
 private:
-
 
 };
 

@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file ADDInstruction.hpp
+/// @file EORInstruction.hpp
 ///
-/// @brief Declaration of ADDInstruction class
+/// @brief Declaration of EORInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef ADD_INSTRUCTION_HPP
-#define ADD_INSTRUCTION_HPP
+#ifndef EOR_INSTRUCTION_HPP
+#define EOR_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -21,27 +21,26 @@
 // (None)
 
 ////////////////////////////////
-/// @class ADDInstruction
+/// @class EORInstruction
 ///
-/// @brief Class to represent ADD instruction
+/// @brief Class to represent EOR instruction
 ////////////////////////////////
-class ADDInstruction : public InstructionBase
+class EORInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    ADDInstruction() {}
+    EORInstruction() :
+        InstructionBase(InstructionType::LOGIC)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Adds two arguments and places
-    /// in the first argument. If two arguments
-    /// are given, the source will be added onto
-    /// the destination. Otherwise, the two sources
-    /// will be added and the destination replaced by the sum
+    /// @brief Logical xors the arguments
+    /// and places it in the first argument
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////

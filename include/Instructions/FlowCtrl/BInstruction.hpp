@@ -1,15 +1,15 @@
 /////////////////////////////////
-/// @file EORInstruction.hpp
+/// @file BInstruction.hpp
 ///
-/// @brief Declaration of EORInstruction class
+/// @brief Declaration of BInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef EOR_INSTRUCTION_HPP
-#define EOR_INSTRUCTION_HPP
+#ifndef B_INSTRUCTION_HPP
+#define B_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
-// (None)
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
@@ -21,24 +21,26 @@
 // (None)
 
 ////////////////////////////////
-/// @class EORInstruction
+/// @class BInstruction
 ///
-/// @brief Class to represent EOR instruction
+/// @brief Class to represent B instruction
 ////////////////////////////////
-class EORInstruction : public InstructionBase
+class BInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    EORInstruction() {}
+    BInstruction() :
+        InstructionBase(InstructionType::FLOW_CTRL)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Logical xors the arguments
-    /// and places it in the first argument
+    /// @brief Set the PC to the value associated
+    /// with the given label
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
@@ -47,6 +49,7 @@ public:
 protected:
 
 private:
+
 
 };
 

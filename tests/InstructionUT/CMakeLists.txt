@@ -6,6 +6,11 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Debug")
 include_directories("${PROJECT_SOURCE_DIR}/include/Exceptions")
 include_directories("${PROJECT_SOURCE_DIR}/include/Io")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
+include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Arithmetic")
+include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Comparison")
+include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/FlowCtrl")
+include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Logic")
+include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Other")
 
 include_directories("${PROJECT_SOURCE_DIR}/tests/support")
 

@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file MOVInstruction.hpp
+/// @file ORRInstruction.hpp
 ///
-/// @brief Declaration of MOVInstruction class
+/// @brief Declaration of ORRInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef MOV_INSTRUCTION_HPP
-#define MOV_INSTRUCTION_HPP
+#ifndef ORR_INSTRUCTION_HPP
+#define ORR_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -21,24 +21,26 @@
 // (None)
 
 ////////////////////////////////
-/// @class MOVInstruction
+/// @class ORRInstruction
 ///
-/// @brief Class to represent MOV instruction
+/// @brief Class to represent ORR instruction
 ////////////////////////////////
-class MOVInstruction : public InstructionBase
+class ORRInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    MOVInstruction() {}
+    ORRInstruction() :
+        InstructionBase(InstructionType::LOGIC)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Moves the value stored in the
-    /// second argument into the first argument
+    /// @brief Logical ors the arguments
+    /// and places it in the first argument
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
@@ -47,7 +49,6 @@ public:
 protected:
 
 private:
-
 
 };
 

@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file ORRInstruction.hpp
+/// @file BICInstruction.hpp
 ///
-/// @brief Declaration of ORRInstruction class
+/// @brief Declaration of BICInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef ORR_INSTRUCTION_HPP
-#define ORR_INSTRUCTION_HPP
+#ifndef BIC_INSTRUCTION_HPP
+#define BIC_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -21,23 +21,25 @@
 // (None)
 
 ////////////////////////////////
-/// @class ORRInstruction
+/// @class BICInstruction
 ///
-/// @brief Class to represent ORR instruction
+/// @brief Class to represent BIC instruction
 ////////////////////////////////
-class ORRInstruction : public InstructionBase
+class BICInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    ORRInstruction() {}
+    BICInstruction() :
+        InstructionBase(InstructionType::LOGIC)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Logical ors the arguments
+    /// @brief Bit clears the arguments
     /// and places it in the first argument
     ///
     /// @copydoc InstructionBase::Execute()

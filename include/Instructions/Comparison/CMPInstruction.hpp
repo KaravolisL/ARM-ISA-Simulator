@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file CMNInstruction.hpp
+/// @file CMPInstruction.hpp
 ///
-/// @brief Declaration of CMNInstruction class
+/// @brief Declaration of CMPInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef CMN_INSTRUCTION_HPP
-#define CMN_INSTRUCTION_HPP
+#ifndef CMP_INSTRUCTION_HPP
+#define CMP_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -21,23 +21,25 @@
 // (None)
 
 ////////////////////////////////
-/// @class CMNInstruction
+/// @class CMPInstruction
 ///
-/// @brief Class to represent CMN instruction
+/// @brief Class to represent CMP instruction
 ////////////////////////////////
-class CMNInstruction : public InstructionBase
+class CMPInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    CMNInstruction() {}
+    CMPInstruction() :
+        InstructionBase(InstructionType::COMPARISON)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Adds the given arguments
+    /// @brief Subtracts the given arguments
     /// and sets the flags accordingly
     ///
     /// @copydoc InstructionBase::Execute()

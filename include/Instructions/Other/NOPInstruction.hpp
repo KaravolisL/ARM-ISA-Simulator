@@ -32,7 +32,9 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    NOPInstruction() {}
+    NOPInstruction() :
+        InstructionBase(InstructionType::OTHER)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
