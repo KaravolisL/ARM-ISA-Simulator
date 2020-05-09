@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file NOPInstruction.hpp
+/// @file BLInstruction.hpp
 ///
-/// @brief Declaration of NOPInstruction class
+/// @brief Declaration of BLInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef NOP_INSTRUCTION_HPP
-#define NOP_INSTRUCTION_HPP
+#ifndef BL_INSTRUCTION_HPP
+#define BL_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 #include <string>
@@ -21,27 +21,31 @@
 // (None)
 
 ////////////////////////////////
-/// @class NOPInstruction
+/// @class BLInstruction
 ///
-/// @brief Class to represent NOP instruction
+/// @brief Class to represent BL instruction
 ////////////////////////////////
-class NOPInstruction : public InstructionBase
+class BLInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    NOPInstruction() {}
+    BLInstruction() :
+        InstructionBase(InstructionType::FLOW_CTRL)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief ... does absolutely nothing
+    /// @brief Sets the LR to the current
+    /// PC value + 1 and sets the PC to the value
+    /// associated with the given label
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
-    void Execute(const SLList<std::string>& rArguments, Process& rProcess) {}
+    void Execute(const SLList<std::string>& rArguments, Process& rProcess);
 
 protected:
 

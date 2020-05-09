@@ -15,7 +15,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-// (None)
+#include "InstructionTypes.hpp"
 
 // FORWARD DECLARATIONS
 template <typename T>
@@ -36,8 +36,9 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    InstructionBase() :
-        m_flagged(false)
+    InstructionBase(InstructionType type) :
+        m_flagged(false),
+        m_type(type)
     {}
 
     ////////////////////////////////
@@ -79,6 +80,9 @@ protected:
 
     /// Flag to determine whether flags need to be set following instruction execution
     bool m_flagged;
+
+    /// Type of instruction
+    InstructionType m_type;
 
 private:
 

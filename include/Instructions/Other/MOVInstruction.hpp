@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file ANDInstruction.hpp
+/// @file MOVInstruction.hpp
 ///
-/// @brief Declaration of ANDInstruction class
+/// @brief Declaration of MOVInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef AND_INSTRUCTION_HPP
-#define AND_INSTRUCTION_HPP
+#ifndef MOV_INSTRUCTION_HPP
+#define MOV_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -21,24 +21,26 @@
 // (None)
 
 ////////////////////////////////
-/// @class ANDInstruction
+/// @class MOVInstruction
 ///
-/// @brief Class to represent AND instruction
+/// @brief Class to represent MOV instruction
 ////////////////////////////////
-class ANDInstruction : public InstructionBase
+class MOVInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    ANDInstruction() {}
+    MOVInstruction() :
+        InstructionBase(InstructionType::OTHER)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Logical ands the arguments
-    /// and places it in the first argument
+    /// @brief Moves the value stored in the
+    /// second argument into the first argument
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
@@ -47,6 +49,7 @@ public:
 protected:
 
 private:
+
 
 };
 

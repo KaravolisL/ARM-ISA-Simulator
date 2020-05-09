@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file BInstruction.hpp
+/// @file BXInstruction.hpp
 ///
-/// @brief Declaration of BInstruction class
+/// @brief Declaration of BXInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef B_INSTRUCTION_HPP
-#define B_INSTRUCTION_HPP
+#ifndef BX_INSTRUCTION_HPP
+#define BX_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 #include <string>
@@ -21,24 +21,27 @@
 // (None)
 
 ////////////////////////////////
-/// @class BInstruction
+/// @class BXInstruction
 ///
-/// @brief Class to represent B instruction
+/// @brief Class to represent BX instruction
 ////////////////////////////////
-class BInstruction : public InstructionBase
+class BXInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    BInstruction() {}
+    BXInstruction() :
+        InstructionBase(InstructionType::FLOW_CTRL)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Set the PC to the value associated
-    /// with the given label
+    /// @brief Places the contents of a given
+    /// register into the PC. Normally used as BX LR
+    /// in order to return from a function
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////

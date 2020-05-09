@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file BICInstruction.hpp
+/// @file CMNInstruction.hpp
 ///
-/// @brief Declaration of BICInstruction class
+/// @brief Declaration of CMNInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef BIC_INSTRUCTION_HPP
-#define BIC_INSTRUCTION_HPP
+#ifndef CMN_INSTRUCTION_HPP
+#define CMN_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -21,24 +21,26 @@
 // (None)
 
 ////////////////////////////////
-/// @class BICInstruction
+/// @class CMNInstruction
 ///
-/// @brief Class to represent BIC instruction
+/// @brief Class to represent CMN instruction
 ////////////////////////////////
-class BICInstruction : public InstructionBase
+class CMNInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    BICInstruction() {}
+    CMNInstruction() :
+        InstructionBase(InstructionType::COMPARISON)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Bit clears the arguments
-    /// and places it in the first argument
+    /// @brief Adds the given arguments
+    /// and sets the flags accordingly
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
@@ -47,6 +49,7 @@ public:
 protected:
 
 private:
+
 
 };
 

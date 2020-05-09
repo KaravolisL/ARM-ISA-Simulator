@@ -32,7 +32,9 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    CMPInstruction() {}
+    CMPInstruction() :
+        InstructionBase(InstructionType::COMPARISON)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute

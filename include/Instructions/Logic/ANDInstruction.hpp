@@ -1,12 +1,12 @@
 /////////////////////////////////
-/// @file CMNInstruction.hpp
+/// @file ANDInstruction.hpp
 ///
-/// @brief Declaration of CMNInstruction class
+/// @brief Declaration of ANDInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef CMN_INSTRUCTION_HPP
-#define CMN_INSTRUCTION_HPP
+#ifndef AND_INSTRUCTION_HPP
+#define AND_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -21,24 +21,26 @@
 // (None)
 
 ////////////////////////////////
-/// @class CMNInstruction
+/// @class ANDInstruction
 ///
-/// @brief Class to represent CMN instruction
+/// @brief Class to represent AND instruction
 ////////////////////////////////
-class CMNInstruction : public InstructionBase
+class ANDInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    CMNInstruction() {}
+    ANDInstruction() :
+        InstructionBase(InstructionType::LOGIC)
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Adds the given arguments
-    /// and sets the flags accordingly
+    /// @brief Logical ands the arguments
+    /// and places it in the first argument
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
@@ -47,7 +49,6 @@ public:
 protected:
 
 private:
-
 
 };
 
