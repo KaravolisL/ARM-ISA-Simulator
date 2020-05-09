@@ -20,7 +20,11 @@ target_link_libraries(BlUT PRIVATE instr_lib support)
 add_executable(BxUT BxUT.cpp)
 target_link_libraries(BxUT PRIVATE instr_lib support)
 
+add_executable(BlxUT BlxUT.cpp)
+target_link_libraries(BlxUT PRIVATE instr_lib support)
+
 # Add Unit Tests
 add_test(NAME BranchUT COMMAND BranchUT)
 add_test(NAME BlUT COMMAND BlUT)
 add_test(NAME BxUT COMMAND BxUT)
+add_test(NAME BlxUT COMMAND BlxUT)
