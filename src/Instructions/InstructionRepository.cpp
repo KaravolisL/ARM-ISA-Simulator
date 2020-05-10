@@ -18,6 +18,7 @@
 #include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "MOVInstruction.hpp" // For MOV
 #include "ADDInstruction.hpp" // For ADD
+#include "SUBInstruction.hpp" // For SUB
 #include "ANDInstruction.hpp" // For AND
 #include "BICInstruction.hpp" // For BIC
 #include "EORInstruction.hpp" // For EOR
@@ -37,6 +38,7 @@ static MOVInstruction f_MOV = MOVInstruction();
 static NOPInstruction f_NOP = NOPInstruction();
 
 static ADDInstruction f_ADD = ADDInstruction();
+static SUBInstruction f_SUB = SUBInstruction();
 
 static ANDInstruction f_AND = ANDInstruction();
 static BICInstruction f_BIC = BICInstruction();
@@ -61,6 +63,8 @@ void InstructionRepository::Initialize()
     m_instructionDict.Insert("NOP", &f_NOP);
 
     m_instructionDict.Insert("ADD", &f_ADD);
+    m_instructionDict.Insert("SUB", &f_SUB);
+
     m_instructionDict.Insert("AND", &f_AND);
     m_instructionDict.Insert("BIC", &f_BIC);
     m_instructionDict.Insert("EOR", &f_EOR);

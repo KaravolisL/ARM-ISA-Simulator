@@ -54,13 +54,7 @@ void KeywordDict::Initialize()
             m_keywordDict.Insert(*it + 'S' + *condIt, Io::LineType::INSTRUCTION);
         }
     }
-
-    // The following instructions are not implemented yet :(
-    m_keywordDict.Insert("LDR", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("LSL", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("SUBS", Io::LineType::INSTRUCTION);
-    m_keywordDict.Insert("STR", Io::LineType::INSTRUCTION);
-
+    
     LOG_INFO("Keyword dictionary initialized");
 }
 

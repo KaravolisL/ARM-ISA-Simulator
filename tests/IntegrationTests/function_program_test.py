@@ -58,8 +58,7 @@ if __name__ == '__main__':
 
     Top
         ADD R2, R0
-        ADDS R1, #-1
-        ; SUBS R1, #1
+        SUBS R1, #1
         BNE Top
 
         MOV R0, R2
