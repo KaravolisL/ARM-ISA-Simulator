@@ -18,6 +18,7 @@
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For FileIterator
+#include "Logger.hpp" // For Logger
 
 ////////////////////////////////
 /// METHOD NAME: BLInstruction::Execute 
@@ -44,6 +45,8 @@ void BLInstruction::Execute(const SLList<std::string>& rArguments, Process& rPro
 
     // Set the LR to the current PC + 1
     rProcess.GetProcessRegisters().LR = rProcess.GetProcessRegisters().PC + 1;
+
+    LOG_DEBUG("LR set to %d", rProcess.GetProcessRegisters().LR);
     
     // Set the new PC and "jump" to that location
     rProcess.GetProcessRegisters().PC = newPC;

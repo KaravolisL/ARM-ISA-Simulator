@@ -18,6 +18,7 @@
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For FileIterator
+#include "Logger.hpp"
 
 ////////////////////////////////
 /// METHOD NAME: BXInstruction::Execute 
@@ -50,6 +51,8 @@ void BXInstruction::Execute(const SLList<std::string>& rArguments, Process& rPro
     
     // Set the new PC and "jump" to that location
     rProcess.GetProcessRegisters().PC = newPC;
+
+    LOG_DEBUG("Current PC = %d", rProcess.GetProcessRegisters().PC);
 
     rProcess.GetFileIterator()->GoToLine(newPC);
 }
