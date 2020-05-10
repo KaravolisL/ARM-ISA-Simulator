@@ -30,7 +30,7 @@ if __name__ == '__main__':
     constants_file = open(CONSTANTS_FILE_NAME, "w")
 
     constants_file.write('''
-    MY_CONSTANT EQU 0xFF
+    MY_CONSTANT EQU 0xCAFE
     
     ''')
 
@@ -47,12 +47,19 @@ if __name__ == '__main__':
         ; Multiply 5 by 7
         MOV R0, #5
         MOV R1, #7
+        MOV R4, #0xBEEF
+        MOV R7, #0xCODE
         BL multiply
 
+        ; BL func1
 
         ENDP
 
     multiply PROC
+
+        ; PUSH {R3, R4, R6-R8}
+        ; MOV R4, #0xCODE
+        ; MOV R7, #0xBEEF
 
         MOV R2, #0
 
@@ -60,9 +67,26 @@ if __name__ == '__main__':
         ADD R2, R0
         SUBS R1, #1
         BNE Top
-
         MOV R0, R2
 
+        ; POP {R3, R4, R6-R8}
+        BX LR
+
+        ENDP
+
+    func1 PROC
+
+        ; PUSH {LR}
+
+        BL func2
+        ; POP {LR}
+        BX LR
+
+        ENDP
+
+    func2 PROC
+
+        MOV R10, #0xCAFE
         BX LR
 
         ENDP
