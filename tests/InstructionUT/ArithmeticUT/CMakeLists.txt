@@ -8,5 +8,9 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Arithmetic")
 add_executable(AddUT AddUT.cpp)
 target_link_libraries(AddUT PRIVATE instr_lib)
 
+add_executable(SubUT SubUT.cpp)
+target_link_libraries(SubUT PRIVATE instr_lib)
+
 # Add Unit Tests
 add_test(NAME AddUT COMMAND AddUT)
+add_test(NAME SubUT COMMAND SubUT)

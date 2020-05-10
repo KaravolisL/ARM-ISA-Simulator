@@ -11,6 +11,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Other")
 # Set source files
 set(SOURCES
     Arithmetic/ADDInstruction.cpp
+    Arithmetic/SUBInstruction.cpp
     Logic/ANDInstruction.cpp
     FlowCtrl/BInstruction.cpp
     FlowCtrl/BLInstruction.cpp

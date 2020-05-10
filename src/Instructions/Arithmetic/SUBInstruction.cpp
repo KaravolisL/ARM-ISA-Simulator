@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file ADDInstruction.cpp
+/// @file SUBInstruction.cpp
 ///
-/// @brief Implementation for ADDInstruction
+/// @brief Implementation for SUBInstruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -13,15 +13,15 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "ADDInstruction.hpp" // Header for class
+#include "SUBInstruction.hpp" // Header for class
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For Io::FileIterator
 
 ////////////////////////////////
-/// METHOD NAME: ADDInstruction::Execute 
+/// METHOD NAME: SUBInstruction::Execute 
 ////////////////////////////////
-void ADDInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
+void SUBInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
     // Get destination from arguments
     std::string destString = rArguments.Get(0);
@@ -36,13 +36,13 @@ void ADDInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
     if (rArguments.GetLength() == 2)
     {
         // Add source to destination
-        regs.genRegs[destination] += source1;
+        regs.genRegs[destination] -= source1;
     }
     else
     {
         // Set the destination to the sum of the sources
         source2 = this->ParseArgument(rArguments.Get(2), rProcess);
-        regs.genRegs[destination] = source1 + source2;
+        regs.genRegs[destination] = source1 - source2;
     }
 
     if (m_flagged)
@@ -50,11 +50,11 @@ void ADDInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
         (regs.genRegs[destination] & 0x80000000) != 0 ? regs.SetNegativeFlag() : regs.ClearNegativeFlag();
         regs.genRegs[destination] == 0 ? regs.SetZeroFlag() : regs.ClearZeroFlag();
 
-        // Overflow can only occur if the numbers are the same sign
-        if ((source1 & 0x80000000) == (source2 & 0x80000000))
+        // Overflow can only occur if the numbers are different signs
+        if ((source1 & 0x80000000) != (source2 & 0x80000000))
         {
-            // Overflow occurs if the sign of the arguments differ from the sum's sign
-            if ((source1 & 0x80000000) != (regs.genRegs[destination] & 0x80000000))
+            // Overflow occurs if the sign of the second argument is the same as the result
+            if ((source2 & 0x80000000) == (regs.genRegs[destination] & 0x80000000))
             {
                 regs.SetOverflowFlag();
             }
@@ -64,13 +64,14 @@ void ADDInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
             }
         }
 
-        if (regs.genRegs[destination] < source1 || regs.genRegs[destination] < source2)
+        if (regs.genRegs[destination] > source1 || regs.genRegs[destination] > source2)
         {
-            regs.SetCarryFlag();
+            // Clearing flag indicates a borrow occured
+            regs.ClearCarryFlag();
         }
         else
         {
-            regs.ClearCarryFlag();
+            regs.SetCarryFlag();
         }
     }
 }
