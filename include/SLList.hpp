@@ -228,7 +228,7 @@ public:
     ////////////////////////////////
     /// FUNCTION NAME: GetBegin
     ////////////////////////////////
-    SLListIterator GetBegin()
+    SLListIterator GetBegin() const
     {
         return SLListIterator(this->head);
     }
@@ -236,7 +236,7 @@ public:
     ////////////////////////////////
     /// FUNCTION NAME: GetEnd
     ////////////////////////////////
-    SLListIterator GetEnd()
+    SLListIterator GetEnd() const
     {
         return SLListIterator(nullptr);
     }

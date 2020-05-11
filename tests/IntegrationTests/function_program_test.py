@@ -51,15 +51,16 @@ if __name__ == '__main__':
         MOV R7, #0xCODE
         BL multiply
 
-        ; BL func1
+        BL func1
 
         ENDP
 
     multiply PROC
 
         ; PUSH {R3, R4, R6-R8}
-        ; MOV R4, #0xCODE
-        ; MOV R7, #0xBEEF
+        PUSH {R3, R4, R6, R7, R8}
+        MOV R4, #0xCODE
+        MOV R7, #0xBEEF
 
         MOV R2, #0
 
@@ -70,16 +71,17 @@ if __name__ == '__main__':
         MOV R0, R2
 
         ; POP {R3, R4, R6-R8}
+        POP {R3, R4, R6, R7, R8}
         BX LR
 
         ENDP
 
     func1 PROC
 
-        ; PUSH {LR}
+        PUSH {LR}
 
         BL func2
-        ; POP {LR}
+        POP {LR}
         BX LR
 
         ENDP

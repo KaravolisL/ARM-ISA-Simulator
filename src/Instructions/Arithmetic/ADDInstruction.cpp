@@ -16,7 +16,6 @@
 #include "ADDInstruction.hpp" // Header for class
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
-#include "FileIterator.hpp" // For Io::FileIterator
 
 ////////////////////////////////
 /// METHOD NAME: ADDInstruction::Execute 

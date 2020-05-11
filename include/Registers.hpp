@@ -30,7 +30,7 @@ typedef uint32_t Register;
 /////////////////////////////////
 typedef struct Registers
 {
-    Register genRegs[13];
+    Register genRegs[14];
     Register LR;
     Register PC;
     Register SP;

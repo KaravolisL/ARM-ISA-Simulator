@@ -133,9 +133,6 @@ bool Process::Step()
 
     LOG_DEBUG("Executing %s", m_pFileIterator->GetCurrentLine().c_str());
 
-    // Set the new PC
-    m_processRegisters.PC = m_pFileIterator->GetLineNumber();
-
     std::string instruction;
     lineParser.GetInstruction(instruction);
 
@@ -145,5 +142,9 @@ bool Process::Step()
     lineParser.GetArguments(arguments);
 
     pInstruction->Execute(arguments, *this);
+
+    // Set the new PC
+    m_processRegisters.PC = m_pFileIterator->GetLineNumber();
+
     return true;
 }
