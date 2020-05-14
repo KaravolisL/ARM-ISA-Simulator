@@ -63,6 +63,7 @@ void Process::Initialize(const char* filename)
                 break;
             }
             case Io::LineType::LABEL:
+            case Io::LineType::LABEL_AND_INSTRUCTION:
             {
                 std::string label;
                 lineParser.GetLabel(label);
@@ -116,6 +117,8 @@ void Process::PrepareForExecution(const char* filename)
 void Process::Execute()
 {
     while (this->Step()) {}
+
+    LOG_DEBUG("Execution Complete");
 }
 
 ////////////////////////////////
@@ -123,13 +126,17 @@ void Process::Execute()
 ////////////////////////////////
 bool Process::Step()
 {
-    // Move to the next instruction
-    Io::LineParser lineParser(&m_pFileIterator->Next());
-    while (lineParser.GetLineType() != Io::LineType::INSTRUCTION)
+    // Fetch the next line
+    Io::LineParser lineParser(&m_pFileIterator->GoToLine(m_processRegisters.PC));
+
+    while (lineParser.GetLineType() != Io::LineType::INSTRUCTION &&
+           lineParser.GetLineType() != Io::LineType::LABEL_AND_INSTRUCTION)
     {
         if (lineParser.GetLineType() == Io::LineType::ENDP) return false;
         lineParser.SetLine(&m_pFileIterator->Next());
     }
+    // Update the pc once a valid line is found
+    m_processRegisters.PC = m_pFileIterator->GetLineNumber();
 
     LOG_DEBUG("Executing %s", m_pFileIterator->GetCurrentLine().c_str());
 
@@ -143,8 +150,12 @@ bool Process::Step()
 
     pInstruction->Execute(arguments, *this);
 
-    // Set the new PC
-    m_processRegisters.PC = m_pFileIterator->GetLineNumber();
+    // Don't mess with the PC if a branch instruction was just executed
+    if (pInstruction->GetType() != InstructionType::FLOW_CTRL)
+    {
+        m_processRegisters.PC++;
+        LOG_DEBUG("PC incremented to %d", m_processRegisters.PC);
+    }
 
     return true;
 }

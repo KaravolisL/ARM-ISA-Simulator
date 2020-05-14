@@ -61,7 +61,7 @@ void KeywordDict::Initialize()
 ////////////////////////////////
 /// METHOD NAME: KeywordDict::Get
 ////////////////////////////////
-Io::LineType KeywordDict::Get(std::string& keyword)
+Io::LineType KeywordDict::Get(std::string& keyword) const
 {
     Io::LineType lineType;
     try

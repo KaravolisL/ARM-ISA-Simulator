@@ -62,7 +62,7 @@ public:
     ///
     /// @returns Type of the current line
     ////////////////////////////////
-    LineType GetLineType();
+    LineType GetLineType() const;
 
     ////////////////////////////////
     /// METHOD NAME: GetFileName
@@ -72,7 +72,7 @@ public:
     ///
     /// @param[out] rFileName    Name of file to be included
     ////////////////////////////////
-    void GetFileName(std::string& rFileName)
+    void GetFileName(std::string& rFileName) const
     {
         assert(GetLineType() == LineType::INCLUDE);
         GetToken(1, rFileName);
@@ -87,11 +87,11 @@ public:
     ///
     /// @param[out] rLabel    Label on line
     ////////////////////////////////
-    void GetLabel(std::string& rLabel)
+    void GetLabel(std::string& rLabel) const
     {
-        assert(GetLineType() == LineType::INCLUDE ||
-               GetLineType() == LineType::EQU ||
-               GetLineType() == LineType::LABEL);
+        assert(GetLineType() == LineType::EQU ||
+               GetLineType() == LineType::LABEL ||
+               GetLineType() == LineType::LABEL_AND_INSTRUCTION);
         GetToken(0, rLabel);
     }
 
@@ -102,11 +102,7 @@ public:
     ///
     /// @param[out] rInstruction    Instruction keyword
     ////////////////////////////////
-    void GetInstruction(std::string& rInstruction)
-    {
-        assert(GetLineType() == LineType::INSTRUCTION);
-        GetToken(0, rInstruction);
-    }
+    void GetInstruction(std::string& rInstruction) const;
 
     ////////////////////////////////
     /// METHOD NAME: GetArguments
@@ -116,7 +112,7 @@ public:
     ///
     /// @param[out] rArguments    List of arguments
     ////////////////////////////////
-    void GetArguments(SLList<std::string>& rArguments);
+    void GetArguments(SLList<std::string>& rArguments) const;
 
     ////////////////////////////////
     /// METHOD NAME: GetValue
@@ -128,7 +124,7 @@ public:
     ///                                     that's being created
     /// @returns value as int
     ////////////////////////////////
-    int GetValue(DLB<uint32_t>& rConstantsDictionary);
+    int GetValue(DLB<uint32_t>& rConstantsDictionary) const;
 
     ////////////////////////////////
     /// METHOD NAME: GetLine
@@ -149,7 +145,16 @@ private:
     /// @param[in] index    Position of token
     /// @param[out] rToken  Reference to token
     ////////////////////////////////
-    void GetToken(int index, std::string& rToken);
+    void GetToken(int index, std::string& rToken) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: GetNumberOfTokens
+    ///
+    /// @brief Retrieves the number of tokens on the line
+    ///
+    /// @return Number of tokens on the line
+    ////////////////////////////////
+    int GetNumberOfTokens() const;
 
     ////////////////////////////////
     /// METHOD NAME: StripComment

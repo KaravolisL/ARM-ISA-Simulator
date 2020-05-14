@@ -45,6 +45,8 @@ enum LineType
     END,
     ENDP,
     DCB,
+    LABEL_AND_INSTRUCTION,
+    LABEL_AND_PROC,
     INVALID
 };
 

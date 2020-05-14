@@ -56,9 +56,17 @@ public:
     ////////////////////////////////
     /// METHOD NAME: Get
     ///
-    /// @param[in] keyword      Keyword to search in dictionary for
+    /// @param[in] rKeyword      Keyword to search in dictionary for
     ////////////////////////////////
-    Io::LineType Get(std::string& keyword);
+    Io::LineType Get(std::string& rKeyword) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: Contains
+    ///
+    /// @param[in] rKeyword      Keyword to search in dictionary for
+    /// @return Whether keyword is in the dictionary
+    ////////////////////////////////
+    bool Contains(std::string& rKeyword) const { return m_keywordDict.Contains(rKeyword); }
 
 protected:
 

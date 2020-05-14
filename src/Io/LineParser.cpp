@@ -52,7 +52,7 @@ void LineParser::SetLine(std::string* pNewLine)
 ////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetLineType
 ////////////////////////////////
-LineType LineParser::GetLineType()
+LineType LineParser::GetLineType() const
 {
     if (m_pLine->size() == 0) return LineType::COMMENT;
 
@@ -65,13 +65,14 @@ LineType LineParser::GetLineType()
     // Label may be returned for a label, EQU, or memory directive
     if (lineType == LineType::LABEL)
     {
-        if (m_pLine->find("EQU") != std::string::npos)
+        // Check if the line contains additional tokens that would make it another
+        // type of line
+        if (GetNumberOfTokens() > 1)
         {
-            lineType = LineType::EQU;
-        }
-        else if (m_pLine->find("DCB") != std::string::npos)
-        {
-            lineType = LineType::DCB;
+            // Reevaluate line using the second token
+            this->GetToken(1, token);
+            lineType = KeywordDict::GetInstance().Get(token);
+            if (lineType == Io::LineType::INSTRUCTION) lineType = Io::LineType::LABEL_AND_INSTRUCTION;
         }
     }
 
@@ -81,7 +82,7 @@ LineType LineParser::GetLineType()
 ////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetValue
 ////////////////////////////////
-int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary)
+int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary) const
 {
     std::string expression;
     GetToken(2, expression);
@@ -98,12 +99,36 @@ int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary)
 }
 
 ////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetInstruction
+////////////////////////////////
+void LineParser::GetInstruction(std::string& rInstruction) const
+{
+    if (GetLineType() == LineType::INSTRUCTION)
+    {
+        GetToken(0, rInstruction);
+    }
+    else if (GetLineType() == LineType::LABEL_AND_INSTRUCTION)
+    {
+        GetToken(1, rInstruction);
+    }
+    else
+    {
+        ASSERT(false, "Unsupported line type");
+    }
+}
+
+////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetArguments
 ////////////////////////////////
-void LineParser::GetArguments(SLList<std::string>& rArguments)
+void LineParser::GetArguments(SLList<std::string>& rArguments) const
 {
-    // Start with the second token in the line
+    // Start with the second token in the line unless it's a label and instruction line
     int i = 1;
+    if (GetLineType() == LABEL_AND_INSTRUCTION)
+    {
+        i = 2;
+    }
+    
     while (true)
     {
         std::string token;
@@ -122,7 +147,7 @@ void LineParser::GetArguments(SLList<std::string>& rArguments)
 ////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetToken
 ////////////////////////////////
-void LineParser::GetToken(int index, std::string& rToken)
+void LineParser::GetToken(int index, std::string& rToken) const
 {
     // Copy line so it can be modified
     char* lineCopy = new char[m_pLine->length() + 1];
@@ -147,6 +172,25 @@ void LineParser::GetToken(int index, std::string& rToken)
     delete[] lineCopy;
 
     ASSERT(pToken != NULL);
+}
+
+////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetNumberOfTokens
+////////////////////////////////
+int LineParser::GetNumberOfTokens() const
+{
+    for (int i = 0; ; i++)
+    {
+        try
+        {
+            std::string dummyToken;
+            GetToken(i, dummyToken);
+        }
+        catch(const IndexOutOfBoundsException& e)
+        {
+            return i;
+        }
+    }
 }
 
 ////////////////////////////////
