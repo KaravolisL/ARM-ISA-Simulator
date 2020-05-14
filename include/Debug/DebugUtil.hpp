@@ -12,6 +12,7 @@
 // SYSTEM INCLUDES
 #include <cstdarg>
 #include <string>
+#include <cstring>
 
 // C PROJECT INCLUDES
 // (None)

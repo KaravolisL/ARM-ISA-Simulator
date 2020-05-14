@@ -130,13 +130,13 @@ void LineParser::GetToken(int index, std::string& rToken)
     // Copy doesn't add the null terminator
     lineCopy[m_pLine->length()] = '\0';
 
-    char* pToken = strtok(lineCopy, " ,");
+    char* pToken = strtok(lineCopy, " ,{}");
 
     // Iterate through tokens
     int i;
     for (i = 0; i < index; i++)
     {
-        pToken = strtok(NULL, " ,");
+        pToken = strtok(NULL, " ,{}");
     }
 
     if (pToken == NULL) throw IndexOutOfBoundsException(i);

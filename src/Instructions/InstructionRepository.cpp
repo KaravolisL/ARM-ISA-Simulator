@@ -30,20 +30,14 @@
 #include "CMPInstruction.hpp" // For CMP
 #include "CMNInstruction.hpp" // For CMN
 #include "NOPInstruction.hpp" // For NOP
+#include "PUSHInstruction.hpp" // For PUSH
+#include "POPInstruction.hpp" // For POP
 #include "Registers.hpp" // For Registers
 #include "Process.hpp" // For Process
 #include "Logger.hpp" // For Logger
 
-static MOVInstruction f_MOV = MOVInstruction();
-static NOPInstruction f_NOP = NOPInstruction();
-
 static ADDInstruction f_ADD = ADDInstruction();
 static SUBInstruction f_SUB = SUBInstruction();
-
-static ANDInstruction f_AND = ANDInstruction();
-static BICInstruction f_BIC = BICInstruction();
-static EORInstruction f_EOR = EORInstruction();
-static ORRInstruction f_ORR = ORRInstruction();
 
 static CMPInstruction f_CMP = CMPInstruction();
 static CMNInstruction f_CMN = CMNInstruction();
@@ -53,22 +47,25 @@ static BLInstruction f_BL = BLInstruction();
 static BXInstruction f_BX = BXInstruction();
 static BLXInstruction f_BLX = BLXInstruction();
 
+static ANDInstruction f_AND = ANDInstruction();
+static BICInstruction f_BIC = BICInstruction();
+static EORInstruction f_EOR = EORInstruction();
+static ORRInstruction f_ORR = ORRInstruction();
+
+static PUSHInstruction f_PUSH = PUSHInstruction();
+static POPInstruction f_POP = POPInstruction();
+
+static MOVInstruction f_MOV = MOVInstruction();
+static NOPInstruction f_NOP = NOPInstruction();
+
 ////////////////////////////////
 /// METHOD NAME: InstructionRepository::Initialize 
 ////////////////////////////////
 void InstructionRepository::Initialize()
 {
     // Instruction dictionary
-    m_instructionDict.Insert("MOV", &f_MOV);
-    m_instructionDict.Insert("NOP", &f_NOP);
-
     m_instructionDict.Insert("ADD", &f_ADD);
     m_instructionDict.Insert("SUB", &f_SUB);
-
-    m_instructionDict.Insert("AND", &f_AND);
-    m_instructionDict.Insert("BIC", &f_BIC);
-    m_instructionDict.Insert("EOR", &f_EOR);
-    m_instructionDict.Insert("ORR", &f_ORR);
 
     m_instructionDict.Insert("CMP", &f_CMP);
     m_instructionDict.Insert("CMN", &f_CMN);
@@ -77,6 +74,17 @@ void InstructionRepository::Initialize()
     m_instructionDict.Insert("BL", &f_BL);
     m_instructionDict.Insert("BX", &f_BX);
     m_instructionDict.Insert("BLX", &f_BLX);
+
+    m_instructionDict.Insert("AND", &f_AND);
+    m_instructionDict.Insert("BIC", &f_BIC);
+    m_instructionDict.Insert("EOR", &f_EOR);
+    m_instructionDict.Insert("ORR", &f_ORR);
+
+    m_instructionDict.Insert("PUSH", &f_PUSH);
+    m_instructionDict.Insert("POP", &f_POP);
+
+    m_instructionDict.Insert("MOV", &f_MOV);
+    m_instructionDict.Insert("NOP", &f_NOP);
 
     // Conditional codes dictionary
     m_conditionalCodeDict.Insert("EQ", ConditionalCode::EQ);
