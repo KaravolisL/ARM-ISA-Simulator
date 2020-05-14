@@ -72,7 +72,10 @@ LineType LineParser::GetLineType() const
             // Reevaluate line using the second token
             this->GetToken(1, token);
             lineType = KeywordDict::GetInstance().Get(token);
-            if (lineType == Io::LineType::INSTRUCTION) lineType = Io::LineType::LABEL_AND_INSTRUCTION;
+            if (lineType == Io::LineType::INSTRUCTION)
+            {
+                lineType = Io::LineType::LABEL_AND_INSTRUCTION;
+            }
         }
     }
 
@@ -128,7 +131,7 @@ void LineParser::GetArguments(SLList<std::string>& rArguments) const
     {
         i = 2;
     }
-    
+
     while (true)
     {
         std::string token;

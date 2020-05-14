@@ -64,6 +64,7 @@ void Process::Initialize(const char* filename)
             }
             case Io::LineType::LABEL:
             case Io::LineType::LABEL_AND_INSTRUCTION:
+            case Io::LineType::LABEL_AND_PROC:
             {
                 std::string label;
                 lineParser.GetLabel(label);

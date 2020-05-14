@@ -91,7 +91,8 @@ public:
     {
         assert(GetLineType() == LineType::EQU ||
                GetLineType() == LineType::LABEL ||
-               GetLineType() == LineType::LABEL_AND_INSTRUCTION);
+               GetLineType() == LineType::LABEL_AND_INSTRUCTION ||
+               GetLineType() == LineType::LABEL_AND_PROC);
         GetToken(0, rLabel);
     }
 
