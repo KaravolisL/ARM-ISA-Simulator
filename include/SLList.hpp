@@ -58,6 +58,14 @@ public:
     {}
 
     ////////////////////////////////
+    /// Deconstructor
+    ////////////////////////////////
+    ~SLList()
+    {
+        this->Clear();
+    }
+
+    ////////////////////////////////
     /// FUNCTION NAME: InsertFront
     ///
     /// @param element   Element to be inserted
@@ -313,6 +321,16 @@ public:
         /// Pointer to the next element in the list
         SLList::Node* pNextNode;
     };
+
+    ////////////////////////////////
+    /// Copy Constructer
+    ////////////////////////////////
+    SLList(SLList const&);
+
+    ////////////////////////////////
+    /// Assignment operator
+    ////////////////////////////////
+    SLList& operator=(SLList const&);
 
 protected:
 

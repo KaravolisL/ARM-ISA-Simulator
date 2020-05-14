@@ -167,6 +167,16 @@ private:
     /// File Iterator used during execution
     Io::FileIterator* m_pFileIterator;
 
+    ////////////////////////////////
+    /// Copy Constructer
+    ////////////////////////////////
+    Process(Process const&);
+
+    ////////////////////////////////
+    /// Assignment operator
+    ////////////////////////////////
+    Process& operator=(Process const&);
+
 };
 
 
