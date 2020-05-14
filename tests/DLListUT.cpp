@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// SLListUT.cpp
+/// DLListUT.cpp
 ///
-/// @brief Unit Test for SLList
+/// @brief Unit Test for DLList
 /////////////////////////////////
 
 // SYSTEM INCLUDES
@@ -12,13 +12,13 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "SLList.hpp"   // Test class
+#include "DLList.hpp"   // Test class
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-SLList<int>* pMySLList = new SLList<int>();
-SLList<int>::SLListIterator myListIterator = pMySLList->GetBegin();
+DLList<int>* pMyDLList = new DLList<int>();
+DLList<int>::DLListIterator myListIterator = pMyDLList->GetBegin();
 
 ////////////////////////////////
 /// Setup Function
@@ -36,29 +36,29 @@ void InsertAndGetTest()
     // Insert 1 - 9 to back
     for (int i = 0; i < 10; i++)
     {
-        pMySLList->InsertBack(i);
+        pMyDLList->InsertBack(i);
     }
 
     for (int i = 0; i < 10; i++)
     {
-        assert(i == pMySLList->Get(i));
+        assert(i == pMyDLList->Get(i));
     }
 
     // Insert 9 - 0 to front
     for (int i = 9; i >= 0; i--)
     {
-        pMySLList->InsertFront(i);
+        pMyDLList->InsertFront(i);
     }
 
     for (int i = 9; i >= 0; i--)
     {
-        assert(i == pMySLList->Get(i));
+        assert(i == pMyDLList->Get(i));
     }
 
     // Test exception
     try
     {
-        pMySLList->Get(100);
+        pMyDLList->Get(100);
         assert(false);
     }
     catch(const IndexOutOfBoundsException& e)
@@ -72,7 +72,7 @@ void InsertAndGetTest()
 ////////////////////////////////
 void GetLengthTest()
 {
-    assert(pMySLList->GetLength() == 20);
+    assert(pMyDLList->GetLength() == 20);
 }
 
 ////////////////////////////////
@@ -80,8 +80,8 @@ void GetLengthTest()
 ////////////////////////////////
 void ClearTest()
 {
-    pMySLList->Clear();
-    assert(pMySLList->GetLength() == 0);
+    pMyDLList->Clear();
+    assert(pMyDLList->GetLength() == 0);
 }
 
 ////////////////////////////////
@@ -91,22 +91,22 @@ void RemoveTest()
 {
     for (int i = 0; i < 10; i++)
     {
-        pMySLList->InsertBack(i);
+        pMyDLList->InsertBack(i);
     }
 
-    pMySLList->PrintList();
+    pMyDLList->PrintList();
 
     for (int i = 9; i >= 0; i--)
     {
-        assert(pMySLList->GetLength() == i + 1);
-        int removedValue = pMySLList->Remove(i);
+        assert(pMyDLList->GetLength() == i + 1);
+        int removedValue = pMyDLList->Remove(i);
         assert(i == removedValue);
     }
 
     // Test exception
     try
     {
-        pMySLList->Remove(100);
+        pMyDLList->Remove(100);
         assert(false);
     }
     catch(const std::exception& e)
@@ -122,18 +122,27 @@ void IteratorTest()
 {
     for (int i = 0; i < 10; i++)
     {
-        pMySLList->InsertBack(i);
+        pMyDLList->InsertBack(i);
     }
 
     int i = 0;
-    for (myListIterator = pMySLList->GetBegin();
-         myListIterator != pMySLList->GetEnd();
+    for (myListIterator = pMyDLList->GetBegin();
+         myListIterator != pMyDLList->GetEnd();
          myListIterator++)
     {
         assert(i == *myListIterator);
         i++;
     }
     assert(i == 10);
+
+    for (myListIterator = pMyDLList->GetReverseBegin();
+         myListIterator != pMyDLList->GetReverseEnd();
+         myListIterator--)
+    {
+        i--;
+        assert(i == *myListIterator);
+    }
+    assert(i == 0);
 }
 
 ////////////////////////////////
@@ -141,7 +150,7 @@ void IteratorTest()
 ////////////////////////////////
 void teardown()
 {
-    delete pMySLList;
+    delete pMyDLList;
 }
 
 ////////////////////////////////
@@ -159,7 +168,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "SLList Unit Test Complete: SUCCESS";
+    std::cout << "DLList Unit Test Complete: SUCCESS";
     return 0;
 }
-
