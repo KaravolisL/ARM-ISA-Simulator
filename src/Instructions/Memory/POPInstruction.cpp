@@ -48,7 +48,17 @@ void POPInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
         }
         else
         {
-            ASSERT(false, "Unsupported feature");
+            std::string beginStr = (*it).substr(1, (*it).find('-') - 1);
+            uint32_t begin = static_cast<uint32_t>(std::stoul(beginStr.c_str(), nullptr, 0));
+
+            std::string endStr = (*it).substr((*it).find('-') + 2);
+            uint32_t end = static_cast<uint32_t>(std::stoul(endStr.c_str(), nullptr, 0));
+
+            for (uint8_t i = end; i >= begin; i--)
+            {
+                LOG_DEBUG("Just popped %d from stack", rProcess.GetProcessRegisters().genRegs[i]);
+                rProcess.GetProcessRegisters().genRegs[i] = rProcess.GetProcessStack().Pop();
+            }
         }   
     }
 }

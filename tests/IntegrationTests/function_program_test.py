@@ -47,6 +47,7 @@ if __name__ == '__main__':
         ; Multiply 5 by 7
         MOV R0, #5
         MOV R1, #7
+        MOV r3, #9
         MOV R4, #0xBEEF
         MOV R7, #0xCODE
         BL multiply
@@ -57,8 +58,7 @@ if __name__ == '__main__':
 
     multiply PROC
 
-        ; PUSH {R3, R4, R6-R8}
-        PUSH {R3, R4, R6, R7, R8}
+        PUSH {R3, R4, R6-R8}
         MOV R4, #0xCODE
         MOV R7, #0xBEEF
 
@@ -70,8 +70,7 @@ if __name__ == '__main__':
         BNE Top
         MOV R0, R2
 
-        ; POP {R3, R4, R6-R8}
-        POP {R3, R4, R6, R7, R8}
+        POP {R3, R4, R6-R8}
         BX LR
 
         ENDP

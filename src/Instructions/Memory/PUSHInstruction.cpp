@@ -49,7 +49,17 @@ void PUSHInstruction::Execute(const SLList<std::string>& rArguments, Process& rP
         }
         else
         {
-            ASSERT(false, "Unsupported feature");
+            std::string beginStr = (*it).substr(1, (*it).find('-') - 1);
+            uint32_t begin = static_cast<uint32_t>(std::stoul(beginStr.c_str(), nullptr, 0));
+
+            std::string endStr = (*it).substr((*it).find('-') + 2);
+            uint32_t end = static_cast<uint32_t>(std::stoul(endStr.c_str(), nullptr, 0));
+
+            for (uint8_t i = begin; i <= end; i++)
+            {
+                LOG_DEBUG("Just pushed %d onto stack", rProcess.GetProcessRegisters().genRegs[i]);
+                rProcess.GetProcessStack().Push(rProcess.GetProcessRegisters().genRegs[i]);
+            }
         }   
     }
 }
