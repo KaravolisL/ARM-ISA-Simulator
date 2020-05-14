@@ -48,8 +48,11 @@ if __name__ == '__main__':
         MOV R0, #5
         MOV R1, #7
         MOV r3, #9
+        MOV R5, #5
         MOV R4, #0xBEEF
-        MOV R7, #0xCODE
+        MOV R6, #6
+        MOV R7, #0xC0DE
+        MOV R8, #8
         BL multiply
 
         BL func1
@@ -108,7 +111,7 @@ if __name__ == '__main__':
     output = open(OUTPUT_FILE_NAME, 'r')
 
     # Check for correct values in registers
-    expected_values = ['23', '0']
+    expected_values = ['23', '0', '23', '9', 'beef', '5', '6', 'c0de', '8']
     lines = output.readlines()
 
     for i in range(0, len(expected_values)):

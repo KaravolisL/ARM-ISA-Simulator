@@ -8,6 +8,7 @@
 
 // SYSTEM INCLUDES
 #include <string>
+#include <list>
 
 // C PROJECT INCLUDES
 // (None)
@@ -26,6 +27,8 @@
 ////////////////////////////////
 void PUSHInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
+    std::list<Register*> regList = std::list<Register*>();
+
     // For every token...
     for (SLList<std::string>::SLListIterator it = rArguments.GetBegin(); it != rArguments.GetEnd(); it++)
     {
@@ -33,19 +36,18 @@ void PUSHInstruction::Execute(const SLList<std::string>& rArguments, Process& rP
         // Determine whether it's a range or not
         if ((*it).find('-') == std::string::npos)
         {
-            Register reg;
+            Register* pReg;
             // Argument should either be LR or a register
             if ((*it).find('l') == std::string::npos && (*it).find('L') == std::string::npos)
             {
                 uint32_t regNumber = static_cast<uint32_t>(std::stoul((*it).substr(1).c_str(), nullptr, 0));
-                reg = rProcess.GetProcessRegisters().genRegs[regNumber];
+                pReg = &rProcess.GetProcessRegisters().genRegs[regNumber];
             }
             else
             {
-                reg = rProcess.GetProcessRegisters().LR;
+                pReg = &rProcess.GetProcessRegisters().LR;
             }
-            LOG_DEBUG("Just pushed %d onto stack", reg);
-            rProcess.GetProcessStack().Push(reg);
+            regList.push_back(pReg);
         }
         else
         {
@@ -57,9 +59,18 @@ void PUSHInstruction::Execute(const SLList<std::string>& rArguments, Process& rP
 
             for (uint8_t i = begin; i <= end; i++)
             {
-                LOG_DEBUG("Just pushed %d onto stack", rProcess.GetProcessRegisters().genRegs[i]);
-                rProcess.GetProcessStack().Push(rProcess.GetProcessRegisters().genRegs[i]);
+                regList.push_back(&rProcess.GetProcessRegisters().genRegs[i]);
             }
-        }   
+        }
+    }
+
+    // The list is sorted based on the pointer values
+    regList.sort();
+
+    // Push each value
+    for (Register* pReg : regList)
+    {
+        LOG_DEBUG("Pushing %d onto stack", *pReg);
+        rProcess.GetProcessStack().Push(*pReg);
     }
 }
