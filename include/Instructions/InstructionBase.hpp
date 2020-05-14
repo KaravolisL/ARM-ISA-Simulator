@@ -64,6 +64,11 @@ public:
     ////////////////////////////////
     void ClearFlagged() { m_flagged = false; }
 
+    ////////////////////////////////
+    /// METHOD NAME: GetType
+    ////////////////////////////////
+    InstructionType GetType() const { return m_type; }
+
 protected:
 
     ////////////////////////////////

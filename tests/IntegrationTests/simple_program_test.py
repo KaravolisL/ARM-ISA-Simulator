@@ -63,9 +63,7 @@ if __name__ == '__main__':
 
         MOV R7, #0xBEEF
 
-    MyLabel
-
-        MOV R0, =MY_CONSTANT
+    MyLabel MOV R0, =MY_CONSTANT
         MOV R7, #7 ; R7 = 7
 
         ENDP

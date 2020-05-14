@@ -36,6 +36,7 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("ENTRY", Io::LineType::ENTRY);
     m_keywordDict.Insert("EQU", Io::LineType::EQU);
     m_keywordDict.Insert("DCB", Io::LineType::DCB);
+    m_keywordDict.Insert("PROC", Io::LineType::LABEL_AND_PROC);
 
     // Instructions
     SLList<std::string> instructionList = InstructionRepository::GetInstance().GetInstructionStrings();
@@ -61,7 +62,7 @@ void KeywordDict::Initialize()
 ////////////////////////////////
 /// METHOD NAME: KeywordDict::Get
 ////////////////////////////////
-Io::LineType KeywordDict::Get(std::string& keyword)
+Io::LineType KeywordDict::Get(std::string& keyword) const
 {
     Io::LineType lineType;
     try

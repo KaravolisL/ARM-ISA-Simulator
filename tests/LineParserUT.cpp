@@ -156,6 +156,35 @@ void GetArgumentsTest()
 }
 
 ////////////////////////////////
+/// LabelAndInstructionTest Function
+////////////////////////////////
+void LabelAndInstructionTest()
+{
+    std::string line = "myLabel ADD R1, R3";
+    Io::LineParser lineParser(&line);
+
+    assert(lineParser.GetLineType() == Io::LineType::LABEL_AND_INSTRUCTION);
+    
+    std::string label;
+    lineParser.GetLabel(label);
+    assert(label == "myLabel");
+
+    std::string instruction;
+    lineParser.GetInstruction(instruction);
+    assert(instruction == "ADD");
+
+    SLList<std::string> arguments;
+    lineParser.GetArguments(arguments);
+
+    SLList<std::string>::SLListIterator it = arguments.GetBegin();
+
+    std::cout << *it << '\n';
+    assert(*(it++) == "R1");
+    std::cout << *it << '\n';
+    assert(*(it++) == "R3");
+}
+
+////////////////////////////////
 /// Teardown Function
 ////////////////////////////////
 void teardown()
@@ -175,6 +204,7 @@ int main(int argc, char* argv[])
     GetLabelTest();
     GetValueTest();
     GetArgumentsTest();
+    LabelAndInstructionTest();
 
     teardown();
 

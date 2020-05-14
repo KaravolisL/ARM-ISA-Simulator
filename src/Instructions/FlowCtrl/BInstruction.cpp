@@ -18,6 +18,7 @@
 #include "SLList.hpp" // For SLList
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For FileIterator
+#include "Logger.hpp" // For LOG_DEBUG
 
 ////////////////////////////////
 /// METHOD NAME: BInstruction::Execute 
@@ -37,6 +38,7 @@ void BInstruction::Execute(const SLList<std::string>& rArguments, Process& rProc
     }
     catch(const DLB<uint32_t>::KeyNotFoundException& e)
     {
+        LOG_DEBUG("Label %s not found", labelString.c_str());
         throw InvalidSyntaxException("Label Not Found",
                                      rProcess.GetFileIterator()->GetCurrentLine(),
                                      rProcess.GetFileIterator()->GetLineNumber());
@@ -44,6 +46,4 @@ void BInstruction::Execute(const SLList<std::string>& rArguments, Process& rProc
     
     // Set the new PC and "jump" to that location
     rProcess.GetProcessRegisters().PC = newPC;
-
-    rProcess.GetFileIterator()->GoToLine(newPC);
 }
