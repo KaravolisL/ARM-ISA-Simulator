@@ -8,7 +8,6 @@
 
 // SYSTEM INCLUDES
 #include <string>
-#include <list>
 
 // C PROJECT INCLUDES
 // (None)
@@ -17,6 +16,7 @@
 #include "POPInstruction.hpp" // Header for class
 #include "Assert.hpp" // for ASSERT
 #include "SLList.hpp" // For SLList
+#include "List.hpp" // For List
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "Logger.hpp"
@@ -27,8 +27,7 @@
 ////////////////////////////////
 void POPInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
-    std::list<Register*> regList = std::list<Register*>();
-
+    List<Register*> regList = List<Register*>();
 
     // For every token...
     for (SLList<std::string>::SLListIterator it = rArguments.GetBegin(); it != rArguments.GetEnd(); it++)
@@ -47,7 +46,7 @@ void POPInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
             {
                 pReg = &rProcess.GetProcessRegisters().LR;
             }
-            regList.push_back(pReg);
+            regList.Append(pReg);
         }
         else
         {
@@ -59,19 +58,18 @@ void POPInstruction::Execute(const SLList<std::string>& rArguments, Process& rPr
 
             for (uint8_t i = begin; i <= end; i++)
             {
-                regList.push_back(&rProcess.GetProcessRegisters().genRegs[i]);
+                regList.Append(&rProcess.GetProcessRegisters().genRegs[i]);
             }
         }   
     }
 
     // Sort the list in ascending order based on pointer values
-    regList.sort();
+    regList.Sort([](Register*& a, Register*& b) { return a > b; });
 
     // Traverse the list in reverse and pop
-    for (std::reverse_iterator it = regList.rbegin();
-         it != regList.rend(); it++)
+    for (int i = 0; i < regList.GetLength(); i++)
     {
         LOG_DEBUG("Popping %d from the stack", rProcess.GetProcessStack().Peek());
-        *(*it) = rProcess.GetProcessStack().Pop();
+        *(regList[i]) = rProcess.GetProcessStack().Pop();
     }
 }

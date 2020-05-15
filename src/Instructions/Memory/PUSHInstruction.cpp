@@ -8,7 +8,6 @@
 
 // SYSTEM INCLUDES
 #include <string>
-#include <list>
 
 // C PROJECT INCLUDES
 // (None)
@@ -17,6 +16,7 @@
 #include "PUSHInstruction.hpp" // Header for class
 #include "Assert.hpp" // for ASSERT
 #include "SLList.hpp" // For SLList
+#include "List.hpp" // For List
 #include "Process.hpp" // For Process
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
@@ -27,7 +27,7 @@
 ////////////////////////////////
 void PUSHInstruction::Execute(const SLList<std::string>& rArguments, Process& rProcess)
 {
-    std::list<Register*> regList = std::list<Register*>();
+    List<Register*> regList = List<Register*>();
 
     // For every token...
     for (SLList<std::string>::SLListIterator it = rArguments.GetBegin(); it != rArguments.GetEnd(); it++)
@@ -47,7 +47,7 @@ void PUSHInstruction::Execute(const SLList<std::string>& rArguments, Process& rP
             {
                 pReg = &rProcess.GetProcessRegisters().LR;
             }
-            regList.push_back(pReg);
+            regList.Append(pReg);
         }
         else
         {
@@ -59,17 +59,18 @@ void PUSHInstruction::Execute(const SLList<std::string>& rArguments, Process& rP
 
             for (uint8_t i = begin; i <= end; i++)
             {
-                regList.push_back(&rProcess.GetProcessRegisters().genRegs[i]);
+                regList.Append(&rProcess.GetProcessRegisters().genRegs[i]);
             }
         }
     }
 
     // The list is sorted based on the pointer values
-    regList.sort();
+    regList.Sort();
 
     // Push each value
-    for (Register* pReg : regList)
+    for (int i = 0; i < regList.GetLength(); i++)
     {
+        Register* pReg = regList[i];
         LOG_DEBUG("Pushing %d onto stack", *pReg);
         rProcess.GetProcessStack().Push(*pReg);
     }
