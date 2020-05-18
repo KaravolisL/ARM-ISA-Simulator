@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Set include directory
 include_directories("${PROJECT_SOURCE_DIR}/include/Memory")
+include_directories("${PROJECT_SOURCE_DIR}/include/Debug")
 
 # Set source files
 set(SOURCES
