@@ -21,6 +21,7 @@ set(SOURCES
 add_subdirectory(Io)
 add_subdirectory(Debug)
 add_subdirectory(Instructions)
+add_subdirectory(Memory)
 
 # Make libraries
 add_library(keyword_dict STATIC KeywordDict.cpp)
