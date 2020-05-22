@@ -40,7 +40,8 @@ enum OpCode
     STR,
     LDR,
     PUSH,
-    POP
+    POP,
+    MOV
 };
 
 #endif

@@ -49,10 +49,10 @@ public:
     /// an instruction object to be executed
     ///
     /// @param[in] rInstruction     Instruction to be built
-    /// @param[in] rProcess         Process for which the instruction is being built
+    /// @param[in] pProcess         Process for which the instruction is being built
     /// @return Instance of built instruction object
     ////////////////////////////////
-    InstructionBase* GetInstruction(std::string& rInstruction, Process& rProcess);
+    InstructionBase* BuildInstruction(std::string& rInstruction, Process* pProcess);
 
 protected:
 
