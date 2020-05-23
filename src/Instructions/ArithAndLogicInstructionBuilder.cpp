@@ -21,6 +21,14 @@
 #include "Logger.hpp" // For LOB_DEBUG
 
 ////////////////////////////////
+/// METHOD NAME: ArithAndLogicInstructionBuilder::BuildInstruction 
+////////////////////////////////
+InstructionBase* BuildInstruction(std::string& rInstruction, Process* pProcess)
+{
+    return nullptr;
+}
+
+////////////////////////////////
 /// METHOD NAME: ArithAndLogicInstructionBuilder::CheckSFlag 
 ////////////////////////////////
 bool ArithAndLogicInstructionBuilder::CheckSFlag(std::string& rKeyword) const

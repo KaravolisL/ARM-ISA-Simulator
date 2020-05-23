@@ -27,6 +27,7 @@ set(SOURCES
     Memory/PUSHInstruction.cpp
     InstructionBase.cpp
     InstructionBuilder.cpp
+    ArithAndLogicInstructionBuilder.cpp
     InstructionRepository.cpp
     Other/MOVInstruction.cpp
 )

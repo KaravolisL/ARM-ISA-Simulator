@@ -15,7 +15,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-// (None)
+#include "InstructionBuilder.hpp" // For InstructionBuilder
 
 // FORWARD DECLARATIONS
 class ArithAndLogicInstruction;
@@ -27,7 +27,7 @@ class Process;
 /// @brief This class is responsible for building
 /// arithmetic and logic instructions.
 ////////////////////////////////
-class ArithAndLogicInstructionBuilder
+class ArithAndLogicInstructionBuilder : public InstructionBuilder
 {
 public:
 
@@ -42,7 +42,7 @@ public:
     /// @param[in] pProcess         Process for which the instruction is being built
     /// @return Instance of built instruction object
     ////////////////////////////////
-    ArithAndLogicInstruction* BuildInstruction(std::string& rInstruction, Process* pProcess);
+    InstructionBase* BuildInstruction(std::string& rInstruction, Process* pProcess);
 
 protected:
 
@@ -61,6 +61,11 @@ private:
     /// @retval false       - The instruction need not to set flags
     ////////////////////////////////
     bool CheckSFlag(std::string& rKeyword) const;
+
+    ////////////////////////////////
+    /// Deconstructor
+    ////////////////////////////////
+    ~ArithAndLogicInstructionBuilder();
 
 };
 
