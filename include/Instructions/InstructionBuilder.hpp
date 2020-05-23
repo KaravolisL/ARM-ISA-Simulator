@@ -20,6 +20,7 @@
 // FORWARD DECLARATIONS
 class InstructionBase;
 class Process;
+struct Registers;
 
 ////////////////////////////////
 /// @class InstructionBuilder
@@ -63,12 +64,42 @@ private:
     ///
     /// @brief This method will parse the instruction
     /// keyword. It determines the type of instruction that
-    /// needs built.
+    /// needs built. The opcode will be stripped if present.
     ///
-    /// @param[in] rInstructionKeyword      Instruction to be parsed
+    /// @param[in] rKeyword      Instruction to be parsed
     /// @return OpCode of the instruction
     ////////////////////////////////
-    const OpCode DetermineOpCode(std::string& rInstructionKeyword) const;
+    OpCode DetermineOpCode(std::string& rKeyword) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: CheckConditionalCode
+    ///
+    /// @brief Determines whether the given
+    /// instruction should be executed depending
+    /// on the conditional codes and flags. The conditional
+    /// code will also be stripped.
+    ///
+    /// @param[in,out] rKeyword         Instruction to be executed
+    /// @param[in] rRegisters           Registers of the process for this instruction
+    /// @return Whether the instruction should be executed
+    /// @retval true        - The instruction should be executed
+    /// @retval false       - The instruction should become a nop
+    ////////////////////////////////
+    bool CheckConditionalCode(std::string& rKeyword, const Registers& rRegisters) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: CheckSFlag
+    ///
+    /// @brief Check whether the instruction should 
+    /// set the process's flags following its execution. The
+    /// S will be stripped if present
+    ///
+    /// @param[in] rKeyword      Instruction to be checked
+    /// @return Whether instruction needs to set the process flags
+    /// @retval true        - The instruction needs to set the process flags
+    /// @retval false       - The instruction need not to set flags
+    ////////////////////////////////
+    bool CheckSFlag(std::string& rKeyword) const;
 
     ////////////////////////////////
     /// Constructor

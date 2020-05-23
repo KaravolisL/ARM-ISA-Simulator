@@ -41,7 +41,9 @@ enum OpCode
     LDR,
     PUSH,
     POP,
-    MOV
+    MOV,
+    NOP,
+    INVALID
 };
 
 #endif

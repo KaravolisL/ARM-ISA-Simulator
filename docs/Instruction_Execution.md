@@ -5,6 +5,7 @@
 
 participant Process
 participant InstructionBuilder as IB
+participant InstructionBuilderRepository as IBR
 participant ArithAndLogicInstructionBuilder as ALIB
 participant FlowCtrlInstructionBuilder as FCIB
 participant MemoryInstructionBuilder as MIB
@@ -19,6 +20,10 @@ opt CheckConditionalCodes == false
 return
 end
 
+IB -> IBR: pBuilder = GetInstructionBuilder(opCode)
+activate IBR
+return
+
 alt opCode == Arith | Logic
 IB -> ALIB: BuildInstruction()
 
@@ -30,13 +35,55 @@ IB -> MIB: BuildInstruction()
 
 end
 
-
 @enduml
 ```
 
-Steps to determining instruction type: \
-1. Check if first letter is B
-2. If so, compare against BIC, BLX, BX
+```plantuml
+@startuml
+
+hide fields
+
+class InstructionBuilder
+{
+    {abstract} + BuildInstruction()
+    - DetermineOpCode()
+    - CheckConditionalCode()
+}
+
+class InstructionBuilderRepository
+{
+    + GetInstructionBuilder(opCode)
+}
+
+package InstructionBuilders
+{
+
+class ArithAndLogicInstructionBuilder
+{
+    + BuildInstruction()
+    - CheckSFlag()
+}
+
+class FlowCtrlInstructionBuilder
+{
+    + BuildInstruction()
+}
+
+class MemoryInstructionBuilder
+{
+    + BuildInstruction()
+}
+}
+
+InstructionBuilder <|-- ArithAndLogicInstructionBuilder
+InstructionBuilder <|-- FlowCtrlInstructionBuilder
+InstructionBuilder <|-- MemoryInstructionBuilder
+InstructionBuilder - InstructionBuilderRepository : > uses
+InstructionBuilderRepository --> InstructionBuilders : > Contains
+
+
+@enduml
+```
 
 
 ```plantuml
@@ -44,7 +91,7 @@ Steps to determining instruction type: \
 
 class InstructionBase
 {
-    {abstract} + Execute()
+    {abstract} + Execute() = 0
 }
 
 class ArithAndLogicInstruction

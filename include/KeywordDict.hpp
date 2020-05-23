@@ -21,7 +21,10 @@
 
 // C++ PROJECT INCLUDES
 #include "DLB.hpp" // For DLB class
+#include "HashMap.hpp" // For HashMap
 #include "LineTypes.hpp" // For LineType enum
+#include "OpCodes.hpp" // For OpCode enum
+#include "ConditionalCode.hpp" // For ConditionalCode enum
 
 // FORWARD DECLARATIONS
 // (None)
@@ -68,6 +71,16 @@ public:
     ////////////////////////////////
     bool Contains(std::string& rKeyword) const { return m_keywordDict.Contains(rKeyword); }
 
+    ////////////////////////////////
+    /// METHOD NAME: GetInstructionDict
+    ////////////////////////////////
+    const HashMap<OpCode>& GetInstructionDict() const { return m_instructionDict; }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetConditionalCodeDict
+    ////////////////////////////////
+    const HashMap<ConditionalCode>& GetConditionalCodeDict() const { return m_conditionalCodeDict; }
+
 protected:
 
 private:
@@ -75,13 +88,27 @@ private:
     /// DLB to hold keyword:value pairs
     DLB<Io::LineType> m_keywordDict;
 
+    /// HashMap to hold instruction:OpCode pairs
+    HashMap<OpCode> m_instructionDict;
+
+    /// Size used when initializing the HashMap
+    static const uint8_t INSTRUCTION_DICT_SIZE = 43;
+
+    /// HashMap containing pairs of conditional codes : CondCodeEnum
+    HashMap<ConditionalCode> m_conditionalCodeDict;
+
+    /// Number of conditional codes
+    static const uint8_t NUMBER_OF_COND_CODES = 18;
+
     ////////////////////////////////
     /// Constructor
     ///
     /// @note Private to ensure singleton
     ////////////////////////////////
     KeywordDict() :
-        m_keywordDict(DLB<Io::LineType>())
+        m_keywordDict(DLB<Io::LineType>()),
+        m_instructionDict(HashMap<OpCode>(INSTRUCTION_DICT_SIZE)),
+        m_conditionalCodeDict(HashMap<ConditionalCode>(NUMBER_OF_COND_CODES))
     {}
 
     ////////////////////////////////
