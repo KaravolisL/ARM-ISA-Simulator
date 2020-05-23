@@ -89,20 +89,6 @@ private:
     bool CheckConditionalCode(std::string& rKeyword, const Registers& rRegisters) const;
 
     ////////////////////////////////
-    /// METHOD NAME: CheckSFlag
-    ///
-    /// @brief Check whether the instruction should 
-    /// set the process's flags following its execution. The
-    /// S will be stripped if present
-    ///
-    /// @param[in] rKeyword      Instruction to be checked
-    /// @return Whether instruction needs to set the process flags
-    /// @retval true        - The instruction needs to set the process flags
-    /// @retval false       - The instruction need not to set flags
-    ////////////////////////////////
-    bool CheckSFlag(std::string& rKeyword) const;
-
-    ////////////////////////////////
     /// Constructor
     ///
     /// @note Private to ensure singleton

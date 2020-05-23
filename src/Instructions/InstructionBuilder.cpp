@@ -206,20 +206,3 @@ bool InstructionBuilder::CheckConditionalCode(std::string& rKeyword, const Regis
 
     return execute;
 }
-
-////////////////////////////////
-/// METHOD NAME: InstructionBuilder::CheckSFlag 
-////////////////////////////////
-bool InstructionBuilder::CheckSFlag(std::string& rKeyword) const
-{
-    if (rKeyword.length() > 1 && rKeyword[0] == 'S')
-    {
-        LOG_DEBUG("Instruction will set the flags");
-        rKeyword = rKeyword.substr(1);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
