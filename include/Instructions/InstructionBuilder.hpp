@@ -25,9 +25,10 @@ struct Registers;
 ////////////////////////////////
 /// @class InstructionBuilder
 ///
-/// @brief This class holds instances
-/// of instruction classes that can be retrieved
-/// using the GetInstruction method
+/// @brief This class is used as the first
+/// step in building an instruction. It performs
+/// some operations then passes the remaining
+/// operations to another builder class
 ////////////////////////////////
 class InstructionBuilder
 {
@@ -53,7 +54,7 @@ public:
     /// @param[in] pProcess         Process for which the instruction is being built
     /// @return Instance of built instruction object
     ////////////////////////////////
-    InstructionBase* BuildInstruction(std::string& rInstruction, Process* pProcess);
+    virtual InstructionBase* BuildInstruction(std::string& rInstruction, Process* pProcess);
 
 protected:
 
@@ -107,6 +108,11 @@ private:
     /// @note Private to ensure singleton
     ////////////////////////////////
     InstructionBuilder() {}
+
+    ////////////////////////////////
+    /// Deconstructor
+    ////////////////////////////////
+    ~InstructionBuilder();
 
     ////////////////////////////////
     /// Copy Constructer

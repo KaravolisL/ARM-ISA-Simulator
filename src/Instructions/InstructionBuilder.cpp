@@ -39,41 +39,19 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
         opCode = OpCode::NOP;
     }
 
-    // Check whether this instruction needs to set the process flags
-    // TODO: Move this method to ArithAndLogicInstructionBuilder
-    bool sFlag = CheckSFlag(keyword);
-
     // Update the instruction based on how it has been modified
     uint8_t newStartPosition = rInstruction.substr(0, rInstruction.find_first_of(' ')).length() - keyword.length();
     rInstruction = rInstruction.substr(newStartPosition);
 
     LOG_DEBUG("New Instruction: %s", rInstruction);
 
-    switch (opCode)
-    {
-        case OpCode::ADD:
-        case OpCode::SUB:
-            // ArithAndLogicInstructionBuilder::BuildInstruction(rInstruction, pProcess);
-            break;
+    // Obtain a specific builder based on the opcode
+    // InstructionBuilder* pInstructionSpecificBuilder = InstructionBuilderRepository::GetInstructionBuilder(opCode);
 
-        case OpCode::AND:
-            break;
+    // Actually build the instruction using the arguments
+    // InstructionBase* pInstruction = pInstructionSpecificBuilder->BuildInstruction(rInstruction, pProcess);
 
-        case OpCode::B:
-            break;
-
-        case OpCode::LDR:
-        case OpCode::STR:
-            // MemoryInstructionBuilder::BuildInstruction(opCode)
-            break;
-
-        case OpCode::MOV:
-            break;
-
-        default:
-            break;
-    }
-
+    // return pInstruction;
     return nullptr;
 }
 
