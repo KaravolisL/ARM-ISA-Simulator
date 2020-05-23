@@ -98,7 +98,7 @@ private:
     ////////////////////////////////
     /// Deconstructor
     ////////////////////////////////
-    ~InstructionBuilder();
+    virtual ~InstructionBuilder();
 
     ////////////////////////////////
     /// Copy Constructer

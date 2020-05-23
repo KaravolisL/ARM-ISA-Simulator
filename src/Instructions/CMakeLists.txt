@@ -28,6 +28,7 @@ set(SOURCES
     InstructionBase.cpp
     InstructionBuilder.cpp
     ArithAndLogicInstructionBuilder.cpp
+    InstructionBuilderRepository.cpp
     InstructionRepository.cpp
     Other/MOVInstruction.cpp
 )

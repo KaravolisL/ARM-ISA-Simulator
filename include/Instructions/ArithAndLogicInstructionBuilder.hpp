@@ -32,6 +32,16 @@ class ArithAndLogicInstructionBuilder : public InstructionBuilder
 public:
 
     ////////////////////////////////
+    /// Constructor
+    ////////////////////////////////
+    ArithAndLogicInstructionBuilder();
+
+    ////////////////////////////////
+    /// Deconstructor
+    ////////////////////////////////
+    ~ArithAndLogicInstructionBuilder();
+
+    ////////////////////////////////
     /// METHOD NAME: BuildInstruction
     ///
     /// @brief Given a string containing the instruction
@@ -61,11 +71,6 @@ private:
     /// @retval false       - The instruction need not to set flags
     ////////////////////////////////
     bool CheckSFlag(std::string& rKeyword) const;
-
-    ////////////////////////////////
-    /// Deconstructor
-    ////////////////////////////////
-    ~ArithAndLogicInstructionBuilder();
 
 };
 
