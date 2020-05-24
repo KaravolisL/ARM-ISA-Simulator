@@ -58,6 +58,24 @@ public:
 
 protected:
 
+    /// OpCode of the instruction being build
+    OpCode m_opCode;
+
+    ////////////////////////////////
+    /// Constructor
+    ///
+    /// @note Protected to ensure singleton,
+    /// but allow access to sub classes
+    ////////////////////////////////
+    InstructionBuilder() :
+        m_opCode(OpCode::INVALID)
+    {}
+
+    ////////////////////////////////
+    /// Deconstructor
+    ////////////////////////////////
+    virtual ~InstructionBuilder();
+
 private:
 
     ////////////////////////////////
@@ -87,18 +105,6 @@ private:
     /// @retval false       - The instruction should become a nop
     ////////////////////////////////
     bool CheckConditionalCode(std::string& rKeyword, const Registers& rRegisters) const;
-
-    ////////////////////////////////
-    /// Constructor
-    ///
-    /// @note Private to ensure singleton
-    ////////////////////////////////
-    InstructionBuilder() {}
-
-    ////////////////////////////////
-    /// Deconstructor
-    ////////////////////////////////
-    virtual ~InstructionBuilder();
 
     ////////////////////////////////
     /// Copy Constructer

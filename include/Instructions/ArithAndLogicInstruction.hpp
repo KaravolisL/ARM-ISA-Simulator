@@ -45,6 +45,8 @@ public:
     ////////////////////////////////
     void Execute();
 
+    void Execute(const SLList<std::string>& rArguments, Process& rProcess) {}
+
     ////////////////////////////////
     /// METHOD NAME: SetDestination
     ////////////////////////////////
@@ -65,6 +67,11 @@ public:
     ////////////////////////////////
     void SetOperation(Register (*pOperation)(Register, Register)) { m_pOperation = pOperation; }
 
+    ////////////////////////////////
+    /// METHOD NAME: SetSFlag
+    ////////////////////////////////
+    void SetSFlag() { m_sFlag = true; }
+
 protected:
 
 private:
@@ -80,6 +87,19 @@ private:
 
     /// Operation to be done with arguments
     Register (*m_pOperation)(Register, Register);
+
+    /// Whether instruction should set the process flags
+    bool m_sFlag;
+
+    ////////////////////////////////
+    /// Copy Constructer
+    ////////////////////////////////
+    ArithAndLogicInstruction(ArithAndLogicInstruction const&);
+
+    ////////////////////////////////
+    /// Assignment operator
+    ////////////////////////////////
+    ArithAndLogicInstruction& operator=(ArithAndLogicInstruction const&);
 
 };
 

@@ -41,13 +41,12 @@ end
 ```plantuml
 @startuml
 
-hide fields
-
 class InstructionBuilder
 {
     {abstract} + BuildInstruction()
     - DetermineOpCode()
     - CheckConditionalCode()
+    # m_opCode
 }
 
 class InstructionBuilderRepository

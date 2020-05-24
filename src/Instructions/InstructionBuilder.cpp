@@ -48,6 +48,7 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
 
     // Obtain a specific builder based on the opcode
     InstructionBuilder* pInstructionSpecificBuilder = InstructionBuilderRepository::GetInstructionBuilder(opCode);
+    pInstructionSpecificBuilder->m_opCode = opCode;
 
     // Actually build the instruction using the arguments
     InstructionBase* pInstruction = pInstructionSpecificBuilder->BuildInstruction(rInstruction, pProcess);

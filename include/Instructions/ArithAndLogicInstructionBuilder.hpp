@@ -16,6 +16,7 @@
 
 // C++ PROJECT INCLUDES
 #include "InstructionBuilder.hpp" // For InstructionBuilder
+#include "Registers.hpp" // For Register
 
 // FORWARD DECLARATIONS
 class ArithAndLogicInstruction;
@@ -71,6 +72,18 @@ private:
     /// @retval false       - The instruction need not to set flags
     ////////////////////////////////
     bool CheckSFlag(std::string& rKeyword) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: ParseDestination
+    ///
+    /// @brief Takes a string and converts it
+    /// to a pointer to the destination register
+    ///
+    /// @param[in] rDestStr     String of the destination register
+    /// @param[in] pProcess     Process to which the instruction belongs
+    /// @return A pointer to the corresponding register
+    ////////////////////////////////
+    Register* ParseDestination(std::string& rDestStr, Process* pProcess) const;
 
 };
 
