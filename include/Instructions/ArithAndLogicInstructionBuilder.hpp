@@ -74,16 +74,50 @@ private:
     bool CheckSFlag(std::string& rKeyword) const;
 
     ////////////////////////////////
-    /// METHOD NAME: ParseDestination
+    /// METHOD NAME: ParseRegister
     ///
     /// @brief Takes a string and converts it
-    /// to a pointer to the destination register
+    /// to a pointer to a register
     ///
-    /// @param[in] rDestStr     String of the destination register
+    /// @param[in] rDestStr     String of the register
     /// @param[in] pProcess     Process to which the instruction belongs
     /// @return A pointer to the corresponding register
     ////////////////////////////////
-    Register* ParseDestination(std::string& rDestStr, Process* pProcess) const;
+    Register* ParseRegister(std::string& rDestStr, Process* pProcess) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: ParseImmediate
+    ///
+    /// @brief Takes a string and converts it
+    /// to an immediate value
+    ///
+    /// @param[in] rImmedStr     String of the immediate
+    /// @return The immediate value
+    ////////////////////////////////
+    Register ParseImmediate(std::string& rImmedStr) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: IsShift
+    ///
+    /// @brief Determines whether a string
+    /// is a shift operation
+    ///
+    /// @param[in] rShiftStr    String to investigate
+    /// @return Whether the string is a shift operation or not
+    ////////////////////////////////
+    bool IsShift(std::string& rShiftStr) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: HandleShift
+    ///
+    /// @brief Shifts the given register by the 
+    /// amount and in the provided manner.
+    ///
+    /// @param[in,out] rArgument    Register to be shifted
+    /// @param[in]     rShiftType   Type of shift to be done
+    /// @param[in]     rShiftAmtStr Amount to shift register by
+    ////////////////////////////////
+    void HandleShift(Register& rArgument, std::string& rShiftType, std::string& rShiftAmtStr) const;
 
 };
 

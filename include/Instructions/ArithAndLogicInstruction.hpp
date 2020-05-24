@@ -55,12 +55,22 @@ public:
     ////////////////////////////////
     /// METHOD NAME: SetArgument1
     ////////////////////////////////
-    void SetArgument1(Register* pArgument1) { m_pArgument1 = pArgument1; }
+    void SetArgument1(Register argument1) { m_argument1 = argument1; }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetArgument1
+    ////////////////////////////////
+    Register& GetArgument1() { return m_argument1; }
 
     ////////////////////////////////
     /// METHOD NAME: SetArgument2
     ////////////////////////////////
-    void SetArgument2(Register* pArgument2) { m_pArgument2 = pArgument2; }
+    void SetArgument2(Register argument2) { m_argument2 = argument2; }
+
+    ////////////////////////////////
+    /// METHOD NAME: GetArgument2
+    ////////////////////////////////
+    Register& GetArgument2() { return m_argument2; }
 
     ////////////////////////////////
     /// METHOD NAME: SetOperation
@@ -79,11 +89,11 @@ private:
     /// Pointer to the destination
     Register* m_pDestination;
 
-    /// Pointer to argument 1
-    Register* m_pArgument1;
+    /// First Argument
+    Register m_argument1;
 
-    /// Pointer to argument 2
-    Register* m_pArgument2;
+    /// Second argument
+    Register m_argument2;
 
     /// Operation to be done with arguments
     Register (*m_pOperation)(Register, Register);
