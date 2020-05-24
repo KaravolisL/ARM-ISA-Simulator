@@ -41,10 +41,10 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
     }
 
     // Update the instruction based on how it has been modified
-    uint8_t newStartPosition = rInstruction.substr(0, rInstruction.find_first_of(' ')).length() - keyword.length();
-    rInstruction = rInstruction.substr(newStartPosition);
+    uint8_t numCharsToRemove = rInstruction.substr(0, rInstruction.find_first_of(' ')).length() - keyword.length();
+    rInstruction.erase(0, numCharsToRemove);
 
-    LOG_DEBUG("New Instruction: %s", rInstruction);
+    LOG_DEBUG("New Instruction: %s", rInstruction.c_str());
 
     // Obtain a specific builder based on the opcode
     InstructionBuilder* pInstructionSpecificBuilder = InstructionBuilderRepository::GetInstructionBuilder(opCode);
@@ -53,6 +53,7 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
     // Actually build the instruction using the arguments
     InstructionBase* pInstruction = pInstructionSpecificBuilder->BuildInstruction(rInstruction, pProcess);
 
+    ASSERT(pInstruction != nullptr);
     return pInstruction;
 }
 
@@ -108,7 +109,7 @@ OpCode InstructionBuilder::DetermineOpCode(std::string& rKeyword) const
     {
         opCode = KeywordDict::GetInstance().GetInstructionDict().Get(baseInstruction);
     }
-    catch(const HashMap<std::string>::KeyNotFoundException& e)
+    catch(const HashMap<OpCode>::KeyNotFoundException& e)
     {
         throw InvalidSyntaxException("Instruction not supported", rKeyword);
     }

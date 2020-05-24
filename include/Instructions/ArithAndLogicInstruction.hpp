@@ -34,7 +34,14 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    ArithAndLogicInstruction();
+    ArithAndLogicInstruction() :
+        InstructionBase(InstructionType::ARITHMETIC),
+        m_pDestination(nullptr),
+        m_argument1(0),
+        m_argument2(0),
+        m_pOperation(nullptr),
+        m_sFlag(false)
+    {};
 
     ////////////////////////////////
     /// METHOD NAME: Execute

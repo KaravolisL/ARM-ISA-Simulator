@@ -17,7 +17,6 @@
 
 // C++ PROJECT INCLUDES
 #include "KeywordDict.hpp" // Header for class
-#include "InstructionRepository.hpp" // For InstructionRepository
 #include "LineTypes.hpp" // For LineTypes enum
 #include "Logger.hpp" // For LOG_INFO
 

@@ -36,6 +36,11 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
         pInstruction->SetSFlag();
     }
 
+    // Add a character as a placeholder to the keyword
+    rInstruction.insert(0, "|");
+
+    LOG_DEBUG("rInstruction = %s", rInstruction.c_str());
+
     // Create a line parser to retrieve the remaining arguments
     Io::LineParser lineParser(&rInstruction);
     SLList<std::string> arguments;
@@ -46,7 +51,7 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     Register* pDestination = ParseRegister(arguments[argumentNumber++], pProcess);
     pInstruction->SetDestination(pDestination);
 
-    // Handle the next argument
+    // Handle the first argument
     switch(arguments[argumentNumber][0])
     {
         case 'r':
@@ -62,8 +67,6 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
             // First argument is an immediate
             Register immediate = ParseImmediate(arguments[argumentNumber++]);
             pInstruction->SetArgument1(immediate);
-            // Use the destination as the second argument
-            pInstruction->SetArgument2(*pDestination);
             break;
         }
         default:
@@ -115,6 +118,12 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
             }
         }
     }
+    else
+    {
+        // There is only one argument, so use the destination as the second argument
+        pInstruction->SetArgument2(*pDestination);
+    }
+    
 
     // Any additional arguments would have to be shifting
     if (arguments.GetLength() > argumentNumber)
@@ -149,8 +158,7 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
         break;
     }
 
-
-    return nullptr;
+    return pInstruction;
 }
 
 ////////////////////////////////

@@ -35,12 +35,9 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    ArithAndLogicInstructionBuilder();
-
-    ////////////////////////////////
-    /// Deconstructor
-    ////////////////////////////////
-    ~ArithAndLogicInstructionBuilder();
+    ArithAndLogicInstructionBuilder() :
+        InstructionBuilder()
+    {}
 
     ////////////////////////////////
     /// METHOD NAME: BuildInstruction

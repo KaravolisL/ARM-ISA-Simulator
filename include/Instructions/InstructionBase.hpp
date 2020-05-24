@@ -54,7 +54,7 @@ public:
     ////////////////////////////////
     virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess) = 0;
 
-    void Execute() {};
+    virtual void Execute() {};
 
     ////////////////////////////////
     /// METHOD NAME: SetFlagged

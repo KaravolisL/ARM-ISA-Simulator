@@ -74,7 +74,7 @@ protected:
     ////////////////////////////////
     /// Deconstructor
     ////////////////////////////////
-    virtual ~InstructionBuilder();
+    virtual ~InstructionBuilder() {};
 
 private:
 
