@@ -118,7 +118,7 @@ class FlowCtrlInstruction
 
 class MemoryInstruction
 {
-
+    + Execute()
 }
 
 InstructionBase <|-- ArithAndLogicInstruction

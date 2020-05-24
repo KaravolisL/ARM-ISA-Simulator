@@ -25,7 +25,7 @@ static ArithAndLogicInstructionBuilder f_arithAndLogicInstructionBuilder;
 ////////////////////////////////
 /// METHOD NAME: InstructionBuilderRepository::GetInstructionBuilder 
 ////////////////////////////////
-InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const OpCode opCode) const
+InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const OpCode opCode)
 {
     InstructionBuilder* pInstructionBuilder = nullptr;
 

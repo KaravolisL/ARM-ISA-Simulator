@@ -49,7 +49,7 @@ public:
     /// @param[in] opCode   OpCode used when determining what kind of builder to retrieve
     /// @return Instance of matching instruction builder
     ////////////////////////////////
-    InstructionBuilder* GetInstructionBuilder(const OpCode opCode) const;
+    static InstructionBuilder* GetInstructionBuilder(const OpCode opCode);
 
 protected:
 

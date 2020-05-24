@@ -15,6 +15,7 @@
 // C++ PROJECT INCLUDES
 #include "InstructionBuilder.hpp" // Header for class
 #include "InstructionBase.hpp" // For InstructionBase
+#include "InstructionBuilderRepository.hpp" // For InstructionBuilderRepository
 #include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "Process.hpp" // For Process
 #include "Assert.hpp" // For ASSERT
@@ -46,13 +47,12 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
     LOG_DEBUG("New Instruction: %s", rInstruction);
 
     // Obtain a specific builder based on the opcode
-    // InstructionBuilder* pInstructionSpecificBuilder = InstructionBuilderRepository::GetInstructionBuilder(opCode);
+    InstructionBuilder* pInstructionSpecificBuilder = InstructionBuilderRepository::GetInstructionBuilder(opCode);
 
     // Actually build the instruction using the arguments
-    // InstructionBase* pInstruction = pInstructionSpecificBuilder->BuildInstruction(rInstruction, pProcess);
+    InstructionBase* pInstruction = pInstructionSpecificBuilder->BuildInstruction(rInstruction, pProcess);
 
-    // return pInstruction;
-    return nullptr;
+    return pInstruction;
 }
 
 ////////////////////////////////
