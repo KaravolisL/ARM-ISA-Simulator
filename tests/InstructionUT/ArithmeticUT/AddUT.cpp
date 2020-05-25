@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file AddUT.cpp
 ///
-/// @brief Unit Test for ADDInstruction
+/// @brief Unit Test for ADD Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,16 +14,17 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "ADDInstruction.hpp"  // Test class
-#include "SLList.hpp"
 #include "Process.hpp"
+#include "InstructionBuilder.hpp"
+#include "InstructionBase.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-ADDInstruction add = ADDInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
 
 ////////////////////////////////
 /// Setup Function
@@ -34,6 +35,8 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -41,24 +44,17 @@ void setup()
 ////////////////////////////////
 void AddRegsTest()
 {
-    // ADD R0, R1, R2
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-    arguments.InsertBack("R2");
+    std::string instructionStr = "ADD R0, R1, R2";
 
-    add.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 3);
-    arguments.Clear();
 
-    // ADD R0, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
+    instructionStr = "ADD R0, R1";
 
-    add.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 4);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -66,24 +62,17 @@ void AddRegsTest()
 ////////////////////////////////
 void AddLiterals()
 {
-    // ADD R0, R1, #0xA
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0xA");
+    std::string instructionStr = "ADD R0, R1, #0xA";
 
-    add.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 11);
-    arguments.Clear();
 
-    // ADD R0, #x11
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0x11");
+    instructionStr = "ADD R1, #0x11";
 
-    add.Execute(arguments, myProc);
-
-    assert(myProc.GetProcessRegisters().genRegs[1] == 18);
-    arguments.Clear();
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[1] == 18);    
 }
 
 ////////////////////////////////
@@ -94,59 +83,44 @@ void AddsTest()
     // Reset registers
     setup();
 
-    // Set flagged
-    add.SetFlagged();
+    std::string instructionStr = "ADDS R0, R0";
 
-    // ADDS R0, R0
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R0");
-
-    add.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
     assert(!myProc.GetProcessRegisters().GetCarryFlag());
     assert(!myProc.GetProcessRegisters().GetOverflowFlag());
-    arguments.Clear();
 
-    // ADDS R0, #-2
-    arguments.InsertBack("R0");
-    arguments.InsertBack("#-2");
+    instructionStr = "ADDS R0, #-2";
 
-    add.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
     assert(!myProc.GetProcessRegisters().GetCarryFlag());
     assert(!myProc.GetProcessRegisters().GetOverflowFlag());
-    arguments.Clear();
 
-    // ADDS R10, #0xFFFFFFFF
-    arguments.InsertBack("R10");
-    arguments.InsertBack("#0xFFFFFFFF");
+    instructionStr = "ADDS R10, #0xFFFFFFFF";
 
-    add.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
     assert(myProc.GetProcessRegisters().GetCarryFlag());
     assert(!myProc.GetProcessRegisters().GetOverflowFlag());
-    arguments.Clear();
 
     // "MOV" R1, #0x40000000
     myProc.GetProcessRegisters().genRegs[1] = 0x40000000;
 
-    // ADDS R1, #0x40000000
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0x40000000");
+    instructionStr = "ADDS R1, #0x40000000";
 
-    add.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
     assert(!myProc.GetProcessRegisters().GetCarryFlag());
     assert(myProc.GetProcessRegisters().GetOverflowFlag());
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -154,7 +128,7 @@ void AddsTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -170,6 +144,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "ADDInstruction Unit Test Complete: SUCCESS";
+    std::cout << "ADD Instruction Unit Test Complete: SUCCESS";
     return 0;
 }
