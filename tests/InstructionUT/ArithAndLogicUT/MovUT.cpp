@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file MovUT.cpp
 ///
-/// @brief Unit Test for MOVInstruction
+/// @brief Unit Test for MOV Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,16 +14,18 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "MOVInstruction.hpp"  // Test class
-#include "SLList.hpp"
+#include "InstructionBase.hpp"
+#include "InstructionBuilder.hpp"
 #include "Process.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-MOVInstruction mov = MOVInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -34,6 +36,8 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -41,14 +45,11 @@ void setup()
 ////////////////////////////////
 void MovRegTest()
 {
-    // MOV R0, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
+    instructionStr = "MOV R0, R1";
 
-    mov.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 1);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -56,14 +57,11 @@ void MovRegTest()
 ////////////////////////////////
 void MovLiteralTest()
 {
-    // MOV R0, #0xFF
-    arguments.InsertBack("R0");
-    arguments.InsertBack("#0xFF");
+    instructionStr = "MOV R0, #0xFF";
 
-    mov.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 0xFF);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -71,28 +69,19 @@ void MovLiteralTest()
 ////////////////////////////////
 void MovsTest()
 {
-    // Set flagged
-    mov.SetFlagged();
+    instructionStr = "MOVS R0, #0";
 
-    // MOVS R0, #0
-    arguments.InsertBack("R0");
-    arguments.InsertBack("#0");
-
-    mov.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    arguments.Clear();
 
-    // MOVS R0, #0xFFFFFFFF
-    arguments.InsertBack("R0");
-    arguments.InsertBack("#0xFFFFFFFF");
+    instructionStr = "MOVS R0, #0xFFFFFFFF";
 
-    mov.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -100,7 +89,7 @@ void MovsTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -116,6 +105,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "MOVInstruction Unit Test Complete: SUCCESS";
+    std::cout << "MOV Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

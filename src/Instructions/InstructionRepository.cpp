@@ -232,7 +232,7 @@ bool InstructionRepository::CheckConditionalCode(std::string& rInstruction, cons
         break;
     
     default:
-        ASSERT("Invalid conditional code: %d", code);
+        ASSERT(false, "Invalid conditional code: %d", code);
         break;
     }
 

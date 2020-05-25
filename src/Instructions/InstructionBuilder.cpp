@@ -199,7 +199,7 @@ bool InstructionBuilder::CheckConditionalCode(std::string& rKeyword, const Regis
         break;
     
     default:
-        ASSERT("Invalid conditional code: %d", code);
+        ASSERT(false, "Invalid conditional code: %d", code);
         break;
     }
 

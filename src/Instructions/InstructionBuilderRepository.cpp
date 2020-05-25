@@ -39,11 +39,14 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
         case OpCode::AND:
         case OpCode::ORR:
         case OpCode::EOR:
+        case OpCode::CMP:
+        case OpCode::CMN:
+        case OpCode::MOV:
             pInstructionBuilder = &f_arithAndLogicInstructionBuilder;
             break;
 
         default:
-            ASSERT("Invalid opCode %d", opCode);
+            ASSERT(false, "Invalid opCode %d", opCode);
     }
 
     return pInstructionBuilder;

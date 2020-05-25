@@ -182,10 +182,10 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
         pInstruction->SetDestination(&pInstruction->GetArgument1());
         break;
     case OpCode::MOV:
-        pInstruction->SetOperation([](Register a, Register b) { return a; });
+        pInstruction->SetOperation([](Register a, Register b) { return b; });
         break;
     default:
-        ASSERT("Unsupported opcode %d", m_opCode);
+        ASSERT(false, "Unsupported opcode %d", m_opCode);
         break;
     }
 
