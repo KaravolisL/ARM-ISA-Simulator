@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file AndUT.cpp
 ///
-/// @brief Unit Test for ANDInstruction
+/// @brief Unit Test for AND Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,16 +14,18 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "ANDInstruction.hpp"  // Test class
-#include "SLList.hpp"
+#include "InstructionBase.hpp"
+#include "InstructionBuilder.hpp"
 #include "Process.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-ANDInstruction and_instruction = ANDInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -34,6 +36,8 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -41,24 +45,17 @@ void setup()
 ////////////////////////////////
 void AndRegTest()
 {
-    // AND R1, R2, R3
-    arguments.InsertBack("R1");
-    arguments.InsertBack("R2");
-    arguments.InsertBack("R3");
+    instructionStr = "AND R1, R2, R3";
 
-    and_instruction.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[1] == 2);
-    arguments.Clear();
 
-    // AND R4, R5
-    arguments.InsertBack("R4");
-    arguments.InsertBack("R5");
+    instructionStr = "AND R4, R5";
 
-    and_instruction.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[4] == 4);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -66,14 +63,11 @@ void AndRegTest()
 ////////////////////////////////
 void AndLiteralTest()
 {
-    // AND R7, #3
-    arguments.InsertBack("R7");
-    arguments.InsertBack("#3");
+    instructionStr = "AND R7, #3";
 
-    and_instruction.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[7] == 3);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -81,31 +75,22 @@ void AndLiteralTest()
 ////////////////////////////////
 void AndsTest()
 {
-    // Set flagged
-    and_instruction.SetFlagged();
+    instructionStr = "ANDS R3, #0";
 
-    // ANDS R3, #0
-    arguments.InsertBack("R3");
-    arguments.InsertBack("#0");
-
-    and_instruction.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    arguments.Clear();
 
     // "MOV" R5, #0xFFFFFFFF
     myProc.GetProcessRegisters().genRegs[5] = 0xFFFFFFFF;
 
-    // ANDS R5, #0xFFFF0000
-    arguments.InsertBack("r5");
-    arguments.InsertBack("#0xFFFF0000");
+    instructionStr = "ANDS R5, #0xFFFF0000";
 
-    and_instruction.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -113,7 +98,7 @@ void AndsTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////

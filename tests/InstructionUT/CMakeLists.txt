@@ -4,5 +4,4 @@ cmake_minimum_required(VERSION 3.16)
 add_subdirectory(ArithAndLogicUT)
 add_subdirectory(ComparisonUT)
 add_subdirectory(FlowCtrlUT)
-add_subdirectory(LogicUT)
 
