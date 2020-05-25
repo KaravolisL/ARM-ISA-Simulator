@@ -37,7 +37,7 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     }
 
     // Add a character as a placeholder to the keyword
-    rInstruction.insert(0, "|");
+    rInstruction.insert(rInstruction.find_first_of(' '), "|");
 
     LOG_DEBUG("rInstruction = %s", rInstruction.c_str());
 
@@ -166,10 +166,10 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
 ////////////////////////////////
 bool ArithAndLogicInstructionBuilder::CheckSFlag(std::string& rKeyword) const
 {
-    if (rKeyword.length() > 1 && rKeyword[0] == 'S')
+    if (rKeyword.length() > 0 && rKeyword[0] == 'S')
     {
         LOG_DEBUG("Instruction will set the flags");
-        rKeyword = rKeyword.substr(1);
+        rKeyword.erase(0);
         return true;
     }
     else

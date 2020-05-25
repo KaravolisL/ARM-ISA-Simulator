@@ -20,7 +20,7 @@
 ////////////////////////////////
 /// METHOD NAME: ArithAndLogicInstruction::Execute
 ////////////////////////////////
-void ArithAndLogicInstruction::Execute()
+void ArithAndLogicInstruction::Execute(Registers& rProcessRegisters)
 {
     ASSERT(m_pOperation != nullptr);
 
@@ -33,5 +33,34 @@ void ArithAndLogicInstruction::Execute()
 
     LOG_DEBUG("Result = %d", result);
 
-    // TODO: Set flags if the instruction is flagged
+    // Set flags if necessary
+    if (m_sFlag)
+    {
+        LOG_DEBUG("Setting flags");
+        (result & 0x80000000) != 0 ? rProcessRegisters.SetNegativeFlag() : rProcessRegisters.ClearNegativeFlag();
+        result == 0 ? rProcessRegisters.SetZeroFlag() : rProcessRegisters.ClearZeroFlag();
+
+        // Overflow can only occur if the numbers are the same sign
+        if ((m_argument1 & 0x80000000) == (m_argument2 & 0x80000000))
+        {
+            // Overflow occurs if the sign of the arguments differ from the sum's sign
+            if ((m_argument1 & 0x80000000) != (result & 0x80000000))
+            {
+                rProcessRegisters.SetOverflowFlag();
+            }
+            else
+            {
+                rProcessRegisters.ClearOverflowFlag();
+            }
+        }
+
+        if (result < m_argument1 || result < m_argument2)
+        {
+            rProcessRegisters.SetCarryFlag();
+        }
+        else
+        {
+            rProcessRegisters.ClearCarryFlag();
+        }
+    }
 }

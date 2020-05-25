@@ -22,6 +22,7 @@ template <typename T>
 class SLList;
 
 class Process;
+struct Registers;
 
 ////////////////////////////////
 /// @class InstructionBase
@@ -54,7 +55,7 @@ public:
     ////////////////////////////////
     virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess) = 0;
 
-    virtual void Execute() {};
+    virtual void Execute(Registers& rProcessRegisters) {};
 
     ////////////////////////////////
     /// METHOD NAME: SetFlagged

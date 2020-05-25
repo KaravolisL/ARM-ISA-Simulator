@@ -49,8 +49,10 @@ public:
     /// @brief Executes the given operation
     /// on the arguments and places the result
     /// into the destination
+    ///
+    /// @param[in,out] rProcessRegisters    Registers associated with process
     ////////////////////////////////
-    void Execute();
+    void Execute(Registers& rProcessRegisters);
 
     void Execute(const SLList<std::string>& rArguments, Process& rProcess) {}
 
