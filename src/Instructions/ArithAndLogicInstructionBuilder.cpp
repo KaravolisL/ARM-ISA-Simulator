@@ -27,7 +27,7 @@
 ////////////////////////////////
 InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& rInstruction, Process* pProcess)
 {
-    ArithAndLogicInstruction* pInstruction = new ArithAndLogicInstruction();
+    ArithAndLogicInstruction* pInstruction = new ArithAndLogicInstruction(m_opCode);
 
     // Check for the S flag
     std::string keyword = rInstruction.substr(0, rInstruction.find_first_of(' '));
@@ -120,8 +120,9 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     }
     else
     {
-        // There is only one argument, so use the destination as the second argument
-        pInstruction->SetArgument2(*pDestination);
+        // There is only one argument, so move the first argument and use the destination as the first
+        pInstruction->SetArgument2(pInstruction->GetArgument1());
+        pInstruction->SetArgument1(*pDestination);
     }
     
 
@@ -152,6 +153,9 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     {
     case OpCode::ADD:
         pInstruction->SetOperation([](Register a, Register b) { return a + b; });
+        break;
+    case OpCode::SUB:
+        pInstruction->SetOperation([](Register a, Register b) { return a - b; });
         break;
     
     default:

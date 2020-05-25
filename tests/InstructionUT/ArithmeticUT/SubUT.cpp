@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file SubUT.cpp
 ///
-/// @brief Unit Test for SUBInstruction
+/// @brief Unit Test for SUB Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,16 +14,18 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "SUBInstruction.hpp"  // Test class
-#include "SLList.hpp"
 #include "Process.hpp"
+#include "InstructionBuilder.hpp"
+#include "InstructionBase.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-SUBInstruction sub = SUBInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -34,6 +36,8 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -41,24 +45,18 @@ void setup()
 ////////////////////////////////
 void SubRegsTest()
 {
-    // SUB R0, R2, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R2");
-    arguments.InsertBack("R1");
+    instructionStr = "SUB R0, R2, R1";
 
-    sub.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 1);
-    arguments.Clear();
 
-    // SUB R0, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R1");
 
-    sub.Execute(arguments, myProc);
+    instructionStr = "SUB R0, R1";
 
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 0);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -66,24 +64,18 @@ void SubRegsTest()
 ////////////////////////////////
 void SubLiterals()
 {
-    // ADD R0, R11, #0xA
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R11");
-    arguments.InsertBack("#0xA");
+    instructionStr = "SUB R0, R11, #0xA";
 
-    sub.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 1);
-    arguments.Clear();
 
-    // ADD R5, #0x4
-    arguments.InsertBack("R5");
-    arguments.InsertBack("#0x4");
+    instructionStr = "SUB R5, #0x4";
 
-    sub.Execute(arguments, myProc);
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
 
     assert(myProc.GetProcessRegisters().genRegs[5] == 1);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -94,56 +86,42 @@ void SubsTest()
     // Reset registers
     setup();
 
-    // Set flagged
-    sub.SetFlagged();
+    instructionStr = "SUBS R10, #10";
 
-    // SUBS R10, #10
-    arguments.InsertBack("R10");
-    arguments.InsertBack("#10");
-
-    sub.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
     assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
     assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-    arguments.Clear();
 
-    // SUBS R9, #6
-    arguments.InsertBack("R9");
-    arguments.InsertBack("#6");
+    instructionStr = "SUBS R9, #6";
 
-    sub.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
     assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
     assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-    arguments.Clear();
 
-    // SUBS R10, #16
-    arguments.InsertBack("R10");
-    arguments.InsertBack("#16");
 
-    sub.Execute(arguments, myProc);
+    instructionStr = "SUBS R10, #16";
 
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == true);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
     assert(myProc.GetProcessRegisters().GetCarryFlag() == false);
     assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-    arguments.Clear();
 
-    // SUBS R0, #0
-    arguments.InsertBack("R0");
-    arguments.InsertBack("#0");
+    instructionStr = "SUBS R0, #0";
 
-    sub.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
     assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
     assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -151,7 +129,7 @@ void SubsTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -167,6 +145,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "SUBInstruction Unit Test Complete: SUCCESS";
+    std::cout << "SUB Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

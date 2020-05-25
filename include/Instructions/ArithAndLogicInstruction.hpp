@@ -34,8 +34,8 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    ArithAndLogicInstruction() :
-        InstructionBase(InstructionType::ARITHMETIC),
+    ArithAndLogicInstruction(OpCode opCode) :
+        InstructionBase(opCode),
         m_pDestination(nullptr),
         m_argument1(0),
         m_argument2(0),

@@ -40,27 +40,57 @@ void ArithAndLogicInstruction::Execute(Registers& rProcessRegisters)
         (result & 0x80000000) != 0 ? rProcessRegisters.SetNegativeFlag() : rProcessRegisters.ClearNegativeFlag();
         result == 0 ? rProcessRegisters.SetZeroFlag() : rProcessRegisters.ClearZeroFlag();
 
-        // Overflow can only occur if the numbers are the same sign
-        if ((m_argument1 & 0x80000000) == (m_argument2 & 0x80000000))
-        {
-            // Overflow occurs if the sign of the arguments differ from the sum's sign
-            if ((m_argument1 & 0x80000000) != (result & 0x80000000))
+        // Only subtraction and addition instructions should mess with the C and V flags
+        if (m_opCode == OpCode::ADD)
             {
-                rProcessRegisters.SetOverflowFlag();
+            // Overflow can only occur if the numbers are the same sign
+            if ((m_argument1 & 0x80000000) == (m_argument2 & 0x80000000))
+            {
+                // Overflow occurs if the sign of the arguments differ from the sum's sign
+                if ((m_argument1 & 0x80000000) != (result & 0x80000000))
+                {
+                    rProcessRegisters.SetOverflowFlag();
+                }
+                else
+                {
+                    rProcessRegisters.ClearOverflowFlag();
+                }
+            }
+
+            if (result < m_argument1 || result < m_argument2)
+            {
+                rProcessRegisters.SetCarryFlag();
             }
             else
             {
-                rProcessRegisters.ClearOverflowFlag();
+                rProcessRegisters.ClearCarryFlag();
             }
         }
+        else if (m_opCode == OpCode::SUB)
+        {
+            // Overflow can only occur if the numbers are different signs
+            if ((m_argument1 & 0x80000000) != (m_argument2 & 0x80000000))
+            {
+                // Overflow occurs if the sign of the second argument is the same as the result
+                if ((m_argument2 & 0x80000000) == (result & 0x80000000))
+                {
+                    rProcessRegisters.SetOverflowFlag();
+                }
+                else
+                {
+                    rProcessRegisters.ClearOverflowFlag();
+                }
+            }
 
-        if (result < m_argument1 || result < m_argument2)
-        {
-            rProcessRegisters.SetCarryFlag();
-        }
-        else
-        {
-            rProcessRegisters.ClearCarryFlag();
+            if (result > m_argument1 || result > m_argument2)
+            {
+                // Clearing flag indicates a borrow occured
+                rProcessRegisters.ClearCarryFlag();
+            }
+            else
+            {
+                rProcessRegisters.SetCarryFlag();
+            }
         }
     }
 }

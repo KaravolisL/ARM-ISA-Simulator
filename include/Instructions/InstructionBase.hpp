@@ -15,6 +15,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "OpCodes.hpp" // For OpCode enum
 #include "InstructionTypes.hpp"
 
 // FORWARD DECLARATIONS
@@ -37,9 +38,14 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
+    InstructionBase(OpCode opCode) :
+        m_flagged(false),
+        m_opCode(opCode)
+    {}
+
     InstructionBase(InstructionType type) :
         m_flagged(false),
-        m_type(type)
+        m_opCode(OpCode::INVALID)
     {}
 
     ////////////////////////////////
@@ -67,11 +73,6 @@ public:
     ////////////////////////////////
     void ClearFlagged() { m_flagged = false; }
 
-    ////////////////////////////////
-    /// METHOD NAME: GetType
-    ////////////////////////////////
-    InstructionType GetType() const { return m_type; }
-
 protected:
 
     ////////////////////////////////
@@ -89,8 +90,8 @@ protected:
     /// Flag to determine whether flags need to be set following instruction execution
     bool m_flagged;
 
-    /// Type of instruction
-    InstructionType m_type;
+    /// OpCode of instruction
+    OpCode m_opCode;
 
 private:
 
