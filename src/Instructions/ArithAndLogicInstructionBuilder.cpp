@@ -157,8 +157,35 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     case OpCode::SUB:
         pInstruction->SetOperation([](Register a, Register b) { return a - b; });
         break;
-    
+    case OpCode::AND:
+        pInstruction->SetOperation([](Register a, Register b) { return a & b; });
+        break;
+    case OpCode::ORR:
+        pInstruction->SetOperation([](Register a, Register b) { return a | b; });
+        break;
+    case OpCode::BIC:
+        pInstruction->SetOperation([](Register a, Register b) { return a & (~b); });
+        break;
+    case OpCode::EOR:
+        pInstruction->SetOperation([](Register a, Register b) { return a ^ b; });
+        break;
+    case OpCode::CMN:
+        // Set the flags, but "discard" result
+        pInstruction->SetOperation([](Register a, Register b) { return a + b; });
+        pInstruction->SetSFlag();
+        pInstruction->SetDestination(&pInstruction->GetArgument1());
+        break;
+    case OpCode::CMP:
+        // Set the flags, but "discard" result
+        pInstruction->SetOperation([](Register a, Register b) { return a - b; });
+        pInstruction->SetSFlag();
+        pInstruction->SetDestination(&pInstruction->GetArgument1());
+        break;
+    case OpCode::MOV:
+        pInstruction->SetOperation([](Register a, Register b) { return a; });
+        break;
     default:
+        ASSERT("Unsupported opcode %d", m_opCode);
         break;
     }
 
