@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file BlxUT.cpp
 ///
-/// @brief Unit Test for BLXInstruction
+/// @brief Unit Test for BLX Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,18 +14,20 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "BLXInstruction.hpp"  // Test class
-#include "SLList.hpp"
 #include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
+#include "InstructionBuilder.hpp"
+#include "InstructionBase.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-BLXInstruction blx = BLXInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -44,6 +46,8 @@ void setup()
 
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -51,32 +55,26 @@ void setup()
 ////////////////////////////////
 void BranchExchangeAndLinkTest()
 {
-    // BLX LR
-    arguments.InsertBack("LR");
+    instructionStr = "BLX LR";
 
-    blx.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 10);
     assert(myProc.GetProcessRegisters().LR == 6);
-    arguments.Clear();
 
-    // BLX R1
-    arguments.InsertBack("R1");
+    instructionStr = "BLX R1";
 
-    blx.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 15);
     assert(myProc.GetProcessRegisters().LR == 11);
-    arguments.Clear();
 
-    // BLX Label
-    arguments.InsertBack("MyLabel");
+    instructionStr = "BLX MyLabel";
 
-    blx.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 20);
     assert(myProc.GetProcessRegisters().LR == 16);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -98,6 +96,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "BLXInstruction Unit Test Complete: SUCCESS";
+    std::cout << "BLX Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

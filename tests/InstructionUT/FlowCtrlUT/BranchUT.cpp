@@ -58,6 +58,7 @@ void BranchTest()
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 10);
+    delete pInstruction;
 
     instructionStr = "B BadLabel";
     try
@@ -77,7 +78,7 @@ void BranchTest()
 ////////////////////////////////
 void teardown()
 {
-    delete pInstruction;
+
 }
 
 ////////////////////////////////
