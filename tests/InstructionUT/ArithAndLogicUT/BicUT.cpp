@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file BicUT.cpp
 ///
-/// @brief Unit Test for BICInstruction
+/// @brief Unit Test for BIC Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,16 +14,18 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "BICInstruction.hpp"  // Test class
-#include "SLList.hpp"
+#include "InstructionBase.hpp"
+#include "InstructionBuilder.hpp"
 #include "Process.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-BICInstruction bic = BICInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -34,6 +36,8 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -41,24 +45,17 @@ void setup()
 ////////////////////////////////
 void BicRegsTest()
 {
-    // BIC R0, R5, R1
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R5");
-    arguments.InsertBack("R1");
+    instructionStr = "BIC R0, R5, R1";
 
-    bic.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 0b0100);
-    arguments.Clear();
 
-    // BIC R7, R9
-    arguments.InsertBack("R7"); // 0b0111
-    arguments.InsertBack("R9"); // 0b1001
+    instructionStr = "BIC R7, R9";
 
-    bic.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[7] == 0b0110);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -66,24 +63,17 @@ void BicRegsTest()
 ////////////////////////////////
 void BicLiterals()
 {
-    // BIC R0, R5, #0xB
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R5"); // 0b0101
-    arguments.InsertBack("#0xB"); // 0b1011
+    instructionStr = "BIC R0, R5, #0xB";
 
-    bic.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 0b0100);
-    arguments.Clear();
 
-    // BIC R10, #xF
-    arguments.InsertBack("R10");
-    arguments.InsertBack("#0xF");
+    instructionStr = "BIC R10, #0xF";
 
-    bic.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[10] == 0x0);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -94,31 +84,22 @@ void BicsTest()
     // Reset registers
     setup();
 
-    // Set flagged
-    bic.SetFlagged();
+    instructionStr = "BICS R1, R1";
 
-    // BICS R1, R1
-    arguments.InsertBack("R1");
-    arguments.InsertBack("R1");
-
-    bic.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    arguments.Clear();
 
     // "MOV" R5, #0xFFFFFFFF
     myProc.GetProcessRegisters().genRegs[5] = 0xFFFFFFFF;
 
-    // BICS R5, #0xF
-    arguments.InsertBack("R5");
-    arguments.InsertBack("#0xF");
+    instructionStr = "BICS R5, #0xF";
 
-    bic.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -126,7 +107,7 @@ void BicsTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -142,6 +123,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "BICInstruction Unit Test Complete: SUCCESS";
+    std::cout << "BIC Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

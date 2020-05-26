@@ -71,15 +71,15 @@ OpCode InstructionBuilder::DetermineOpCode(std::string& rKeyword) const
     // they could have similar compositions and be less than three characters
     if (rKeyword[0] == 'B')
     {
-        if (rKeyword == "BIC")
+        if (rKeyword.find("BIC") != std::string::npos)
         {
             baseInstruction = "BIC";
         }
-        else if (rKeyword == "BLX")
+        else if (rKeyword.find("BLX") != std::string::npos)
         {
             baseInstruction = "BLX";
         }
-        else if (rKeyword == "BX")
+        else if (rKeyword.find("BX") != std::string::npos)
         {
             baseInstruction = "BX";
         }
