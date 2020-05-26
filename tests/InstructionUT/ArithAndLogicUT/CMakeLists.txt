@@ -18,10 +18,10 @@ add_executable(OrrUT OrrUT.cpp)
 target_link_libraries(OrrUT PRIVATE instr_lib io_library keyword_dict)
 
 add_executable(EorUT EorUT.cpp)
-target_link_libraries(EorUT PRIVATE instr_lib)
+target_link_libraries(EorUT PRIVATE instr_lib io_library keyword_dict)
 
 add_executable(BicUT BicUT.cpp)
-target_link_libraries(BicUT PRIVATE instr_lib)
+target_link_libraries(BicUT PRIVATE instr_lib io_library keyword_dict)
 
 add_executable(MovUT MovUT.cpp)
 target_link_libraries(MovUT PRIVATE instr_lib io_library keyword_dict)

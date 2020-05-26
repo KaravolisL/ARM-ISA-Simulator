@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file EorUT.cpp
 ///
-/// @brief Unit Test for EORInstruction
+/// @brief Unit Test for EOR Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,16 +14,18 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "EORInstruction.hpp"  // Test class
-#include "SLList.hpp"
+#include "InstructionBase.hpp"
+#include "InstructionBuilder.hpp"
 #include "Process.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-EORInstruction eor = EORInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -34,6 +36,8 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -41,24 +45,17 @@ void setup()
 ////////////////////////////////
 void EorRegsTest()
 {
-    // EOR R0, R5, R7
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R5");
-    arguments.InsertBack("R7");
+    instructionStr = "EOR R0, R5, R7";
 
-    eor.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 2);
-    arguments.Clear();
 
-    // EOR R8, R9
-    arguments.InsertBack("R8");
-    arguments.InsertBack("R9");
+    instructionStr = "EOR R8, R9";
 
-    eor.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[8] == 1);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -66,24 +63,17 @@ void EorRegsTest()
 ////////////////////////////////
 void EorLiterals()
 {
-    // EOR R0, R5, #0xF
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R5");
-    arguments.InsertBack("#0xF");
+    instructionStr = "EOR R0, R5, #0xF";
 
-    eor.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[0] == 10);
-    arguments.Clear();
 
-    // EOR R1, #0x13
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0x13");
+    instructionStr = "EOR R1, #0x13";
 
-    eor.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[1] == 0x12);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -94,28 +84,19 @@ void EorsTest()
     // Reset registers
     setup();
 
-    // Set flagged
-    eor.SetFlagged();
+    instructionStr = "EORS R1, R1";
 
-    // EORS R1, R1
-    arguments.InsertBack("R1");
-    arguments.InsertBack("R1");
-
-    eor.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    arguments.Clear();
 
-    // EORS R2, #0xFFFFFFFF
-    arguments.InsertBack("R2");
-    arguments.InsertBack("#0xFFFFFFFF");
+    instructionStr = "EORS R2, #0xFFFFFFFF";
 
-    eor.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -123,7 +104,7 @@ void EorsTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -139,6 +120,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "ORRInstruction Unit Test Complete: SUCCESS";
+    std::cout << "EOR Instruction Unit Test Complete: SUCCESS";
     return 0;
 }
