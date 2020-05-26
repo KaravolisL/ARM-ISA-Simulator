@@ -6,10 +6,8 @@
 participant Process
 participant InstructionBuilder as IB
 participant InstructionBuilderRepository as IBR
-participant ArithAndLogicInstructionBuilder as ALIB
-participant FlowCtrlInstructionBuilder as FCIB
-participant MemoryInstructionBuilder as MIB
-
+participant "ArithAndLogicInstructionBuilder\nFlowCtrlInstructionBuilder\nMemoryInstructionBuilder" as builders
+participant InstructionBase as base
 
 Process -> IB: pInstructionBase = BuildInstruction(instruction)
 activate IB
@@ -24,16 +22,14 @@ IB -> IBR: pBuilder = GetInstructionBuilder(opCode)
 activate IBR
 return
 
-alt opCode == Arith | Logic
-IB -> ALIB: BuildInstruction()
+IB -> builders: BuildInstruction()
+activate builders
+builders -> base ** : create
+builders -> base: Build Instruction
+return Return Instruction
+IB --> Process: Return Instruction
 
-else opCode == FlowCtrl
-IB -> FCIB: BuildInstruction()
-
-else opCode == Memory
-IB -> MIB: BuildInstruction()
-
-end
+Process -> base: Execute()
 
 @enduml
 ```
@@ -61,6 +57,8 @@ class ArithAndLogicInstructionBuilder
 {
     + BuildInstruction()
     - CheckSFlag()
+    - IsShift()
+    - HandleShift()
 }
 
 class FlowCtrlInstructionBuilder
