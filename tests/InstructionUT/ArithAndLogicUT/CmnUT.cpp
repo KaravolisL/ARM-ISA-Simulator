@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file CmnUT.cpp
 ///
-/// @brief Unit Test for CMNInstruction
+/// @brief Unit Test for CMN Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,16 +14,18 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "CMNInstruction.hpp"  // Test class
-#include "SLList.hpp"
 #include "Process.hpp"
+#include "InstructionBuilder.hpp"
+#include "InstructionBase.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-CMNInstruction cmn = CMNInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -34,6 +36,8 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -41,56 +45,45 @@ void setup()
 ////////////////////////////////
 void CmnTest()
 {
-    // CMN R0, R0
-    arguments.InsertBack("R0");
-    arguments.InsertBack("R0");
+    instructionStr = "CMN R0, R0";
 
-    cmn.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
     assert(!myProc.GetProcessRegisters().GetCarryFlag());
     assert(!myProc.GetProcessRegisters().GetOverflowFlag());
-    arguments.Clear();
 
-    // CMN R0, #-2
-    arguments.InsertBack("R0");
-    arguments.InsertBack("#-2");
+    instructionStr = "CMN R0, #-2";
 
-    cmn.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[0] == 0);
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
     assert(!myProc.GetProcessRegisters().GetCarryFlag());
     assert(!myProc.GetProcessRegisters().GetOverflowFlag());
-    arguments.Clear();
 
-    // CMN R10, #0xFFFFFFFF
-    arguments.InsertBack("R10");
-    arguments.InsertBack("#0xFFFFFFFF");
+    instructionStr = "CMN R10, #0xFFFFFFFF";
 
-    cmn.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(!myProc.GetProcessRegisters().GetNegativeFlag());
     assert(myProc.GetProcessRegisters().GetCarryFlag());
     assert(!myProc.GetProcessRegisters().GetOverflowFlag());
-    arguments.Clear();
 
     // "MOV" R1, #0x40000000
     myProc.GetProcessRegisters().genRegs[1] = 0x40000000;
 
-    // CMN R1, #0x40000000
-    arguments.InsertBack("R1");
-    arguments.InsertBack("#0x40000000");
+    instructionStr = "CMN R1, #0x40000000";
 
-    cmn.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(!myProc.GetProcessRegisters().GetZeroFlag());
     assert(myProc.GetProcessRegisters().GetNegativeFlag());
     assert(!myProc.GetProcessRegisters().GetCarryFlag());
     assert(myProc.GetProcessRegisters().GetOverflowFlag());
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -98,7 +91,7 @@ void CmnTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -112,6 +105,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "CMNInstruction Unit Test Complete: SUCCESS";
+    std::cout << "CMN Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

@@ -173,13 +173,13 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
         // Set the flags, but "discard" result
         pInstruction->SetOperation([](Register a, Register b) { return a + b; });
         pInstruction->SetSFlag();
-        pInstruction->SetDestination(&pInstruction->GetArgument1());
+        pInstruction->VoidDestination();
         break;
     case OpCode::CMP:
         // Set the flags, but "discard" result
         pInstruction->SetOperation([](Register a, Register b) { return a - b; });
         pInstruction->SetSFlag();
-        pInstruction->SetDestination(&pInstruction->GetArgument1());
+        pInstruction->VoidDestination();
         break;
     case OpCode::MOV:
         pInstruction->SetOperation([](Register a, Register b) { return b; });

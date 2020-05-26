@@ -62,6 +62,16 @@ public:
     void SetDestination(Register* pDestination) { m_pDestination = pDestination; }
 
     ////////////////////////////////
+    /// METHOD NAME: VoidDestination
+    ///
+    /// @note Voiding the destination will actually
+    /// just make the destination the member variable
+    /// itself. This is done if the result of an 
+    /// operation is not wanted.
+    ////////////////////////////////
+    void VoidDestination() { m_pDestination = reinterpret_cast<Register*>(&m_pDestination); }
+
+    ////////////////////////////////
     /// METHOD NAME: SetArgument1
     ////////////////////////////////
     void SetArgument1(Register argument1) { m_argument1 = argument1; }

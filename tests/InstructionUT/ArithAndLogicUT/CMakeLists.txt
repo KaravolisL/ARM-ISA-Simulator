@@ -29,6 +29,9 @@ target_link_libraries(MovUT PRIVATE instr_lib io_library keyword_dict)
 add_executable(CmpUT CmpUT.cpp)
 target_link_libraries(CmpUT PRIVATE instr_lib io_library keyword_dict)
 
+add_executable(CmnUT CmnUT.cpp)
+target_link_libraries(CmnUT PRIVATE instr_lib io_library keyword_dict)
+
 # Add Unit Tests
 add_test(NAME AddUT COMMAND AddUT)
 add_test(NAME SubUT COMMAND SubUT)
@@ -38,3 +41,4 @@ add_test(NAME EorUT COMMAND EorUT)
 add_test(NAME BicUT COMMAND BicUT)
 add_test(NAME MovUT COMMAND MovUT)
 add_test(NAME CmpUT COMMAND CmpUT)
+add_test(NAME CmnUT COMMAND CmnUT)
