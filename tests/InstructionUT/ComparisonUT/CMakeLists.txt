@@ -5,12 +5,8 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Comparison")
 
 # Add executables (Unit tests)
-add_executable(CmpUT CmpUT.cpp)
-target_link_libraries(CmpUT PRIVATE instr_lib)
-
 add_executable(CmnUT CmnUT.cpp)
 target_link_libraries(CmnUT PRIVATE instr_lib)
 
 # Add Unit Tests
-add_test(NAME CmpUT COMMAND CmpUT)
 add_test(NAME CmnUT COMMAND CmnUT)

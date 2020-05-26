@@ -14,16 +14,18 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "CMPInstruction.hpp"  // Test class
-#include "SLList.hpp"
 #include "Process.hpp"
+#include "InstructionBuilder.hpp"
+#include "InstructionBase.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-CMPInstruction cmp = CMPInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -34,6 +36,8 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -41,53 +45,49 @@ void setup()
 ////////////////////////////////
 void CompareTest()
 {
-    // CMP R10, #10
-    arguments.InsertBack("R10");
-    arguments.InsertBack("#10");
+    instructionStr = "CMP R10, #10";
 
-    cmp.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[10] == 10);
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
     assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
     assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-    arguments.Clear();
 
-    // CMP R10, #6
-    arguments.InsertBack("R10");
-    arguments.InsertBack("#6");
+    instructionStr = "CMP R10, #6";
 
-    cmp.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[10] == 10);
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
     assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
     assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-    arguments.Clear();
 
-    // CMP R10, #16
-    arguments.InsertBack("R10");
-    arguments.InsertBack("#16");
+    instructionStr = "CMP R10, #16";
 
-    cmp.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[10] == 10);
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == true);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
     assert(myProc.GetProcessRegisters().GetCarryFlag() == false);
     assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-    arguments.Clear();
 
-    // CMP R0, #0
-    arguments.InsertBack("R0");
-    arguments.InsertBack("#0");
+    // "MOV" R1, #0
+    myProc.GetProcessRegisters().genRegs[1] = 0;
 
-    cmp.Execute(arguments, myProc);
+    instructionStr = "CMP R0, R1";
 
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[0] == 0);
+    assert(myProc.GetProcessRegisters().genRegs[1] == 0);
     assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
     assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
     assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
     assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -95,7 +95,7 @@ void CompareTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -109,6 +109,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "CMPInstruction Unit Test Complete: SUCCESS";
+    std::cout << "CMP Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

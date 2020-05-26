@@ -41,7 +41,7 @@ void ArithAndLogicInstruction::Execute(Registers& rProcessRegisters)
         result == 0 ? rProcessRegisters.SetZeroFlag() : rProcessRegisters.ClearZeroFlag();
 
         // Only subtraction and addition instructions should mess with the C and V flags
-        if (m_opCode == OpCode::ADD)
+        if (m_opCode == OpCode::ADD || m_opCode == OpCode::CMN)
             {
             // Overflow can only occur if the numbers are the same sign
             if ((m_argument1 & 0x80000000) == (m_argument2 & 0x80000000))
@@ -66,7 +66,7 @@ void ArithAndLogicInstruction::Execute(Registers& rProcessRegisters)
                 rProcessRegisters.ClearCarryFlag();
             }
         }
-        else if (m_opCode == OpCode::SUB)
+        else if (m_opCode == OpCode::SUB || m_opCode == OpCode::CMP)
         {
             // Overflow can only occur if the numbers are different signs
             if ((m_argument1 & 0x80000000) != (m_argument2 & 0x80000000))
