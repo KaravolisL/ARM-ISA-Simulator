@@ -15,10 +15,10 @@ add_executable(BranchUT BranchUT.cpp)
 target_link_libraries(BranchUT PRIVATE instr_lib support io_library keyword_dict)
 
 add_executable(BlUT BlUT.cpp)
-target_link_libraries(BlUT PRIVATE instr_lib support)
+target_link_libraries(BlUT PRIVATE instr_lib support io_library keyword_dict)
 
 add_executable(BxUT BxUT.cpp)
-target_link_libraries(BxUT PRIVATE instr_lib support)
+target_link_libraries(BxUT PRIVATE instr_lib support io_library keyword_dict)
 
 add_executable(BlxUT BlxUT.cpp)
 target_link_libraries(BlxUT PRIVATE instr_lib support)

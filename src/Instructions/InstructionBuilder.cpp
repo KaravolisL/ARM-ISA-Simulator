@@ -218,11 +218,30 @@ Register* InstructionBuilder::ParseRegister(const std::string& rRegStr, Process*
 
     if (rRegStr[0] != 'R' && rRegStr[0] != 'r')
     {
-        // TODO: Throw SyntaxException
+        if (rRegStr == "LR")
+        {
+            return &pProcess->GetProcessRegisters().LR;
+        }
+        else if (rRegStr == "SP")
+        {
+            return &pProcess->GetProcessRegisters().SP;
+        }
+        else
+        {
+            throw InvalidSyntaxException("Invalid argument", rRegStr);
+        }
     }
-
-    // Convert string to register number 
-    uint8_t regNumber = atoi(rRegStr.substr(1).c_str());
-
-    return &pProcess->GetProcessRegisters().genRegs[regNumber];
+    else
+    {
+        try
+        {
+            // Convert string to register number 
+            uint8_t regNumber = atoi(rRegStr.substr(1).c_str());
+            return &pProcess->GetProcessRegisters().genRegs[regNumber];
+        }
+        catch(const std::exception& e)
+        {
+            throw InvalidSyntaxException("Invalid argument", rRegStr);
+        }
+    }
 }

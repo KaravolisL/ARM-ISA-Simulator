@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file BxUT.cpp
 ///
-/// @brief Unit Test for BXInstruction
+/// @brief Unit Test for BX Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,18 +14,20 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "BXInstruction.hpp"  // Test class
-#include "SLList.hpp"
 #include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
+#include "InstructionBuilder.hpp"
+#include "InstructionBase.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-BXInstruction bx = BXInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -42,6 +44,8 @@ void setup()
 
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -49,35 +53,32 @@ void setup()
 ////////////////////////////////
 void BranchExchangeTest()
 {
-    // BX LR
-    arguments.InsertBack("LR");
+    instructionStr = "BX LR";
 
-    bx.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 10);
-    arguments.Clear();
+    delete pInstruction;
 
-    // BX R1
-    arguments.InsertBack("R1");
+    instructionStr = "BX R1";
 
-    bx.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 15);
-    arguments.Clear();
+    delete pInstruction;
 
-    // BX Label
-    arguments.InsertBack("Label");
+    instructionStr = "BX MyLabel";
 
     try
     {
-        bx.Execute(arguments, myProc);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
         assert(false);
     }
     catch(const InvalidSyntaxException& e)
     {
         std::cerr << e.what() << '\n';
     }
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -99,6 +100,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "BXInstruction Unit Test Complete: SUCCESS";
+    std::cout << "BX Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

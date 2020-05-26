@@ -46,6 +46,7 @@ InstructionBase* FlowCtrlInstructionBuilder::BuildInstruction(std::string& rInst
         newPC = pProcess->GetLabelDictionary().Get(arg);
         if (m_opCode == OpCode::BX)
         {
+            LOG_ERROR("BX does not accept a label as an argument");
             throw InvalidSyntaxException("Invalid argument",
                                         pProcess->GetFileIterator()->GetCurrentLine(),
                                         pProcess->GetFileIterator()->GetLineNumber());
