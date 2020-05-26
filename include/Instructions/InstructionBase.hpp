@@ -40,12 +40,14 @@ public:
     ////////////////////////////////
     InstructionBase(OpCode opCode) :
         m_flagged(false),
-        m_opCode(opCode)
+        m_opCode(opCode),
+        m_type(InstructionType::ARITHMETIC)
     {}
 
     InstructionBase(InstructionType type) :
         m_flagged(false),
-        m_opCode(OpCode::INVALID)
+        m_opCode(OpCode::INVALID),
+        m_type(type)
     {}
 
     ////////////////////////////////
@@ -73,6 +75,8 @@ public:
     ////////////////////////////////
     void ClearFlagged() { m_flagged = false; }
 
+    InstructionType GetType() { return m_type; }
+
 protected:
 
     ////////////////////////////////
@@ -92,6 +96,8 @@ protected:
 
     /// OpCode of instruction
     OpCode m_opCode;
+
+    InstructionType m_type;
 
 private:
 
