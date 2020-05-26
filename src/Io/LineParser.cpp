@@ -148,6 +148,22 @@ void LineParser::GetArguments(SLList<std::string>& rArguments) const
 }
 
 ////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetTrimmedLine
+////////////////////////////////
+std::string LineParser::GetTrimmedLine() const
+{
+    std::string trimmedLine = *m_pLine;
+    if (GetLineType() == LABEL_AND_INSTRUCTION)
+    {
+        std::string label;
+        GetLabel(label);
+
+        trimmedLine.erase(0, label.length() + 1);
+    }
+    return trimmedLine;
+}
+
+////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetToken
 ////////////////////////////////
 void LineParser::GetToken(int index, std::string& rToken) const

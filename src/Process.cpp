@@ -25,6 +25,8 @@
 #include "AssemblingException.hpp" // For AssemblingException
 #include "Logger.hpp" // For Logger class
 
+#include "InstructionBuilder.hpp" // For InstructionBuilder
+
 ////////////////////////////////
 /// METHOD NAME: Process::Initialize
 ////////////////////////////////
@@ -141,29 +143,37 @@ bool Process::Step()
 
     LOG_DEBUG("Executing %s", m_pFileIterator->GetCurrentLine().c_str());
 
-    std::string instruction;
-    lineParser.GetInstruction(instruction);
+    std::string instruction = lineParser.GetTrimmedLine();
 
-    InstructionBase* pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction, *this);
+    InstructionBase* pInstruction;
+    if (instruction.substr(0,3) == "POP" || instruction.substr(0,3) == "PUS")
+    {
+        LOG_DEBUG("PUSH or POP, instruction = %s", instruction.c_str());
+        lineParser.GetInstruction(instruction);
+        pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction, *this);
+        SLList<std::string> arguments;
+        lineParser.GetArguments(arguments);
+        pInstruction->Execute(arguments, *this);
+    }
+    else
+    {
+        pInstruction = InstructionBuilder::GetInstance().BuildInstruction(instruction, this);
+        pInstruction->Execute(this->GetProcessRegisters());
+    }
 
-    SLList<std::string> arguments;
-    lineParser.GetArguments(arguments);
-
-    pInstruction->Execute(arguments, *this);
-
-    // if (pInstruction->GetOpCode() == OpCode::B ||
-    //     pInstruction->GetOpCode() == OpCode::BX ||
-    //     pInstruction->GetOpCode() == OpCode::BL ||
-    //     pInstruction->GetOpCode() == OpCode::BLX)
-    // {
-    //     m_pFileIterator->GoToLine(m_processRegisters.PC);
-    // }
-    // else
-    // {
+    if (pInstruction->GetOpCode() == OpCode::B ||
+        pInstruction->GetOpCode() == OpCode::BX ||
+        pInstruction->GetOpCode() == OpCode::BL ||
+        pInstruction->GetOpCode() == OpCode::BLX)
+    {
+        m_pFileIterator->GoToLine(m_processRegisters.PC);
+    }
+    else
+    {
 
     // Don't mess with the PC if a branch instruction was just executed
-    if (pInstruction->GetType() != InstructionType::FLOW_CTRL)
-    {
+    // if (pInstruction->GetType() != InstructionType::FLOW_CTRL)
+    // {
         m_processRegisters.PC++;
         LOG_DEBUG("PC incremented to %d", m_processRegisters.PC);
     }

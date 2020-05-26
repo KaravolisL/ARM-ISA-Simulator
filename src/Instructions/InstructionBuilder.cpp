@@ -16,6 +16,7 @@
 #include "InstructionBuilder.hpp" // Header for class
 #include "InstructionBase.hpp" // For InstructionBase
 #include "InstructionBuilderRepository.hpp" // For InstructionBuilderRepository
+#include "NOPInstruction.hpp" // For NOPInstruction
 #include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "Process.hpp" // For Process
 #include "Assert.hpp" // For ASSERT
@@ -34,10 +35,10 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
     OpCode opCode = DetermineOpCode(keyword);
 
     // Determine whether instruction should be executed based on conditional code
-    if (CheckConditionalCode(keyword, pProcess->GetProcessRegisters()) == false)
+    if (CheckConditionalCode(keyword, pProcess->GetProcessRegisters()) == false || opCode == OpCode::NOP)
     {
         LOG_DEBUG("Instruction will not be executed");
-        opCode = OpCode::NOP;
+        return new NOPInstruction();
     }
 
     // Update the instruction based on how it has been modified
@@ -99,8 +100,8 @@ OpCode InstructionBuilder::DetermineOpCode(std::string& rKeyword) const
     }
     else
     {
-        // TODO: Handle PUSH
         baseInstruction = rKeyword.substr(0, 3);
+        if (baseInstruction == "PUS") baseInstruction = "PUSH";
     }
 
     LOG_DEBUG("Base Instruction: %s", baseInstruction.c_str());

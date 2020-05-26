@@ -59,11 +59,13 @@ if __name__ == '__main__':
         MOV R0, #65
         ORR R6, R1, R0 ; R6 = 0xEB
 
+        NOP
+
         B MyLabel
 
         MOV R7, #0xBEEF
 
-    MyLabel MOV R0, =MY_CONSTANT
+    MyLabel MOV R0, #0xFF
         MOV R7, #7 ; R7 = 7
 
         ENDP
@@ -93,8 +95,8 @@ if __name__ == '__main__':
     output.close()
 
     # Cleanup
-    os.remove(TEST_PROGRAM_NAME)
-    os.remove(CONSTANTS_FILE_NAME)
-    os.remove(OUTPUT_FILE_NAME)
+    # os.remove(TEST_PROGRAM_NAME)
+    # os.remove(CONSTANTS_FILE_NAME)
+    # os.remove(OUTPUT_FILE_NAME)
 
     print("Simple Program Integration Test COMPLETE")

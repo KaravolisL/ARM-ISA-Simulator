@@ -61,6 +61,7 @@ void BranchExchangeAndLinkTest()
     pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 10);
     assert(myProc.GetProcessRegisters().LR == 6);
+    delete pInstruction;
 
     instructionStr = "BLX R1";
 
@@ -68,6 +69,7 @@ void BranchExchangeAndLinkTest()
     pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 15);
     assert(myProc.GetProcessRegisters().LR == 11);
+    delete pInstruction;
 
     instructionStr = "BLX MyLabel";
 
@@ -75,6 +77,7 @@ void BranchExchangeAndLinkTest()
     pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 20);
     assert(myProc.GetProcessRegisters().LR == 16);
+    delete pInstruction;
 }
 
 ////////////////////////////////
