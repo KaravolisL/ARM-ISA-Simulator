@@ -208,3 +208,21 @@ bool InstructionBuilder::CheckConditionalCode(std::string& rKeyword, const Regis
 
     return execute;
 }
+
+////////////////////////////////
+/// METHOD NAME: InstructionBuilder::ParseRegister 
+////////////////////////////////
+Register* InstructionBuilder::ParseRegister(const std::string& rRegStr, Process* pProcess) const
+{
+    LOG_DEBUG("rRegStr = %s", rRegStr.c_str());
+
+    if (rRegStr[0] != 'R' && rRegStr[0] != 'r')
+    {
+        // TODO: Throw SyntaxException
+    }
+
+    // Convert string to register number 
+    uint8_t regNumber = atoi(rRegStr.substr(1).c_str());
+
+    return &pProcess->GetProcessRegisters().genRegs[regNumber];
+}

@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file BranchUT.cpp
 ///
-/// @brief Unit Test for BInstruction
+/// @brief Unit Test for Branch Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,18 +14,20 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "BInstruction.hpp"  // Test class
-#include "SLList.hpp"
 #include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
+#include "InstructionBuilder.hpp"
+#include "InstructionBase.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-BInstruction branch = BInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -42,6 +44,8 @@ void setup()
 
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -49,27 +53,23 @@ void setup()
 ////////////////////////////////
 void BranchTest()
 {
-    // B MyLabel
-    arguments.InsertBack("MyLabel");
+    instructionStr = "B MyLabel";
 
-    branch.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 10);
-    arguments.Clear();
 
-    // B BadLabel
-    arguments.InsertBack("BadLabel");
-
+    instructionStr = "B BadLabel";
     try
     {
-        branch.Execute(arguments, myProc);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
         assert(false);
     }
     catch (const InvalidSyntaxException& e)
     {
         std::cout << e.what();
     }
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -77,7 +77,7 @@ void BranchTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -91,6 +91,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "BInstruction Unit Test Complete: SUCCESS";
+    std::cout << "Branch Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

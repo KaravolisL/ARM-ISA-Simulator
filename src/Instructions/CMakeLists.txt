@@ -29,6 +29,8 @@ set(SOURCES
     InstructionBuilder.cpp
     ArithAndLogicInstructionBuilder.cpp
     ArithAndLogicInstruction.cpp
+    FlowCtrlInstructionBuilder.cpp
+    FlowCtrlInstruction.cpp
     InstructionBuilderRepository.cpp
     InstructionRepository.cpp
     Other/MOVInstruction.cpp

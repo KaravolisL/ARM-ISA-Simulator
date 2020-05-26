@@ -16,11 +16,11 @@
 
 // C++ PROJECT INCLUDES
 #include "OpCodes.hpp" // For OpCode enum
+#include "Registers.hpp" // For Register
 
 // FORWARD DECLARATIONS
 class InstructionBase;
 class Process;
-struct Registers;
 
 ////////////////////////////////
 /// @class InstructionBuilder
@@ -75,6 +75,18 @@ protected:
     /// Deconstructor
     ////////////////////////////////
     virtual ~InstructionBuilder() {};
+
+    ////////////////////////////////
+    /// METHOD NAME: ParseRegister
+    ///
+    /// @brief Takes a string and converts it
+    /// to a pointer to a register
+    ///
+    /// @param[in] rDestStr     String of the register
+    /// @param[in] pProcess     Process to which the instruction belongs
+    /// @return A pointer to the corresponding register
+    ////////////////////////////////
+    Register* ParseRegister(const std::string& rDestStr, Process* pProcess) const;
 
 private:
 

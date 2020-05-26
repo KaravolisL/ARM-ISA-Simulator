@@ -15,11 +15,12 @@
 // C++ PROJECT INCLUDES
 #include "InstructionBuilderRepository.hpp" // Header for class
 #include "ArithAndLogicInstructionBuilder.hpp" // For ArithAndLogicInstructionBuilder
+#include "FlowCtrlInstructionBuilder.hpp" // For FlowCtrlInstructionBuilder
 #include "Logger.hpp" // For Logger
 #include "Assert.hpp" // For ASSERT
 
 static ArithAndLogicInstructionBuilder f_arithAndLogicInstructionBuilder;
-// static FlowCtrlInstructionBuilder f_flowCtrlInstructionBuilder;
+static FlowCtrlInstructionBuilder f_flowCtrlInstructionBuilder;
 // static MemoryInstructionBuilder f_memoryInstructionBuilder;
 
 ////////////////////////////////
@@ -44,7 +45,12 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
         case OpCode::MOV:
             pInstructionBuilder = &f_arithAndLogicInstructionBuilder;
             break;
-
+        case OpCode::B:
+        case OpCode::BL:
+        case OpCode::BX:
+        case OpCode::BLX:
+            pInstructionBuilder = &f_flowCtrlInstructionBuilder;
+            break;
         default:
             ASSERT(false, "Invalid opCode %d", opCode);
     }

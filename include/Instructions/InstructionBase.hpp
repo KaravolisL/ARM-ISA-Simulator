@@ -75,6 +75,11 @@ public:
     ////////////////////////////////
     void ClearFlagged() { m_flagged = false; }
 
+    ////////////////////////////////
+    /// METHOD NAME: GetOpCode
+    ////////////////////////////////
+    OpCode GetOpCode() const { return m_opCode; }
+
     InstructionType GetType() { return m_type; }
 
 protected:

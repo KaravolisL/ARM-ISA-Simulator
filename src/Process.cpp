@@ -151,6 +151,16 @@ bool Process::Step()
 
     pInstruction->Execute(arguments, *this);
 
+    // if (pInstruction->GetOpCode() == OpCode::B ||
+    //     pInstruction->GetOpCode() == OpCode::BX ||
+    //     pInstruction->GetOpCode() == OpCode::BL ||
+    //     pInstruction->GetOpCode() == OpCode::BLX)
+    // {
+    //     m_pFileIterator->GoToLine(m_processRegisters.PC);
+    // }
+    // else
+    // {
+
     // Don't mess with the PC if a branch instruction was just executed
     if (pInstruction->GetType() != InstructionType::FLOW_CTRL)
     {

@@ -209,24 +209,6 @@ bool ArithAndLogicInstructionBuilder::CheckSFlag(std::string& rKeyword) const
     }
 }
 
-////////////////////////////////
-/// METHOD NAME: ArithAndLogicInstructionBuilder::ParseRegister 
-////////////////////////////////
-Register* ArithAndLogicInstructionBuilder::ParseRegister(std::string& rRegStr, Process* pProcess) const
-{
-    LOG_DEBUG("rRegStr = %s", rRegStr.c_str());
-
-    if (rRegStr[0] != 'R' && rRegStr[0] != 'r')
-    {
-        // TODO: Throw SyntaxException
-    }
-
-    // Convert string to register number 
-    uint8_t regNumber = atoi(rRegStr.substr(1).c_str());
-
-    return &pProcess->GetProcessRegisters().genRegs[regNumber];
-}
-
 Register ArithAndLogicInstructionBuilder::ParseImmediate(std::string& rImmedStr) const
 {
     ASSERT(rImmedStr[0] == '#', "Immediate string does not begin with a #");
