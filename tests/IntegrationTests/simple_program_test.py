@@ -95,8 +95,8 @@ if __name__ == '__main__':
     output.close()
 
     # Cleanup
-    # os.remove(TEST_PROGRAM_NAME)
-    # os.remove(CONSTANTS_FILE_NAME)
-    # os.remove(OUTPUT_FILE_NAME)
+    os.remove(TEST_PROGRAM_NAME)
+    os.remove(CONSTANTS_FILE_NAME)
+    os.remove(OUTPUT_FILE_NAME)
 
     print("Simple Program Integration Test COMPLETE")
