@@ -54,7 +54,7 @@ public:
     ////////////////////////////////
     virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess) = 0;
 
-    virtual void Execute(Registers& rProcessRegisters) {};
+    virtual void Execute(Registers& rProcessRegisters) = 0;
 
     ////////////////////////////////
     /// METHOD NAME: GetOpCode

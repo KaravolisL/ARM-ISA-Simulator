@@ -48,6 +48,8 @@ public:
     ////////////////////////////////
     void Execute(const SLList<std::string>& rArguments, Process& rProcess);
 
+    void Execute(Registers& rProcRegisters) {}
+
 protected:
 
 private:
