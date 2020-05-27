@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file BlxUT.cpp
+/// @file MovUT.cpp
 ///
-/// @brief Unit Test for BLX Instruction
+/// @brief Unit Test for MOV Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,11 +14,9 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "InvalidSyntaxException.hpp"
-#include "Process.hpp"
-#include "FileIterator.hpp"
-#include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
+#include "InstructionBuilder.hpp"
+#include "Process.hpp"
 #include "KeywordDict.hpp"
 
 ////////////////////////////////
@@ -34,50 +32,56 @@ std::string instructionStr;
 ////////////////////////////////
 void setup()
 {
-    myProc.GetProcessRegisters().PC = 5;
-    myProc.GetProcessRegisters().LR = 10;
-    myProc.GetProcessRegisters().genRegs[1] = 15;
-
-    myProc.GetLabelDictionary().Insert("MyLabel", 20);
-
-    std::ofstream myOStream("TestFile.txt", std::ofstream::out);
-    myOStream << "Test Line";
-    myOStream.close();
-
-    Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
-    myProc.SetFileIterator(pFileIterator);
+    for (int i = 0; i < 13; i++)
+    {
+        myProc.GetProcessRegisters().genRegs[i] = i;
+    }
 
     KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
-/// BranchExchangeAndLinkTest Function
+/// MovRegTest Function
 ////////////////////////////////
-void BranchExchangeAndLinkTest()
+void MovRegTest()
 {
-    instructionStr = "BLX LR";
+    instructionStr = "MOV R0, R1";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().PC == 10);
-    assert(myProc.GetProcessRegisters().LR == 6);
-    delete pInstruction;
+    assert(myProc.GetProcessRegisters().genRegs[0] == 1);
+}
 
-    instructionStr = "BLX R1";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().PC == 15);
-    assert(myProc.GetProcessRegisters().LR == 11);
-    delete pInstruction;
-
-    instructionStr = "BLX MyLabel";
+////////////////////////////////
+/// MovLiteralTest Function
+////////////////////////////////
+void MovLiteralTest()
+{
+    instructionStr = "MOV R0, #0xFF";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().PC == 20);
-    assert(myProc.GetProcessRegisters().LR == 16);
-    delete pInstruction;
+    assert(myProc.GetProcessRegisters().genRegs[0] == 0xFF);
+}
+
+////////////////////////////////
+/// MovsTest Function
+////////////////////////////////
+void MovsTest()
+{
+    instructionStr = "MOVS R0, #0";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().GetZeroFlag());
+    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+
+    instructionStr = "MOVS R0, #0xFFFFFFFF";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(!myProc.GetProcessRegisters().GetZeroFlag());
+    assert(myProc.GetProcessRegisters().GetNegativeFlag());
 }
 
 ////////////////////////////////
@@ -85,7 +89,7 @@ void BranchExchangeAndLinkTest()
 ////////////////////////////////
 void teardown()
 {
-
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -95,10 +99,12 @@ int main(int argc, char* argv[])
 {
     setup();
 
-    BranchExchangeAndLinkTest();
+    MovRegTest();
+    MovLiteralTest();
+    MovsTest();
 
     teardown();
 
-    std::cout << "BLX Instruction Unit Test Complete: SUCCESS";
+    std::cout << "MOV Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

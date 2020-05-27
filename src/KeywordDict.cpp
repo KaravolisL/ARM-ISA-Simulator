@@ -17,7 +17,6 @@
 
 // C++ PROJECT INCLUDES
 #include "KeywordDict.hpp" // Header for class
-#include "InstructionRepository.hpp" // For InstructionRepository
 #include "LineTypes.hpp" // For LineTypes enum
 #include "Logger.hpp" // For LOG_INFO
 
@@ -39,8 +38,45 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("PROC", Io::LineType::LABEL_AND_PROC);
 
     // Instructions
-    SLList<std::string> instructionList = InstructionRepository::GetInstance().GetInstructionStrings();
-    SLList<std::string> conditionalCodeList = InstructionRepository::GetInstance().GetConditionalCodeStrings();
+    m_instructionDict.Insert("ADD", OpCode::ADD);
+    m_instructionDict.Insert("SUB", OpCode::SUB);
+    m_instructionDict.Insert("AND", OpCode::AND);
+    m_instructionDict.Insert("ORR", OpCode::ORR);
+    m_instructionDict.Insert("BIC", OpCode::BIC);
+    m_instructionDict.Insert("EOR", OpCode::EOR);
+    m_instructionDict.Insert("MOV", OpCode::MOV);
+    m_instructionDict.Insert("B", OpCode::B);
+    m_instructionDict.Insert("BL", OpCode::BL);
+    m_instructionDict.Insert("BX", OpCode::BX);
+    m_instructionDict.Insert("BLX", OpCode::BLX);
+    m_instructionDict.Insert("POP", OpCode::POP);
+    m_instructionDict.Insert("PUSH", OpCode::PUSH);
+    m_instructionDict.Insert("CMP", OpCode::CMP);
+    m_instructionDict.Insert("CMN", OpCode::CMN);
+
+    // Conditional codes dictionary
+    m_conditionalCodeDict.Insert("EQ", ConditionalCode::EQ);
+    m_conditionalCodeDict.Insert("NE", ConditionalCode::NE);
+    m_conditionalCodeDict.Insert("GT", ConditionalCode::GT);
+    m_conditionalCodeDict.Insert("LT", ConditionalCode::LT);
+    m_conditionalCodeDict.Insert("GE", ConditionalCode::GE);
+    m_conditionalCodeDict.Insert("LE", ConditionalCode::LE);
+    m_conditionalCodeDict.Insert("CS", ConditionalCode::CS);
+    m_conditionalCodeDict.Insert("HS", ConditionalCode::CS);
+    m_conditionalCodeDict.Insert("CC", ConditionalCode::CC);
+    m_conditionalCodeDict.Insert("LO", ConditionalCode::CC);
+    m_conditionalCodeDict.Insert("MI", ConditionalCode::MI);
+    m_conditionalCodeDict.Insert("PL", ConditionalCode::PL);
+    m_conditionalCodeDict.Insert("AL", ConditionalCode::AL);
+    m_conditionalCodeDict.Insert("NV", ConditionalCode::NV);
+    m_conditionalCodeDict.Insert("VS", ConditionalCode::VS);
+    m_conditionalCodeDict.Insert("VC", ConditionalCode::VC);
+    m_conditionalCodeDict.Insert("HI", ConditionalCode::HI);
+    m_conditionalCodeDict.Insert("LS", ConditionalCode::LS);
+
+    // Instructions + appendages
+    SLList<std::string> instructionList = m_instructionDict.GetKeys();
+    SLList<std::string> conditionalCodeList = m_conditionalCodeDict.GetKeys();
 
     for (SLList<std::string>::SLListIterator it = instructionList.GetBegin();
          it != instructionList.GetEnd(); it++)

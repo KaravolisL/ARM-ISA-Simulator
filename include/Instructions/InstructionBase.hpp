@@ -15,13 +15,14 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "InstructionTypes.hpp"
+#include "OpCodes.hpp" // For OpCode enum
 
 // FORWARD DECLARATIONS
 template <typename T>
 class SLList;
 
 class Process;
+struct Registers;
 
 ////////////////////////////////
 /// @class InstructionBase
@@ -36,9 +37,8 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    InstructionBase(InstructionType type) :
-        m_flagged(false),
-        m_type(type)
+    InstructionBase(OpCode opCode) :
+        m_opCode(opCode)
     {}
 
     ////////////////////////////////
@@ -54,20 +54,12 @@ public:
     ////////////////////////////////
     virtual void Execute(const SLList<std::string>& rArguments, Process& rProcess) = 0;
 
-    ////////////////////////////////
-    /// METHOD NAME: SetFlagged
-    ////////////////////////////////
-    void SetFlagged() { m_flagged = true; }
+    virtual void Execute(Registers& rProcessRegisters) = 0;
 
     ////////////////////////////////
-    /// METHOD NAME: ClearFlagged
+    /// METHOD NAME: GetOpCode
     ////////////////////////////////
-    void ClearFlagged() { m_flagged = false; }
-
-    ////////////////////////////////
-    /// METHOD NAME: GetType
-    ////////////////////////////////
-    InstructionType GetType() const { return m_type; }
+    OpCode GetOpCode() const { return m_opCode; }
 
 protected:
 
@@ -83,11 +75,8 @@ protected:
     ////////////////////////////////
     uint32_t ParseArgument(const std::string& rArgument, Process& rProcess);
 
-    /// Flag to determine whether flags need to be set following instruction execution
-    bool m_flagged;
-
-    /// Type of instruction
-    InstructionType m_type;
+    /// OpCode of instruction
+    OpCode m_opCode;
 
 private:
 

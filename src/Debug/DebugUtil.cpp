@@ -35,9 +35,15 @@ std::string format(int numArgs, va_list valist)
                 {
                     case 'd':
                     case 'i':
-                    case 'c':
                     {
                         int value = va_arg(valist, int);
+                        formattedString << value;
+                        break;
+                    }
+                    case 'c':
+                    {
+                        // va_arg only accepts types aligned to machined boundaries
+                        char value = va_arg(valist, int);
                         formattedString << value;
                         break;
                     }

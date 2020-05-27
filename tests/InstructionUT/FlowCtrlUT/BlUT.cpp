@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file BlUT.cpp
 ///
-/// @brief Unit Test for BLInstruction
+/// @brief Unit Test for BL Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -14,18 +14,20 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "BLInstruction.hpp"  // Test class
-#include "SLList.hpp"
 #include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
+#include "InstructionBuilder.hpp"
+#include "InstructionBase.hpp"
+#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-BLInstruction bl = BLInstruction();
 Process myProc = Process();
-SLList<std::string> arguments = SLList<std::string>();
+InstructionBuilder& builder = InstructionBuilder::GetInstance();
+InstructionBase* pInstruction = nullptr;
+std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -42,6 +44,8 @@ void setup()
 
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
+
+    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
@@ -49,28 +53,26 @@ void setup()
 ////////////////////////////////
 void BranchAndLinkTest()
 {
-    // BL MyLabel
-    arguments.InsertBack("MyLabel");
+    instructionStr = "BL MyLabel";
 
-    bl.Execute(arguments, myProc);
-
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().PC == 10);
     assert(myProc.GetProcessRegisters().LR == 6);
-    arguments.Clear();
+    delete pInstruction;
 
-    // BL BadLabel
-    arguments.InsertBack("BadLabel");
+    instructionStr = "BL BadLabel";
 
     try
     {
-        bl.Execute(arguments, myProc);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
         assert(false);
     }
     catch (const InvalidSyntaxException& e)
     {
         std::cout << e.what();
     }
-    arguments.Clear();
 }
 
 ////////////////////////////////
@@ -78,7 +80,6 @@ void BranchAndLinkTest()
 ////////////////////////////////
 void teardown()
 {
-
 }
 
 ////////////////////////////////
@@ -92,6 +93,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "BLInstruction Unit Test Complete: SUCCESS";
+    std::cout << "BL Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

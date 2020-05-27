@@ -33,7 +33,7 @@ public:
     /// Constructor
     ////////////////////////////////
     PUSHInstruction() :
-        InstructionBase(InstructionType::MEMORY)
+        InstructionBase(OpCode::PUSH)
     {}
 
     ////////////////////////////////
@@ -47,6 +47,8 @@ public:
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
     void Execute(const SLList<std::string>& rArguments, Process& rProcess);
+
+    void Execute(Registers& rProcRegisters) {}
 
 protected:
 

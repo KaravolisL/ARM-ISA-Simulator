@@ -66,7 +66,7 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: InsertFront
+    /// METHOD NAME: InsertFront
     ///
     /// @param element   Element to be inserted
     ////////////////////////////////
@@ -89,7 +89,7 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: InsertBack
+    /// METHOD NAME: InsertBack
     ///
     /// @param element   Element to be inserted
     ////////////////////////////////
@@ -118,13 +118,35 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: Get
+    /// METHOD NAME: Get
     ///
     /// @param index   Index of element to return
     /// @return Element at given value
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
     T Get(int index) const
+    {
+        return (*this)[index];
+    }
+
+    ////////////////////////////////
+    /// METHOD NAME: operator[]
+    ////////////////////////////////
+    T& operator[](int index)
+    {
+        for (Node* pCurrentNode = head;
+             pCurrentNode != nullptr;
+             pCurrentNode = pCurrentNode->next)
+        {
+            if (index-- == 0)
+            {
+                return pCurrentNode->data;
+            }
+        }
+        throw IndexOutOfBoundsException(index);
+    }
+
+    const T& operator[](int index) const
     {
         for (Node* pCurrentNode = head;
              pCurrentNode != nullptr;
@@ -139,7 +161,7 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: Clear
+    /// METHOD NAME: Clear
     ////////////////////////////////
     void Clear(void)
     {
@@ -157,7 +179,7 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: Remove
+    /// METHOD NAME: Remove
     ///
     /// @param index    Index to remove
     /// @return Data stored at given index
@@ -199,7 +221,7 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: GetLength
+    /// METHOD NAME: GetLength
     ///
     /// @returns Length of list
     ////////////////////////////////
@@ -209,7 +231,7 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: PrintList
+    /// METHOD NAME: PrintList
     ////////////////////////////////
     void PrintList(void) const
     {
@@ -234,7 +256,7 @@ public:
     class SLListIterator;
 
     ////////////////////////////////
-    /// FUNCTION NAME: GetBegin
+    /// METHOD NAME: GetBegin
     ////////////////////////////////
     SLListIterator GetBegin() const
     {
@@ -242,7 +264,7 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: GetEnd
+    /// METHOD NAME: GetEnd
     ////////////////////////////////
     SLListIterator GetEnd() const
     {

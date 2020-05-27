@@ -134,6 +134,14 @@ public:
     ////////////////////////////////
     std::string* GetLine() const { return m_pLine; }
 
+    ////////////////////////////////
+    /// METHOD NAME: GetTrimmedLine
+    ///
+    /// @returns Line trimmed of labels and 
+    /// whitespace
+    ////////////////////////////////
+    std::string GetTrimmedLine() const;
+
 protected:
 
 private:

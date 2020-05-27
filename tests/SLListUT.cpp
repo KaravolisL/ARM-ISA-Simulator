@@ -41,7 +41,7 @@ void InsertAndGetTest()
 
     for (int i = 0; i < 10; i++)
     {
-        assert(i == pMySLList->Get(i));
+        assert(i == (*pMySLList)[i]);
     }
 
     // Insert 9 - 0 to front
@@ -52,13 +52,13 @@ void InsertAndGetTest()
 
     for (int i = 9; i >= 0; i--)
     {
-        assert(i == pMySLList->Get(i));
+        assert(i == (*pMySLList)[i]);
     }
 
     // Test exception
     try
     {
-        pMySLList->Get(100);
+        (*pMySLList)[100];
         assert(false);
     }
     catch(const IndexOutOfBoundsException& e)

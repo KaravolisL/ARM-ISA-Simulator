@@ -1,15 +1,15 @@
 /////////////////////////////////
-/// @file POPInstruction.hpp
+/// @file NOPInstruction.hpp
 ///
-/// @brief Declaration of POPInstruction class
+/// @brief Declaration of NOPInstruction class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef POP_INSTRUCTION_HPP
-#define POP_INSTRUCTION_HPP
+#ifndef NOP_INSTRUCTION_HPP
+#define NOP_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
-// (None)
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
@@ -21,38 +21,35 @@
 // (None)
 
 ////////////////////////////////
-/// @class POPInstruction
+/// @class NOPInstruction
 ///
-/// @brief Class to represent POP instruction
+/// @brief Class to represent NOP instruction
 ////////////////////////////////
-class POPInstruction : public InstructionBase
+class NOPInstruction : public InstructionBase
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    POPInstruction() :
-        InstructionBase(OpCode::POP)
+    NOPInstruction() :
+        InstructionBase(OpCode::NOP)
     {}
 
     ////////////////////////////////
     /// METHOD NAME: Execute
     ///
-    /// @brief Pops 32 bits of data from
-    /// the top of the stack and places it into
-    /// a corresponding register. The registers
-    /// are filled in ascending order
+    /// @brief ... does absolutely nothing
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
-    void Execute(const SLList<std::string>& rArguments, Process& rProcess);
-
-    void Execute(Registers& rProcRegisters) {}
+    void Execute(const SLList<std::string>& rArguments, Process& rProcess) {}
+    void Execute(Registers& rProcessRegisters) {}
 
 protected:
 
 private:
+
 
 };
 
