@@ -9,7 +9,7 @@
 #define ARITH_AND_LOGIC_INSTRUCTION_BUILDER_HPP
 
 // SYSTEM INCLUDES
-#include <string>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
@@ -19,7 +19,6 @@
 #include "Registers.hpp" // For Register
 
 // FORWARD DECLARATIONS
-class ArithAndLogicInstruction;
 class Process;
 
 ////////////////////////////////

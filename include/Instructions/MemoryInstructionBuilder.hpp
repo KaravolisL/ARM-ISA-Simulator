@@ -1,15 +1,15 @@
 /////////////////////////////////
-/// @file FlowCtrlInstructionBuilder.hpp
+/// @file MemoryInstructionBuilder.hpp
 ///
-/// @brief Declarations for FlowCtrlInstructionBuilder
+/// @brief Declarations for MemoryInstructionBuilder
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef FLOW_CTRL_INSTRUCTION_BUILDER_HPP
-#define FLOW_CTRL_INSTRUCTION_BUILDER_HPP
+#ifndef MEMORY_INSTRUCTION_BUILDER_HPP
+#define MEMORY_INSTRUCTION_BUILDER_HPP
 
 // SYSTEM INCLUDES
-// (None)
+#include <string>
 
 // C PROJECT INCLUDES
 // (None)
@@ -21,19 +21,19 @@
 class Process;
 
 ////////////////////////////////
-/// @class FlowCtrlInstructionBuilder
+/// @class MemoryInstructionBuilder
 ///
 /// @brief This class is responsible for building
-/// flow control instructions
+/// memory instructions
 ////////////////////////////////
-class FlowCtrlInstructionBuilder : public InstructionBuilder
+class MemoryInstructionBuilder : public InstructionBuilder
 {
 public:
 
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    FlowCtrlInstructionBuilder() :
+    MemoryInstructionBuilder() :
         InstructionBuilder()
     {}
 

@@ -175,5 +175,10 @@ bool Process::Step()
         LOG_DEBUG("PC incremented to %d", m_processRegisters.PC);
     }
 
+    if (instruction.substr(0,3) != "POP" && instruction.substr(0,3) != "PUS")
+    {
+        delete pInstruction;
+    }
+
     return true;
 }
