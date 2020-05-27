@@ -19,6 +19,7 @@
 #include "Process.hpp" // For Process
 #include "SLList.hpp" // For SLList
 #include "LineParser.hpp" // For Io::LineParser
+#include "FileIterator.hpp" // For Io::FileIterator
 #include "Assert.hpp" // For ASSERT
 #include "Logger.hpp" // For LOB_DEBUG
 
@@ -70,7 +71,9 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
             break;
         }
         default:
-            // TODO: Throw syntax exception
+            throw InvalidSyntaxException("Invalid argument",
+                                         pProcess->GetFileIterator()->GetCurrentLine(),
+                                         pProcess->GetFileIterator()->GetLineNumber());
             break;
     }
 
@@ -113,7 +116,9 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
                     break;
                 }
                 default:
-                    // TODO: Throw syntax exception
+                    throw InvalidSyntaxException("Invalid argument",
+                                                 pProcess->GetFileIterator()->GetCurrentLine(),
+                                                 pProcess->GetFileIterator()->GetLineNumber());
                     break;
             }
         }
@@ -131,7 +136,9 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     {
         if (!IsShift(arguments[argumentNumber]))
         {
-            // TODO: Throw syntax exception
+            throw InvalidSyntaxException("Invalid syntax",
+                                         pProcess->GetFileIterator()->GetCurrentLine(),
+                                         pProcess->GetFileIterator()->GetLineNumber());
         }
         if (arguments[argumentNumber] == "RRX")
         {
