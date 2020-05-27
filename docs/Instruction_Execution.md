@@ -15,7 +15,7 @@ activate IB
 IB -> IB: opCode = DetermineOpCode()
 
 opt CheckConditionalCodes == false
-return
+return NOP
 end
 
 IB -> IBR: pBuilder = GetInstructionBuilder(opCode)
@@ -40,6 +40,7 @@ Process -> base: Execute()
 class InstructionBuilder
 {
     {abstract} + BuildInstruction()
+    # ParseRegister()
     - DetermineOpCode()
     - CheckConditionalCode()
     # m_opCode
@@ -56,6 +57,7 @@ package InstructionBuilders
 class ArithAndLogicInstructionBuilder
 {
     + BuildInstruction()
+    - ParseImmediate()
     - CheckSFlag()
     - IsShift()
     - HandleShift()
@@ -115,12 +117,27 @@ class FlowCtrlInstruction
 
 class MemoryInstruction
 {
+    - m_pDestinationRegister
+    - m_pAddressRegister
+    - m_transferType
+    - m_offset
+    - m_offsetType
+    + Execute()
+}
+
+class MultipleMemoryInstruction
+{
+    - m_addressingMode
+    - m_pAddressRegister
+    - m_registerList
+    - m_updateFlag
     + Execute()
 }
 
 InstructionBase <|-- ArithAndLogicInstruction
 InstructionBase <|-- FlowCtrlInstruction
 InstructionBase <|-- MemoryInstruction
+InstructionBase <|-- MultipleMemoryInstruction
 
 @enduml
 ```
