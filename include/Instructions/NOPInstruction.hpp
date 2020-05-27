@@ -33,7 +33,7 @@ public:
     /// Constructor
     ////////////////////////////////
     NOPInstruction() :
-        InstructionBase(InstructionType::OTHER)
+        InstructionBase(OpCode::NOP)
     {}
 
     ////////////////////////////////

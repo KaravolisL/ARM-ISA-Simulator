@@ -33,7 +33,7 @@ public:
     /// Constructor
     ////////////////////////////////
     PUSHInstruction() :
-        InstructionBase(InstructionType::MEMORY)
+        InstructionBase(OpCode::PUSH)
     {}
 
     ////////////////////////////////

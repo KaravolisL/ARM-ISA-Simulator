@@ -16,7 +16,6 @@
 
 // C++ PROJECT INCLUDES
 #include "OpCodes.hpp" // For OpCode enum
-#include "InstructionTypes.hpp"
 
 // FORWARD DECLARATIONS
 template <typename T>
@@ -39,15 +38,7 @@ public:
     /// Constructor
     ////////////////////////////////
     InstructionBase(OpCode opCode) :
-        m_flagged(false),
-        m_opCode(opCode),
-        m_type(InstructionType::ARITHMETIC)
-    {}
-
-    InstructionBase(InstructionType type) :
-        m_flagged(false),
-        m_opCode(OpCode::INVALID),
-        m_type(type)
+        m_opCode(opCode)
     {}
 
     ////////////////////////////////
@@ -66,21 +57,9 @@ public:
     virtual void Execute(Registers& rProcessRegisters) {};
 
     ////////////////////////////////
-    /// METHOD NAME: SetFlagged
-    ////////////////////////////////
-    void SetFlagged() { m_flagged = true; }
-
-    ////////////////////////////////
-    /// METHOD NAME: ClearFlagged
-    ////////////////////////////////
-    void ClearFlagged() { m_flagged = false; }
-
-    ////////////////////////////////
     /// METHOD NAME: GetOpCode
     ////////////////////////////////
     OpCode GetOpCode() const { return m_opCode; }
-
-    InstructionType GetType() { return m_type; }
 
 protected:
 
@@ -96,13 +75,8 @@ protected:
     ////////////////////////////////
     uint32_t ParseArgument(const std::string& rArgument, Process& rProcess);
 
-    /// Flag to determine whether flags need to be set following instruction execution
-    bool m_flagged;
-
     /// OpCode of instruction
     OpCode m_opCode;
-
-    InstructionType m_type;
 
 private:
 

@@ -33,7 +33,7 @@ public:
     /// Constructor
     ////////////////////////////////
     POPInstruction() :
-        InstructionBase(InstructionType::MEMORY)
+        InstructionBase(OpCode::POP)
     {}
 
     ////////////////////////////////

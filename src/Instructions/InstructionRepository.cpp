@@ -87,9 +87,6 @@ InstructionBase* InstructionRepository::GetInstruction(std::string& rInstruction
         throw InvalidSyntaxException("Instruction not supported", rInstruction);
     }
 
-    // Configure instruction
-    flagged ? pInstructionBase->SetFlagged() : pInstructionBase->ClearFlagged();
-
     ASSERT(pInstructionBase != nullptr);
     
     return pInstructionBase;

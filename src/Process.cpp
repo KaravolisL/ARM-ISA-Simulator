@@ -170,10 +170,7 @@ bool Process::Step()
     }
     else
     {
-
-    // Don't mess with the PC if a branch instruction was just executed
-    // if (pInstruction->GetType() != InstructionType::FLOW_CTRL)
-    // {
+        // Don't mess with the PC if a branch instruction was just executed
         m_processRegisters.PC++;
         LOG_DEBUG("PC incremented to %d", m_processRegisters.PC);
     }
