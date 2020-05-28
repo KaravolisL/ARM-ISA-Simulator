@@ -17,7 +17,7 @@
 #include "ArithAndLogicInstruction.hpp" // For ArithAndLogicInstruction
 #include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "Process.hpp" // For Process
-#include "SLList.hpp" // For SLList
+#include "List.hpp" // For List
 #include "LineParser.hpp" // For Io::LineParser
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "Assert.hpp" // For ASSERT
@@ -34,18 +34,17 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     std::string keyword = rInstruction.substr(0, rInstruction.find_first_of(' '));
     if (CheckSFlag(keyword)) 
     {
+        // Set the flag and remove the S from the instruction
         pInstruction->SetSFlag();
+        rInstruction.erase(0, 1);
     }
-
-    // Add a character as a placeholder to the keyword
-    rInstruction.insert(rInstruction.find_first_of(' '), "|");
 
     LOG_DEBUG("rInstruction = %s", rInstruction.c_str());
 
     // Create a line parser to retrieve the remaining arguments
     Io::LineParser lineParser(&rInstruction);
-    SLList<std::string> arguments;
-    lineParser.GetArguments(arguments);
+    List<std::string> arguments;
+    lineParser.Tokenize(arguments);
     int argumentNumber = 0;
 
     // Parse the destination
@@ -207,7 +206,6 @@ bool ArithAndLogicInstructionBuilder::CheckSFlag(std::string& rKeyword) const
     if (rKeyword.length() > 0 && rKeyword[0] == 'S')
     {
         LOG_DEBUG("Instruction will set the flags");
-        rKeyword.erase(0);
         return true;
     }
     else

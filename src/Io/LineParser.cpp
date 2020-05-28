@@ -22,7 +22,7 @@
 #include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
 #include "LineTypes.hpp"  // For LineType enum
 #include "KeywordDict.hpp" // For KeywordDict class
-#include "SLList.hpp" // For SLList
+#include "List.hpp" // For List
 
 namespace Io
 {
@@ -121,29 +121,23 @@ void LineParser::GetInstruction(std::string& rInstruction) const
 }
 
 ////////////////////////////////
-/// METHOD NAME: Io::LineParser::GetArguments
+/// METHOD NAME: Io::LineParser::Tokenize
 ////////////////////////////////
-void LineParser::GetArguments(SLList<std::string>& rArguments) const
+void LineParser::Tokenize(List<std::string>& rTokens, const char* pDeliminators) const
 {
-    // Start with the second token in the line unless it's a label and instruction line
-    int i = 1;
-    if (GetLineType() == LABEL_AND_INSTRUCTION)
-    {
-        i = 2;
-    }
-
+    int i = 0;
     while (true)
     {
         std::string token;
         try
         {
-            GetToken(i++, token);
+            GetToken(i++, token, pDeliminators);
         }
         catch(const IndexOutOfBoundsException& e)
         {
             break;
         }
-        rArguments.InsertBack(token);
+        rTokens.Append(token);
     }
 }
 
@@ -166,7 +160,7 @@ std::string LineParser::GetTrimmedLine() const
 ////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetToken
 ////////////////////////////////
-void LineParser::GetToken(int index, std::string& rToken) const
+void LineParser::GetToken(int index, std::string& rToken, const char* pDeliminators) const
 {
     // Copy line so it can be modified
     char* lineCopy = new char[m_pLine->length() + 1];
@@ -174,13 +168,13 @@ void LineParser::GetToken(int index, std::string& rToken) const
     // Copy doesn't add the null terminator
     lineCopy[m_pLine->length()] = '\0';
 
-    char* pToken = strtok(lineCopy, " ,{}");
+    char* pToken = strtok(lineCopy, pDeliminators);
 
     // Iterate through tokens
     int i;
     for (i = 0; i < index; i++)
     {
-        pToken = strtok(NULL, " ,{}");
+        pToken = strtok(NULL, pDeliminators);
     }
 
     if (pToken == NULL) throw IndexOutOfBoundsException(i);

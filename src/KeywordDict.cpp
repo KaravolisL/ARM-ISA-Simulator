@@ -88,7 +88,7 @@ void KeywordDict::Initialize()
              condIt != conditionalCodeList.GetEnd(); condIt++)
         {
             m_keywordDict.Insert(*it + *condIt, Io::LineType::INSTRUCTION);
-            m_keywordDict.Insert(*it + 'S' + *condIt, Io::LineType::INSTRUCTION);
+            m_keywordDict.Insert(*it + *condIt + 'S', Io::LineType::INSTRUCTION);
         }
     }
     

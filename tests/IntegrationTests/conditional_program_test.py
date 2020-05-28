@@ -69,7 +69,7 @@ if __name__ == '__main__':
         ADDGT R4, #5
         ADDLT R4, #5
 
-        BICSGT R4, #0x03
+        BICGTS R4, #0x03
 
         BPL Label3
         MOV R4, #0xBEEF

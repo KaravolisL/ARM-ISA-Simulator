@@ -52,9 +52,14 @@ public:
     ///
     /// @param[in,out] rProcessRegisters    Registers associated with process
     ////////////////////////////////
-    void Execute(Registers& rProcessRegisters);
+    void Execute(Registers& rProcessRegisters) {};
 
     void Execute(const SLList<std::string>& rArguments, Process& rProcess) {}
+
+    ////////////////////////////////
+    /// METHOD NAME: GetRegisterList
+    ////////////////////////////////
+    List<Register*>& GetRegisterList() { return m_registerList; }
 
 protected:
 
