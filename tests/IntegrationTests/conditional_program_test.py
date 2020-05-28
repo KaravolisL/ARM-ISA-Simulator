@@ -10,7 +10,7 @@ else:
     EXECUTABLE_NAME = "ARM-ISA-SIMULATOR"
 
 TEST_PROGRAM_NAME = "ConditionalProgram.s"
-CONSTANTS_FILE_NAME = "Constants.s"
+CONSTANTS_FILE_NAME = "ConditionalConstants.s"
 OUTPUT_FILE_NAME = "conditional_program_output.txt"
 
 def find(name, path):
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     file = open(TEST_PROGRAM_NAME, "w")
 
     file.write('''
-    INCLUDE Constants.s
+    INCLUDE ConditionalConstants.s
 
     __main PROC
 
