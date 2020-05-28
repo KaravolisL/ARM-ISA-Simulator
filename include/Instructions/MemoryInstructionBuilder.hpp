@@ -9,7 +9,7 @@
 #define MEMORY_INSTRUCTION_BUILDER_HPP
 
 // SYSTEM INCLUDES
-#include <string>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
@@ -19,6 +19,8 @@
 
 // FORWARD DECLARATIONS
 class Process;
+class MemoryInstruction;
+class MultipleMemoryInstruction;
 
 ////////////////////////////////
 /// @class MemoryInstructionBuilder
@@ -53,6 +55,32 @@ public:
 protected:
 
 private:
+
+    ////////////////////////////////
+    /// METHOD NAME: BuildMemoryInstruction
+    ///
+    /// @brief Given a string containing the instruction
+    /// and all it's arguments, this method will construct
+    /// an instruction object to be executed
+    ///
+    /// @param[in] rInstruction     Instruction to be built
+    /// @param[in] pProcess         Process for which the instruction is being built
+    /// @return Instance of built instruction object
+    ////////////////////////////////
+    MemoryInstruction* BuildMemoryInstruction(std::string& rInstruction, Process* pProcess);
+
+    ////////////////////////////////
+    /// METHOD NAME: BuildMultipleMemoryInstruction
+    ///
+    /// @brief Given a string containing the instruction
+    /// and all it's arguments, this method will construct
+    /// an instruction object to be executed
+    ///
+    /// @param[in] rInstruction     Instruction to be built
+    /// @param[in] pProcess         Process for which the instruction is being built
+    /// @return Instance of built instruction object
+    ////////////////////////////////
+    MultipleMemoryInstruction* BuildMultipleMemoryInstruction(std::string& rInstruction, Process* pProcess);
 
 };
 

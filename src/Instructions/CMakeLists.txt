@@ -13,6 +13,7 @@ set(SOURCES
     ArithAndLogicInstructionBuilder.cpp
     ArithAndLogicInstruction.cpp
     FlowCtrlInstructionBuilder.cpp
+    MemoryInstructionBuilder.cpp
     FlowCtrlInstruction.cpp
     InstructionBuilderRepository.cpp
     InstructionRepository.cpp
