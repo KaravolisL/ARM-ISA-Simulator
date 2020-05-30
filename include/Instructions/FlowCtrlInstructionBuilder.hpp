@@ -9,7 +9,7 @@
 #define FLOW_CTRL_INSTRUCTION_BUILDER_HPP
 
 // SYSTEM INCLUDES
-#include <string>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
@@ -18,7 +18,6 @@
 #include "InstructionBuilder.hpp" // For InstructionBuilder
 
 // FORWARD DECLARATIONS
-class FlowCtrlInstruction;
 class Process;
 
 ////////////////////////////////

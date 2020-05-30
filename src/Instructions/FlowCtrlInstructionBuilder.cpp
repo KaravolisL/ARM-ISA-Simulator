@@ -16,6 +16,7 @@
 #include "FlowCtrlInstructionBuilder.hpp" // Header for class
 #include "FlowCtrlInstruction.hpp" // For FlowCtrlInstruction
 #include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
+#include "List.hpp" // For List
 #include "LineParser.hpp" // For Io::LineParser
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "Logger.hpp" // For LOG_DEBUG
@@ -30,14 +31,9 @@ InstructionBase* FlowCtrlInstructionBuilder::BuildInstruction(std::string& rInst
 
     LOG_DEBUG("rInstruction = %s", rInstruction.c_str());
 
-    // TODO: Change GetArguments into Tokenize
-    // Add a character as a placeholder to the keyword
-    rInstruction.insert(rInstruction.find_first_of(' '), "|");
-
-    // Create a line parser to retrieve the remaining arguments
     Io::LineParser lineParser(&rInstruction);
-    SLList<std::string> arguments;
-    lineParser.GetArguments(arguments);
+    List<std::string> arguments;
+    lineParser.Tokenize(arguments);
 
     std::string arg = arguments[0];
     Register newPC;

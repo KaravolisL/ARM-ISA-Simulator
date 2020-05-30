@@ -111,6 +111,7 @@ public:
     /// @return Constants dictionary
     ////////////////////////////////
     DLB<uint32_t>& GetConstantsDictionary() { return m_constantsDictionary; }
+    const DLB<uint32_t>& GetConstantsDictionary() const { return m_constantsDictionary; }
 
     ////////////////////////////////
     /// METHOD NAME: GetLabelDictionary
@@ -118,6 +119,7 @@ public:
     /// @return Label dictionary
     ////////////////////////////////
     DLB<uint32_t>& GetLabelDictionary() { return m_labelDictionary; }
+    const DLB<uint32_t>& GetLabelDictionary() const { return m_labelDictionary; }
 
     ////////////////////////////////
     /// METHOD NAME: GetProcessStack
@@ -132,13 +134,15 @@ public:
     /// @return Process registers
     ////////////////////////////////
     Registers& GetProcessRegisters() { return m_processRegisters; }
+    const Registers& GetProcessRegisters() const { return m_processRegisters; }
 
     ////////////////////////////////
     /// METHOD NAME: GetFileIterator
     ///
     /// @return File Iterator
     ////////////////////////////////
-    Io::FileIterator* GetFileIterator() const { return m_pFileIterator; }
+    Io::FileIterator* GetFileIterator() { return m_pFileIterator; }
+    const Io::FileIterator* GetFileIterator() const { return m_pFileIterator; }
 
     ////////////////////////////////
     /// METHOD NAME: SetFileIterator

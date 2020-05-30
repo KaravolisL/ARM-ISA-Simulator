@@ -9,8 +9,8 @@ if (sys.platform == 'win32'):
 else:
     EXECUTABLE_NAME = "ARM-ISA-SIMULATOR"
 
-TEST_PROGRAM_NAME = "SampleProgram.s"
-CONSTANTS_FILE_NAME = "Constants.s"
+TEST_PROGRAM_NAME = "SimpleProgram.s"
+CONSTANTS_FILE_NAME = "SimpleConstants.s"
 OUTPUT_FILE_NAME = "simple_program_output.txt"
 
 def find(name, path):
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     file = open(TEST_PROGRAM_NAME, "w")
 
     file.write('''
-    INCLUDE Constants.s
+    INCLUDE SimpleConstants.s
 
     __main PROC
 

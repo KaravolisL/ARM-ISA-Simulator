@@ -19,7 +19,6 @@
 #include "Process.hpp"  // Header for class
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "InstructionBase.hpp" // For InstructionBase
-#include "InstructionRepository.hpp" // For InstructionRepository
 #include "LineParser.hpp" // For Io::LineParser
 #include "LineTypes.hpp" // For Io::LineTypes enum
 #include "AssemblingException.hpp" // For AssemblingException
@@ -146,20 +145,8 @@ bool Process::Step()
     std::string instruction = lineParser.GetTrimmedLine();
 
     InstructionBase* pInstruction;
-    if (instruction.substr(0,3) == "POP" || instruction.substr(0,3) == "PUS")
-    {
-        LOG_DEBUG("PUSH or POP, instruction = %s", instruction.c_str());
-        lineParser.GetInstruction(instruction);
-        pInstruction = InstructionRepository::GetInstance().GetInstruction(instruction, *this);
-        SLList<std::string> arguments;
-        lineParser.GetArguments(arguments);
-        pInstruction->Execute(arguments, *this);
-    }
-    else
-    {
-        pInstruction = InstructionBuilder::GetInstance().BuildInstruction(instruction, this);
-        pInstruction->Execute(this->GetProcessRegisters());
-    }
+    pInstruction = InstructionBuilder::GetInstance().BuildInstruction(instruction, this);
+    pInstruction->Execute(this->GetProcessRegisters());
 
     if (pInstruction->GetOpCode() == OpCode::B ||
         pInstruction->GetOpCode() == OpCode::BX ||
@@ -174,6 +161,9 @@ bool Process::Step()
         m_processRegisters.PC++;
         LOG_DEBUG("PC incremented to %d", m_processRegisters.PC);
     }
+
+    // Delete the instruction now that it's been executed
+    delete pInstruction;
 
     return true;
 }

@@ -26,7 +26,7 @@
 
 // FORWARD DECLARATIONS
 template<typename T>
-class SLList;
+class List;
 
 namespace Io
 {
@@ -106,14 +106,15 @@ public:
     void GetInstruction(std::string& rInstruction) const;
 
     ////////////////////////////////
-    /// METHOD NAME: GetArguments
+    /// METHOD NAME: Tokenize
     ///
-    /// @brief Retrieves the arguments following
-    /// an instruction
+    /// @brief Tokenizes the string using the 
+    /// provided deliminators
     ///
-    /// @param[out] rArguments    List of arguments
+    /// @param[out] rTokens     List of tokens
+    /// @param[in] pDeliminators Deliminators to use when tokenizing
     ////////////////////////////////
-    void GetArguments(SLList<std::string>& rArguments) const;
+    void Tokenize(List<std::string>& rTokens, const char* pDeliminators = " ,") const;
 
     ////////////////////////////////
     /// METHOD NAME: GetValue
@@ -151,10 +152,11 @@ private:
     ///
     /// @brief Retrieves a given token from the line
     ///
-    /// @param[in] index    Position of token
-    /// @param[out] rToken  Reference to token
+    /// @param[in] index            Position of token
+    /// @param[out] rToken          Reference to token
+    /// @param[in] pDeliminators     Deliminators to use when tokenizing
     ////////////////////////////////
-    void GetToken(int index, std::string& rToken) const;
+    void GetToken(int index, std::string& rToken, const char* deliminators = " ,") const;
 
     ////////////////////////////////
     /// METHOD NAME: GetNumberOfTokens

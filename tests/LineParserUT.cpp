@@ -16,8 +16,7 @@
 // C++ PROJECT INCLUDES
 #include "LineParser.hpp"  // Test class
 #include "KeywordDict.hpp" // For KeywordDict class
-#include "InstructionRepository.hpp"
-#include "SLList.hpp" // For SLList
+#include "List.hpp" // For List
 
 ////////////////////////////////
 /// Test Objects
@@ -35,9 +34,6 @@ DLB<uint32_t> constants = DLB<uint32_t>();
 ////////////////////////////////
 void setup()
 {
-    // Initialize the instruction repository
-    InstructionRepository::GetInstance().Initialize();
-
     // Initialize the Keyword dictionary
     KeywordDict::GetInstance().Initialize();
 
@@ -136,23 +132,23 @@ void GetValueTest()
 }
 
 ////////////////////////////////
-/// GetArgumentsTest Function
+/// TokenizeTest Function
 ////////////////////////////////
-void GetArgumentsTest()
+void TokenizeTest()
 {
-    Io::LineParser lineParser(&lines[2]);
-    SLList<std::string> arguments;
+    std::string instruction = "R1, R2, R3";
+    Io::LineParser lineParser(&instruction);
+    List<std::string> arguments;
 
-    lineParser.GetArguments(arguments);
+    lineParser.Tokenize(arguments);
 
-    SLList<std::string>::SLListIterator it = arguments.GetBegin();
-
-    std::cout << *it << '\n';
-    assert(*(it++) == "R1");
-    std::cout << *it << '\n';
-    assert(*(it++) == "R2");
-    std::cout << *it << '\n';
-    assert(*it == "R3");
+    int i = 0;
+    std::cout << arguments[i] << '\n';
+    assert(arguments[i++] == "R1");
+    std::cout << arguments[i] << '\n';
+    assert(arguments[i++] == "R2");
+    std::cout << arguments[i] << '\n';
+    assert(arguments[i] == "R3");
 }
 
 ////////////////////////////////
@@ -172,16 +168,6 @@ void LabelAndInstructionTest()
     std::string instruction;
     lineParser.GetInstruction(instruction);
     assert(instruction == "ADD");
-
-    SLList<std::string> arguments;
-    lineParser.GetArguments(arguments);
-
-    SLList<std::string>::SLListIterator it = arguments.GetBegin();
-
-    std::cout << *it << '\n';
-    assert(*(it++) == "R1");
-    std::cout << *it << '\n';
-    assert(*(it++) == "R3");
 }
 
 ////////////////////////////////
@@ -203,7 +189,7 @@ int main(int argc, char* argv[])
     GetFileNameTest();
     GetLabelTest();
     GetValueTest();
-    GetArgumentsTest();
+    TokenizeTest();
     LabelAndInstructionTest();
 
     teardown();

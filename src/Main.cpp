@@ -15,7 +15,6 @@
 // C++ PROJECT INCLUDES
 #include "Process.hpp"  // For Process
 #include "KeywordDict.hpp" // For KeywordDict class
-#include "InstructionRepository.hpp" // For InstructionRepository
 
 ////////////////////////////////
 /// FUNCTION NAME: main
@@ -27,9 +26,6 @@ int main(int argc, char* argv[])
         std::cout << "Invalid command line arguments";
         exit(EXIT_FAILURE);
     }
-
-    // Initialize the instruction repository
-    InstructionRepository::GetInstance().Initialize();
 
     // Initialize the keyword dictionary
     KeywordDict::GetInstance().Initialize();
