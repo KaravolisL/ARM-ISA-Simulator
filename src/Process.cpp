@@ -19,7 +19,6 @@
 #include "Process.hpp"  // Header for class
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "InstructionBase.hpp" // For InstructionBase
-#include "InstructionRepository.hpp" // For InstructionRepository
 #include "LineParser.hpp" // For Io::LineParser
 #include "LineTypes.hpp" // For Io::LineTypes enum
 #include "AssemblingException.hpp" // For AssemblingException
