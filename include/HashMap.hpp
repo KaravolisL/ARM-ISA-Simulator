@@ -10,6 +10,7 @@
 #define HASH_MAP_HPP
 
 // SYSTEM INCLUDES
+#include <assert.h>
 #include <string>
 #include <cmath>
 
@@ -40,6 +41,28 @@ public:
     {}
 
     ////////////////////////////////
+    /// Deconstructor
+    ////////////////////////////////
+    ~HashMap()
+    {
+        delete[] m_pKeys;
+        delete[] m_pValues;
+    }
+
+    ////////////////////////////////
+    /// Copy Constructer
+    ////////////////////////////////
+    HashMap(const HashMap& rOther)
+    {
+        HashMap(rOther.m_size);
+        for (int i = 0; i < m_size; i++)
+        {
+            m_pKeys[i] = rOther.m_pKeys[i];
+            m_pValues[i] = rOther.m_pValues[i];
+        }
+    }
+
+    ////////////////////////////////
     /// METHOD NAME: Insert
     ///
     /// @param key      Key at which to insert
@@ -61,7 +84,8 @@ public:
         else
         {
             // Loop around table until an empty spot is found
-            for (uint32_t i = hash + 1; i != hash; i = (i + 1) % m_size)
+            uint32_t i;
+            for (i = hash + 1; i != hash; i = (i + 1) % m_size)
             {
                 if (m_pKeys[i] == "")
                 {
@@ -70,6 +94,8 @@ public:
                     break;
                 }
             }
+            assert(m_pKeys[i] == key);
+            assert(m_pValues[i] == value);
         }
         m_numElements++;
     }
@@ -330,6 +356,13 @@ private:
         }
         return true;
     }
+
+    ////////////////////////////////
+    /// Assignment operator
+    ///
+    /// @note Disallow assignment operator
+    ////////////////////////////////
+    HashMap& operator=(HashMap const&);
 };
 
 
