@@ -104,6 +104,12 @@ void ArithAndLogicInstruction::Execute(Registers& rProcessRegisters)
                 if (lastBit) rProcessRegisters.SetCarryFlag();
                 break;
             }
+            case OpCode::LSR:
+            {
+                uint8_t lastBit = m_argument1 & (0x1 << (m_argument2 - 1));
+                if (lastBit) rProcessRegisters.SetCarryFlag();
+                break;
+            }
             default:
                 LOG_DEBUG("No additional flag operations for opcode %d", m_opCode);
         }

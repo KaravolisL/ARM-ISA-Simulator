@@ -178,6 +178,9 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     case OpCode::LSL:
         pInstruction->SetOperation([](Register a, Register b) { return a << b; });
         break;
+    case OpCode::LSR:
+        pInstruction->SetOperation([](Register a, Register b) { return a >> b; });
+        break;
     case OpCode::CMN:
         // Set the flags, but "discard" result
         pInstruction->SetOperation([](Register a, Register b) { return a + b; });

@@ -36,6 +36,7 @@ enum OpCode
     AND,
     EOR,
     LSL,
+    LSR,
     CMP,
     CMN,
     STR,
