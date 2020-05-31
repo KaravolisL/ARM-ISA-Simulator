@@ -23,6 +23,9 @@ target_link_libraries(EorUT PRIVATE instr_lib io_library keyword_dict)
 add_executable(BicUT BicUT.cpp)
 target_link_libraries(BicUT PRIVATE instr_lib io_library keyword_dict)
 
+add_executable(LslUT LslUT.cpp)
+target_link_libraries(LslUT PRIVATE instr_lib io_library keyword_dict)
+
 add_executable(MovUT MovUT.cpp)
 target_link_libraries(MovUT PRIVATE instr_lib io_library keyword_dict)
 
@@ -39,6 +42,7 @@ add_test(NAME AndUT COMMAND AndUT)
 add_test(NAME OrrUT COMMAND OrrUT)
 add_test(NAME EorUT COMMAND EorUT)
 add_test(NAME BicUT COMMAND BicUT)
+add_test(NAME LslUT COMMAND LslUT)
 add_test(NAME MovUT COMMAND MovUT)
 add_test(NAME CmpUT COMMAND CmpUT)
 add_test(NAME CmnUT COMMAND CmnUT)
