@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # Set include directory
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
+include_directories("${PROJECT_SOURCE_DIR}/include/Memory")
 
 # Set source files
 set(SOURCES
@@ -10,8 +11,9 @@ set(SOURCES
     ArithAndLogicInstructionBuilder.cpp
     ArithAndLogicInstruction.cpp
     FlowCtrlInstructionBuilder.cpp
-    MemoryInstructionBuilder.cpp
     FlowCtrlInstruction.cpp
+    MemoryInstructionBuilder.cpp
+    MultipleMemoryInstruction.cpp
     InstructionBuilderRepository.cpp
 )
 

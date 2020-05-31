@@ -68,15 +68,22 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
 
     LOG_DEBUG("rInstruction: %s", rInstruction.c_str());
 
-    if (m_opCode != OpCode::PUSH && m_opCode != OpCode::POP)
+    if (m_opCode == OpCode::PUSH)
     {
-        // Mode, address register, update flag
+        pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
+        pMultipleMemoryInstruction->SetAddressRegister(&pProcess->GetProcessRegisters().SP);
+        pMultipleMemoryInstruction->SetUpdateFlag();
+    }
+    else if (m_opCode == OpCode::POP)
+    {
+        // AddressingMode defaults to IB
+        pMultipleMemoryInstruction->SetAddressRegister(&pProcess->GetProcessRegisters().SP);
+        pMultipleMemoryInstruction->SetUpdateFlag();
     }
     else
     {
-        pMultipleMemoryInstruction->
+        // Mode, address register, update flag
     }
-    
 
     List<std::string> tokens;
     Io::LineParser lineParser(&rInstruction);

@@ -53,7 +53,7 @@ public:
     ///
     /// @param[in,out] rProcessRegisters    Registers associated with process
     ////////////////////////////////
-    void Execute(Registers& rProcessRegisters) {};
+    void Execute(Registers& rProcessRegisters);
 
     ////////////////////////////////
     /// METHOD NAME: SetAddressingMode
