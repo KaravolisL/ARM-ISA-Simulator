@@ -72,6 +72,11 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     {
         // Mode, address register, update flag
     }
+    else
+    {
+        pMultipleMemoryInstruction->
+    }
+    
 
     List<std::string> tokens;
     Io::LineParser lineParser(&rInstruction);
