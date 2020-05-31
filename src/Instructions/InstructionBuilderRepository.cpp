@@ -44,6 +44,8 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
         case OpCode::CMP:
         case OpCode::CMN:
         case OpCode::MOV:
+        case OpCode::LSL:
+        case OpCode::LSR:
             pInstructionBuilder = &f_arithAndLogicInstructionBuilder;
             break;
         case OpCode::B:

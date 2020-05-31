@@ -11,6 +11,7 @@ set(SOURCES
     ArithAndLogicInstructionBuilder.cpp
     ArithAndLogicInstruction.cpp
     FlowCtrlInstructionBuilder.cpp
+    MemoryInstructionBuilder.cpp
     FlowCtrlInstruction.cpp
     MemoryInstructionBuilder.cpp
     MultipleMemoryInstruction.cpp
