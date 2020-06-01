@@ -17,6 +17,7 @@
 
 // C++ PROJECT INCLUDES
 #include "MemoryManager.hpp" // Header for class
+#include "MemoryConstants.hpp" // For GLOBAL_LOWER_BOUND
 #include "Logger.hpp" // For LOG_INFO
 
 namespace Memory
@@ -110,11 +111,13 @@ void MemoryManager::ValidateAddress(uint32_t address)
 {
     if (address < GLOBAL_LOWER_BOUND || address > GLOBAL_UPPER_BOUND)
     {
+        LOG_ERROR("Address %d is outside of bounds", address);
         throw MemoryException();
     }
 
     if (address % sizeof(uint32_t) != 0)
     {
+        LOG_ERROR("Address %d is not byte addressable", address);
         throw MemoryException();
     }
 }

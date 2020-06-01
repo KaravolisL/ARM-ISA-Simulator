@@ -14,7 +14,8 @@
 
 // SYSTEM INCLUDES
 #include <stdint.h> // For standard types
-#include <ios>
+#include <ios> // For ios_base
+#include <iostream>
 
 // C PROJECT INCLUDES
 // (none)
@@ -22,7 +23,6 @@
 // C++ PROJECT INCLUDES
 #include "DLB.hpp" // For DLB
 #include "Registers.hpp" // For Registers struct
-#include "Stack.hpp" // For Stack
 
 // FORWARD DECLARATIONS
 namespace Io
@@ -43,7 +43,6 @@ public:
     /// Constructor
     /////////////////////////////////////
     Process() :
-        m_processStack(Stack<uint32_t>()),
         m_processRegisters(Registers()),
         m_labelDictionary(DLB<uint32_t>()),
         m_constantsDictionary(DLB<uint32_t>()),
@@ -122,13 +121,6 @@ public:
     const DLB<uint32_t>& GetLabelDictionary() const { return m_labelDictionary; }
 
     ////////////////////////////////
-    /// METHOD NAME: GetProcessStack
-    ///
-    /// @return Process Stack
-    ////////////////////////////////
-    Stack<Register>& GetProcessStack() { return m_processStack; }
-
-    ////////////////////////////////
     /// METHOD NAME: GetProcessRegisters
     ///
     /// @return Process registers
@@ -155,9 +147,6 @@ protected:
 
 
 private:
-
-    /// Stack associated with this process
-    Stack<Register> m_processStack;
 
     /// Registers associated with this process
     Registers m_processRegisters;

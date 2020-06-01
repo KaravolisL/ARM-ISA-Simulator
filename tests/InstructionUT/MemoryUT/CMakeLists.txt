@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 # Add include path
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
+include_directories("${PROJECT_SOURCE_DIR}/include/Memory")
 
 # Add executables (Unit tests)
 add_executable(PushAndPopUT PushAndPopUT.cpp)

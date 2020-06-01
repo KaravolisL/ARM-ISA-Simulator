@@ -136,17 +136,5 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
             ASSERT(false, "Invalid opcode %d", m_opCode);
     }
 
-    for (int i = 0; i < rRegList.GetLength(); i++)
-    {
-        if (m_opCode == OpCode::PUSH)
-        {
-            pProcess->GetProcessStack().Push(*(rRegList[i]));
-        }
-        else
-        {
-            *(rRegList[i]) = pProcess->GetProcessStack().Pop();
-        }
-    }
-
     return pMultipleMemoryInstruction;
 }

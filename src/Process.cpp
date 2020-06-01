@@ -22,6 +22,7 @@
 #include "LineParser.hpp" // For Io::LineParser
 #include "LineTypes.hpp" // For Io::LineTypes enum
 #include "AssemblingException.hpp" // For AssemblingException
+#include "MemoryConstants.hpp" // For STACK_LOWER_BOUND
 #include "Logger.hpp" // For Logger class
 
 #include "InstructionBuilder.hpp" // For InstructionBuilder
@@ -111,6 +112,10 @@ void Process::PrepareForExecution(const char* filename)
     // Create the file iterator and send it to the line of the pc
     m_pFileIterator = new Io::FileIterator(filename);
     m_pFileIterator->GoToLine(m_processRegisters.PC);
+
+    // Initialize the stack pointer
+    // Note: Stack is full descending
+    m_processRegisters.SP = Memory::STACK_LOWER_BOUND;
 }
 
 ////////////////////////////////

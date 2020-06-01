@@ -24,4 +24,5 @@ add_library(instr_lib STATIC ${SOURCES})
 # Link in libraries
 target_link_libraries(instr_lib
                       PRIVATE debug_lib
+                      PRIVATE mem_library
 )

@@ -24,7 +24,7 @@
 void MultipleMemoryInstruction::Execute(Registers& rProcessRegisters)
 {
     // TODO: Remove when stack has been moved to memory and UT updated
-    return;
+    // return;
     
     // If we're not updating the address register, modify a temporary register
     Register addressPlaceholder;
@@ -40,11 +40,11 @@ void MultipleMemoryInstruction::Execute(Registers& rProcessRegisters)
         // Handle IB and DB
         if (m_addressingMode == AddressingMode::IB)
         {
-            (*m_pAddressRegister)++;
+            (*m_pAddressRegister) += sizeof(uint32_t);
         }
         else if ( m_addressingMode == AddressingMode:: DB)
         {
-            (*m_pAddressRegister)--;
+            (*m_pAddressRegister) -= sizeof(uint32_t);
         }
 
         switch (m_opCode)
@@ -65,11 +65,11 @@ void MultipleMemoryInstruction::Execute(Registers& rProcessRegisters)
         // Handle IA and DA
         if (m_addressingMode == AddressingMode::IA)
         {
-            (*m_pAddressRegister)++;
+            (*m_pAddressRegister) += sizeof(uint32_t);
         }
         else if ( m_addressingMode == AddressingMode:: DA)
         {
-            (*m_pAddressRegister)--;
+            (*m_pAddressRegister) -= sizeof(uint32_t);
         }
     }
 }
