@@ -5,8 +5,8 @@
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef MEMORY_INSTRUCTION_BASE_HPP
-#define MEMORY_INSTRUCTION_BASE_HPP
+#ifndef MEMORY_INSTRUCTION_HPP
+#define MEMORY_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
 // (None)
@@ -53,8 +53,6 @@ public:
     /// @param[in,out] rProcessRegisters    Registers associated with process
     ////////////////////////////////
     void Execute(Registers& rProcessRegisters);
-
-    void Execute(const SLList<std::string>& rArguments, Process& rProcess) {}
 
 protected:
 

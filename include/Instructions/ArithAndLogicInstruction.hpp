@@ -5,11 +5,11 @@
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
-#ifndef ARITH_AND_LOGIC_INSTRUCTION_BASE_HPP
-#define ARITH_AND_LOGIC_INSTRUCTION_BASE_HPP
+#ifndef ARITH_AND_LOGIC_INSTRUCTION_HPP
+#define ARITH_AND_LOGIC_INSTRUCTION_HPP
 
 // SYSTEM INCLUDES
-#include <string>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
@@ -53,8 +53,6 @@ public:
     /// @param[in,out] rProcessRegisters    Registers associated with process
     ////////////////////////////////
     void Execute(Registers& rProcessRegisters);
-
-    void Execute(const SLList<std::string>& rArguments, Process& rProcess) {}
 
     ////////////////////////////////
     /// METHOD NAME: SetDestination

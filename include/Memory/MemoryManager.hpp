@@ -97,18 +97,6 @@ private:
     /// File input stream
     std::fstream m_memoryFile;
 
-    /// Lower bound of process memory
-    const uint32_t GLOBAL_LOWER_BOUND = 0x20000000;
-
-    /// Lower bound of heap memory
-    const uint32_t HEAP_LOWER_BOUND = 0x20008000;
-
-    /// Stack "upper" bound
-    const uint32_t STACK_UPPER_BOUND = 0x30008000;
-
-    /// Upper bound of process memory. Also bottom of stack
-    const uint32_t GLOBAL_UPPER_BOUND = 0x20004000;
-
     /// Number of words per row of the memory file
     static const uint16_t WORDS_PER_ROW = 16;
 

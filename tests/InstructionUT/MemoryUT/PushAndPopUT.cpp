@@ -19,6 +19,8 @@
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
 #include "KeywordDict.hpp"
+#include "MemoryApi.hpp"
+#include "MemoryConstants.hpp"
 
 ////////////////////////////////
 /// Test Objects
@@ -38,7 +40,11 @@ void setup()
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
 
+    myProc.GetProcessRegisters().SP = Memory::STACK_LOWER_BOUND;
+
     KeywordDict::GetInstance().Initialize();
+
+    Memory::MemoryApi::Initialize();
 }
 
 ////////////////////////////////
@@ -50,7 +56,7 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessStack().Peek() == 0);
+    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 0);
     delete pInstruction;
 
     // "MOV" R0, #1
@@ -60,14 +66,13 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessStack().Size() == 0);
     delete pInstruction;
 
     instructionStr = "PUSH {R1, R5, R2}";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessStack().Peek() == 5);
+    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 5);
     delete pInstruction;
 
     // "MOV" R1, #10
@@ -90,7 +95,7 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessStack().Peek() == 7);
+    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 7);
     delete pInstruction;
 
     // "MOV" R0, #10

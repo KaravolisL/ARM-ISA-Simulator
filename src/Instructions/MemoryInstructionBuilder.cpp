@@ -68,7 +68,19 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
 
     LOG_DEBUG("rInstruction: %s", rInstruction.c_str());
 
-    if (m_opCode != OpCode::PUSH && m_opCode != OpCode::POP)
+    if (m_opCode == OpCode::PUSH)
+    {
+        pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
+        pMultipleMemoryInstruction->SetAddressRegister(&pProcess->GetProcessRegisters().SP);
+        pMultipleMemoryInstruction->SetUpdateFlag();
+    }
+    else if (m_opCode == OpCode::POP)
+    {
+        // AddressingMode defaults to IB
+        pMultipleMemoryInstruction->SetAddressRegister(&pProcess->GetProcessRegisters().SP);
+        pMultipleMemoryInstruction->SetUpdateFlag();
+    }
+    else
     {
         // Mode, address register, update flag
     }
@@ -122,18 +134,6 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
             break;
         default:
             ASSERT(false, "Invalid opcode %d", m_opCode);
-    }
-
-    for (int i = 0; i < rRegList.GetLength(); i++)
-    {
-        if (m_opCode == OpCode::PUSH)
-        {
-            pProcess->GetProcessStack().Push(*(rRegList[i]));
-        }
-        else
-        {
-            *(rRegList[i]) = pProcess->GetProcessStack().Pop();
-        }
     }
 
     return pMultipleMemoryInstruction;

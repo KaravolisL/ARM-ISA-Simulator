@@ -8,7 +8,9 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 
 # Set stub files
 set(STUBS
+    AssertMock.cpp
     FileIteratorMock.cpp
+    LoggerMock.cpp
 )
 
 # Create library
