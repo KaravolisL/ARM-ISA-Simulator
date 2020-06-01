@@ -68,6 +68,10 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
 
     LOG_DEBUG("rInstruction: %s", rInstruction.c_str());
 
+    List<std::string> tokens;
+    Io::LineParser lineParser(&rInstruction);
+    lineParser.Tokenize(tokens, " ,{}!");
+
     if (m_opCode == OpCode::PUSH)
     {
         pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
@@ -82,12 +86,34 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     }
     else
     {
-        // Mode, address register, update flag
-    }
+        // Addressing mode determination
+        if (rInstruction.substr(0, rInstruction.find_first_of(' ')).length() > 0)
+        {
+            std::string addressingModeStr = rInstruction.substr(0, 2);
+            if (addressingModeStr == "IB")
+            {
+                pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::IB);
+            }
+            else if (addressingModeStr == "DB")
+            {
+                pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
+            }
+            else if (addressingModeStr == "DA")
+            {
+                pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DA);
+            }
+            rInstruction.erase(0, 2);
+        }
 
-    List<std::string> tokens;
-    Io::LineParser lineParser(&rInstruction);
-    lineParser.Tokenize(tokens, " ,{}");
+        // Address register
+        Register* pAddressRegister = ParseRegister(tokens[0], pProcess);
+        pMultipleMemoryInstruction->SetAddressRegister(pAddressRegister);
+
+        if (rInstruction.find('!'))
+        {
+            pMultipleMemoryInstruction->SetUpdateFlag();
+        }
+    }
 
     // For every token...
     for (int i = 0; i < tokens.GetLength(); i++)
