@@ -105,9 +105,10 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
             rInstruction.erase(0, 2);
         }
 
-        // Address register
+        // Remove address register from tokens once parsing it
         Register* pAddressRegister = ParseRegister(tokens[0], pProcess);
         pMultipleMemoryInstruction->SetAddressRegister(pAddressRegister);
+        tokens.Remove(0);
 
         if (rInstruction.find('!'))
         {
@@ -153,9 +154,11 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     switch (m_opCode)
     {
         case OpCode::PUSH:
+        case OpCode::STM:
             rRegList.Sort([](Register*& a, Register*& b) { return a < b; });
             break;
         case OpCode::POP:
+        case OpCode::LDM:
             rRegList.Sort([](Register*& a, Register*& b) { return a > b; });
             break;
         default:

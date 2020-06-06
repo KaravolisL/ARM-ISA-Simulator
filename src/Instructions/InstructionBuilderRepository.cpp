@@ -17,7 +17,7 @@
 #include "ArithAndLogicInstructionBuilder.hpp" // For ArithAndLogicInstructionBuilder
 #include "FlowCtrlInstructionBuilder.hpp" // For FlowCtrlInstructionBuilder
 #include "MemoryInstructionBuilder.hpp" // For MemoryInstructionBuilder
-#include "Logger.hpp" // For Logger
+#include "Logger.hpp" // For LOG_DEBUG
 #include "Assert.hpp" // For ASSERT
 
 static ArithAndLogicInstructionBuilder f_arithAndLogicInstructionBuilder;
@@ -56,6 +56,10 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
             break;
         case OpCode::PUSH:
         case OpCode::POP:
+        case OpCode::LDM:
+        case OpCode::STM:
+        case OpCode::LDR:
+        case OpCode::STR:
             pInstructionBuilder = &f_memoryInstructionBuilder;
             break;
         default:
