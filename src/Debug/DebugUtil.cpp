@@ -40,6 +40,12 @@ std::string format(int numArgs, va_list valist)
                         formattedString << value;
                         break;
                     }
+                    case 'x':
+                    {
+                        int value = va_arg(valist, int);
+                        formattedString << std::hex << value;
+                        break;
+                    }
                     case 'c':
                     {
                         // va_arg only accepts types aligned to machined boundaries

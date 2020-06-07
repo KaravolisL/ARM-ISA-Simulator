@@ -66,7 +66,7 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     MultipleMemoryInstruction* pMultipleMemoryInstruction = new MultipleMemoryInstruction(m_opCode);
     List<Register*>& rRegList = pMultipleMemoryInstruction->GetRegisterList();
 
-    LOG_DEBUG("rInstruction: %s", rInstruction.c_str());
+    LOG_DEBUG("MemoryInstructionBuilder::BuildMultipleMemoryInstruction: rInstruction: %s", rInstruction.c_str());
 
     List<std::string> tokens;
     Io::LineParser lineParser(&rInstruction);
@@ -87,22 +87,27 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     else
     {
         // Addressing mode determination
-        if (rInstruction.substr(0, rInstruction.find_first_of(' ')).length() > 0)
+        std::string addressingModeStr = tokens.Remove(0);
+        if (addressingModeStr == "IB")
         {
-            std::string addressingModeStr = rInstruction.substr(0, 2);
-            if (addressingModeStr == "IB")
-            {
-                pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::IB);
-            }
-            else if (addressingModeStr == "DB")
-            {
-                pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
-            }
-            else if (addressingModeStr == "DA")
-            {
-                pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DA);
-            }
-            rInstruction.erase(0, 2);
+            pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::IB);
+        }
+        else if (addressingModeStr == "IA")
+        {
+            // Addressing mode is defaulted to IA
+        }
+        else if (addressingModeStr == "DB")
+        {
+            pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
+        }
+        else if (addressingModeStr == "DA")
+        {
+            pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DA);
+        }
+        else
+        {
+            // The address mode was not present, so return the string to the instruction
+            tokens.Insert(0, addressingModeStr);
         }
 
         // Remove address register from tokens once parsing it

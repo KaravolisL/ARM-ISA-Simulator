@@ -52,11 +52,31 @@ void setup()
 ////////////////////////////////
 void StmTest()
 {
-    instructionStr = "STM SP! {R0}";
+    instructionStr = "STMDB SP! {R0, R2}";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 0);
+    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 2);
+    delete pInstruction;
+}
+
+////////////////////////////////
+/// LdmTest Function
+////////////////////////////////
+void LdmTest()
+{
+    // Invalidate registers
+    for (int i = 0; i < 13; i++)
+    {
+        myProc.GetProcessRegisters().genRegs[i] = 0xBEEFC0DE;
+    }
+
+    instructionStr = "LDM SP! {R0, R2}";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[0] == 0);
+    assert(myProc.GetProcessRegisters().genRegs[2] == 2);
     delete pInstruction;
 }
 
@@ -76,6 +96,7 @@ int main(int argc, char* argv[])
     setup();
 
     StmTest();
+    LdmTest();
 
     teardown();
 
