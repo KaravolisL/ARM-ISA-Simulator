@@ -53,11 +53,6 @@ public:
     ////////////////////////////////
     virtual void Execute(Registers& rProcessRegisters) = 0;
 
-    ////////////////////////////////
-    /// METHOD NAME: GetOpCode
-    ////////////////////////////////
-    OpCode GetOpCode() const { return m_opCode; }
-
 protected:
 
     // PROTECTED METHODS
