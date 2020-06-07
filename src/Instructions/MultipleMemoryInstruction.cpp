@@ -22,10 +22,7 @@
 /// METHOD NAME: MultipleMemoryInstruction::Execute
 ////////////////////////////////
 void MultipleMemoryInstruction::Execute(Registers& rProcessRegisters)
-{
-    // TODO: Remove when stack has been moved to memory and UT updated
-    // return;
-    
+{   
     // If we're not updating the address register, modify a temporary register
     Register addressPlaceholder;
     if (!m_updateFlag)

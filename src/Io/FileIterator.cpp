@@ -18,9 +18,21 @@
 
 // C++ PROJECT INCLUDES
 #include "FileIterator.hpp" // Header for class
+#include "AssemblingException.hpp" // For AssemblingException
 
 namespace Io
 {
+
+////////////////////////////////
+/// Constructor
+////////////////////////////////
+FileIterator::FileIterator(const std::string& fileName) :
+    m_fileStream(std::ifstream(fileName, std::ifstream::in)),
+    m_currentLine(""),
+    m_lineNumber(0)
+{
+    if (!m_fileStream.is_open()) { throw AssemblingException("File not found", fileName, 0); }
+} 
 
 ////////////////////////////////
 /// METHOD NAME: HasNext

@@ -19,7 +19,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "AssemblingException.hpp" // For AssemblingException
+// (None)
 
 // FORWARD DECLARATIONS
 // (None)
@@ -37,13 +37,7 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    FileIterator(const std::string& fileName) :
-        m_fileStream(std::ifstream(fileName, std::ifstream::in)),
-        m_currentLine(""),
-        m_lineNumber(0)
-    {
-        if (!m_fileStream.is_open()) { throw AssemblingException("File not found", fileName, 0); }
-    } 
+    FileIterator(const std::string& fileName);
 
     ////////////////////////////////
     /// METHOD NAME: Next
@@ -76,7 +70,7 @@ public:
     ////////////////////////////////
     /// METHOD NAME: GetLineNumber
     ////////////////////////////////
-    int GetLineNumber() { return m_lineNumber; }
+    uint32_t GetLineNumber() { return m_lineNumber; }
 
     ////////////////////////////////
     /// METHOD NAME: GetCurrentLine
@@ -105,7 +99,7 @@ private:
     std::string m_currentLine;
 
     /// Line number
-    int m_lineNumber;
+    uint32_t m_lineNumber;
 
 };
 

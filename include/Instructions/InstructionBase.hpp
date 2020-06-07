@@ -53,29 +53,23 @@ public:
     ////////////////////////////////
     virtual void Execute(Registers& rProcessRegisters) = 0;
 
-    ////////////////////////////////
-    /// METHOD NAME: GetOpCode
-    ////////////////////////////////
-    OpCode GetOpCode() const { return m_opCode; }
-
 protected:
 
-    ////////////////////////////////
-    /// METHOD NAME: ParseArgument
-    ///
-    /// @brief Interprets a given string as an integer
-    /// This could be either a # followed by a literal,
-    /// a register, or a = follow by a constant.
-    ///
-    /// @param[in] rArguments   Argument to be parsed into integer
-    /// @param[in,out] rProcess Process that this instruction is apart of
-    ////////////////////////////////
-    uint32_t ParseArgument(const std::string& rArgument, Process& rProcess);
+    // PROTECTED METHODS
+    // (None)
+
+    // PROTECTED MEMBERS
 
     /// OpCode of instruction
     OpCode m_opCode;
 
 private:
+
+    // PRIVATE METHODS
+    // (None)
+
+    // PRIVATE MEMBERS
+    // (None)
 
 };
 

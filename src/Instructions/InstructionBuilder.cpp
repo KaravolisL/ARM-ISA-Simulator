@@ -215,7 +215,7 @@ bool InstructionBuilder::CheckConditionalCode(std::string& rKeyword, const Regis
 ////////////////////////////////
 Register* InstructionBuilder::ParseRegister(const std::string& rRegStr, Process* pProcess) const
 {
-    LOG_DEBUG("rRegStr = %s", rRegStr.c_str());
+    LOG_DEBUG("Parsing %s", rRegStr.c_str());
 
     if (rRegStr[0] != 'R' && rRegStr[0] != 'r')
     {

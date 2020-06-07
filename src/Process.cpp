@@ -24,7 +24,6 @@
 #include "AssemblingException.hpp" // For AssemblingException
 #include "MemoryConstants.hpp" // For STACK_LOWER_BOUND
 #include "Logger.hpp" // For Logger class
-
 #include "InstructionBuilder.hpp" // For InstructionBuilder
 
 ////////////////////////////////
@@ -153,16 +152,14 @@ bool Process::Step()
     pInstruction = InstructionBuilder::GetInstance().BuildInstruction(instruction, this);
     pInstruction->Execute(this->GetProcessRegisters());
 
-    if (pInstruction->GetOpCode() == OpCode::B ||
-        pInstruction->GetOpCode() == OpCode::BX ||
-        pInstruction->GetOpCode() == OpCode::BL ||
-        pInstruction->GetOpCode() == OpCode::BLX)
+    // Check if the instruction changed the PC, otherwise just increment it
+    if (m_processRegisters.PC != m_pFileIterator->GetLineNumber())
     {
         m_pFileIterator->GoToLine(m_processRegisters.PC);
+        LOG_DEBUG("PC set to %d", m_processRegisters.PC);
     }
     else
     {
-        // Don't mess with the PC if a branch instruction was just executed
         m_processRegisters.PC++;
         LOG_DEBUG("PC incremented to %d", m_processRegisters.PC);
     }

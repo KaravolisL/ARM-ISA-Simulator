@@ -68,6 +68,10 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
 
     LOG_DEBUG("rInstruction: %s", rInstruction.c_str());
 
+    List<std::string> tokens;
+    Io::LineParser lineParser(&rInstruction);
+    lineParser.Tokenize(tokens, " ,{}!");
+
     if (m_opCode == OpCode::PUSH)
     {
         pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
@@ -82,12 +86,40 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     }
     else
     {
-        // Mode, address register, update flag
-    }
+        // Addressing mode determination
+        std::string addressingModeStr = tokens.Remove(0);
+        if (addressingModeStr == "IB")
+        {
+            pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::IB);
+        }
+        else if (addressingModeStr == "IA")
+        {
+            // Addressing mode is defaulted to IA
+        }
+        else if (addressingModeStr == "DB")
+        {
+            pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
+        }
+        else if (addressingModeStr == "DA")
+        {
+            pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DA);
+        }
+        else
+        {
+            // The address mode was not present, so return the string to the instruction
+            tokens.Insert(0, addressingModeStr);
+        }
 
-    List<std::string> tokens;
-    Io::LineParser lineParser(&rInstruction);
-    lineParser.Tokenize(tokens, " ,{}");
+        // Remove address register from tokens once parsing it
+        Register* pAddressRegister = ParseRegister(tokens[0], pProcess);
+        pMultipleMemoryInstruction->SetAddressRegister(pAddressRegister);
+        tokens.Remove(0);
+
+        if (rInstruction.find('!'))
+        {
+            pMultipleMemoryInstruction->SetUpdateFlag();
+        }
+    }
 
     // For every token...
     for (int i = 0; i < tokens.GetLength(); i++)
@@ -127,9 +159,11 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     switch (m_opCode)
     {
         case OpCode::PUSH:
+        case OpCode::STM:
             rRegList.Sort([](Register*& a, Register*& b) { return a < b; });
             break;
         case OpCode::POP:
+        case OpCode::LDM:
             rRegList.Sort([](Register*& a, Register*& b) { return a > b; });
             break;
         default:

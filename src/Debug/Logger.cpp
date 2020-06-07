@@ -50,11 +50,11 @@ void Logger::Log(std::string& rMsg, Logger::LogLevel logLevel)
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(const char* fileName, int lineNumber, Logger::LogLevel logLevel, int numArgs, ...)
+void Logger::Log(const char* fileName, const char* funcName, int lineNumber, Logger::LogLevel logLevel, int numArgs, ...)
 {
     // Concatenate given strings
     std::stringstream concatStream;
-    concatStream << fileName << " : Line " << lineNumber << " : ";
+    concatStream << fileName << " : " << funcName << " : Line " << lineNumber << " : ";
 
     // Initialize valist
     va_list valist;

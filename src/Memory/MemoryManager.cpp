@@ -86,7 +86,7 @@ uint32_t MemoryManager::ReadWord(uint32_t address)
     m_memoryFile.read(buffer, CHARACTERS_PER_WORD);
     buffer[CHARACTERS_PER_WORD] = '\0';
 
-    LOG_DEBUG("Read %s from the address %d", buffer, address);
+    LOG_DEBUG("Read %s from the address 0x%x", buffer, address);
 
     uint32_t data = std::stoul(buffer, nullptr, 16);
     return data;
@@ -99,7 +99,7 @@ void MemoryManager::WriteWord(uint32_t address, uint32_t data)
 {
     GoToAddress(address);
 
-    LOG_DEBUG("Writing %d to the address %d", data, address);
+    LOG_DEBUG("Writing %d to the address 0x%x", data, address);
 
     m_memoryFile << std::setfill('0') << std::setw(8) << std::hex << data;
 }
@@ -111,13 +111,13 @@ void MemoryManager::ValidateAddress(uint32_t address)
 {
     if (address < GLOBAL_LOWER_BOUND || address > GLOBAL_UPPER_BOUND)
     {
-        LOG_ERROR("Address %d is outside of bounds", address);
+        LOG_ERROR("Address 0x%x is outside of bounds", address);
         throw MemoryException();
     }
 
     if (address % sizeof(uint32_t) != 0)
     {
-        LOG_ERROR("Address %d is not byte addressable", address);
+        LOG_ERROR("Address 0x%x is not byte addressable", address);
         throw MemoryException();
     }
 }
