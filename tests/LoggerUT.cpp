@@ -41,11 +41,11 @@ void LogTest()
     std::string line;
 
     std::getline(logFile, line);
-    assert(line == "INFO: LoggerUT.cpp : Line 36 : Test INFO Log");
+    assert(line == "INFO: LoggerUT.cpp : void LogTest() : Line 36 : Test INFO Log");
     std::getline(logFile, line);
-    assert(line == "DEBUG: LoggerUT.cpp : Line 37 : Test DEBUG Log");
+    assert(line == "DEBUG: LoggerUT.cpp : void LogTest() : Line 37 : Test DEBUG Log");
     std::getline(logFile, line);
-    assert(line == "ERROR: LoggerUT.cpp : Line 38 : Test ERROR Log");
+    assert(line == "ERROR: LoggerUT.cpp : void LogTest() : Line 38 : Test ERROR Log");
 }
 
 ////////////////////////////////

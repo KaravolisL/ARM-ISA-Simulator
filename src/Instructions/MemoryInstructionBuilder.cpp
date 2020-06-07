@@ -66,7 +66,7 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     MultipleMemoryInstruction* pMultipleMemoryInstruction = new MultipleMemoryInstruction(m_opCode);
     List<Register*>& rRegList = pMultipleMemoryInstruction->GetRegisterList();
 
-    LOG_DEBUG("MemoryInstructionBuilder::BuildMultipleMemoryInstruction: rInstruction: %s", rInstruction.c_str());
+    LOG_DEBUG("rInstruction: %s", rInstruction.c_str());
 
     List<std::string> tokens;
     Io::LineParser lineParser(&rInstruction);

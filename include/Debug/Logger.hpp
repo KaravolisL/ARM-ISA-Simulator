@@ -27,9 +27,9 @@
 // (None)
 
 // Log Macros
-#define LOG_DEBUG( ... ) Logger::GetInstance().Log(__FILENAME__, __LINE__, Logger::LogLevel::DEBUG, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
-#define LOG_INFO( ... ) Logger::GetInstance().Log(__FILENAME__, __LINE__, Logger::LogLevel::INFO, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
-#define LOG_ERROR( ... ) Logger::GetInstance().Log(__FILENAME__, __LINE__, Logger::LogLevel::ERROR, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
+#define LOG_DEBUG( ... ) Logger::GetInstance().Log(__FILENAME__, __PRETTY_FUNCTION__, __LINE__, Logger::LogLevel::DEBUG, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
+#define LOG_INFO( ... ) Logger::GetInstance().Log(__FILENAME__, __PRETTY_FUNCTION__, __LINE__, Logger::LogLevel::INFO, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
+#define LOG_ERROR( ... ) Logger::GetInstance().Log(__FILENAME__, __PRETTY_FUNCTION__, __LINE__, Logger::LogLevel::ERROR, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
 
 ////////////////////////////////
 /// @class Logger
@@ -69,12 +69,13 @@ public:
     /// defined above.
     ///
     /// @param fileName     Name of file where assert is placed
+    /// @param funcName     Name of the function where the assert is placed
     /// @param lineNumber   Line on which assert is placed
     /// @param logLevel     Level at which to print message
     /// @param numArgs      Number of arguments passed in additionally
     /// @param ...          Format string followed by replacement variables
     ////////////////////////////////
-    void Log(const char* fileName, int lineNumber, LogLevel logLevel, int numArgs, ...);
+    void Log(const char* fileName, const char* funcName, int lineNumber, LogLevel logLevel, int numArgs, ...);
 
     ////////////////////////////////
     /// METHOD NAME: Log
