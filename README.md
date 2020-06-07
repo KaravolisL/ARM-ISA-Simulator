@@ -14,7 +14,20 @@ Simulator program for the ARM Instruction Set Architecture
 > TODO
 
 # Features
-> TODO
+Currently, the following ARM instructions are supported:  
+| Logic | Arithmetic | Flow Control | Memory | Other |  
+|:-----:|:----------:|:------------:|:------:|:-----:|
+| AND   | ADD        | B            | LDM    | MOV   |
+| ORR   | SUB        | BL           | STM    | CMP   |
+| BIC   |            | BX           | PUSH   | CMN   |
+| EOR   |            | BLX          | POP    | NOP   |
+| LSL   |            |              |        |       |
+| LSR   |            |              |        |       |
+
+Variants of these instructions are also supported according to the ARM instruction set architecture. For instance, conditional codes can be appended to enable conditional execution.
+
+At startup, memory is allocated for the user's program. 1024 bytes are designated for the process's stack. 512 bytes are provided for the process's heap memory. 15360 additional bytes are allocated for the user's static data section.
+
 
 # Installation
 1. Clone Repository
@@ -23,3 +36,7 @@ Simulator program for the ARM Instruction Set Architecture
    ```cd build``` \
    ```cmake ..``` \
    ```make```
+3. To run unit and integration tests, execute following command \
+   ```make test```
+4. To execute program, execute following command \
+   ```./src/ARM-ISA-Simulator <Name of main file>```
