@@ -13,6 +13,7 @@ set(SOURCES
     MemoryInstructionBuilder.cpp
     FlowCtrlInstruction.cpp
     MemoryInstructionBuilder.cpp
+    MemoryInstruction.cpp
     MultipleMemoryInstruction.cpp
     InstructionBuilderRepository.cpp
 )

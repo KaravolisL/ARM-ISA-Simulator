@@ -16,6 +16,7 @@
 #include "MemoryInstructionBuilder.hpp" // Header for class
 #include "MemoryInstruction.hpp" // For MemoryInstruction
 #include "MultipleMemoryInstruction.hpp" // For MultipleMemoryInstruction
+#include "MemoryInstruction.hpp" // For MemoryInstruction
 #include "LineParser.hpp" // For Io::LineParser
 #include "Process.hpp" // Fpr Process
 #include "Assert.hpp" // For ASSERT
@@ -54,8 +55,64 @@ InstructionBase* MemoryInstructionBuilder::BuildInstruction(std::string& rInstru
 ////////////////////////////////
 MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string& rInstruction, Process* pProcess)
 {
-    ASSERT(false, "Feature not implemented");
-    return nullptr;
+    MemoryInstruction* pMemoryInstruction = new MemoryInstruction(m_opCode);
+
+    List<std::string> tokens;
+    Io::LineParser lineParser(&rInstruction);
+    lineParser.Tokenize(tokens, " ,!");
+
+    std::string memoryTranserTypeStr = tokens.Remove(0);
+    if (memoryTranserTypeStr == "B")
+    {
+        pMemoryInstruction->SetTransferType(MemoryTransferType::UNSIGNED_BYTE);
+    }
+    else if (memoryTranserTypeStr == "SB")
+    {
+        pMemoryInstruction->SetTransferType(MemoryTransferType::SIGNED_BYTE);
+        if (m_opCode != OpCode::LDR)
+        {
+            // TODO: Throw exception
+        }
+    }
+    else if (memoryTranserTypeStr == "H")
+    {
+        pMemoryInstruction->SetTransferType(MemoryTransferType::UNSIGNED_HALFWORD);
+    }
+    else if (memoryTranserTypeStr == "SH")
+    {
+        pMemoryInstruction->SetTransferType(MemoryTransferType::SIGNED_HALFWORD);
+        if (m_opCode != OpCode::LDR)
+        {
+            // TODO: Throw exception
+        }
+    }
+    else
+    {
+        // Transfer type was defaulted. Add back the token
+        tokens.Insert(0, memoryTranserTypeStr);
+    }
+    LOG_DEBUG("Memory transfer type %d", pMemoryInstruction->GetTransferType());
+    
+    // Remove address register from tokens once parsing it
+    Register* pDestOrSrcRegister = ParseRegister(tokens[0], pProcess);
+    pMemoryInstruction->SetDestOrSrcRegister(pDestOrSrcRegister);
+    tokens.Remove(0);
+
+    // Check if the next token's a label
+    if (tokens[0][0] != '[' || tokens[0][0] == '=')
+    {
+        // Throw away the =
+        if (tokens[0][0] == '=') tokens[0].erase(0, 1);
+        LOG_DEBUG("Address is stored as label %s", tokens[0].c_str());
+
+        // In this case, we'll get the address from the constants dictionary
+        // and store it in the offset field of the instruction
+        pMemoryInstruction->SetOffset(pProcess->GetConstantsDictionary().Get(tokens[0]));
+        pMemoryInstruction->SetAddressRegisterToOffset();
+        return pMemoryInstruction;
+    }
+
+    return pMemoryInstruction;
 }
 
 ////////////////////////////////
