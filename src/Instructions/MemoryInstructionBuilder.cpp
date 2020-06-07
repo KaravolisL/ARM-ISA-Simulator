@@ -86,6 +86,18 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     }
     else
     {
+        pMultipleMemoryInstruction->SetAddressingMode(AddressingMode::DB);
+        pMultipleMemoryInstruction->SetAddressRegister(&pProcess->GetProcessRegisters().SP);
+        pMultipleMemoryInstruction->SetUpdateFlag();
+    }
+    else if (m_opCode == OpCode::POP)
+    {
+        // AddressingMode defaults to IB
+        pMultipleMemoryInstruction->SetAddressRegister(&pProcess->GetProcessRegisters().SP);
+        pMultipleMemoryInstruction->SetUpdateFlag();
+    }
+    else
+    {
         // Addressing mode determination
         std::string addressingModeStr = tokens.Remove(0);
         if (addressingModeStr == "IB")
