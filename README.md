@@ -13,7 +13,8 @@ Simulator program for the ARM Instruction Set Architecture
 ## Screenshots
 > TODO
 
-# Features
+## Features
+### Instructions
 Currently, the following ARM instructions are supported:  
 | Logic | Arithmetic | Flow Control | Memory | Other |  
 |:-----:|:----------:|:------------:|:------:|:-----:|
@@ -26,10 +27,11 @@ Currently, the following ARM instructions are supported:
 
 Variants of these instructions are also supported according to the ARM instruction set architecture. For instance, conditional codes can be appended to enable conditional execution.
 
+### Memory Layout
 At startup, memory is allocated for the user's program. 1024 bytes are designated for the process's stack. 512 bytes are provided for the process's heap memory. 15360 additional bytes are allocated for the user's static data section.
 
 
-# Installation
+## Installation
 1. Clone Repository
 2. Run following commands: \
    ```mkdir build``` \
