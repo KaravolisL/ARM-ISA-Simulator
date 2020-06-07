@@ -29,6 +29,7 @@ Process myProc = Process();
 InstructionBuilder& builder = InstructionBuilder::GetInstance();
 InstructionBase* pInstruction = nullptr;
 std::string instructionStr;
+const uint32_t memAddress = 0x20000000;
 
 ////////////////////////////////
 /// Setup Function
@@ -58,6 +59,16 @@ void StmTest()
     pInstruction->Execute(myProc.GetProcessRegisters());
     assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 2);
     delete pInstruction;
+
+    myProc.GetProcessRegisters().genRegs[5] = memAddress;
+
+    instructionStr = "STMIB R5, {R1, R6-R9}";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 2);
+    assert(myProc.GetProcessRegisters().genRegs[5] = memAddress);
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -78,6 +89,21 @@ void LdmTest()
     assert(myProc.GetProcessRegisters().genRegs[0] == 0);
     assert(myProc.GetProcessRegisters().genRegs[2] == 2);
     delete pInstruction;
+
+    myProc.GetProcessRegisters().genRegs[5] = memAddress + sizeof(uint32_t) * 5;
+
+    instructionStr = "LDMDA R5! {R1, R6-R9}";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[1] == 1);
+    assert(myProc.GetProcessRegisters().genRegs[6] == 6);
+    assert(myProc.GetProcessRegisters().genRegs[7] == 7);
+    assert(myProc.GetProcessRegisters().genRegs[8] == 8);
+    assert(myProc.GetProcessRegisters().genRegs[9] == 9);
+    delete pInstruction;
+
+    assert(myProc.GetProcessRegisters().genRegs[5] == memAddress);
 }
 
 ////////////////////////////////
