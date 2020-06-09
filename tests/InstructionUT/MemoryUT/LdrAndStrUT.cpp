@@ -14,7 +14,6 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
@@ -61,6 +60,39 @@ void StrTest()
     pInstruction->Execute(myProc.GetProcessRegisters());
     assert(Memory::MemoryApi::ReadWord(memAddress) == 2);
     delete pInstruction;
+
+    instructionStr = "STR R3, [R0, #4]";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(Memory::MemoryApi::ReadWord(memAddress + 4) == 3);
+    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress);
+    delete pInstruction;
+
+    instructionStr = "STR R4, [R0, #8]!";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(Memory::MemoryApi::ReadWord(memAddress + 8) == 4);
+    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 8);
+    delete pInstruction;
+
+    myProc.GetProcessRegisters().genRegs[0] = memAddress + 12;
+    instructionStr = "STR R5, [R0], #4";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(Memory::MemoryApi::ReadWord(memAddress + 12) == 5);
+    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
+    delete pInstruction;
+
+    instructionStr = "STR R6, [R0]";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(Memory::MemoryApi::ReadWord(memAddress + 16) == 6);
+    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
+    delete pInstruction;
 }
 
 ////////////////////////////////
@@ -73,12 +105,46 @@ void LdrTest()
     {
         myProc.GetProcessRegisters().genRegs[i] = 0xBEEFC0DE;
     }
+    myProc.GetProcessRegisters().genRegs[0] = memAddress;
 
     instructionStr = "LDR R2, =str";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
     assert(myProc.GetProcessRegisters().genRegs[2] == 2);
+    delete pInstruction;
+
+    instructionStr = "LDR R3, [R0, #4]";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[3] == 3);
+    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress);
+    delete pInstruction;
+
+    instructionStr = "LDR R4, [R0, #8]!";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[4] == 4);
+    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 8);
+    delete pInstruction;
+
+    myProc.GetProcessRegisters().genRegs[0] = memAddress + 12;
+    instructionStr = "LDR R5, [R0], #4";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[5] == 5);
+    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
+    delete pInstruction;
+
+    instructionStr = "LDR R6, [R0]";
+
+    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+    pInstruction->Execute(myProc.GetProcessRegisters());
+    assert(myProc.GetProcessRegisters().genRegs[6] == 6);
+    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
     delete pInstruction;
 }
 
@@ -98,7 +164,7 @@ int main(int argc, char* argv[])
     setup();
 
     StrTest();
-    // LdrTest();
+    LdrTest();
 
     teardown();
 

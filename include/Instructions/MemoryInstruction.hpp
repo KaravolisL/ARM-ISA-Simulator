@@ -79,7 +79,7 @@ public:
     ////////////////////////////////
     /// METHOD NAME: SetOffset
     ////////////////////////////////
-    void SetOffset(uint32_t offset) { m_offset = offset; }
+    void SetOffset(int32_t offset) { m_offset = offset; }
 
     ////////////////////////////////
     /// METHOD NAME: SetOffsetType
@@ -109,7 +109,7 @@ private:
     MemoryTransferType m_transferType;
 
     /// Offset from base address
-    uint32_t m_offset;
+    int32_t m_offset;
 
     /// Type of offset to perform
     OffsetType m_offsetType;

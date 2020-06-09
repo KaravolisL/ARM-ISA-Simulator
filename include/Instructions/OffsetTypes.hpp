@@ -27,6 +27,7 @@ enum OffsetType
 {
     ZERO,
     PREINDEXED,
+    PREINDEXED_WITH_UPDATE,
     POSTINDEXED
 };
 
