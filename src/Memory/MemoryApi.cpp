@@ -44,6 +44,15 @@ uint32_t ReadWord(uint32_t address)
 }
 
 ////////////////////////////////
+/// FUNCTION NAME: Memory::MemoryApi::ReadUnsignedByte
+////////////////////////////////
+uint32_t ReadUnsignedByte(uint32_t address)
+{
+    uint32_t data = memManager.ReadUnsignedByte(address);
+    return data;
+}
+
+////////////////////////////////
 /// FUNCTION NAME: Memory::MemoryApi::ReadHalfWord
 ////////////////////////////////
 uint16_t ReadHalfWord(uint32_t address)
@@ -58,6 +67,14 @@ uint16_t ReadHalfWord(uint32_t address)
 void WriteWord(uint32_t address, uint32_t data)
 {
     memManager.WriteWord(address, data);
+}
+
+////////////////////////////////
+/// FUNCTION NAME: Memory::MemoryApi::WriteUnsignedByte
+////////////////////////////////
+void WriteUnsignedByte(uint32_t address, uint8_t data)
+{
+    memManager.WriteUnsignedByte(address, data);
 }
 
 ////////////////////////////////

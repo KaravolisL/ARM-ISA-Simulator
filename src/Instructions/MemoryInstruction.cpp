@@ -41,11 +41,32 @@ void MemoryInstruction::Execute(Registers& rProcessRegisters)
 
     if (m_opCode == OpCode::STR)
     {
-        Memory::MemoryApi::WriteWord(*m_pAddressRegister, *m_pDestOrSrcRegister);
+        switch (m_transferType)
+        {
+            case MemoryTransferType::WORD:
+                Memory::MemoryApi::WriteWord(*m_pAddressRegister, *m_pDestOrSrcRegister);
+                break;
+            case MemoryTransferType::UNSIGNED_BYTE:
+                Memory::MemoryApi::WriteUnsignedByte(*m_pAddressRegister, static_cast<uint8_t>(*m_pDestOrSrcRegister));
+                break;
+            case MemoryTransferType::SIGNED_BYTE:
+                break;
+            default:
+                ASSERT(false, "Invalid transfer type %d", m_transferType);
+        }
     }
     else
     {
-        *m_pDestOrSrcRegister = Memory::MemoryApi::ReadWord(*m_pAddressRegister);
+        switch (m_transferType)
+        {
+            case MemoryTransferType::WORD:
+                *m_pDestOrSrcRegister = Memory::MemoryApi::ReadWord(*m_pAddressRegister);
+                break;
+            case MemoryTransferType::UNSIGNED_BYTE:
+                *m_pDestOrSrcRegister = Memory::MemoryApi::ReadUnsignedByte(*m_pAddressRegister);
+            default:
+                ASSERT(false, "Invalid transfer type %d", m_transferType);
+        }
     }
 
     if (m_offsetType == OffsetType::POSTINDEXED)

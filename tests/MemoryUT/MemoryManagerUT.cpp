@@ -20,6 +20,7 @@
 /// Test Objects
 ////////////////////////////////
 Memory::MemoryManager& memManager = Memory::MemoryManager::GetInstance();
+uint32_t address = 0x20000000;
 
 ////////////////////////////////
 /// Setup Function
@@ -79,6 +80,29 @@ void ReadTest()
 }
 
 ////////////////////////////////
+/// UnsignedByteTest Function
+////////////////////////////////
+void UnsignedByteTest()
+{
+    uint32_t data;
+
+    memManager.WriteWord(address, 0xFFFF);
+    memManager.WriteUnsignedByte(address, 0x55);
+
+    data = memManager.ReadWord(address);
+    assert(data == 0x0000FF55);
+
+    memManager.WriteUnsignedByte(address, 0x1);
+    
+    data = memManager.ReadWord(address);
+    assert(data == 0x0000FF01);
+
+    data = memManager.ReadUnsignedByte(address);
+    assert(data == 0x00000001);
+}
+
+
+////////////////////////////////
 /// Teardown Function
 ////////////////////////////////
 void teardown()
@@ -95,6 +119,8 @@ int main(int argc, char* argv[])
 
     WriteTest();
     ReadTest();
+
+    UnsignedByteTest();
 
     teardown();
 
