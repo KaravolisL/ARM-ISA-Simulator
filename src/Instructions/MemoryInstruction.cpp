@@ -49,8 +49,11 @@ void MemoryInstruction::Execute(Registers& rProcessRegisters)
             case MemoryTransferType::UNSIGNED_BYTE:
                 Memory::MemoryApi::WriteUnsignedByte(*m_pAddressRegister, static_cast<uint8_t>(*m_pDestOrSrcRegister));
                 break;
-            case MemoryTransferType::SIGNED_BYTE:
+            case MemoryTransferType::UNSIGNED_HALFWORD:
+                // Memory::MemoryApi::WriteUnsignedHalfWord(*m_pAddressRegister, static_cast<uint16_t>(*m_pDestOrSrcRegister));
                 break;
+            case MemoryTransferType::SIGNED_HALFWORD:
+            case MemoryTransferType::SIGNED_BYTE:
             default:
                 ASSERT(false, "Invalid transfer type %d", m_transferType);
         }
@@ -64,6 +67,14 @@ void MemoryInstruction::Execute(Registers& rProcessRegisters)
                 break;
             case MemoryTransferType::UNSIGNED_BYTE:
                 *m_pDestOrSrcRegister = Memory::MemoryApi::ReadUnsignedByte(*m_pAddressRegister);
+                break;
+            case MemoryTransferType::SIGNED_BYTE:
+                *m_pDestOrSrcRegister = Memory::MemoryApi::ReadSignedByte(*m_pAddressRegister);
+                break;
+            case MemoryTransferType::UNSIGNED_HALFWORD:
+                break;
+            case MemoryTransferType::SIGNED_HALFWORD:
+                break;
             default:
                 ASSERT(false, "Invalid transfer type %d", m_transferType);
         }

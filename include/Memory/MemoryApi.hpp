@@ -50,6 +50,13 @@ uint32_t ReadWord(uint32_t address);
 uint32_t ReadUnsignedByte(uint32_t address);
 
 ////////////////////////////////
+/// METHOD NAME: Memory::MemoryApi::ReadSignedByte
+///
+/// @copydoc Memory::MemoryManager::ReadSignedByte
+////////////////////////////////
+uint32_t ReadSignedByte(uint32_t address);
+
+////////////////////////////////
 /// METHOD NAME: Memory::MemoryApi::ReadHalfWord
 ///
 /// @brief Reads a halfword from the given address

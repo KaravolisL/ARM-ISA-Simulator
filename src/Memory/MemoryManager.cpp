@@ -115,6 +115,32 @@ uint32_t MemoryManager::ReadUnsignedByte(uint32_t address)
 }
 
 ////////////////////////////////
+/// METHOD NAME: Memory::MemoryManager::ReadByte
+////////////////////////////////
+uint32_t MemoryManager::ReadSignedByte(uint32_t address)
+{
+    GoToAddress(address);
+
+    // Seek an additional 6 spaces to reach the least significant byte
+    m_memoryFile.seekg(OFFSET_FOR_BYTE, std::fstream::cur);
+
+    // Buffer for two characters and terminator
+    char buffer[CHARACTERS_PER_BYTE + 1];
+
+    m_memoryFile.read(buffer, CHARACTERS_PER_BYTE);
+    buffer[CHARACTERS_PER_BYTE] = '\0';
+
+    LOG_DEBUG("Read %s from the address 0x%x", buffer, address);
+
+    int32_t data = std::stoi(buffer, nullptr, 16);
+
+    // Sign extension
+    data |= ((data & 0x80) ? 0xFFFFFF00 : 0);
+
+    return data;
+}
+
+////////////////////////////////
 /// METHOD NAME: Memory::MemoryManager::WriteWord
 ////////////////////////////////
 void MemoryManager::WriteWord(uint32_t address, uint32_t data)

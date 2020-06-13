@@ -17,7 +17,9 @@
 #include "MemoryInstruction.hpp" // For MemoryInstruction
 #include "MultipleMemoryInstruction.hpp" // For MultipleMemoryInstruction
 #include "MemoryInstruction.hpp" // For MemoryInstruction
+#include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "LineParser.hpp" // For Io::LineParser
+#include "FileIterator.hpp" // For Io::FileIterator
 #include "Process.hpp" // Fpr Process
 #include "Assert.hpp" // For ASSERT
 #include "Logger.hpp" // For LOG_DEBUG
@@ -71,7 +73,9 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
         pMemoryInstruction->SetTransferType(MemoryTransferType::SIGNED_BYTE);
         if (m_opCode != OpCode::LDR)
         {
-            // TODO: Throw exception
+            throw InvalidSyntaxException("Invalid instruction",
+                                         pProcess->GetFileIterator()->GetCurrentLine(),
+                                         pProcess->GetFileIterator()->GetLineNumber());
         }
     }
     else if (memoryTranserTypeStr == "H")
@@ -83,7 +87,9 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
         pMemoryInstruction->SetTransferType(MemoryTransferType::SIGNED_HALFWORD);
         if (m_opCode != OpCode::LDR)
         {
-            // TODO: Throw exception
+            throw InvalidSyntaxException("Invalid instruction",
+                                         pProcess->GetFileIterator()->GetCurrentLine(),
+                                         pProcess->GetFileIterator()->GetLineNumber());
         }
     }
     else

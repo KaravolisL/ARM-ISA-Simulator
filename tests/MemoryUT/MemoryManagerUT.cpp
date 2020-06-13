@@ -101,6 +101,21 @@ void UnsignedByteTest()
     assert(data == 0x00000001);
 }
 
+////////////////////////////////
+/// SignedByteTest Function
+////////////////////////////////
+void SignedByteTest()
+{
+    int32_t data;
+
+    memManager.WriteUnsignedByte(address, 0xAA);
+    data = memManager.ReadSignedByte(address);
+    assert(data == static_cast<int32_t>(0xFFFFFFAA));
+
+    memManager.WriteUnsignedByte(address, 0x55);
+    data = memManager.ReadSignedByte(address);
+    assert(data == static_cast<int32_t>(0x00000055));
+}
 
 ////////////////////////////////
 /// Teardown Function
@@ -121,6 +136,7 @@ int main(int argc, char* argv[])
     ReadTest();
 
     UnsignedByteTest();
+    SignedByteTest();
 
     teardown();
 

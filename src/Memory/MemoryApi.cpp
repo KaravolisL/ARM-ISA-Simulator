@@ -53,6 +53,15 @@ uint32_t ReadUnsignedByte(uint32_t address)
 }
 
 ////////////////////////////////
+/// FUNCTION NAME: Memory::MemoryApi::ReadSignedByte
+////////////////////////////////
+uint32_t ReadSignedByte(uint32_t address)
+{
+    uint32_t data = memManager.ReadSignedByte(address);
+    return data;
+}
+
+////////////////////////////////
 /// FUNCTION NAME: Memory::MemoryApi::ReadHalfWord
 ////////////////////////////////
 uint16_t ReadHalfWord(uint32_t address)

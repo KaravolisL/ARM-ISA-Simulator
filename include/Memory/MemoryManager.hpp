@@ -77,16 +77,16 @@ public:
     ////////////////////////////////
     uint32_t ReadUnsignedByte(uint32_t address);
 
-    // ////////////////////////////////
-    // /// METHOD NAME: ReadSignedByte
-    // ///
-    // /// @brief Reads a signed byte from the given
-    // /// address and returns it as a uint32_t
-    // ///
-    // /// @param[in] address  Address to which to read
-    // /// @return Data at given address
-    // ////////////////////////////////
-    // uint32_t ReadSignedByte(uint32_t address);
+    ////////////////////////////////
+    /// METHOD NAME: ReadSignedByte
+    ///
+    /// @brief Reads a signed byte from the given
+    /// address and returns it as a uint32_t
+    ///
+    /// @param[in] address  Address to which to read
+    /// @return Data at given address
+    ////////////////////////////////
+    uint32_t ReadSignedByte(uint32_t address);
 
     ////////////////////////////////
     /// METHOD NAME: WriteWord
