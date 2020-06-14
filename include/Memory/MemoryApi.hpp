@@ -57,14 +57,18 @@ uint32_t ReadUnsignedByte(uint32_t address);
 uint32_t ReadSignedByte(uint32_t address);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::ReadHalfWord
+/// METHOD NAME: Memory::MemoryApi::ReadUnsignedHalfword
 ///
-/// @brief Reads a halfword from the given address
-///
-/// @param[in] address      Address from which to read
-/// @return Halfword of data at that address
+/// @copydoc Memory::MemoryManager::ReadUnsignedHalfword
 ////////////////////////////////
-uint16_t ReadHalfWord(uint32_t address);
+uint32_t ReadUnsignedHalfword(uint32_t address);
+
+////////////////////////////////
+/// METHOD NAME: Memory::MemoryApi::ReadSignedHalfword
+///
+/// @copydoc Memory::MemoryManager::ReadSignedHalfword
+////////////////////////////////
+uint32_t ReadSignedHalfword(uint32_t address);
 
 ////////////////////////////////
 /// METHOD NAME: Memory::MemoryApi::WriteWord
@@ -85,21 +89,11 @@ void WriteWord(uint32_t address, uint32_t data);
 void WriteUnsignedByte(uint32_t address, uint8_t data);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::Write
+/// METHOD NAME: Memory::MemoryApi::WriteUnsignedHalfword
 ///
-/// @copydoc Memory::MemoryManager::WriteByte
+/// @copydoc Memory::MemoryManager::WriteUnsignedHalfword
 ////////////////////////////////
-void WriteByte(uint32_t address, int8_t data);
-
-////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::WriteHalfWord
-///
-/// @brief Writes a halfword to the given address
-///
-/// @param[in] address      Address at which to write
-/// @param[in] data         Data to write
-////////////////////////////////
-void WriteHalfWord(uint32_t address, uint16_t data);
+void WriteUnsignedHalfword(uint32_t address, int16_t data);
 
 } // MemoryApi
 

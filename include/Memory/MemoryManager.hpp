@@ -89,6 +89,28 @@ public:
     uint32_t ReadSignedByte(uint32_t address);
 
     ////////////////////////////////
+    /// METHOD NAME: ReadUnsignedHalfword
+    ///
+    /// @brief Reads an unsigned halfword from the given
+    /// address and returns it as a uint32_t
+    ///
+    /// @param[in] address  Address to which to read
+    /// @return Data at given address
+    ////////////////////////////////
+    uint32_t ReadUnsignedHalfword(uint32_t address);
+
+    ////////////////////////////////
+    /// METHOD NAME: ReadSignedHalfword
+    ///
+    /// @brief Reads a signed halfword from the given
+    /// address and returns it as a uint32_t
+    ///
+    /// @param[in] address  Address to which to read
+    /// @return Data at given address
+    ////////////////////////////////
+    uint32_t ReadSignedHalfword(uint32_t address);
+
+    ////////////////////////////////
     /// METHOD NAME: WriteWord
     ///
     /// @brief Writes a word of data to the given address
@@ -107,6 +129,16 @@ public:
     /// @param[in] data     Data which to write
     ////////////////////////////////
     void WriteUnsignedByte(uint32_t address, uint8_t data);
+
+    ////////////////////////////////
+    /// METHOD NAME: WriteUnsignedHalfword
+    ///
+    /// @brief Writes an unsigned halfword of data to the given address
+    ///
+    /// @param[in] address  Address to which to read
+    /// @param[in] data     Data which to write
+    ////////////////////////////////
+    void WriteUnsignedHalfword(uint32_t address, uint16_t data);
 
     ////////////////////////////////
     /// @struct MemoryException
@@ -135,8 +167,14 @@ private:
     /// Number of hex characters in a word
     static const uint16_t CHARACTERS_PER_WORD = 8;
 
+    /// Number of hex characters in a halfword
+    static const uint16_t CHARACTERS_PER_HALFWORD = 4;
+
     /// Number of hex characters in a byte
     static const uint16_t CHARACTERS_PER_BYTE = 2;
+
+    /// Offset to reach the least significant halfword
+    static const uint16_t OFFSET_FOR_HALFWORD = CHARACTERS_PER_WORD - CHARACTERS_PER_HALFWORD;
 
     /// Offset to reach the least significant byte
     static const uint16_t OFFSET_FOR_BYTE = CHARACTERS_PER_WORD - CHARACTERS_PER_BYTE;

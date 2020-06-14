@@ -31,9 +31,9 @@ void setup()
 }
 
 ////////////////////////////////
-/// WriteTest Function
+/// WriteWordTest Function
 ////////////////////////////////
-void WriteTest()
+void WriteWordTest()
 {
     memManager.WriteWord(0x2000013c, 8362);
     
@@ -63,9 +63,9 @@ void WriteTest()
 }
 
 ////////////////////////////////
-/// ReadTest Function
+/// ReadWordTest Function
 ////////////////////////////////
-void ReadTest()
+void ReadWordTest()
 {
     uint32_t data;
 
@@ -118,6 +118,41 @@ void SignedByteTest()
 }
 
 ////////////////////////////////
+/// UnsignedHalfwordTest Function
+////////////////////////////////
+void UnsignedHalfwordTest()
+{
+    uint32_t data;
+
+    memManager.WriteWord(address, 0xFFFFFFFF);
+    memManager.WriteUnsignedHalfword(address, 0x5555);
+    data = memManager.ReadWord(address);
+    assert(data == 0xFFFF5555);
+
+    memManager.WriteUnsignedHalfword(address, 0x1);
+    data = memManager.ReadWord(address);
+    assert(data == 0x0FFFF0001);
+    data = memManager.ReadSignedHalfword(address);
+    assert(data == 0x00000001);
+}
+
+////////////////////////////////
+/// SignedHalfwordTest Function
+////////////////////////////////
+void SignedHalfwordTest()
+{
+    int32_t data;
+
+    memManager.WriteUnsignedHalfword(address, 0xAAAA);
+    data = memManager.ReadSignedHalfword(address);
+    assert(data == static_cast<int32_t>(0xFFFFAAAA));
+
+    memManager.WriteUnsignedHalfword(address, 0x5555);
+    data = memManager.ReadSignedHalfword(address);
+    assert(data == static_cast<int32_t>(0x00005555));
+}
+
+////////////////////////////////
 /// Teardown Function
 ////////////////////////////////
 void teardown()
@@ -132,11 +167,14 @@ int main(int argc, char* argv[])
 {
     setup();
 
-    WriteTest();
-    ReadTest();
+    WriteWordTest();
+    ReadWordTest();
 
     UnsignedByteTest();
     SignedByteTest();
+
+    UnsignedHalfwordTest();
+    SignedHalfwordTest();
 
     teardown();
 

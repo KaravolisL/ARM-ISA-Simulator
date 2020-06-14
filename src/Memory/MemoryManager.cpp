@@ -115,7 +115,7 @@ uint32_t MemoryManager::ReadUnsignedByte(uint32_t address)
 }
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryManager::ReadByte
+/// METHOD NAME: Memory::MemoryManager::ReadSignedByte
 ////////////////////////////////
 uint32_t MemoryManager::ReadSignedByte(uint32_t address)
 {
@@ -136,6 +136,54 @@ uint32_t MemoryManager::ReadSignedByte(uint32_t address)
 
     // Sign extension
     data |= ((data & 0x80) ? 0xFFFFFF00 : 0);
+
+    return data;
+}
+
+////////////////////////////////
+/// METHOD NAME: Memory::MemoryManager::ReadUnsignedHalfword
+////////////////////////////////
+uint32_t MemoryManager::ReadUnsignedHalfword(uint32_t address)
+{
+    GoToAddress(address);
+
+    // Seek an additional 4 spaces to reach the least significant byte
+    m_memoryFile.seekg(OFFSET_FOR_HALFWORD, std::fstream::cur);
+
+    // Buffer for two characters and terminator
+    char buffer[CHARACTERS_PER_HALFWORD + 1];
+
+    m_memoryFile.read(buffer, CHARACTERS_PER_HALFWORD);
+    buffer[CHARACTERS_PER_HALFWORD] = '\0';
+
+    LOG_DEBUG("Read %s from the address 0x%x", buffer, address);
+
+    uint32_t data = std::stoul(buffer, nullptr, 16);
+    return data;
+}
+
+////////////////////////////////
+/// METHOD NAME: Memory::MemoryManager::ReadSignedHalfword
+////////////////////////////////
+uint32_t MemoryManager::ReadSignedHalfword(uint32_t address)
+{
+    GoToAddress(address);
+
+    // Seek an additional 4 spaces to reach the least significant byte
+    m_memoryFile.seekg(OFFSET_FOR_HALFWORD, std::fstream::cur);
+
+    // Buffer for two characters and terminator
+    char buffer[CHARACTERS_PER_HALFWORD + 1];
+
+    m_memoryFile.read(buffer, CHARACTERS_PER_HALFWORD);
+    buffer[CHARACTERS_PER_HALFWORD] = '\0';
+
+    LOG_DEBUG("Read %s from the address 0x%x", buffer, address);
+
+    int32_t data = std::stoi(buffer, nullptr, 16);
+
+    // Sign extension
+    data |= ((data & 0x8000) ? 0xFFFF0000 : 0);
 
     return data;
 }
@@ -165,6 +213,21 @@ void MemoryManager::WriteUnsignedByte(uint32_t address, uint8_t data)
     m_memoryFile.seekg(OFFSET_FOR_BYTE, std::fstream::cur);
 
     m_memoryFile << std::setfill('0') << std::setw(2) << std::hex << static_cast<uint16_t>(data);
+}
+
+////////////////////////////////
+/// METHOD NAME: Memory::MemoryManager::WriteUnsignedHalfword
+////////////////////////////////
+void MemoryManager::WriteUnsignedHalfword(uint32_t address, uint16_t data)
+{
+    GoToAddress(address);
+
+    LOG_DEBUG("Writing %d to the address 0x%x", data, address);
+
+    // Seek past 4 bytes to get to the least significant byte
+    m_memoryFile.seekg(OFFSET_FOR_HALFWORD, std::fstream::cur);
+
+    m_memoryFile << std::setfill('0') << std::setw(4) << std::hex << static_cast<uint16_t>(data);
 }
 
 ////////////////////////////////

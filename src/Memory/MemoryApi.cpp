@@ -62,12 +62,21 @@ uint32_t ReadSignedByte(uint32_t address)
 }
 
 ////////////////////////////////
-/// FUNCTION NAME: Memory::MemoryApi::ReadHalfWord
+/// FUNCTION NAME: Memory::MemoryApi::ReadUnsignedHalfword
 ////////////////////////////////
-uint16_t ReadHalfWord(uint32_t address)
+uint32_t ReadUnsignedHalfword(uint32_t address)
 {
-    // TODO
-    return 0;
+    uint32_t data = memManager.ReadUnsignedHalfword(address);
+    return data;
+}
+
+////////////////////////////////
+/// FUNCTION NAME: Memory::MemoryApi::ReadSignedHalfword
+////////////////////////////////
+uint32_t ReadSignedHalfword(uint32_t address)
+{
+    uint32_t data = memManager.ReadSignedHalfword(address);
+    return data;
 }
 
 ////////////////////////////////
@@ -87,11 +96,11 @@ void WriteUnsignedByte(uint32_t address, uint8_t data)
 }
 
 ////////////////////////////////
-/// FUNCTION NAME: Memory::MemoryApi::WriteHalfWord
+/// FUNCTION NAME: Memory::MemoryApi::WriteUnsignedHalfword
 ////////////////////////////////
-void WriteHalfWord(uint32_t address, uint16_t data)
+void WriteUnsignedHalfword(uint32_t address, uint16_t data)
 {
-    // TODO
+    memManager.WriteUnsignedHalfword(address, data);
 }
 
 } // MemoryApi
