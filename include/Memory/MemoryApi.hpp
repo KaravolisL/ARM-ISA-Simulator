@@ -93,7 +93,7 @@ void WriteUnsignedByte(uint32_t address, uint8_t data);
 ///
 /// @copydoc Memory::MemoryManager::WriteUnsignedHalfword
 ////////////////////////////////
-void WriteUnsignedHalfword(uint32_t address, int16_t data);
+void WriteUnsignedHalfword(uint32_t address, uint16_t data);
 
 } // MemoryApi
 
