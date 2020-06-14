@@ -55,6 +55,8 @@ void KeywordDict::Initialize()
     m_instructionDict.Insert("PUSH", OpCode::PUSH);
     m_instructionDict.Insert("LDM", OpCode::LDM);
     m_instructionDict.Insert("STM", OpCode::STM);
+    m_instructionDict.Insert("LDR", OpCode::LDR);
+    m_instructionDict.Insert("STR", OpCode::STR);
     m_instructionDict.Insert("CMP", OpCode::CMP);
     m_instructionDict.Insert("CMN", OpCode::CMN);
 

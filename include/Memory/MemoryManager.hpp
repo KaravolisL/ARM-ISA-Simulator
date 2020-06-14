@@ -59,12 +59,56 @@ public:
     /// METHOD NAME: ReadWord
     ///
     /// @brief Reads a word from the given
-    /// address and return it
+    /// address and returns it
     ///
     /// @param[in] address  Address to which to read
     /// @return Data at given address
     ////////////////////////////////
     uint32_t ReadWord(uint32_t address);
+
+    ////////////////////////////////
+    /// METHOD NAME: ReadUnsignedByte
+    ///
+    /// @brief Reads an unsigned byte from the given
+    /// address and returns it as a uint32_t
+    ///
+    /// @param[in] address  Address to which to read
+    /// @return Data at given address
+    ////////////////////////////////
+    uint32_t ReadUnsignedByte(uint32_t address);
+
+    ////////////////////////////////
+    /// METHOD NAME: ReadSignedByte
+    ///
+    /// @brief Reads a signed byte from the given
+    /// address and returns it as a uint32_t
+    ///
+    /// @param[in] address  Address to which to read
+    /// @return Data at given address
+    ////////////////////////////////
+    uint32_t ReadSignedByte(uint32_t address);
+
+    ////////////////////////////////
+    /// METHOD NAME: ReadUnsignedHalfword
+    ///
+    /// @brief Reads an unsigned halfword from the given
+    /// address and returns it as a uint32_t
+    ///
+    /// @param[in] address  Address to which to read
+    /// @return Data at given address
+    ////////////////////////////////
+    uint32_t ReadUnsignedHalfword(uint32_t address);
+
+    ////////////////////////////////
+    /// METHOD NAME: ReadSignedHalfword
+    ///
+    /// @brief Reads a signed halfword from the given
+    /// address and returns it as a uint32_t
+    ///
+    /// @param[in] address  Address to which to read
+    /// @return Data at given address
+    ////////////////////////////////
+    uint32_t ReadSignedHalfword(uint32_t address);
 
     ////////////////////////////////
     /// METHOD NAME: WriteWord
@@ -75,6 +119,26 @@ public:
     /// @param[in] data     Data which to write
     ////////////////////////////////
     void WriteWord(uint32_t address, uint32_t data);
+
+    ////////////////////////////////
+    /// METHOD NAME: WriteUnsignedByte
+    ///
+    /// @brief Writes an unsigned byte of data to the given address
+    ///
+    /// @param[in] address  Address to which to read
+    /// @param[in] data     Data which to write
+    ////////////////////////////////
+    void WriteUnsignedByte(uint32_t address, uint8_t data);
+
+    ////////////////////////////////
+    /// METHOD NAME: WriteUnsignedHalfword
+    ///
+    /// @brief Writes an unsigned halfword of data to the given address
+    ///
+    /// @param[in] address  Address to which to read
+    /// @param[in] data     Data which to write
+    ////////////////////////////////
+    void WriteUnsignedHalfword(uint32_t address, uint16_t data);
 
     ////////////////////////////////
     /// @struct MemoryException
@@ -100,10 +164,22 @@ private:
     /// Number of words per row of the memory file
     static const uint16_t WORDS_PER_ROW = 16;
 
-    // Number of hex characters in a word
+    /// Number of hex characters in a word
     static const uint16_t CHARACTERS_PER_WORD = 8;
 
-    // Address plus two characters on each side then each word plus a character following it plus a new line character
+    /// Number of hex characters in a halfword
+    static const uint16_t CHARACTERS_PER_HALFWORD = 4;
+
+    /// Number of hex characters in a byte
+    static const uint16_t CHARACTERS_PER_BYTE = 2;
+
+    /// Offset to reach the least significant halfword
+    static const uint16_t OFFSET_FOR_HALFWORD = CHARACTERS_PER_WORD - CHARACTERS_PER_HALFWORD;
+
+    /// Offset to reach the least significant byte
+    static const uint16_t OFFSET_FOR_BYTE = CHARACTERS_PER_WORD - CHARACTERS_PER_BYTE;
+
+    /// Address plus two characters on each side then each word plus a character following it plus a new line character
     static const uint32_t CHARACTERS_PER_LINE = 2 + CHARACTERS_PER_WORD + 2 + (WORDS_PER_ROW * (CHARACTERS_PER_WORD + 1)) + 2;
 
     ////////////////////////////////

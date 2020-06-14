@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file PushAndPopUT.cpp
+/// @file LdmAndStmUT.cpp
 ///
-/// @brief Unit Test for PUSH and POP Instructions
+/// @brief Unit Test for STM and LDM Instructions
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -126,6 +126,6 @@ int main(int argc, char* argv[])
 
     teardown();
 
-    std::cout << "PUSH and POP Instruction Unit Test Complete: SUCCESS";
+    std::cout << "STM and LDM Instruction Unit Test Complete: SUCCESS";
     return 0;
 }

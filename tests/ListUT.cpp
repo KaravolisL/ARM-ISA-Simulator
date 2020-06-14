@@ -64,6 +64,7 @@ void AppendAndGetTest()
 void GetLengthTest()
 {
     assert(myList.GetLength() == 15);
+    assert(!myList.IsEmpty());
 }
 
 ////////////////////////////////
@@ -92,6 +93,7 @@ void ClearTest()
 {
     myList.Clear();
     assert(myList.GetLength() == 0);
+    assert(myList.IsEmpty());
 }
 
 ////////////////////////////////

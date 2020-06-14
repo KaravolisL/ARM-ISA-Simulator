@@ -12,6 +12,10 @@ target_link_libraries(PushAndPopUT PRIVATE instr_lib io_library keyword_dict)
 add_executable(LdmAndStmUT LdmAndStmUT.cpp)
 target_link_libraries(LdmAndStmUT PRIVATE instr_lib io_library keyword_dict)
 
+add_executable(LdrAndStrUT LdrAndStrUT.cpp)
+target_link_libraries(LdrAndStrUT PRIVATE instr_lib io_library keyword_dict)
+
 # Add Unit Tests
 add_test(NAME PushAndPopUT COMMAND PushAndPopUT)
 add_test(NAME LdmAndStmUT COMMAND LdmAndStmUT)
+add_test(NAME LdrAndStrUT COMMAND LdrAndStrUT)

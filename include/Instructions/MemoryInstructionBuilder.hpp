@@ -57,6 +57,18 @@ protected:
 private:
 
     ////////////////////////////////
+    /// METHOD NAME: ParseFlexOffset
+    ///
+    /// @brief Given a string, this method will parse it as
+    /// a flexible offset argument
+    ///
+    /// @param[in] rToken           Offset string to be parsed
+    /// @param[in] pProcess         Process for which the instruction is being built
+    /// @return Offset amount
+    ////////////////////////////////
+    int32_t ParseFlexOffset(const std::string& rToken, const Process* pProcess);
+
+    ////////////////////////////////
     /// METHOD NAME: BuildMemoryInstruction
     ///
     /// @brief Given a string containing the instruction
