@@ -159,6 +159,16 @@ public:
     }
 
     ////////////////////////////////
+    /// METHOD NAME: IsEmpty
+    ///
+    /// @returns Whether the list is empty
+    ////////////////////////////////
+    bool IsEmpty(void) const
+    {
+        return (m_length == 0);
+    }
+
+    ////////////////////////////////
     /// METHOD NAME: Sort
     ///
     /// @brief Sorts the list using an

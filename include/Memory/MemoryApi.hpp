@@ -43,19 +43,38 @@ void Initialize();
 uint32_t ReadWord(uint32_t address);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::ReadHalfWord
+/// METHOD NAME: Memory::MemoryApi::ReadUnsignedByte
 ///
-/// @brief Reads a halfword from the given address
-///
-/// @param[in] address      Address from which to read
-/// @return Halfword of data at that address
+/// @copydoc Memory::MemoryManager::ReadUnsignedByte
 ////////////////////////////////
-uint16_t ReadHalfWord(uint32_t address);
+uint32_t ReadUnsignedByte(uint32_t address);
+
+////////////////////////////////
+/// METHOD NAME: Memory::MemoryApi::ReadSignedByte
+///
+/// @copydoc Memory::MemoryManager::ReadSignedByte
+////////////////////////////////
+uint32_t ReadSignedByte(uint32_t address);
+
+////////////////////////////////
+/// METHOD NAME: Memory::MemoryApi::ReadUnsignedHalfword
+///
+/// @copydoc Memory::MemoryManager::ReadUnsignedHalfword
+////////////////////////////////
+uint32_t ReadUnsignedHalfword(uint32_t address);
+
+////////////////////////////////
+/// METHOD NAME: Memory::MemoryApi::ReadSignedHalfword
+///
+/// @copydoc Memory::MemoryManager::ReadSignedHalfword
+////////////////////////////////
+uint32_t ReadSignedHalfword(uint32_t address);
 
 ////////////////////////////////
 /// METHOD NAME: Memory::MemoryApi::WriteWord
 ///
-/// @brief Writes a word to the given address
+/// @brief Writes the given data to the given address.
+/// overloaded to allow for different types of writes
 ///
 /// @param[in] address      Address at which to write
 /// @param[in] data         Data to write
@@ -63,14 +82,18 @@ uint16_t ReadHalfWord(uint32_t address);
 void WriteWord(uint32_t address, uint32_t data);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::WriteHalfWord
+/// METHOD NAME: Memory::MemoryApi::WriteUnsignedByte
 ///
-/// @brief Writes a halfword to the given address
-///
-/// @param[in] address      Address at which to write
-/// @param[in] data         Data to write
+/// @copydoc Memory::MemoryManager::WriteUnsignedByte
 ////////////////////////////////
-void WriteHalfWord(uint32_t address, uint16_t data);
+void WriteUnsignedByte(uint32_t address, uint8_t data);
+
+////////////////////////////////
+/// METHOD NAME: Memory::MemoryApi::WriteUnsignedHalfword
+///
+/// @copydoc Memory::MemoryManager::WriteUnsignedHalfword
+////////////////////////////////
+void WriteUnsignedHalfword(uint32_t address, uint16_t data);
 
 } // MemoryApi
 
