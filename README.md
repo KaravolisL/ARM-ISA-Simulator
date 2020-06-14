@@ -18,12 +18,12 @@ Simulator program for the ARM Instruction Set Architecture
 Currently, the following ARM instructions are supported:  
 | Logic | Arithmetic | Flow Control | Memory | Other |  
 |:-----:|:----------:|:------------:|:------:|:-----:|
-| AND   | ADD        | B            | LDM    | MOV   |
-| ORR   | SUB        | BL           | STM    | CMP   |
-| BIC   |            | BX           | PUSH   | CMN   |
-| EOR   |            | BLX          | POP    | NOP   |
-| LSL   |            |              |        |       |
-| LSR   |            |              |        |       |
+| AND   | ADD        | B            | LDR    | MOV   |
+| ORR   | SUB        | BL           | STR    | CMP   |
+| BIC   |            | BX           | LDM    | CMN   |
+| EOR   |            | BLX          | STM    | NOP   |
+| LSL   |            |              | PUSH   |       |
+| LSR   |            |              | POP    |       |
 
 Variants of these instructions are also supported according to the ARM instruction set architecture. For instance, conditional codes can be appended to enable conditional execution.
 
