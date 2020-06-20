@@ -39,6 +39,9 @@ namespace Io
 class Process
 {
 public:
+    // Allow ProcessInitializers to access private members
+    friend class ProcessInitializer;
+
     /////////////////////////////////////
     /// Constructor
     /////////////////////////////////////
@@ -55,20 +58,9 @@ public:
     /// @brief Initializes the process given
     /// code in a file
     ///
-    /// @param filename     Name of file containing assembly code
+    /// @param fileName     Name of file containing assembly code
     ////////////////////////////////
-    void Initialize(const char* filename);
-
-    ////////////////////////////////
-    /// METHOD NAME: PrepareForExecution
-    ///
-    /// @brief Following initialization, the process needs
-    /// to be prepared for execution. This includes setting
-    /// up registers, the stack, and file iterators
-    ///
-    /// @param filename     Name of file containing main
-    ////////////////////////////////
-    void PrepareForExecution(const char* filename);
+    void Initialize(const char* fileName);
 
     ////////////////////////////////
     /// METHOD NAME: Execute
