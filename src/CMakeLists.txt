@@ -15,6 +15,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Memory")
 # Set source files
 set(SOURCES
     Process.cpp
+    ProcessInitializer.cpp
     Main.cpp
 )
 

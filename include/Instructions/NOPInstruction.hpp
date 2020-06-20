@@ -43,7 +43,6 @@ public:
     ///
     /// @copydoc InstructionBase::Execute()
     ////////////////////////////////
-    void Execute(const SLList<std::string>& rArguments, Process& rProcess) {}
     void Execute(Registers& rProcessRegisters) {}
 
 protected:
