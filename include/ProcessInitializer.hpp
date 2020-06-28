@@ -24,6 +24,11 @@
 // FORWARD DECLARATIONS
 class Process;
 
+namespace Io
+{
+class LineParser;
+}
+
 ////////////////////////////////
 /// @class ProcessInitializer
 ///
@@ -56,13 +61,22 @@ protected:
 private:
 
     ////////////////////////////////
-    /// METHOD NAME: Initialize
+    /// METHOD NAME: InitializeFile
     ///
     /// @brief Initializes the given file
     ///
     /// @param[in] fileName     File to be initialized
     ////////////////////////////////
     void InitializeFile(const char* fileName) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: HandleMemoryDirective
+    ///
+    /// @brief Handles the DCD and DCB directives
+    ///
+    /// @param[in,out] rLineParser  Parser of current line
+    ////////////////////////////////
+    void HandleMemoryDirective(Io::LineParser& rLineParser) const;
 
     /// Process that is to be initialized
     Process* m_pProcess;

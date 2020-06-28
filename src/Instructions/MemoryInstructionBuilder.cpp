@@ -113,7 +113,7 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
 
         // In this case, we'll get the address from the constants dictionary
         // and store it in the offset field of the instruction
-        pMemoryInstruction->SetOffset(pProcess->GetConstantsDictionary().Get(tokens[0]));
+        pMemoryInstruction->SetOffset(pProcess->GetLabelDictionary().Get(tokens[0]));
         pMemoryInstruction->SetAddressRegisterToOffset();
         return pMemoryInstruction;
     }

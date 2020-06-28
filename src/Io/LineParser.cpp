@@ -102,6 +102,31 @@ int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary) const
 }
 
 ////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetLabel
+////////////////////////////////
+void LineParser::GetLabel(std::string& rLabel) const
+{
+    int labelIndex = 0;
+    if ((GetLineType() == LineType::DCD) ||
+        (GetLineType() == LineType::DCB))
+    {
+        labelIndex = 1;
+    }
+    GetToken(labelIndex, rLabel);
+}
+
+////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetLabel
+////////////////////////////////
+std::string LineParser::GetLabel() const
+{
+    std::string label;
+    GetLabel(label);
+
+    return label;
+}
+
+////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetInstruction
 ////////////////////////////////
 void LineParser::GetInstruction(std::string& rInstruction) const

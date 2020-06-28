@@ -40,7 +40,7 @@ void setup()
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
 
-    myProc.GetConstantsDictionary().Insert("str", memAddress);
+    myProc.GetLabelDictionary().Insert("str", memAddress);
 
     KeywordDict::GetInstance().Initialize();
 

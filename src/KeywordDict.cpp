@@ -35,6 +35,7 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("ENTRY", Io::LineType::ENTRY);
     m_keywordDict.Insert("EQU", Io::LineType::EQU);
     m_keywordDict.Insert("DCB", Io::LineType::DCB);
+    m_keywordDict.Insert("DCD", Io::LineType::DCD);
     m_keywordDict.Insert("PROC", Io::LineType::LABEL_AND_PROC);
 
     // Instructions

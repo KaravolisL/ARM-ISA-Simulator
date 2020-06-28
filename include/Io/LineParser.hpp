@@ -21,12 +21,14 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "DLB.hpp" // For DLB class
 #include "LineTypes.hpp" // For LineType enum
 
 // FORWARD DECLARATIONS
 template<typename T>
 class List;
+
+template<typename T>
+class DLB;
 
 namespace Io
 {
@@ -87,14 +89,18 @@ public:
     ///
     /// @param[out] rLabel    Label on line
     ////////////////////////////////
-    void GetLabel(std::string& rLabel) const
-    {
-        assert(GetLineType() == LineType::EQU ||
-               GetLineType() == LineType::LABEL ||
-               GetLineType() == LineType::LABEL_AND_INSTRUCTION ||
-               GetLineType() == LineType::LABEL_AND_PROC);
-        GetToken(0, rLabel);
-    }
+    void GetLabel(std::string& rLabel) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: GetLabel
+    ///
+    /// @brief Retrieves the label 
+    /// following an EQU directive or
+    /// from a label line
+    ///
+    /// @return Label on the line
+    ////////////////////////////////
+    std::string GetLabel() const;
 
     ////////////////////////////////
     /// METHOD NAME: GetInstruction

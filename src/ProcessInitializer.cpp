@@ -21,6 +21,7 @@
 #include "MemoryConstants.hpp" // For MemoryConstants
 #include "LineParser.hpp" // For Io::LineParser
 #include "Process.hpp" // For Process
+#include "MemoryApi.hpp" // For Memory::MemoryApi
 #include "Logger.hpp" // For Logger
 
 ////////////////////////////////
@@ -100,6 +101,12 @@ void ProcessInitializer::InitializeFile(const char* fileName) const
                 }
 
                 m_pProcess->m_labelDictionary.Insert(label, fileIterator.GetLineNumber());
+                break;
+            }
+            case Io::LineType::DCD:
+            case Io::LineType::DCB:
+            {
+                HandleMemoryDirective(lineParser);
             }
             case Io::LineType::COMMENT:
             case Io::LineType::INSTRUCTION:
@@ -114,5 +121,22 @@ void ProcessInitializer::InitializeFile(const char* fileName) const
     }
 
     LOG_INFO("Initialization of %s Complete", fileName);
+}
+
+////////////////////////////////
+/// METHOD NAME: ProcessInitializer::HandleMemoryDirective
+////////////////////////////////
+void ProcessInitializer::HandleMemoryDirective(Io::LineParser& rLineParser) const
+{
+    // Next memory address to which to write constants
+    static uint32_t nextMemoryAddress = Memory::GLOBAL_LOWER_BOUND;
+
+    // Write the word to memory and store the label in the dictionary
+    LOG_DEBUG(rLineParser.GetLine()->c_str());
+    LOG_DEBUG(rLineParser.GetLabel().c_str());
+    Memory::MemoryApi::WriteWord(nextMemoryAddress, rLineParser.GetValue(m_pProcess->m_constantsDictionary));
+    m_pProcess->m_labelDictionary.Insert(rLineParser.GetLabel(), nextMemoryAddress);
+
+    nextMemoryAddress += 4;
 }
 
