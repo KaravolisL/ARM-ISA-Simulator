@@ -54,7 +54,7 @@ void StrTest()
 {
     myProc.GetProcessRegisters().genRegs[0] = memAddress;
 
-    instructionStr = "STR R2, str";
+    instructionStr = "STR R2, [R0]";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
@@ -111,7 +111,7 @@ void LdrTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[2] == 2);
+    assert(myProc.GetProcessRegisters().genRegs[2] == memAddress);
     delete pInstruction;
 
     instructionStr = "LDR R3, [R0, #4]";
