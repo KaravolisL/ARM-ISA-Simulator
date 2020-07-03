@@ -22,6 +22,7 @@
 
 // C++ PROJECT INCLUDES
 #include "LineTypes.hpp" // For LineType enum
+#include "ExpressionParser.hpp" // For Io::ExpressionParser
 
 // FORWARD DECLARATIONS
 template<typename T>
@@ -133,6 +134,31 @@ public:
     /// @returns value as int
     ////////////////////////////////
     int GetValue(DLB<uint32_t>& rConstantsDictionary) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: GetValues
+    ///
+    /// @brief Retrieves the values included
+    /// in a DCB/DCD directive
+    ///
+    /// @param[out] rValueList              List to be filled with values
+    /// @param[in] rConstantsDictionary     Reference to constants dictionary
+    ///                                     that's being created
+    ////////////////////////////////
+    template <typename T>
+    void GetValues(DLB<uint32_t>& rConstantsDictionary, List<T>& rValueList) const
+    {
+        // Begin with the third token
+        for (int i = 2; i < GetNumberOfTokens(); i++)
+        {
+            std::string expression;
+            GetToken(i, expression);
+
+            // Create an expression parser and evaluate
+            ExpressionParser exParser(expression, &rConstantsDictionary);
+            rValueList.Append(static_cast<T>(exParser.Evaluate()));
+        }
+    }
 
     ////////////////////////////////
     /// METHOD NAME: GetLine

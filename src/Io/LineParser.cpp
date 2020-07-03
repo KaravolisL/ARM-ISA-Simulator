@@ -106,13 +106,7 @@ int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary) const
 ////////////////////////////////
 void LineParser::GetLabel(std::string& rLabel) const
 {
-    int labelIndex = 0;
-    if ((GetLineType() == LineType::DCD) ||
-        (GetLineType() == LineType::DCB))
-    {
-        labelIndex = 1;
-    }
-    GetToken(labelIndex, rLabel);
+    GetToken(0, rLabel);
 }
 
 ////////////////////////////////
