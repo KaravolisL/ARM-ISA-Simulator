@@ -39,3 +39,6 @@ build
 
 # Git diffs
 *.orig
+
+# Formatted memory files
+*_formatted.txt
