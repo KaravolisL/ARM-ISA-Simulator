@@ -111,10 +111,9 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
         if (tokens[0][0] == '=') tokens[0].erase(0, 1);
         LOG_DEBUG("Address is stored as label %s", tokens[0].c_str());
 
-        // In this case, we'll get the address from the constants dictionary
+        // In this case, we'll get the address from the label dictionary
         // and store it in the offset field of the instruction
-        pMemoryInstruction->SetOffset(pProcess->GetConstantsDictionary().Get(tokens[0]));
-        pMemoryInstruction->SetAddressRegisterToOffset();
+        pMemoryInstruction->SetOffset(pProcess->GetLabelDictionary().Get(tokens[0]));
         return pMemoryInstruction;
     }
     else
