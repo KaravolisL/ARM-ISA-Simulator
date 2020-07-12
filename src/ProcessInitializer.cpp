@@ -20,6 +20,7 @@
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "MemoryConstants.hpp" // For MemoryConstants
 #include "LineParser.hpp" // For Io::LineParser
+#include "List.hpp" // For List
 #include "Process.hpp" // For Process
 #include "MemoryApi.hpp" // For Memory::MemoryApi
 #include "Logger.hpp" // For Logger
@@ -131,12 +132,60 @@ void ProcessInitializer::HandleMemoryDirective(Io::LineParser& rLineParser) cons
     // Next memory address to which to write constants
     static uint32_t nextMemoryAddress = Memory::GLOBAL_LOWER_BOUND;
 
-    // Write the word to memory and store the label in the dictionary
-    LOG_DEBUG(rLineParser.GetLine()->c_str());
-    LOG_DEBUG(rLineParser.GetLabel().c_str());
-    Memory::MemoryApi::WriteWord(nextMemoryAddress, rLineParser.GetValue(m_pProcess->m_constantsDictionary));
-    m_pProcess->m_labelDictionary.Insert(rLineParser.GetLabel(), nextMemoryAddress);
+    std::string memLabel = rLineParser.GetLabel();
 
-    nextMemoryAddress += 4;
+    if (rLineParser.GetLineType() == Io::LineType::DCD)
+    {
+        List<uint32_t> values;
+        rLineParser.GetValues<uint32_t>(m_pProcess->m_constantsDictionary, values);
+
+        LOG_DEBUG("Values are %s", values.ToString().c_str());
+
+        // Only add the label for the first entry
+        m_pProcess->m_labelDictionary.Insert(memLabel, nextMemoryAddress);
+        for (int i = 0; i < values.GetLength(); i++)
+        {
+            // Write the word to memory
+            Memory::MemoryApi::WriteWord(nextMemoryAddress, values[i]);
+            nextMemoryAddress += 4;
+        }
+    }
+    else
+    {
+        List<uint8_t> values;
+        rLineParser.GetValues<uint8_t>(m_pProcess->m_constantsDictionary, values);
+
+        LOG_DEBUG("Values are %s", values.ToString().c_str());
+
+        // Only add the label for the first entry
+        m_pProcess->m_labelDictionary.Insert(memLabel, nextMemoryAddress);
+        uint32_t concatenatedValue = 0;
+        for (int i = 0; i < values.GetLength(); i++)
+        {
+            // Shift value over a byte
+            concatenatedValue <<= 8;
+            concatenatedValue |= values[i];
+            LOG_DEBUG("concatenatedValue = %d", concatenatedValue);
+
+            if (((i + 1) % 4) == 0)
+            {
+                Memory::MemoryApi::WriteWord(nextMemoryAddress, concatenatedValue);
+                concatenatedValue = 0;
+                nextMemoryAddress += 4;
+            }
+        }
+
+        // If we still have bytes left over, write them now
+        if (concatenatedValue != 0)
+        {
+            // Push them over to the left
+            for (int i = 0; i < (4 - (values.GetLength() % 4)); i++)
+            {
+                concatenatedValue <<= 8;
+            }
+            Memory::MemoryApi::WriteWord(nextMemoryAddress, concatenatedValue);
+            nextMemoryAddress += 4;
+        }
+    }
 }
 

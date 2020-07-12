@@ -57,12 +57,6 @@ void MemoryManager::ValidateAddress(uint32_t address)
         LOG_ERROR("Address 0x%x is outside of bounds", address);
         throw MemoryException();
     }
-
-    if (address % sizeof(uint32_t) != 0)
-    {
-        LOG_ERROR("Address 0x%x is not byte addressable", address);
-        throw MemoryException();
-    }
 }
 
 } // Memory

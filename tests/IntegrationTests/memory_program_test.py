@@ -44,11 +44,34 @@ if __name__ == '__main__':
 
     __main PROC
 
-        LDR r0, =myInt
+        LDR r3, =array
+        LDR r0, [r3]
+        
+        LDR r1, [R3, #4]
+
+        LDR R2, [R3, #8]!
+
+        LDR r4, =myArray
+        LDR r5, =size
+        LDR r5, [r5]
+        MOV r6, #0
+
+    top
+        CMP r5, #0
+        BEQ end
+        LDRB r7, [r4], #1
+        ADD r6, r7
+        SUB r5, #1
+        B top
+    end
+
+        ;MOV R4, R6
 
         ENDP
 
-    DCD myInt 25
+    array DCD 25, 26, 27
+    myArray DCB 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20
+    size DCD 11
     
     ''')
 
@@ -66,7 +89,7 @@ if __name__ == '__main__':
     output = open(OUTPUT_FILE_NAME, 'r')
 
     # Check for correct values in registers
-    expected_values = ['19']
+    expected_values = ['19', '1a', '1b', '20000008', '20000017', '0', '6e']
     lines = output.readlines()
 
     for i in range(0, len(expected_values)):
