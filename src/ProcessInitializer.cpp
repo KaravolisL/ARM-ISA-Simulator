@@ -17,6 +17,7 @@
 // C++ PROJECT INCLUDES
 #include "ProcessInitializer.hpp" // Header for class
 #include "AssemblingException.hpp" // For AssemblingException
+#include "Assert.hpp" // For ASSERT
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "MemoryConstants.hpp" // For MemoryConstants
 #include "LineParser.hpp" // For Io::LineParser
@@ -106,6 +107,7 @@ void ProcessInitializer::InitializeFile(const char* fileName) const
             }
             case Io::LineType::DCD:
             case Io::LineType::DCB:
+            case Io::LineType::ALIGN:
             {
                 HandleMemoryDirective(lineParser);
             }
@@ -115,7 +117,6 @@ void ProcessInitializer::InitializeFile(const char* fileName) const
             case Io::LineType::EXPORT:
             case Io::LineType::END:
             case Io::LineType::ENTRY:
-            case Io::LineType::ALIGN:
             default:
                 break;
         }
@@ -132,60 +133,81 @@ void ProcessInitializer::HandleMemoryDirective(Io::LineParser& rLineParser) cons
     // Next memory address to which to write constants
     static uint32_t nextMemoryAddress = Memory::GLOBAL_LOWER_BOUND;
 
+    LOG_DEBUG("Handling %s", rLineParser.GetLine()->c_str());
+
     std::string memLabel = rLineParser.GetLabel();
 
-    if (rLineParser.GetLineType() == Io::LineType::DCD)
+    switch (rLineParser.GetLineType())
     {
-        List<uint32_t> values;
-        rLineParser.GetValues<uint32_t>(m_pProcess->m_constantsDictionary, values);
-
-        LOG_DEBUG("Values are %s", values.ToString().c_str());
-
-        // Only add the label for the first entry
-        m_pProcess->m_labelDictionary.Insert(memLabel, nextMemoryAddress);
-        for (int i = 0; i < values.GetLength(); i++)
+        case Io::LineType::ALIGN:
         {
-            // Write the word to memory
-            Memory::MemoryApi::WriteWord(nextMemoryAddress, values[i]);
-            nextMemoryAddress += 4;
+            LOG_DEBUG("Aligning memory to word boundary");
+            nextMemoryAddress += (Memory::WORD_SIZE_IN_BYTES - (nextMemoryAddress % Memory::WORD_SIZE_IN_BYTES));
+            break;
         }
-    }
-    else
-    {
-        List<uint8_t> values;
-        rLineParser.GetValues<uint8_t>(m_pProcess->m_constantsDictionary, values);
-
-        LOG_DEBUG("Values are %s", values.ToString().c_str());
-
-        // Only add the label for the first entry
-        m_pProcess->m_labelDictionary.Insert(memLabel, nextMemoryAddress);
-        uint32_t concatenatedValue = 0;
-        for (int i = 0; i < values.GetLength(); i++)
+        case Io::LineType::DCD:
         {
-            // Shift value over a byte
-            concatenatedValue <<= 8;
-            concatenatedValue |= values[i];
-            LOG_DEBUG("concatenatedValue = %d", concatenatedValue);
+            List<uint32_t> values;
+            rLineParser.GetValues<uint32_t>(m_pProcess->m_constantsDictionary, values);
 
-            if (((i + 1) % 4) == 0)
+            LOG_DEBUG("Label = %s, Address = %x, Values = %s", memLabel.c_str(), nextMemoryAddress, values.ToString().c_str());
+
+            // Only add the label for the first entry
+            m_pProcess->m_labelDictionary.Insert(memLabel, nextMemoryAddress);
+            for (int i = 0; i < values.GetLength(); i++)
             {
-                Memory::MemoryApi::WriteWord(nextMemoryAddress, concatenatedValue);
-                concatenatedValue = 0;
-                nextMemoryAddress += 4;
+                // Write the word to memory
+                Memory::MemoryApi::WriteWord(nextMemoryAddress, values[i]);
+                nextMemoryAddress += Memory::WORD_SIZE_IN_BYTES;
             }
+            break;
         }
-
-        // If we still have bytes left over, write them now
-        if (concatenatedValue != 0)
+        case Io::LineType::DCB:
         {
-            // Push them over to the left
-            for (int i = 0; i < (4 - (values.GetLength() % 4)); i++)
+            List<int8_t> values;
+            rLineParser.GetValues<int8_t>(m_pProcess->m_constantsDictionary, values);
+
+            LOG_DEBUG("Label = %s, Address = %x, Values = %s", memLabel.c_str(), nextMemoryAddress, values.ToString().c_str());
+
+            // Only add the label for the first entry
+            m_pProcess->m_labelDictionary.Insert(memLabel, nextMemoryAddress);
+            uint32_t concatenatedValue = 0;
+            for (int i = 0; i < values.GetLength(); i++)
             {
+                // Shift value over a byte
                 concatenatedValue <<= 8;
+                concatenatedValue |= values[i];
+                LOG_DEBUG("concatenatedValue = %d", concatenatedValue);
+
+                if (((i + 1) % 4) == 0)
+                {
+                    Memory::MemoryApi::WriteWord(nextMemoryAddress, concatenatedValue);
+                    concatenatedValue = 0;
+                    nextMemoryAddress += Memory::WORD_SIZE_IN_BYTES;
+                }
             }
-            Memory::MemoryApi::WriteWord(nextMemoryAddress, concatenatedValue);
-            nextMemoryAddress += 4;
+
+            // If we still have bytes left over, write them now
+            if (concatenatedValue != 0)
+            {
+                LOG_DEBUG("Writing left over bytes");
+                // Push them over to the left
+                for (int i = 0; i < (4 - (values.GetLength() % 4)); i++)
+                {
+                    concatenatedValue <<= 8;
+                }
+                Memory::MemoryApi::WriteWord(nextMemoryAddress, concatenatedValue);
+                nextMemoryAddress += (values.GetLength() % Memory::WORD_SIZE_IN_BYTES);
+            }
+            break;
         }
+        default:
+            ASSERT(false, "Unsupported line type %d", rLineParser.GetLineType());
+    }
+
+    if ((nextMemoryAddress % Memory::WORD_SIZE_IN_BYTES) != 0)
+    {
+        LOG_INFO("Warning: Memory is not word aligned. nextMemoryAddress = %x", nextMemoryAddress);
     }
 }
 
