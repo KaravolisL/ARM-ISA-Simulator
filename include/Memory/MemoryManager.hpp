@@ -101,7 +101,7 @@ public:
         T data;
         m_memoryFile.read(reinterpret_cast<char*>(&data), sizeof(data));
 
-        LOG_DEBUG("Read %d from the address 0x%x", data, address);
+        LOG_DEBUG("Read %d from the address 0x%x", static_cast<uint32_t>(data), address);
 
         return data;
     }

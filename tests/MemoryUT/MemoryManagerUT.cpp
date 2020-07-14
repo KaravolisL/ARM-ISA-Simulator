@@ -140,6 +140,11 @@ void SignedHalfwordTest()
     memManager.Write<uint16_t>(address, 0x5555);
     data = memManager.Read<int16_t>(address);
     assert(data == static_cast<int32_t>(0x00005555));
+
+    memManager.Write<uint32_t>(address, 0x0000000B);
+    uint8_t data2 = memManager.Read<uint8_t>(address);
+    std::cout << static_cast<uint32_t>(data2) << std::endl;
+    assert(data2 == static_cast<uint8_t>(11));
 }
 
 ////////////////////////////////
