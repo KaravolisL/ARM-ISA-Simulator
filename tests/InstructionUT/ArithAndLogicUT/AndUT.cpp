@@ -7,25 +7,24 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
@@ -36,51 +35,57 @@ void setup()
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// AndRegTest Function
 ////////////////////////////////
-void AndRegTest()
+bool AndRegTest()
 {
     instructionStr = "AND R1, R2, R3";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[1] == 2);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 2);
+    delete pInstruction;
 
     instructionStr = "AND R4, R5";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[4] == 4);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[4] == 4);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// AndLiteralTest Function
 ////////////////////////////////
-void AndLiteralTest()
+bool AndLiteralTest()
 {
     instructionStr = "AND R7, #3";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[7] == 3);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[7] == 3);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// AndsTest Function
 ////////////////////////////////
-void AndsTest()
+bool AndsTest()
 {
     instructionStr = "ANDS R3, #0";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
+    delete pInstruction;
 
     // "MOV" R5, #0xFFFFFFFF
     myProc.GetProcessRegisters().genRegs[5] = 0xFFFFFFFF;
@@ -89,31 +94,24 @@ void AndsTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag());
     delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool AndUT()
 {
-    setup();
+    UnitTest andInstructionUT("AND Instruction Unit Test");
+    andInstructionUT.SetSetup(setup);
 
-    AndRegTest();
-    AndLiteralTest();
-    AndsTest();
+    andInstructionUT.AddSubTest(AndRegTest);
+    andInstructionUT.AddSubTest(AndLiteralTest);
+    andInstructionUT.AddSubTest(AndsTest);
 
-    teardown();
-
-    std::cout << "ANDInstruction Unit Test Complete: SUCCESS";
-    return 0;
+    return andInstructionUT.Run();
 }

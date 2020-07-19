@@ -3,19 +3,17 @@ cmake_minimum_required(VERSION 3.16)
 # Add include path
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Logic")
-include_directories("${PROJECT_SOURCE_DIR}/tests/Util")
+include_directories("${PROJECT_SOURCE_DIR}/tests/Framework")
 
 # Individual unit tests
 set(UNITTESTS
     AddUT.cpp
+    AndUT.cpp
 )
 
 # Add executables (Unit tests)
 add_executable(SubUT SubUT.cpp)
 target_link_libraries(SubUT PRIVATE instr_lib io_library keyword_dict)
-
-add_executable(AndUT AndUT.cpp)
-target_link_libraries(AndUT PRIVATE instr_lib io_library keyword_dict)
 
 add_executable(OrrUT OrrUT.cpp)
 target_link_libraries(OrrUT PRIVATE instr_lib io_library keyword_dict)
@@ -46,7 +44,6 @@ target_link_libraries(ArithAndLogicTestSuite PRIVATE instr_lib io_library keywor
 
 # Add Unit Tests
 add_test(NAME SubUT COMMAND SubUT)
-add_test(NAME AndUT COMMAND AndUT)
 add_test(NAME OrrUT COMMAND OrrUT)
 add_test(NAME EorUT COMMAND EorUT)
 add_test(NAME BicUT COMMAND BicUT)

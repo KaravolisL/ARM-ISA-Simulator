@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     arithAndLogicTestSuite.SetSetup(suiteSetup);
 
     arithAndLogicTestSuite.AddTest(AddUT);
-    // arithAndLogicTestSuite.AddTest(AndUT);
+    arithAndLogicTestSuite.AddTest(AndUT);
     // arithAndLogicTestSuite.AddTest(BicUT);
     // arithAndLogicTestSuite.AddTest(CmnUT);
     // arithAndLogicTestSuite.AddTest(CmpUT);
