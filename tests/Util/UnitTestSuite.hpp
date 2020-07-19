@@ -35,8 +35,17 @@ public:
     ////////////////////////////////
     UnitTestSuite(const char* SuiteName) :
         m_UnitTestList(List<UnitTestFunction>()),
-        m_pSuiteName(SuiteName)
+        m_pSuiteName(SuiteName),
+        m_pSuiteSetup([]() {})
     {}
+
+    ////////////////////////////////
+    /// METHOD NAME: SetSetup
+    ////////////////////////////////
+    void SetSetup(void (*setupFunction)(void))
+    {
+        m_pSuiteSetup = setupFunction;
+    }
 
     ////////////////////////////////
     /// METHOD NAME: AddTest
@@ -52,6 +61,8 @@ public:
     bool Run()
     {
         std::cout << "*****Running " << m_pSuiteName << "*****\n";
+
+        m_pSuiteSetup();
 
         uint16_t passes = 0;
         int i;
@@ -90,6 +101,9 @@ private:
 
     /// Name of the test suite
     const char* m_pSuiteName;
+
+    /// Setup function for suite
+    void (*m_pSuiteSetup)(void);
 
     ////////////////////////////////
     /// Copy Constructer

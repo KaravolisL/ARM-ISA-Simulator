@@ -7,7 +7,7 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
@@ -17,7 +17,6 @@
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 #include "MemoryApi.hpp"
 #include "MemoryConstants.hpp"
 
@@ -41,10 +40,6 @@ static void setup()
     }
 
     myProc.GetConstantsDictionary().Insert("str", memAddress);
-
-    KeywordDict::GetInstance().Initialize();
-
-    Memory::MemoryApi::Initialize();
 }
 
 ////////////////////////////////

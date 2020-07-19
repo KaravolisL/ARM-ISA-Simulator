@@ -3,11 +3,14 @@ cmake_minimum_required(VERSION 3.16)
 # Add include path
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions/Logic")
+include_directories("${PROJECT_SOURCE_DIR}/tests/Util")
+
+# Individual unit tests
+set(UNITTESTS
+    AddUT.cpp
+)
 
 # Add executables (Unit tests)
-add_executable(AddUT AddUT.cpp)
-target_link_libraries(AddUT PRIVATE instr_lib io_library keyword_dict)
-
 add_executable(SubUT SubUT.cpp)
 target_link_libraries(SubUT PRIVATE instr_lib io_library keyword_dict)
 
@@ -38,8 +41,10 @@ target_link_libraries(CmpUT PRIVATE instr_lib io_library keyword_dict)
 add_executable(CmnUT CmnUT.cpp)
 target_link_libraries(CmnUT PRIVATE instr_lib io_library keyword_dict)
 
+add_executable(ArithAndLogicTestSuite ArithAndLogicTestSuite.cpp ${UNITTESTS})
+target_link_libraries(ArithAndLogicTestSuite PRIVATE instr_lib io_library keyword_dict)
+
 # Add Unit Tests
-add_test(NAME AddUT COMMAND AddUT)
 add_test(NAME SubUT COMMAND SubUT)
 add_test(NAME AndUT COMMAND AndUT)
 add_test(NAME OrrUT COMMAND OrrUT)
@@ -50,3 +55,4 @@ add_test(NAME LsrUT COMMAND LsrUT)
 add_test(NAME MovUT COMMAND MovUT)
 add_test(NAME CmpUT COMMAND CmpUT)
 add_test(NAME CmnUT COMMAND CmnUT)
+add_test(NAME ArithAndLogicTestSuite COMMAND ArithAndLogicTestSuite)

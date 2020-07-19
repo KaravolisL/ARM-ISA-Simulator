@@ -14,11 +14,9 @@
 
 // C++ PROJECT INCLUDES
 #include "UnitTest.hpp"
-#include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 #include "MemoryApi.hpp"
 #include "MemoryConstants.hpp"
 
@@ -41,10 +39,6 @@ static void setup()
     }
 
     myProc.GetProcessRegisters().SP = Memory::STACK_LOWER_BOUND;
-
-    KeywordDict::GetInstance().Initialize();
-
-    Memory::MemoryApi::Initialize();
 }
 
 ////////////////////////////////

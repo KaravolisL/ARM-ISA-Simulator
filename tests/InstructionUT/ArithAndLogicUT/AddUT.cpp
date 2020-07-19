@@ -7,78 +7,83 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// AddRegsTest Function
 ////////////////////////////////
-void AddRegsTest()
+bool AddRegsTest()
 {
     std::string instructionStr = "ADD R0, R1, R2";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 3);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 3);
+    delete pInstruction;
 
     instructionStr = "ADD R0, R1";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 4);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 4);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// AddLiterals Function
 ////////////////////////////////
-void AddLiterals()
+bool AddLiterals()
 {
     std::string instructionStr = "ADD R0, R1, #0xA";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 11);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 11);
+    delete pInstruction;
 
     instructionStr = "ADD R1, #0x11";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[1] == 18);    
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 18); 
+    delete pInstruction;
+
+    return true;   
 }
 
 ////////////////////////////////
 /// AddsTest Function
 ////////////////////////////////
-void AddsTest()
+bool AddsTest()
 {
     // Reset registers
     setup();
@@ -87,28 +92,31 @@ void AddsTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(!myProc.GetProcessRegisters().GetCarryFlag());
-    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetCarryFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetOverflowFlag());
+    delete pInstruction;
 
     instructionStr = "ADDS R0, #-2";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(!myProc.GetProcessRegisters().GetCarryFlag());
-    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetCarryFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetOverflowFlag());
+    delete pInstruction;
 
     instructionStr = "ADDS R10, #0xFFFFFFFF";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(myProc.GetProcessRegisters().GetCarryFlag());
-    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetOverflowFlag());
+    delete pInstruction;
 
     // "MOV" R1, #0x40000000
     myProc.GetProcessRegisters().genRegs[1] = 0x40000000;
@@ -117,33 +125,26 @@ void AddsTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(!myProc.GetProcessRegisters().GetCarryFlag());
-    assert(myProc.GetProcessRegisters().GetOverflowFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetCarryFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag());
     delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool AddUT()
 {
-    setup();
+    UnitTest addInstructionUT("ADD Instruction Unit Test");
+    addInstructionUT.SetSetup(setup);
 
-    AddRegsTest();
-    AddLiterals();
-    AddsTest();
-
-    teardown();
-
-    std::cout << "ADD Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    addInstructionUT.AddSubTest(AddRegsTest);
+    addInstructionUT.AddSubTest(AddLiterals);
+    addInstructionUT.AddSubTest(AddsTest);
+    
+    return addInstructionUT.Run();
 }

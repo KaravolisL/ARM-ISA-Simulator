@@ -7,13 +7,13 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "<TEST FILE>"  // Test class
 
 ////////////////////////////////
@@ -31,7 +31,7 @@ void setup()
 ////////////////////////////////
 /// <TEST NAME>Test Function
 ////////////////////////////////
-void sampleTest()
+bool sampleTest()
 {
 
 }
@@ -47,16 +47,13 @@ void teardown()
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool unitTestName()
 {
-    setup();
+    UnitTest nameOfUnitTest("<TEST CLASS> Unit Test");
+    nameOfUnitTest.SetSetup(setup);
+    nameOfUnitTest.SetTeardown(teardown);
 
-    ////////////////////////////////
-    /// ADD TEST FUNCTIONS HERE
-    ////////////////////////////////
+    nameOfUnitTest.AddSubTest(sampleTest);
 
-    teardown();
-
-    std::cout << "<TEST CLASS> Unit Test Complete: SUCCESS";
-    return 0;
+    return nameOfUnitTest.Run();
 }
