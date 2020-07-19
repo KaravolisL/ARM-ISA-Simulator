@@ -7,79 +7,84 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// OrrRegsTest Function
 ////////////////////////////////
-void OrrRegsTest()
+bool OrrRegsTest()
 {
     instructionStr = "ORR R0, R1, R2";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 3);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 3);
+    delete pInstruction;
 
     instructionStr = "ORR R0, R4";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 7);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 7);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// OrrLiterals Function
 ////////////////////////////////
-void OrrLiterals()
+bool OrrLiterals()
 {
     instructionStr = "ORR R0, R5, #0xF";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 15);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 15);
+    delete pInstruction;
 
     instructionStr = "ORR R1, #0x12";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[1] == 0x13);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 0x13);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// OrrsTest Function
 ////////////////////////////////
-void OrrsTest()
+bool OrrsTest()
 {
     // Reset registers
     setup();
@@ -88,37 +93,31 @@ void OrrsTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag());
+    delete pInstruction;
 
     instructionStr = "ORRS R0, #0";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
     delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool OrrUT()
 {
-    setup();
+    UnitTest unitTest("ORR Instruction Unit Test");
+    unitTest.SetSetup(setup);
 
-    OrrRegsTest();
-    OrrLiterals();
-    OrrsTest();
+    unitTest.AddSubTest(OrrRegsTest);
+    unitTest.AddSubTest(OrrLiterals);
+    unitTest.AddSubTest(OrrsTest);
 
-    teardown();
-
-    std::cout << "ORR Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

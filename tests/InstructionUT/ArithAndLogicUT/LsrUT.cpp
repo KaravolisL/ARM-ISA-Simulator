@@ -7,79 +7,84 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// LsrRegsTest Function
 ////////////////////////////////
-void LsrRegsTest()
+bool LsrRegsTest()
 {
     instructionStr = "LSR R0, R8, R2";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 2);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 2);
+    delete pInstruction;
 
     instructionStr = "LSR R8, R3";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[8] == 1);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[8] == 1);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// LsrLiterals Function
 ////////////////////////////////
-void LsrLiterals()
+bool LsrLiterals()
 {
     instructionStr = "LSR R0, R10, #0x2";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 2);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 2);
+    delete pInstruction;
 
     instructionStr = "LSR R12, #0x3";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[12] == 1);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[12] == 1);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// LsrsTest Function
 ////////////////////////////////
-void LsrsTest()
+bool LsrsTest()
 {
     // Reset registers
     setup();
@@ -88,40 +93,34 @@ void LsrsTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(!myProc.GetProcessRegisters().GetCarryFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetCarryFlag());
+    delete pInstruction;
 
     instructionStr = "LSRS R7, #2";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(myProc.GetProcessRegisters().GetCarryFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag());
     delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool LsrUT()
 {
-    setup();
+    UnitTest unitTest("LSR Instruction Unit Test");
+    unitTest.SetSetup(setup);
 
-    LsrRegsTest();
-    LsrLiterals();
-    LsrsTest();
+    unitTest.AddSubTest(LsrRegsTest);
+    unitTest.AddSubTest(LsrLiterals);
+    unitTest.AddSubTest(LsrsTest);
 
-    teardown();
-
-    std::cout << "LSR Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

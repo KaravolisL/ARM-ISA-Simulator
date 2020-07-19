@@ -7,79 +7,84 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// EorRegsTest Function
 ////////////////////////////////
-void EorRegsTest()
+bool EorRegsTest()
 {
     instructionStr = "EOR R0, R5, R7";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 2);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 2);
+    delete pInstruction;
 
     instructionStr = "EOR R8, R9";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[8] == 1);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[8] == 1);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// EorLiterals Function
 ////////////////////////////////
-void EorLiterals()
+bool EorLiterals()
 {
     instructionStr = "EOR R0, R5, #0xF";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 10);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 10);
+    delete pInstruction;
 
     instructionStr = "EOR R1, #0x13";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[1] == 0x12);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 0x12);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// EorsTest Function
 ////////////////////////////////
-void EorsTest()
+bool EorsTest()
 {
     // Reset registers
     setup();
@@ -88,38 +93,32 @@ void EorsTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
+    delete pInstruction;
 
     instructionStr = "EORS R2, #0xFFFFFFFF";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag());
     delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool EorUT()
 {
-    setup();
+    UnitTest unitTest("EOR Instruction Unit Test");
+    unitTest.SetSetup(setup);
 
-    EorRegsTest();
-    EorLiterals();
-    EorsTest();
+    unitTest.AddSubTest(EorRegsTest);
+    unitTest.AddSubTest(EorLiterals);
+    unitTest.AddSubTest(EorsTest);
 
-    teardown();
-
-    std::cout << "EOR Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

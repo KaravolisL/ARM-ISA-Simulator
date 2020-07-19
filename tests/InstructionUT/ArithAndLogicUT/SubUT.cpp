@@ -7,81 +7,84 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// SubRegsTest Function
 ////////////////////////////////
-void SubRegsTest()
+bool SubRegsTest()
 {
     instructionStr = "SUB R0, R2, R1";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 1);
-
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 1);
+    delete pInstruction;
 
     instructionStr = "SUB R0, R1";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 0);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 0);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// SubLiterals Function
 ////////////////////////////////
-void SubLiterals()
+bool SubLiterals()
 {
     instructionStr = "SUB R0, R11, #0xA";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 1);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 1);
+    delete pInstruction;
 
     instructionStr = "SUB R5, #0x4";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[5] == 1);
+    delete pInstruction;
 
-    assert(myProc.GetProcessRegisters().genRegs[5] == 1);
+    return true;
 }
 
 ////////////////////////////////
 /// SubsTest Function
 ////////////////////////////////
-void SubsTest()
+bool SubsTest()
 {
     // Reset registers
     setup();
@@ -90,61 +93,56 @@ void SubsTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
-    assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag() == true);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag() == true);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    delete pInstruction;
 
     instructionStr = "SUBS R9, #6";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
-    assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag() == false);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag() == true);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    delete pInstruction;
 
     instructionStr = "SUBS R10, #16";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag() == true);
-    assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
-    assert(myProc.GetProcessRegisters().GetCarryFlag() == false);
-    assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag() == true);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag() == false);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag() == false);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    delete pInstruction;
 
     instructionStr = "SUBS R0, #0";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
-    assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag() == true);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag() == true);
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag() == false);
     delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool SubUT()
 {
-    setup();
+    UnitTest unitTest("SUB Instruction Unit Test");
+    unitTest.SetSetup(setup);
 
-    SubRegsTest();
-    SubLiterals();
-    SubsTest();
+    unitTest.AddSubTest(SubRegsTest);
+    unitTest.AddSubTest(SubLiterals);
+    unitTest.AddSubTest(SubsTest);
 
-    teardown();
-
-    std::cout << "SUB Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

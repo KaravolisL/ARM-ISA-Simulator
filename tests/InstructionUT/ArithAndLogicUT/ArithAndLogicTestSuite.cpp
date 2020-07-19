@@ -46,14 +46,14 @@ int main(int argc, char* argv[])
     arithAndLogicTestSuite.AddTest(AddUT);
     arithAndLogicTestSuite.AddTest(AndUT);
     arithAndLogicTestSuite.AddTest(BicUT);
-    // arithAndLogicTestSuite.AddTest(CmnUT);
-    // arithAndLogicTestSuite.AddTest(CmpUT);
-    // arithAndLogicTestSuite.AddTest(EorUT);
-    // arithAndLogicTestSuite.AddTest(LslUT);
-    // arithAndLogicTestSuite.AddTest(LsrUT);
-    // arithAndLogicTestSuite.AddTest(MovUT);
-    // arithAndLogicTestSuite.AddTest(OrrUT);
-    // arithAndLogicTestSuite.AddTest(SubUT);
+    arithAndLogicTestSuite.AddTest(CmnUT);
+    arithAndLogicTestSuite.AddTest(CmpUT);
+    arithAndLogicTestSuite.AddTest(EorUT);
+    arithAndLogicTestSuite.AddTest(LslUT);
+    arithAndLogicTestSuite.AddTest(LsrUT);
+    arithAndLogicTestSuite.AddTest(MovUT);
+    arithAndLogicTestSuite.AddTest(OrrUT);
+    arithAndLogicTestSuite.AddTest(SubUT);
 
     return !(arithAndLogicTestSuite.Run());
 }

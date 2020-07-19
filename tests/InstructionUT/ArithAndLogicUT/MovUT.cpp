@@ -7,104 +7,101 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// MovRegTest Function
 ////////////////////////////////
-void MovRegTest()
+bool MovRegTest()
 {
     instructionStr = "MOV R0, R1";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 1);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 1);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// MovLiteralTest Function
 ////////////////////////////////
-void MovLiteralTest()
+bool MovLiteralTest()
 {
     instructionStr = "MOV R0, #0xFF";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 0xFF);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 0xFF);
+    delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// MovsTest Function
 ////////////////////////////////
-void MovsTest()
+bool MovsTest()
 {
     instructionStr = "MOVS R0, #0";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
+    delete pInstruction;
 
     instructionStr = "MOVS R0, #0xFFFFFFFF";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
+    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
+    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag());
     delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool MovUT()
 {
-    setup();
+    UnitTest unitTest("MOV Instruction Unit Test");
+    unitTest.SetSetup(setup);
 
-    MovRegTest();
-    MovLiteralTest();
-    MovsTest();
+    unitTest.AddSubTest(MovRegTest);
+    unitTest.AddSubTest(MovLiteralTest);
+    unitTest.AddSubTest(MovsTest);
 
-    teardown();
-
-    std::cout << "MOV Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }
