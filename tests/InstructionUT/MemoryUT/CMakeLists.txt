@@ -4,18 +4,18 @@ cmake_minimum_required(VERSION 3.16)
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 include_directories("${PROJECT_SOURCE_DIR}/include/Memory")
+include_directories("${PROJECT_SOURCE_DIR}/tests/Util")
 
-# Add executables (Unit tests)
-add_executable(PushAndPopUT PushAndPopUT.cpp)
-target_link_libraries(PushAndPopUT PRIVATE instr_lib io_library keyword_dict)
+# Set Unit Tests
+set(UNITTESTS
+    LdmAndStmUT.cpp
+    PushAndPopUT.cpp
+    LdrAndStrUT.cpp
+)
 
-add_executable(LdmAndStmUT LdmAndStmUT.cpp)
-target_link_libraries(LdmAndStmUT PRIVATE instr_lib io_library keyword_dict)
-
-add_executable(LdrAndStrUT LdrAndStrUT.cpp)
-target_link_libraries(LdrAndStrUT PRIVATE instr_lib io_library keyword_dict)
+# Add executable (Test Suite)
+add_executable(MemoryInstructionTestSuite MemoryInstructionTestSuite.cpp ${UNITTESTS})
+target_link_libraries(MemoryInstructionTestSuite PRIVATE instr_lib io_library keyword_dict)
 
 # Add Unit Tests
-add_test(NAME PushAndPopUT COMMAND PushAndPopUT)
-add_test(NAME LdmAndStmUT COMMAND LdmAndStmUT)
-add_test(NAME LdrAndStrUT COMMAND LdrAndStrUT)
+add_test(NAME MemoryInstructionTestSuite COMMAND MemoryInstructionTestSuite)

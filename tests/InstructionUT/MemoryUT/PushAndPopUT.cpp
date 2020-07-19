@@ -7,13 +7,13 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
@@ -25,15 +25,15 @@
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     for (int i = 0; i < 13; i++)
     {
@@ -50,13 +50,13 @@ void setup()
 ////////////////////////////////
 /// PushAndPopTest Function
 ////////////////////////////////
-void PushAndPopTest()
+bool PushAndPopTest()
 {
     instructionStr = "PUSH {R0}";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 0);
+    UNIT_ASSERT(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 0);
     delete pInstruction;
 
     // "MOV" R0, #1
@@ -72,7 +72,7 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 5);
+    UNIT_ASSERT(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 5);
     delete pInstruction;
 
     // "MOV" R1, #10
@@ -86,16 +86,16 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[5] == 5);
-    assert(myProc.GetProcessRegisters().genRegs[1] == 1);
-    assert(myProc.GetProcessRegisters().genRegs[2] == 2);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[5] == 5);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 1);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[2] == 2);
     delete pInstruction;
 
     instructionStr = "PUSH {R2, R5-R7, R0}";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 7);
+    UNIT_ASSERT(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 7);
     delete pInstruction;
 
     // "MOV" R0, #10
@@ -113,33 +113,25 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 0);
-    assert(myProc.GetProcessRegisters().genRegs[2] == 2);
-    assert(myProc.GetProcessRegisters().genRegs[5] == 5);
-    assert(myProc.GetProcessRegisters().genRegs[6] == 6);
-    assert(myProc.GetProcessRegisters().genRegs[7] == 7);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 0);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[2] == 2);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[5] == 5);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[6] == 6);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[7] == 7);
     delete pInstruction;
-}
 
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool PushAndPopUT()
 {
-    setup();
+    UnitTest pushAndPopUnitTest("Push And Pop Unit Test");
+    pushAndPopUnitTest.SetSetup(setup);
 
-    PushAndPopTest();
+    pushAndPopUnitTest.AddSubTest(PushAndPopTest);
 
-    teardown();
-
-    std::cout << "PUSH and POP Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return pushAndPopUnitTest.Run();
 }

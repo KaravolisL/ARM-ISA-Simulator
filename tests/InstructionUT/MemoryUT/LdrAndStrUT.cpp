@@ -7,13 +7,13 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
 #include <iostream>
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
@@ -24,16 +24,16 @@
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
-const uint32_t memAddress = 0x20000000;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
+static const uint32_t memAddress = 0x20000000;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     for (int i = 0; i < 13; i++)
     {
@@ -50,7 +50,7 @@ void setup()
 ////////////////////////////////
 /// StrTest Function
 ////////////////////////////////
-void StrTest()
+bool StrTest()
 {
     myProc.GetProcessRegisters().genRegs[0] = memAddress;
 
@@ -58,23 +58,23 @@ void StrTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(memAddress) == 2);
+    UNIT_ASSERT(Memory::MemoryApi::ReadWord(memAddress) == 2);
     delete pInstruction;
 
     instructionStr = "STR R3, [R0, #4]";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(memAddress + 4) == 3);
-    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress);
+    UNIT_ASSERT(Memory::MemoryApi::ReadWord(memAddress + 4) == 3);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == memAddress);
     delete pInstruction;
 
     instructionStr = "STR R4, [R0, #8]!";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(memAddress + 8) == 4);
-    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 8);
+    UNIT_ASSERT(Memory::MemoryApi::ReadWord(memAddress + 8) == 4);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == memAddress + 8);
     delete pInstruction;
 
     myProc.GetProcessRegisters().genRegs[0] = memAddress + 12;
@@ -82,23 +82,25 @@ void StrTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(memAddress + 12) == 5);
-    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
+    UNIT_ASSERT(Memory::MemoryApi::ReadWord(memAddress + 12) == 5);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
     delete pInstruction;
 
     instructionStr = "STR R6, [R0]";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(memAddress + 16) == 6);
-    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
+    UNIT_ASSERT(Memory::MemoryApi::ReadWord(memAddress + 16) == 6);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
     delete pInstruction;
+
+    return true;
 }
 
 ////////////////////////////////
 /// LdrTest Function
 ////////////////////////////////
-void LdrTest()
+bool LdrTest()
 {
     // Invalidate registers
     for (int i = 0; i < 13; i++)
@@ -111,23 +113,23 @@ void LdrTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[2] == 2);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[2] == 2);
     delete pInstruction;
 
     instructionStr = "LDR R3, [R0, #4]";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[3] == 3);
-    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[3] == 3);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == memAddress);
     delete pInstruction;
 
     instructionStr = "LDR R4, [R0, #8]!";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[4] == 4);
-    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 8);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[4] == 4);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == memAddress + 8);
     delete pInstruction;
 
     myProc.GetProcessRegisters().genRegs[0] = memAddress + 12;
@@ -135,39 +137,31 @@ void LdrTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[5] == 5);
-    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[5] == 5);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
     delete pInstruction;
 
     instructionStr = "LDR R6, [R0]";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[6] == 6);
-    assert(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[6] == 6);
+    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
     delete pInstruction;
-}
 
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool LdrAndStrUT()
 {
-    setup();
+    UnitTest loadAndStoreTest("LDR And STR Unit Test");
+    loadAndStoreTest.SetSetup(setup);
 
-    StrTest();
-    LdrTest();
+    loadAndStoreTest.AddSubTest(StrTest);
+    loadAndStoreTest.AddSubTest(LdrTest);
 
-    teardown();
-
-    std::cout << "STR and LDR Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return loadAndStoreTest.Run();
 }
