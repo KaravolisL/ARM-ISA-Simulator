@@ -10,6 +10,8 @@ set(UNITTESTS
     AddUT.cpp
     AndUT.cpp
     BicUT.cpp
+    CmnUT.cpp
+    CmpUT.cpp
 )
 
 # Add executables (Unit tests)
@@ -31,12 +33,6 @@ target_link_libraries(LsrUT PRIVATE instr_lib io_library keyword_dict)
 add_executable(MovUT MovUT.cpp)
 target_link_libraries(MovUT PRIVATE instr_lib io_library keyword_dict)
 
-add_executable(CmpUT CmpUT.cpp)
-target_link_libraries(CmpUT PRIVATE instr_lib io_library keyword_dict)
-
-add_executable(CmnUT CmnUT.cpp)
-target_link_libraries(CmnUT PRIVATE instr_lib io_library keyword_dict)
-
 add_executable(ArithAndLogicTestSuite ArithAndLogicTestSuite.cpp ${UNITTESTS})
 target_link_libraries(ArithAndLogicTestSuite PRIVATE instr_lib io_library keyword_dict)
 
@@ -47,6 +43,4 @@ add_test(NAME EorUT COMMAND EorUT)
 add_test(NAME LslUT COMMAND LslUT)
 add_test(NAME LsrUT COMMAND LsrUT)
 add_test(NAME MovUT COMMAND MovUT)
-add_test(NAME CmpUT COMMAND CmpUT)
-add_test(NAME CmnUT COMMAND CmnUT)
 add_test(NAME ArithAndLogicTestSuite COMMAND ArithAndLogicTestSuite)
