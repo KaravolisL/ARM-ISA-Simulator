@@ -9,6 +9,7 @@ include_directories("${PROJECT_SOURCE_DIR}/tests/Framework")
 set(UNITTESTS
     AddUT.cpp
     AndUT.cpp
+    BicUT.cpp
 )
 
 # Add executables (Unit tests)
@@ -20,9 +21,6 @@ target_link_libraries(OrrUT PRIVATE instr_lib io_library keyword_dict)
 
 add_executable(EorUT EorUT.cpp)
 target_link_libraries(EorUT PRIVATE instr_lib io_library keyword_dict)
-
-add_executable(BicUT BicUT.cpp)
-target_link_libraries(BicUT PRIVATE instr_lib io_library keyword_dict)
 
 add_executable(LslUT LslUT.cpp)
 target_link_libraries(LslUT PRIVATE instr_lib io_library keyword_dict)
@@ -46,7 +44,6 @@ target_link_libraries(ArithAndLogicTestSuite PRIVATE instr_lib io_library keywor
 add_test(NAME SubUT COMMAND SubUT)
 add_test(NAME OrrUT COMMAND OrrUT)
 add_test(NAME EorUT COMMAND EorUT)
-add_test(NAME BicUT COMMAND BicUT)
 add_test(NAME LslUT COMMAND LslUT)
 add_test(NAME LsrUT COMMAND LsrUT)
 add_test(NAME MovUT COMMAND MovUT)
