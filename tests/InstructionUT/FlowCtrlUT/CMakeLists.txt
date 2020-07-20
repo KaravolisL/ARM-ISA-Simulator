@@ -5,22 +5,19 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 
 include_directories("${PROJECT_SOURCE_DIR}/tests/support")
+include_directories("${PROJECT_SOURCE_DIR}/tests/Framework")
 
-# Add executables (Unit tests)
-add_executable(BranchUT BranchUT.cpp)
-target_link_libraries(BranchUT PRIVATE instr_lib support io_library keyword_dict)
+# Individual Unit Tests
+set(UNITTESTS
+    BlUT.cpp
+    BlxUT.cpp
+    BranchUT.cpp
+    BxUT.cpp
+)
 
-add_executable(BlUT BlUT.cpp)
-target_link_libraries(BlUT PRIVATE instr_lib support io_library keyword_dict)
-
-add_executable(BxUT BxUT.cpp)
-target_link_libraries(BxUT PRIVATE instr_lib support io_library keyword_dict)
-
-add_executable(BlxUT BlxUT.cpp)
-target_link_libraries(BlxUT PRIVATE instr_lib support io_library keyword_dict)
+# Add executable
+add_executable(FlowCtrlTestSuite FlowCtrlTestSuite.cpp ${UNITTESTS})
+target_link_libraries(FlowCtrlTestSuite PRIVATE instr_lib support io_library keyword_dict)
 
 # Add Unit Tests
-add_test(NAME BranchUT COMMAND BranchUT)
-add_test(NAME BlUT COMMAND BlUT)
-add_test(NAME BxUT COMMAND BxUT)
-add_test(NAME BlxUT COMMAND BlxUT)
+add_test(NAME FlowCtrlTestSuite COMMAND FlowCtrlTestSuite)

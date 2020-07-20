@@ -7,57 +7,50 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     myProc.GetProcessRegisters().PC = 5;
 
     myProc.GetLabelDictionary().Insert("MyLabel", 10);
 
-    std::ofstream myOStream("TestFile.txt", std::ofstream::out);
-    myOStream << "Test Line";
-    myOStream.close();
-
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// BranchTest Function
 ////////////////////////////////
-void BranchTest()
+bool BranchTest()
 {
     instructionStr = "B MyLabel";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().PC == 10);
+    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 10);
     delete pInstruction;
 
     instructionStr = "B BadLabel";
@@ -65,33 +58,25 @@ void BranchTest()
     {
         pInstruction = builder.BuildInstruction(instructionStr, &myProc);
         pInstruction->Execute(myProc.GetProcessRegisters());
-        assert(false);
+        UNIT_ASSERT(false);
     }
     catch (const InvalidSyntaxException& e)
     {
         std::cout << e.what();
     }
-}
 
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool BranchUT()
 {
-    setup();
+    UnitTest unitTest("B Instruction Unit Test");
+    unitTest.SetSetup(setup);
 
-    BranchTest();
+    unitTest.AddSubTest(BranchTest);
 
-    teardown();
-
-    std::cout << "Branch Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

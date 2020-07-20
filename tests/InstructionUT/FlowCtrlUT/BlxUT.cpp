@@ -7,32 +7,30 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "InvalidSyntaxException.hpp"
+#include "UnitTest.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     myProc.GetProcessRegisters().PC = 5;
     myProc.GetProcessRegisters().LR = 10;
@@ -40,65 +38,51 @@ void setup()
 
     myProc.GetLabelDictionary().Insert("MyLabel", 20);
 
-    std::ofstream myOStream("TestFile.txt", std::ofstream::out);
-    myOStream << "Test Line";
-    myOStream.close();
-
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// BranchExchangeAndLinkTest Function
 ////////////////////////////////
-void BranchExchangeAndLinkTest()
+bool BranchExchangeAndLinkTest()
 {
     instructionStr = "BLX LR";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().PC == 10);
-    assert(myProc.GetProcessRegisters().LR == 6);
+    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 10);
+    UNIT_ASSERT(myProc.GetProcessRegisters().LR == 6);
     delete pInstruction;
 
     instructionStr = "BLX R1";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().PC == 15);
-    assert(myProc.GetProcessRegisters().LR == 11);
+    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 15);
+    UNIT_ASSERT(myProc.GetProcessRegisters().LR == 11);
     delete pInstruction;
 
     instructionStr = "BLX MyLabel";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().PC == 20);
-    assert(myProc.GetProcessRegisters().LR == 16);
+    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 20);
+    UNIT_ASSERT(myProc.GetProcessRegisters().LR == 16);
     delete pInstruction;
-}
 
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool BlxUT()
 {
-    setup();
+    UnitTest unitTest("BLX Instruction Unit Test");
+    unitTest.SetSetup(setup);
 
-    BranchExchangeAndLinkTest();
+    unitTest.AddSubTest(BranchExchangeAndLinkTest);
 
-    teardown();
-
-    std::cout << "BLX Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

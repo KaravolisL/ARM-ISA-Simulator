@@ -7,58 +7,51 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
+static Process myProc = Process();
+static InstructionBuilder& builder = InstructionBuilder::GetInstance();
+static InstructionBase* pInstruction = nullptr;
+static std::string instructionStr;
 
 ////////////////////////////////
 /// Setup Function
 ////////////////////////////////
-void setup()
+static void setup()
 {
     myProc.GetProcessRegisters().PC = 5;
 
     myProc.GetLabelDictionary().Insert("MyLabel", 10);
 
-    std::ofstream myOStream("TestFile.txt", std::ofstream::out);
-    myOStream << "Test Line";
-    myOStream.close();
-
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
-
-    KeywordDict::GetInstance().Initialize();
 }
 
 ////////////////////////////////
 /// BranchAndLinkTest Function
 ////////////////////////////////
-void BranchAndLinkTest()
+bool BranchAndLinkTest()
 {
     instructionStr = "BL MyLabel";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().PC == 10);
-    assert(myProc.GetProcessRegisters().LR == 6);
+    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 10);
+    UNIT_ASSERT(myProc.GetProcessRegisters().LR == 6);
     delete pInstruction;
 
     instructionStr = "BL BadLabel";
@@ -67,32 +60,25 @@ void BranchAndLinkTest()
     {
         pInstruction = builder.BuildInstruction(instructionStr, &myProc);
         pInstruction->Execute(myProc.GetProcessRegisters());
-        assert(false);
+        UNIT_ASSERT(false);
     }
     catch (const InvalidSyntaxException& e)
     {
         std::cout << e.what();
     }
-}
 
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool BlUT()
 {
-    setup();
+    UnitTest unitTest("BL Instruction Unit Test");
+    unitTest.SetSetup(setup);
 
-    BranchAndLinkTest();
+    unitTest.AddSubTest(BranchAndLinkTest);
 
-    teardown();
-
-    std::cout << "BL Instruction Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }
