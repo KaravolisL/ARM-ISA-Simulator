@@ -11,9 +11,7 @@ include_directories("${PROJECT_SOURCE_DIR}/tests/support")
 
 # Add subdirectory
 add_subdirectory(support)
-add_subdirectory(InstructionUT/ArithAndLogicUT)
-add_subdirectory(InstructionUT/FlowCtrlUT)
-add_subdirectory(InstructionUT/MemoryUT)
+add_subdirectory(InstructionUT)
 add_subdirectory(MemoryUT)
 
 # Add executables (Unit tests)
