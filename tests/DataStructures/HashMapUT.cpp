@@ -7,34 +7,26 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "HashMap.hpp"  // Test class
 #include "SLList.hpp"
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-HashMap<uint32_t> hashMap = HashMap<uint32_t>(5);
-std::string keys[] = {"ABC", "DEF", "GHI", "JKL", "MNOP", "QRS", "TUV", "WX", "YZ"};
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
-{
-
-}
+static HashMap<uint32_t> hashMap = HashMap<uint32_t>(5);
+static std::string keys[] = {"ABC", "DEF", "GHI", "JKL", "MNOP", "QRS", "TUV", "WX", "YZ"};
 
 ////////////////////////////////
 /// InsertAndGetTest Function
 ////////////////////////////////
-void InsertAndGetTest()
+bool InsertAndGetTest()
 {
     for (uint32_t i = 0; i < 9; i++)
     {
@@ -43,22 +35,24 @@ void InsertAndGetTest()
 
     for (uint32_t i = 0; i < 9; i++)
     {
-        assert(hashMap.Get(keys[i]) == i);
+        UNIT_ASSERT(hashMap.Get(keys[i]) == i);
     }
+
+    return true;
 }
 
 ////////////////////////////////
 /// RemoveTest Function
 ////////////////////////////////
-void RemoveTest()
+bool RemoveTest()
 {
     uint32_t value = hashMap.Remove(keys[4]);
-    assert(value == 4);
+    UNIT_ASSERT(value == 4);
 
     try
     {
         hashMap.Get(keys[4]);
-        assert(false);
+        UNIT_ASSERT(false);
     }
     catch(const HashMap<uint32_t>::KeyNotFoundException& e)
     {
@@ -68,7 +62,7 @@ void RemoveTest()
     try
     {
         hashMap.Remove("BADKEY");
-        assert(false);
+        UNIT_ASSERT(false);
     }
     catch(const HashMap<uint32_t>::KeyNotFoundException& e)
     {
@@ -76,21 +70,25 @@ void RemoveTest()
     }
 
     hashMap.Insert(keys[4], 4);
+
+    return true;
 }
 
 ////////////////////////////////
 /// ContainsTest Function
 ////////////////////////////////
-void ContainsTest()
+bool ContainsTest()
 {
-    assert(hashMap.Contains("ABC"));
-    assert(!hashMap.Contains("BADKEY"));
+    UNIT_ASSERT(hashMap.Contains("ABC"));
+    UNIT_ASSERT(!hashMap.Contains("BADKEY"));
+
+    return true;
 }
 
 ////////////////////////////////
 /// GetKeysTest Function
 ////////////////////////////////
-void GetKeysTest()
+bool GetKeysTest()
 {
     SLList<std::string> keyList = hashMap.GetKeys();
 
@@ -109,33 +107,39 @@ void GetKeysTest()
                 break;
             }
         }
-        assert(found);
+        UNIT_ASSERT(found);
     }
 
+    return true;
 }
 
 ////////////////////////////////
-/// Teardown Function
+/// CopyTest Function
 ////////////////////////////////
-void teardown()
+bool CopyTest()
 {
+    HashMap<uint32_t> otherHashMap = hashMap;
 
+    for (int i = 0; i < 9; i++)
+    {
+        UNIT_ASSERT(otherHashMap.Get(keys[i]) == hashMap.Get(keys[i]));
+    }
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool HashMapUT()
 {
-    setup();
+    UnitTest unitTest("Hash Map Unit Test");
 
-    InsertAndGetTest();
-    RemoveTest();
-    ContainsTest();
-    GetKeysTest();
+    unitTest.AddSubTest(InsertAndGetTest);
+    unitTest.AddSubTest(RemoveTest);
+    unitTest.AddSubTest(ContainsTest);
+    unitTest.AddSubTest(GetKeysTest);
+    unitTest.AddSubTest(CopyTest);
 
-    teardown();
-
-    std::cout << "HashMap Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

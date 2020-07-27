@@ -1,67 +1,64 @@
 /////////////////////////////////
-/// StackUT.cpp
+/// @file StackUT.cpp
 ///
 /// @brief Unit Test for Stack
+///
+/// @author Luke Karavolis
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "Stack.hpp"  // Test class
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-Stack<int>* pMyStack = new Stack<int>();
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
-{
-
-}
+Stack<int> myStack;
 
 ////////////////////////////////
 /// PushTest Function
 ////////////////////////////////
-void PushTest()
+bool PushTest()
 {
     for (int i = 0; i < 10; i++)
     {
-        pMyStack->Push(i);
-        assert(pMyStack->Peek() == i);
+        myStack.Push(i);
+        UNIT_ASSERT(myStack.Peek() == i);
     }
+
+    return true;
 }
 
 ////////////////////////////////
 /// SizeTest Function
 ////////////////////////////////
-void SizeTest()
+bool SizeTest()
 {
-    assert(pMyStack->Size() == 10);
+    UNIT_ASSERT(myStack.Size() == 10);
+    return true;
 }
 
 ////////////////////////////////
 /// PopTest Function
 ////////////////////////////////
-void PopTest()
+bool PopTest()
 {
     for (int i = 9; i >= 0; i--)
     {
-        int item = pMyStack->Pop();
-        assert(item == i);
+        int item = myStack.Pop();
+        UNIT_ASSERT(item == i);
     }
 
     try
     {
-        pMyStack->Pop();
-        assert(false);
+        myStack.Pop();
+        UNIT_ASSERT(false);
     }
     catch(const std::exception& e)
     {
@@ -70,36 +67,27 @@ void PopTest()
 
     try
     {
-        pMyStack->Peek();
-        assert(false);
+        myStack.Peek();
+        UNIT_ASSERT(false);
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
     }
-}
 
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-    delete pMyStack;
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool StackUT()
 {
-    setup();
+    UnitTest unitTest("Stack Unit Test");
 
-    PushTest();
-    SizeTest();
-    PopTest();
+    unitTest.AddSubTest(PushTest);
+    unitTest.AddSubTest(SizeTest);
+    unitTest.AddSubTest(PopTest);
 
-    teardown();
-
-    std::cout << "Stack Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

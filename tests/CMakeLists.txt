@@ -11,6 +11,7 @@ include_directories("${PROJECT_SOURCE_DIR}/tests/support")
 
 # Add subdirectory
 add_subdirectory(support)
+add_subdirectory(DataStructures)
 add_subdirectory(InstructionUT)
 add_subdirectory(MemoryUT)
 
@@ -18,10 +19,8 @@ add_subdirectory(MemoryUT)
 add_executable(SLListUT SLListUT.cpp)
 add_executable(DLListUT DLListUT.cpp)
 add_executable(ListUT ListUT.cpp)
-add_executable(StackUT StackUT.cpp)
 add_executable(QueueUT QueueUT.cpp)
 add_executable(DLBUT DLBUT.cpp)
-add_executable(HashMapUT HashMapUT.cpp)
 
 add_executable(LoggerUT LoggerUT.cpp)
 target_link_libraries(LoggerUT PRIVATE debug_lib)
@@ -36,10 +35,8 @@ target_link_libraries(LineParserUT PRIVATE io_library keyword_dict support)
 add_test(NAME SLListUT COMMAND SLListUT)
 add_test(NAME DLListUT COMMAND DLListUT)
 add_test(NAME ListUT COMMAND ListUT)
-add_test(NAME StackUT COMMAND StackUT)
 add_test(NAME QueueUT COMMAND QueueUT)
 add_test(NAME DLBUT COMMAND DLBUT)
-add_test(NAME HashMapUT COMMAND HashMapUT)
 
 add_test(NAME LoggerUT COMMAND LoggerUT)
 

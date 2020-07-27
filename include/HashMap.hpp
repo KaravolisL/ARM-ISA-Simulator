@@ -52,10 +52,13 @@ public:
     ////////////////////////////////
     /// Copy Constructer
     ////////////////////////////////
-    HashMap(const HashMap& rOther)
+    HashMap(const HashMap& rOther) :
+        m_pKeys(new std::string[rOther.m_size]),
+        m_pValues(new T[rOther.m_size]),
+        m_numElements(rOther.m_numElements),
+        m_size(rOther.m_size)
     {
-        HashMap(rOther.m_size);
-        for (int i = 0; i < m_size; i++)
+        for (uint32_t i = 0; i < m_size; i++)
         {
             m_pKeys[i] = rOther.m_pKeys[i];
             m_pValues[i] = rOther.m_pValues[i];
