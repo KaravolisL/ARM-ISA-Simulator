@@ -6,6 +6,7 @@ include_directories("${PROJECT_SOURCE_DIR}/tests/Framework")
 # Individual unit tests
 set(DATA_STRUCTURE_UTS
     HashMapUT.cpp
+    ListUT.cpp
     StackUT.cpp
 )
 

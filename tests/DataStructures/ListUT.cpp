@@ -7,42 +7,34 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "UnitTest.hpp"
 #include "List.hpp"  // Test class
 
 ////////////////////////////////
 /// Test Objects
 ////////////////////////////////
-List<int> myList = List<int>(10);
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
-{
-
-}
+List<uint32_t> myList = List<uint32_t>(10);
 
 ////////////////////////////////
 /// AppendAndGetTest Function
 ////////////////////////////////
-void AppendAndGetTest()
+bool AppendAndGetTest()
 {
     // Test Append
-    for (int i = 0; i < 15; i++)
+    for (uint32_t i = 0; i < 15; i++)
     {
         myList.Append(i);
     }
 
-    for (int i = 0; i < 15; i++)
+    for (uint32_t i = 0; i < 15; i++)
     {
-        assert(myList[i] == i);
+        UNIT_ASSERT(myList[i] == i);
     }
 
     myList.PrintList();
@@ -50,56 +42,64 @@ void AppendAndGetTest()
     try
     {
         myList[15];
-        assert(false);
+        UNIT_ASSERT(false);
     }
     catch(const IndexOutOfBoundsException& e)
     {
         std::cerr << e.what() << '\n';
     }
+
+    return true;
 }
 
 ////////////////////////////////
 /// GetLengthTest Function
 ////////////////////////////////
-void GetLengthTest()
+bool GetLengthTest()
 {
-    assert(myList.GetLength() == 15);
-    assert(!myList.IsEmpty());
+    UNIT_ASSERT(myList.GetLength() == 15);
+    UNIT_ASSERT(!myList.IsEmpty());
+
+    return true;
 }
 
 ////////////////////////////////
 /// ReplaceTest Function
 ////////////////////////////////
-void ReplaceTest()
+bool ReplaceTest()
 {
     myList[0] = 100;
-    assert(myList[0] == 100);
+    UNIT_ASSERT(myList[0] == 100);
 
     try
     {
         myList[100] = 100;
-        assert(false);
+        UNIT_ASSERT(false);
     }
     catch(const IndexOutOfBoundsException& e)
     {
         std::cerr << e.what() << '\n';
     }
+
+    return true;
 }
 
 ////////////////////////////////
 /// ClearTest Function
 ////////////////////////////////
-void ClearTest()
+bool ClearTest()
 {
     myList.Clear();
-    assert(myList.GetLength() == 0);
-    assert(myList.IsEmpty());
+    UNIT_ASSERT(myList.GetLength() == 0);
+    UNIT_ASSERT(myList.IsEmpty());
+
+    return true;
 }
 
 ////////////////////////////////
 /// InsertTest Function
 ////////////////////////////////
-void InsertTest()
+bool InsertTest()
 {
     for (int i = 0; i < 10; i++)
     {
@@ -109,48 +109,52 @@ void InsertTest()
     myList.PrintList();
 
     myList.Insert(0, 100);
-    assert(myList[0] == 100);
-    for (int i = 1; i < 11; i++)
+    UNIT_ASSERT(myList[0] == 100);
+    for (uint32_t i = 1; i < 11; i++)
     {
-        assert(myList[i] == i - 1);
+        UNIT_ASSERT(myList[i] == i - 1);
     }
 
     myList.Insert(11, 11);
-    assert(myList[11] == 11);
+    UNIT_ASSERT(myList[11] == 11);
+
+    return true;
 }
 
 ////////////////////////////////
 /// RemoveTest Function
 ////////////////////////////////
-void RemoveTest()
+static bool RemoveTest()
 {
     myList.PrintList();
 
     int value = myList.Remove(0);
-    assert(value == 100);
-    assert(myList[0] == 0);
+    UNIT_ASSERT(value == 100);
+    UNIT_ASSERT(myList[0] == 0);
 
     myList.PrintList();
 
     value = myList.Remove(10);
-    assert(value == 11);
-    assert(myList[9] == 9);
+    UNIT_ASSERT(value == 11);
+    UNIT_ASSERT(myList[9] == 9);
 
     try
     {
         value = myList.Remove(10);
-        assert(false);
+        UNIT_ASSERT(false);
     }
     catch(const IndexOutOfBoundsException& e)
     {
         std::cerr << e.what() << '\n';
     }
+
+    return true;
 }
 
 ////////////////////////////////
 /// SortTest Function
 ////////////////////////////////
-void SortTest()
+bool SortTest()
 {
     // Reset the list
     myList.Clear();
@@ -163,37 +167,45 @@ void SortTest()
 
     myList.PrintList();
     
-    for (int i = 0; i < myList.GetLength(); i++)
+    for (uint32_t i = 0; i < myList.GetLength(); i++)
     {
-        assert(myList[i] == i);
+        UNIT_ASSERT(myList[i] == i);
     }
+
+    return true;
 }
 
 ////////////////////////////////
-/// Teardown Function
+/// CopyTest Function
 ////////////////////////////////
-void teardown()
+static bool CopyTest()
 {
+    List<uint32_t> otherList = myList;
 
+    for (uint32_t i = 0; i < otherList.GetLength(); i++)
+    {
+        UNIT_ASSERT(otherList[i] == myList[i]);
+        UNIT_ASSERT(&otherList[i] != &myList[i]);
+    }
+
+    return true;
 }
 
 ////////////////////////////////
 /// Main Function
 ////////////////////////////////
-int main(int argc, char* argv[])
+bool ListUT()
 {
-    setup();
+    UnitTest unitTest("List Unit Test");
 
-    AppendAndGetTest();
-    GetLengthTest();
-    ReplaceTest();
-    ClearTest();
-    InsertTest();
-    RemoveTest();
-    SortTest();
+    unitTest.AddSubTest(AppendAndGetTest);
+    unitTest.AddSubTest(GetLengthTest);
+    unitTest.AddSubTest(ReplaceTest);
+    unitTest.AddSubTest(ClearTest);
+    unitTest.AddSubTest(InsertTest);
+    unitTest.AddSubTest(RemoveTest);
+    unitTest.AddSubTest(SortTest);
+    unitTest.AddSubTest(CopyTest);
 
-    teardown();
-
-    std::cout << "List Unit Test Complete: SUCCESS";
-    return 0;
+    return unitTest.Run();
 }

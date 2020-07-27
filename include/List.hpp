@@ -11,6 +11,7 @@
 
 // SYSTEM INCLUDES
 #include <iostream> // For std::cout
+#include <cstring>
 
 // C PROJECT INCLUDES
 // (None)
@@ -32,7 +33,7 @@ public:
     ////////////////////////////////
     /// Constructor
     ////////////////////////////////
-    List(int initialSize = 10) :
+    List(uint32_t initialSize = 10) :
         m_length(0),
         m_arraySize(initialSize),
         m_list(new T[initialSize])
@@ -49,16 +50,12 @@ public:
     ////////////////////////////////
     /// Copy Constructer
     ////////////////////////////////
-    List(const List& original)
+    List(const List& rOther) :
+        m_length(rOther.m_length),
+        m_arraySize(rOther.m_arraySize),
+        m_list(new T[rOther.m_arraySize])
     {
-        m_length = original.m_length;
-        m_arraySize = original.m_arraySize;
-        m_list = new T[m_arraySize];
-        // Copy elements into new array
-        for (uint32_t i = 0; i < m_length; i++)
-        {
-            (*this)[i] = original[i];
-        }
+        std::memcpy(m_list, rOther.m_list, (sizeof(T) * m_length));
     }
 
     ////////////////////////////////
@@ -80,15 +77,15 @@ public:
     ////////////////////////////////
     /// METHOD NAME: Operator[]
     ////////////////////////////////
-    T& operator[](const int index)
+    T& operator[](const uint32_t index)
     {
-        if (index >= m_length || index < 0) throw IndexOutOfBoundsException(index);
+        if (index >= m_length) throw IndexOutOfBoundsException(index);
         return m_list[index];
     }
 
-    const T& operator[](const int index) const
+    const T& operator[](const uint32_t index) const
     {
-        if (index >= m_length || index < 0) throw IndexOutOfBoundsException(index);
+        if (index >= m_length) throw IndexOutOfBoundsException(index);
         return m_list[index];
     }
 
@@ -99,9 +96,9 @@ public:
     /// @param[in] element   Element to be inserted
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
-    void Insert(int index, T element)
+    void Insert(uint32_t index, T element)
     {
-        if (index > m_length || index < 0) throw IndexOutOfBoundsException();
+        if (index > m_length) throw IndexOutOfBoundsException();
 
         // If the array is filled, resize it
         if (m_arraySize == m_length)
@@ -110,7 +107,7 @@ public:
         }
 
         // Shift all element to the right
-        for (int i = m_length - 1; i >= index; i--)
+        for (int32_t i = m_length - 1; i >= static_cast<int32_t>(index); i--)
         {
             m_list[i+1] = m_list[i];
         }
@@ -133,14 +130,14 @@ public:
     /// @return Data stored at given index
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
-    T Remove(int index)
+    T Remove(uint32_t index)
     {
         // Bounds check
         if (index > (m_length - 1)) throw IndexOutOfBoundsException();
 
         T oldValue = m_list[index];
 
-        for (int i = index; i < m_length - 1; i++)
+        for (uint32_t i = index; i < m_length - 1; i++)
         {
             m_list[i] = m_list[i+1];
         }
@@ -153,7 +150,7 @@ public:
     ///
     /// @returns Length of list
     ////////////////////////////////
-    int GetLength(void) const
+    uint32_t GetLength(void) const
     {
         return this->m_length;
     }
@@ -181,13 +178,13 @@ public:
     void Sort(bool (*compare)(T&, T&) = [](T& a, T& b) {return a < b;})
     {
         // Iterate n - 1 times
-        for (int i = 0; i < m_length - 1; i++)
+        for (uint32_t i = 0; i < m_length - 1; i++)
         {
             // Start with the max being the current element
             uint32_t minsPosition = i;
 
             // Iterate over the remaining elements
-            for (int j = i + 1; j < m_length; j++)
+            for (uint32_t j = i + 1; j < m_length; j++)
             {
                 // If we found a new min, update it
                 if (compare(m_list[j], m_list[minsPosition]))
@@ -208,7 +205,7 @@ public:
     ////////////////////////////////
     void PrintList(void) const
     {
-        for (int i = 0; i < m_length; i++)
+        for (uint32_t i = 0; i < m_length; i++)
         {
             std::cout << m_list[i];
             if (i != m_length - 1)
@@ -224,10 +221,10 @@ protected:
 private:
 
     /// Number of elements in the list
-    int m_length;
+    uint32_t m_length;
 
     /// Size of the array
-    int m_arraySize;
+    uint32_t m_arraySize;
 
     /// Array of elements
     T* m_list;
@@ -242,7 +239,7 @@ private:
     {
         m_arraySize *= 2;
         T* newList = new T[m_arraySize];
-        for (int i = 0; i < m_length; i++)
+        for (uint32_t i = 0; i < m_length; i++)
         {
             newList[i] = m_list[i];
         }

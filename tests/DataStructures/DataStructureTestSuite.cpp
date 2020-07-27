@@ -14,8 +14,9 @@
 #include "UnitTestSuite.hpp" // For UnitTestSuite
 
 // Individual unit tests
-extern bool StackUT();
 extern bool HashMapUT();
+extern bool ListUT();
+extern bool StackUT();
 
 ////////////////////////////////
 /// FUNCTION NAME: main
@@ -24,8 +25,9 @@ int main(int argc, char* argv[])
 {
     UnitTestSuite dataStructureTestSuite("Data Structure Unit Test Suite");
 
-    dataStructureTestSuite.AddTest(StackUT);
     dataStructureTestSuite.AddTest(HashMapUT);
+    dataStructureTestSuite.AddTest(ListUT);
+    dataStructureTestSuite.AddTest(StackUT);
 
     return !(dataStructureTestSuite.Run());
 }

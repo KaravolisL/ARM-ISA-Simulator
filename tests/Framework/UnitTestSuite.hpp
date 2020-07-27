@@ -65,7 +65,7 @@ public:
         m_pSuiteSetup();
 
         uint16_t passes = 0;
-        int i;
+        uint32_t i;
         for (i = 0; i < m_UnitTestList.GetLength(); i++)
         {
             bool result = m_UnitTestList[i]();

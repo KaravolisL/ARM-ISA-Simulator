@@ -18,7 +18,6 @@ add_subdirectory(MemoryUT)
 # Add executables (Unit tests)
 add_executable(SLListUT SLListUT.cpp)
 add_executable(DLListUT DLListUT.cpp)
-add_executable(ListUT ListUT.cpp)
 add_executable(QueueUT QueueUT.cpp)
 add_executable(DLBUT DLBUT.cpp)
 
@@ -34,7 +33,6 @@ target_link_libraries(LineParserUT PRIVATE io_library keyword_dict support)
 # Add Unit Tests
 add_test(NAME SLListUT COMMAND SLListUT)
 add_test(NAME DLListUT COMMAND DLListUT)
-add_test(NAME ListUT COMMAND ListUT)
 add_test(NAME QueueUT COMMAND QueueUT)
 add_test(NAME DLBUT COMMAND DLBUT)
 
