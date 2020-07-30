@@ -21,8 +21,8 @@ jobs:
         cd ..
         git clone https://github.com/Microsoft/vcpkg.git
         cd vcpkg
-        .\bootstrap-vcpkg.sh
-        .\vcpkg install catch2
+        ./bootstrap-vcpkg.sh
+        ./vcpkg install catch2
 
     - name: Run CMake
       run: cmake .
