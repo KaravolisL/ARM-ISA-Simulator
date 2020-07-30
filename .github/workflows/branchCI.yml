@@ -25,7 +25,8 @@ jobs:
         ./vcpkg install catch2
 
     - name: Run CMake
-      run: cmake .
+      run: cmake . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}
+                  /../vcpkg/scripts/buildsystems/vcpkg.cmake
     - name: Build
       run: make
     - name: Unit Tests
