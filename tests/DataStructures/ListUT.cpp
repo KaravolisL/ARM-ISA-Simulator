@@ -14,7 +14,6 @@
 
 // C++ PROJECT INCLUDES
 #include <catch2/catch.hpp>
-#include "UnitTest.hpp"
 #include "List.hpp"  // Test class
 
 TEST_CASE("Basic functionality", "[data_structure]")

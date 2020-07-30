@@ -14,7 +14,6 @@
 
 // C++ PROJECT INCLUDES
 #include <catch2/catch.hpp>
-#include "UnitTest.hpp"
 #include "Stack.hpp"  // Test class
 
 TEST_CASE("Push and Peek", "[data_structure]")
