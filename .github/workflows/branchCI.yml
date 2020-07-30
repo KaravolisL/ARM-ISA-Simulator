@@ -24,6 +24,7 @@ jobs:
         ./bootstrap-vcpkg.sh
         ./vcpkg install catch2
         cd ..
+        ls
 
     - name: Run CMake
       run: cmake . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}
