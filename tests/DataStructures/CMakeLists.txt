@@ -7,7 +7,7 @@ find_package(Catch2 REQUIRED)
 
 # Individual unit tests
 set(DATA_STRUCTURE_UTS
-    # HashMapUT.cpp
+    HashMapUT.cpp
     ListUT.cpp
     StackUT.cpp
 )

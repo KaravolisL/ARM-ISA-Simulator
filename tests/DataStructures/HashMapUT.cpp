@@ -13,133 +13,71 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTest.hpp"
+#include <catch2/catch.hpp>
 #include "HashMap.hpp"  // Test class
 #include "SLList.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-static HashMap<uint32_t> hashMap = HashMap<uint32_t>(5);
-static std::string keys[] = {"ABC", "DEF", "GHI", "JKL", "MNOP", "QRS", "TUV", "WX", "YZ"};
-
-////////////////////////////////
-/// InsertAndGetTest Function
-////////////////////////////////
-bool InsertAndGetTest()
+TEST_CASE("Basic Functionality", "[data_structure]")
 {
+    std::string keys[] = {"ABC", "DEF", "GHI", "JKL", "MNOP", "QRS", "TUV", "WX", "YZ"};
+    HashMap<uint32_t> hashMap = HashMap<uint32_t>(5);
+
     for (uint32_t i = 0; i < 9; i++)
     {
         hashMap.Insert(keys[i], i);
     }
 
-    for (uint32_t i = 0; i < 9; i++)
+    SECTION("Get")
     {
-        UNIT_ASSERT(hashMap.Get(keys[i]) == i);
-    }
-
-    return true;
-}
-
-////////////////////////////////
-/// RemoveTest Function
-////////////////////////////////
-bool RemoveTest()
-{
-    uint32_t value = hashMap.Remove(keys[4]);
-    UNIT_ASSERT(value == 4);
-
-    try
-    {
-        hashMap.Get(keys[4]);
-        UNIT_ASSERT(false);
-    }
-    catch(const HashMap<uint32_t>::KeyNotFoundException& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    try
-    {
-        hashMap.Remove("BADKEY");
-        UNIT_ASSERT(false);
-    }
-    catch(const HashMap<uint32_t>::KeyNotFoundException& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    hashMap.Insert(keys[4], 4);
-
-    return true;
-}
-
-////////////////////////////////
-/// ContainsTest Function
-////////////////////////////////
-bool ContainsTest()
-{
-    UNIT_ASSERT(hashMap.Contains("ABC"));
-    UNIT_ASSERT(!hashMap.Contains("BADKEY"));
-
-    return true;
-}
-
-////////////////////////////////
-/// GetKeysTest Function
-////////////////////////////////
-bool GetKeysTest()
-{
-    SLList<std::string> keyList = hashMap.GetKeys();
-
-    keyList.PrintList();
-
-    for (int i = 0; i < 9; i++)
-    {
-        bool found = false;
-        for (SLList<std::string>::SLListIterator it = keyList.GetBegin();
-             it != keyList.GetEnd();  
-             it++)
+        for (uint32_t i = 0; i < 9; i++)
         {
-            if (*it == keys[i])
-            {
-                found = true;
-                break;
-            }
+            REQUIRE(hashMap.Get(keys[i]) == i);
         }
-        UNIT_ASSERT(found);
     }
 
-    return true;
-}
-
-////////////////////////////////
-/// CopyTest Function
-////////////////////////////////
-bool CopyTest()
-{
-    HashMap<uint32_t> otherHashMap = hashMap;
-
-    for (int i = 0; i < 9; i++)
+    SECTION("Remove")
     {
-        UNIT_ASSERT(otherHashMap.Get(keys[i]) == hashMap.Get(keys[i]));
+        uint32_t value = hashMap.Remove(keys[4]);
+        REQUIRE(value == 4);
+
+        REQUIRE_THROWS_AS(hashMap.Get(keys[4]), HashMap<uint32_t>::KeyNotFoundException);
+        REQUIRE_THROWS_AS(hashMap.Remove("BADKEY"), HashMap<uint32_t>::KeyNotFoundException);
     }
 
-    return true;
-}
+    SECTION("Contains")
+    {
+        REQUIRE(hashMap.Contains("ABC"));
+        REQUIRE_FALSE(hashMap.Contains("BADKEY"));
+    }
 
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool HashMapUT()
-{
-    UnitTest unitTest("Hash Map Unit Test");
+    SECTION("Get Keys")
+    {
+        SLList<std::string> keyList = hashMap.GetKeys();
 
-    unitTest.AddSubTest(InsertAndGetTest);
-    unitTest.AddSubTest(RemoveTest);
-    unitTest.AddSubTest(ContainsTest);
-    unitTest.AddSubTest(GetKeysTest);
-    unitTest.AddSubTest(CopyTest);
+        for (int i = 0; i < 9; i++)
+        {
+            bool found = false;
+            for (SLList<std::string>::SLListIterator it = keyList.GetBegin();
+                it != keyList.GetEnd();  
+                it++)
+            {
+                if (*it == keys[i])
+                {
+                    found = true;
+                    break;
+                }
+            }
+            REQUIRE(found);
+        }
+    }
 
-    return unitTest.Run();
+    SECTION("Copy")
+    {
+        HashMap<uint32_t> otherHashMap = hashMap;
+
+        for (int i = 0; i < 9; i++)
+        {
+            REQUIRE(otherHashMap.Get(keys[i]) == hashMap.Get(keys[i]));
+        }
+    }
 }
