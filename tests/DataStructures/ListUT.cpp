@@ -13,199 +13,88 @@
 // (None)
 
 // C++ PROJECT INCLUDES
+#include <catch2/catch.hpp>
 #include "UnitTest.hpp"
 #include "List.hpp"  // Test class
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-List<uint32_t> myList = List<uint32_t>(10);
-
-////////////////////////////////
-/// AppendAndGetTest Function
-////////////////////////////////
-bool AppendAndGetTest()
+TEST_CASE("Basic functionality", "[data_structure]")
 {
-    // Test Append
+    List<uint32_t> list = List<uint32_t>(10);
+
     for (uint32_t i = 0; i < 15; i++)
     {
-        myList.Append(i);
+        list.Append(i);
     }
 
     for (uint32_t i = 0; i < 15; i++)
     {
-        UNIT_ASSERT(myList[i] == i);
+        REQUIRE(list[i] == i);
     }
 
-    myList.PrintList();
+    REQUIRE_THROWS_AS(list[15], IndexOutOfBoundsException);
 
-    try
-    {
-        myList[15];
-        UNIT_ASSERT(false);
-    }
-    catch(const IndexOutOfBoundsException& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    REQUIRE(list.GetLength() == 15);
+    REQUIRE_FALSE(list.IsEmpty());
 
-    return true;
+    list[0] = 100;
+    REQUIRE(list[0] == 100);
 }
 
-////////////////////////////////
-/// GetLengthTest Function
-////////////////////////////////
-bool GetLengthTest()
+TEST_CASE("Insertion and Removal", "[data_structure]")
 {
-    UNIT_ASSERT(myList.GetLength() == 15);
-    UNIT_ASSERT(!myList.IsEmpty());
+    List<uint32_t> list = List<uint32_t>(10);
 
-    return true;
-}
-
-////////////////////////////////
-/// ReplaceTest Function
-////////////////////////////////
-bool ReplaceTest()
-{
-    myList[0] = 100;
-    UNIT_ASSERT(myList[0] == 100);
-
-    try
-    {
-        myList[100] = 100;
-        UNIT_ASSERT(false);
-    }
-    catch(const IndexOutOfBoundsException& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    return true;
-}
-
-////////////////////////////////
-/// ClearTest Function
-////////////////////////////////
-bool ClearTest()
-{
-    myList.Clear();
-    UNIT_ASSERT(myList.GetLength() == 0);
-    UNIT_ASSERT(myList.IsEmpty());
-
-    return true;
-}
-
-////////////////////////////////
-/// InsertTest Function
-////////////////////////////////
-bool InsertTest()
-{
     for (int i = 0; i < 10; i++)
     {
-        myList.Append(i);
+        list.Append(i);
     }
 
-    myList.PrintList();
-
-    myList.Insert(0, 100);
-    UNIT_ASSERT(myList[0] == 100);
+    list.Insert(0, 100);
+    REQUIRE(list[0] == 100);
     for (uint32_t i = 1; i < 11; i++)
     {
-        UNIT_ASSERT(myList[i] == i - 1);
+        REQUIRE(list[i] == i - 1);
     }
 
-    myList.Insert(11, 11);
-    UNIT_ASSERT(myList[11] == 11);
+    list.Insert(11, 11);
+    REQUIRE(list[11] == 11);
 
-    return true;
+    uint32_t value = list.Remove(0);
+    REQUIRE(value == 100);
+    REQUIRE(list[0] == 0);
+
+    value = list.Remove(10);
+    REQUIRE(value == 11);
+    REQUIRE(list[9] == 9);
+
+    REQUIRE_THROWS_AS(list.Remove(10), IndexOutOfBoundsException);
 }
 
-////////////////////////////////
-/// RemoveTest Function
-////////////////////////////////
-static bool RemoveTest()
+TEST_CASE("Sorting", "[data_structure][extended]")
 {
-    myList.PrintList();
+    List<uint32_t> list = List<uint32_t>(10);
 
-    int value = myList.Remove(0);
-    UNIT_ASSERT(value == 100);
-    UNIT_ASSERT(myList[0] == 0);
-
-    myList.PrintList();
-
-    value = myList.Remove(10);
-    UNIT_ASSERT(value == 11);
-    UNIT_ASSERT(myList[9] == 9);
-
-    try
-    {
-        value = myList.Remove(10);
-        UNIT_ASSERT(false);
-    }
-    catch(const IndexOutOfBoundsException& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    return true;
-}
-
-////////////////////////////////
-/// SortTest Function
-////////////////////////////////
-bool SortTest()
-{
-    // Reset the list
-    myList.Clear();
     for (int i = 14; i >= 0; i--)
     {
-        myList.Append(i);
+        list.Append(i);
     }
 
-    myList.Sort();
-
-    myList.PrintList();
+    list.Sort();
     
-    for (uint32_t i = 0; i < myList.GetLength(); i++)
+    for (uint32_t i = 0; i < list.GetLength(); i++)
     {
-        UNIT_ASSERT(myList[i] == i);
+        REQUIRE(list[i] == i);
     }
-
-    return true;
 }
 
-////////////////////////////////
-/// CopyTest Function
-////////////////////////////////
-static bool CopyTest()
+TEST_CASE("Copying", "[data_structure][extended]")
 {
-    List<uint32_t> otherList = myList;
+    List<uint32_t> list = List<uint32_t>(10);
+    List<uint32_t> otherList = list;
 
     for (uint32_t i = 0; i < otherList.GetLength(); i++)
     {
-        UNIT_ASSERT(otherList[i] == myList[i]);
-        UNIT_ASSERT(&otherList[i] != &myList[i]);
+        REQUIRE(otherList[i] == list[i]);
+        REQUIRE(&otherList[i] != &list[i]);
     }
-
-    return true;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool ListUT()
-{
-    UnitTest unitTest("List Unit Test");
-
-    unitTest.AddSubTest(AppendAndGetTest);
-    unitTest.AddSubTest(GetLengthTest);
-    unitTest.AddSubTest(ReplaceTest);
-    unitTest.AddSubTest(ClearTest);
-    unitTest.AddSubTest(InsertTest);
-    unitTest.AddSubTest(RemoveTest);
-    unitTest.AddSubTest(SortTest);
-    unitTest.AddSubTest(CopyTest);
-
-    return unitTest.Run();
 }

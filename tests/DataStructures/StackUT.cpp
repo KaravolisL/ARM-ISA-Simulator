@@ -13,81 +13,27 @@
 // (None)
 
 // C++ PROJECT INCLUDES
+#include <catch2/catch.hpp>
 #include "UnitTest.hpp"
 #include "Stack.hpp"  // Test class
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-Stack<int> myStack;
-
-////////////////////////////////
-/// PushTest Function
-////////////////////////////////
-bool PushTest()
+TEST_CASE("Push and Peek", "[data_structure]")
 {
-    for (int i = 0; i < 10; i++)
+    Stack<uint32_t> stack;
+
+    for (uint32_t i = 0; i < 25; i++)
     {
-        myStack.Push(i);
-        UNIT_ASSERT(myStack.Peek() == i);
+        stack.Push(i);
+        REQUIRE(stack.Peek() == i);
+        REQUIRE(stack.Size() == (i + 1));
     }
 
-    return true;
-}
-
-////////////////////////////////
-/// SizeTest Function
-////////////////////////////////
-bool SizeTest()
-{
-    UNIT_ASSERT(myStack.Size() == 10);
-    return true;
-}
-
-////////////////////////////////
-/// PopTest Function
-////////////////////////////////
-bool PopTest()
-{
-    for (int i = 9; i >= 0; i--)
+    for (int32_t i = 24; i >= 0; i--)
     {
-        int item = myStack.Pop();
-        UNIT_ASSERT(item == i);
+        REQUIRE(stack.Pop() == static_cast<uint32_t>(i));
+        REQUIRE(stack.Size() == static_cast<uint32_t>(i));
     }
 
-    try
-    {
-        myStack.Pop();
-        UNIT_ASSERT(false);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    try
-    {
-        myStack.Peek();
-        UNIT_ASSERT(false);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    return true;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool StackUT()
-{
-    UnitTest unitTest("Stack Unit Test");
-
-    unitTest.AddSubTest(PushTest);
-    unitTest.AddSubTest(SizeTest);
-    unitTest.AddSubTest(PopTest);
-
-    return unitTest.Run();
+    REQUIRE_THROWS(stack.Pop());
+    REQUIRE_THROWS(stack.Peek());
 }

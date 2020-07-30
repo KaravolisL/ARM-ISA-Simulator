@@ -54,7 +54,7 @@ public:
     ////////////////////////////////
     SLList() :
         head(nullptr),
-        length(0)
+        m_length(0)
     {}
 
     ////////////////////////////////
@@ -85,7 +85,7 @@ public:
             this->head = newNode;
         }
 
-        this->length++;
+        this->m_length++;
     }
 
     ////////////////////////////////
@@ -114,7 +114,7 @@ public:
             pCurrentNode->next = pNewNode;
         }
 
-        this->length++;
+        this->m_length++;
     }
 
     ////////////////////////////////
@@ -124,7 +124,7 @@ public:
     /// @return Element at given value
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
-    T Get(int index) const
+    T Get(uint32_t index) const
     {
         return (*this)[index];
     }
@@ -132,7 +132,7 @@ public:
     ////////////////////////////////
     /// METHOD NAME: operator[]
     ////////////////////////////////
-    T& operator[](int index)
+    T& operator[](uint32_t index)
     {
         for (Node* pCurrentNode = head;
              pCurrentNode != nullptr;
@@ -146,7 +146,7 @@ public:
         throw IndexOutOfBoundsException(index);
     }
 
-    const T& operator[](int index) const
+    const T& operator[](uint32_t index) const
     {
         for (Node* pCurrentNode = head;
              pCurrentNode != nullptr;
@@ -175,7 +175,7 @@ public:
             delete pCurrentNode;
         }
         this->head = nullptr;
-        this->length = 0;
+        this->m_length = 0;
     }
 
     ////////////////////////////////
@@ -185,10 +185,10 @@ public:
     /// @return Data stored at given index
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
-    T Remove(int index)
+    T Remove(uint32_t index)
     {
         // Bounds check
-        if (index > (length - 1)) throw IndexOutOfBoundsException(index);
+        if ((index + 1) > m_length) throw IndexOutOfBoundsException(index);
 
         Node* pOldNode;
         // Edge case of removing head
@@ -216,7 +216,7 @@ public:
         // Delete the node and return it's data;
         T data = pOldNode->data;
         delete pOldNode;
-        this->length--;
+        this->m_length--;
         return data;
     }
 
@@ -225,9 +225,9 @@ public:
     ///
     /// @returns Length of list
     ////////////////////////////////
-    int GetLength(void) const
+    uint32_t GetLength(void) const
     {
-        return this->length;
+        return this->m_length;
     }
 
     ////////////////////////////////
@@ -362,7 +362,7 @@ private:
     Node* head;
 
     /// Number of elements in the list
-    int length;
+    uint32_t m_length;
 
 };
 
