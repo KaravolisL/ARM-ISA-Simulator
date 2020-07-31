@@ -28,17 +28,15 @@ jobs:
 
     - name: Installing Catch2
       run: |
-        ls
         git clone https://github.com/catchorg/Catch2.git
         cd Catch2
         cmake -Bbuild -H. -DBUILD_TESTING=OFF
         sudo cmake --build build/ --target install
         cd ..
-        ls
+        pwd
 
     - name: Run CMake
-      run: cmake . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}
-                  /vcpkg/scripts/buildsystems/vcpkg.cmake
+      run: cmake .
     - name: Build
       run: make
     - name: Unit Tests
