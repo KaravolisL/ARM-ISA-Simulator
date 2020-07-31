@@ -79,5 +79,6 @@ TEST_CASE("Basic Functionality", "[data_structure]")
         {
             REQUIRE(otherHashMap.Get(keys[i]) == hashMap.Get(keys[i]));
         }
+        REQUIRE(false);
     }
 }
