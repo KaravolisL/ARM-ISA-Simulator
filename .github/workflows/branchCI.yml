@@ -16,13 +16,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Installing vcpkg (windows)
+    # - name: Installing vcpkg (windows)
+    #   run: |
+    #     cd ..
+    #     git clone https://github.com/Microsoft/vcpkg.git
+    #     cd vcpkg
+    #     ./bootstrap-vcpkg.sh
+    #     ./vcpkg install catch2
+    #     cd ..
+    #     ls
+
+    - name: Installing Catch2
       run: |
-        cd ..
-        git clone https://github.com/Microsoft/vcpkg.git
-        cd vcpkg
-        ./bootstrap-vcpkg.sh
-        ./vcpkg install catch2
+        ls
+        git clone https://github.com/catchorg/Catch2.git
+        cd Catch2
+        cmake -Bbuild -H. -DBUILD_TESTING=OFF
+        sudo cmake --build build/ --target install
         cd ..
         ls
 
