@@ -9,6 +9,7 @@ find_package(Catch2 REQUIRED)
 set(DATA_STRUCTURE_UTS
     HashMapUT.cpp
     ListUT.cpp
+    LListUT.cpp
     StackUT.cpp
 )
 

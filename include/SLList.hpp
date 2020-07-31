@@ -284,7 +284,7 @@ public:
         /// Constructor
         ////////////////////////////////
         SLListIterator() :
-            pNextNode(head)
+            pNextNode(nullptr)
         {}
 
         SLListIterator(Node* startingNode) :

@@ -17,7 +17,7 @@
 #include "HashMap.hpp"  // Test class
 #include "SLList.hpp"
 
-TEST_CASE("Basic Functionality", "[data_structure]")
+TEST_CASE("HashMap Basic Functionality", "[data_structure]")
 {
     std::string keys[] = {"ABC", "DEF", "GHI", "JKL", "MNOP", "QRS", "TUV", "WX", "YZ"};
     HashMap<uint32_t> hashMap = HashMap<uint32_t>(5);
@@ -79,6 +79,5 @@ TEST_CASE("Basic Functionality", "[data_structure]")
         {
             REQUIRE(otherHashMap.Get(keys[i]) == hashMap.Get(keys[i]));
         }
-        REQUIRE(false);
     }
 }
