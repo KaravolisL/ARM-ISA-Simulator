@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
+find_package(Catch2 REQUIRED)
+
 # Add include path
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 include_directories("${PROJECT_SOURCE_DIR}/include/Memory")
@@ -35,7 +37,7 @@ set(MEMORY_UTS
 
 # Add executables (Suites)
 add_executable(ArithAndLogicTestSuite ArithAndLogicUT/ArithAndLogicTestSuite.cpp ${ARITH_AND_LOGIC_UTS})
-target_link_libraries(ArithAndLogicTestSuite PRIVATE instr_lib io_library keyword_dict)
+target_link_libraries(ArithAndLogicTestSuite PRIVATE Catch2::Catch2 instr_lib io_library keyword_dict)
 
 add_executable(FlowCtrlTestSuite FlowCtrlUT/FlowCtrlTestSuite.cpp ${FLOW_CTRL_UTS})
 target_link_libraries(FlowCtrlTestSuite PRIVATE instr_lib support io_library keyword_dict)

@@ -13,105 +13,99 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTest.hpp"
+#include <catch2/catch.hpp>
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-static Process myProc = Process();
-static InstructionBuilder& builder = InstructionBuilder::GetInstance();
-static InstructionBase* pInstruction = nullptr;
-static std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
+TEST_CASE("AND Instruction Test", "[instruction][ArithAndLogic]")
 {
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-}
 
-////////////////////////////////
-/// AndRegTest Function
-////////////////////////////////
-bool AndRegTest()
-{
-    instructionStr = "AND R1, R2, R3";
+    SECTION("AND two registers")
+    {
+        std::string instructionStr = "AND R0, R1, R2";
+        int a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+        int b = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 2);
-    delete pInstruction;
+        myProc.GetProcessRegisters().genRegs[1] = a;
+        myProc.GetProcessRegisters().genRegs[2] = b;
 
-    instructionStr = "AND R4, R5";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == static_cast<uint32_t>((a & b)));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[4] == 4);
-    delete pInstruction;
+    SECTION("AND to a register")
+    {
+        std::string instructionStr = "AND R0, R1";
+        int a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+        int b = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
 
-    return true;
-}
+        myProc.GetProcessRegisters().genRegs[0] = a;
+        myProc.GetProcessRegisters().genRegs[1] = b;
 
-////////////////////////////////
-/// AndLiteralTest Function
-////////////////////////////////
-bool AndLiteralTest()
-{
-    instructionStr = "AND R7, #3";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == static_cast<uint32_t>((a & b)));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[7] == 3);
-    delete pInstruction;
+    SECTION("AND a register and a literal")
+    {
+        int literal = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+        std::string baseInstructionStr = "AND R0, R1, #";
+        std::string instructionStr = baseInstructionStr + std::to_string(literal);
+        int a = GENERATE(take(1, random(INT32_MIN, INT32_MAX)));
+        myProc.GetProcessRegisters().genRegs[1] = a;
 
-    return true;
-}
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == static_cast<uint32_t>(a & literal));
+        delete pInstruction;
+    }
 
-////////////////////////////////
-/// AndsTest Function
-////////////////////////////////
-bool AndsTest()
-{
-    instructionStr = "ANDS R3, #0";
+    SECTION("AND a register with a literal")
+    {
+        int literal = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+        std::string baseInstructionStr = "AND R0, #";
+        std::string instructionStr = baseInstructionStr + std::to_string(literal);
+        int a = GENERATE(take(1, random(INT32_MIN, INT32_MAX)));
+        myProc.GetProcessRegisters().genRegs[0] = a;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
-    delete pInstruction;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == static_cast<uint32_t>(a & literal));
+        delete pInstruction;
+    }
 
-    // "MOV" R5, #0xFFFFFFFF
-    myProc.GetProcessRegisters().genRegs[5] = 0xFFFFFFFF;
+    SECTION("ANDS Test")
+    {
+        std::string instructionStr = "ANDS R3, #0";
 
-    instructionStr = "ANDS R5, #0xFFFF0000";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        delete pInstruction;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag());
-    delete pInstruction;
+        // "MOV" R5, #0xFFFFFFFF
+        myProc.GetProcessRegisters().genRegs[5] = 0xFFFFFFFF;
 
-    return true;
-}
+        instructionStr = "ANDS R5, #0xFFFF0000";
 
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool AndUT()
-{
-    UnitTest andInstructionUT("AND Instruction Unit Test");
-    andInstructionUT.SetSetup(setup);
-
-    andInstructionUT.AddSubTest(AndRegTest);
-    andInstructionUT.AddSubTest(AndLiteralTest);
-    andInstructionUT.AddSubTest(AndsTest);
-
-    return andInstructionUT.Run();
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(!myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag());
+        delete pInstruction;
+    }
 }
