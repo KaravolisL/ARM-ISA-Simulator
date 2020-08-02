@@ -13,117 +13,95 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTest.hpp"
+#include <catch2/catch.hpp>
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-static Process myProc = Process();
-static InstructionBuilder& builder = InstructionBuilder::GetInstance();
-static InstructionBase* pInstruction = nullptr;
-static std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-static void setup()
+TEST_CASE("LSL Instruction", "[instruction][ArithAndLogic]")
 {
-    for (int i = 0; i < 13; i++)
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
+    uint32_t a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+    uint32_t b = GENERATE(take(5, random(0, 32)));
+
+    SECTION("Shift register by another register")
     {
-        myProc.GetProcessRegisters().genRegs[i] = i;
+        instructionStr = "LSL R0, R1, R2";
+
+        myProc.GetProcessRegisters().genRegs[1] = a;
+        myProc.GetProcessRegisters().genRegs[2] = b;
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a << b));
+        delete pInstruction;
     }
-}
 
-////////////////////////////////
-/// LslRegsTest Function
-////////////////////////////////
-bool LslRegsTest()
-{
-    instructionStr = "LSL R0, R1, R2";
+    SECTION("Shift register with another register")
+    {
+        instructionStr = "LSL R2, R3";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 4);
-    delete pInstruction;
+        myProc.GetProcessRegisters().genRegs[2] = a;
+        myProc.GetProcessRegisters().genRegs[3] = b;
 
-    instructionStr = "LSL R2, R3";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[2] == (a << b));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[2] == 16);
-    delete pInstruction;
+    SECTION("Shift register by literal")
+    {
+        instructionStr = "LSL R0, R1, #" + std::to_string(b);
 
-    return true;
-}
+        myProc.GetProcessRegisters().genRegs[1] = a;
 
-////////////////////////////////
-/// LslLiterals Function
-////////////////////////////////
-bool LslLiterals()
-{
-    instructionStr = "LSL R0, R3, #0xF";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a << b));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 0x18000);
-    delete pInstruction;
+    SECTION("Shift register with literal")
+    {
+        instructionStr = "LSL R0, #" + std::to_string(b);
 
-    instructionStr = "LSL R1, #0x13";
+        myProc.GetProcessRegisters().genRegs[0] = a;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 0x80000);
-    delete pInstruction;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a << b));
+        delete pInstruction;
+    }
 
-    return true;
-}
+    SECTION("LSLS Test")
+    {
+        myProc.GetProcessRegisters().genRegs[0] = 0;
+        myProc.GetProcessRegisters().genRegs[1] = 1;
 
-////////////////////////////////
-/// LslsTest Function
-////////////////////////////////
-bool LslsTest()
-{
-    // Reset registers
-    setup();
+        instructionStr = "LSLS R0, R1";
 
-    instructionStr = "LSLS R0, R1";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetCarryFlag());
+        delete pInstruction;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetCarryFlag());
-    delete pInstruction;
+        // "MOV" R2, #0x40000000
+        myProc.GetProcessRegisters().genRegs[2] = 0xC0000000;
 
-    // "MOV" R2, #0x40000000
-    myProc.GetProcessRegisters().genRegs[2] = 0xC0000000;
+        instructionStr = "LSLS R2, #1";
 
-    instructionStr = "LSLS R2, #1";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag());
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag());
-    delete pInstruction;
-
-    return true;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool LslUT()
-{
-    UnitTest unitTest("LSL Instruction Unit Test");
-    unitTest.SetSetup(setup);
-
-    unitTest.AddSubTest(LslRegsTest);
-    unitTest.AddSubTest(LslLiterals);
-    unitTest.AddSubTest(LslsTest);
-
-    return unitTest.Run();
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(!myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetCarryFlag());
+        delete pInstruction;
+    }
 }

@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// @file LsrUT.cpp
+/// @file LslUT.cpp
 ///
-/// @brief Unit Test for LSR Instruction
+/// @brief Unit Test for LSL Instruction
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -13,114 +13,93 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTest.hpp"
+#include <catch2/catch.hpp>
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-static Process myProc = Process();
-static InstructionBuilder& builder = InstructionBuilder::GetInstance();
-static InstructionBase* pInstruction = nullptr;
-static std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-static void setup()
+TEST_CASE("LSR Instruction", "[instruction][ArithAndLogic]")
 {
-    for (int i = 0; i < 13; i++)
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
+    uint32_t a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+    uint32_t b = GENERATE(take(5, random(0, 32)));
+
+    SECTION("Shift register by another register")
     {
-        myProc.GetProcessRegisters().genRegs[i] = i;
+        instructionStr = "LSR R0, R1, R2";
+
+        myProc.GetProcessRegisters().genRegs[1] = a;
+        myProc.GetProcessRegisters().genRegs[2] = b;
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a >> b));
+        delete pInstruction;
     }
-}
 
-////////////////////////////////
-/// LsrRegsTest Function
-////////////////////////////////
-bool LsrRegsTest()
-{
-    instructionStr = "LSR R0, R8, R2";
+    SECTION("Shift register with another register")
+    {
+        instructionStr = "LSR R2, R3";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 2);
-    delete pInstruction;
+        myProc.GetProcessRegisters().genRegs[2] = a;
+        myProc.GetProcessRegisters().genRegs[3] = b;
 
-    instructionStr = "LSR R8, R3";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[2] == (a >> b));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[8] == 1);
-    delete pInstruction;
+    SECTION("Shift register by literal")
+    {
+        instructionStr = "LSR R0, R1, #" + std::to_string(b);
 
-    return true;
-}
+        myProc.GetProcessRegisters().genRegs[1] = a;
 
-////////////////////////////////
-/// LsrLiterals Function
-////////////////////////////////
-bool LsrLiterals()
-{
-    instructionStr = "LSR R0, R10, #0x2";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a >> b));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 2);
-    delete pInstruction;
+    SECTION("Shift register with literal")
+    {
+        instructionStr = "LSR R0, #" + std::to_string(b);
 
-    instructionStr = "LSR R12, #0x3";
+        myProc.GetProcessRegisters().genRegs[0] = a;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[12] == 1);
-    delete pInstruction;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a >> b));
+        delete pInstruction;
+    }
 
-    return true;
-}
+    SECTION("LSRS Test")
+    {
+        myProc.GetProcessRegisters().genRegs[0] = 0;
+        myProc.GetProcessRegisters().genRegs[1] = 1;
+        myProc.GetProcessRegisters().genRegs[7] = 7;
 
-////////////////////////////////
-/// LsrsTest Function
-////////////////////////////////
-bool LsrsTest()
-{
-    // Reset registers
-    setup();
+        instructionStr = "LSRS R0, R1";
 
-    instructionStr = "LSRS R0, R1";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetCarryFlag());
+        delete pInstruction;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetCarryFlag());
-    delete pInstruction;
+        instructionStr = "LSRS R7, #2";
 
-    instructionStr = "LSRS R7, #2";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetZeroFlag());
-    UNIT_ASSERT(!myProc.GetProcessRegisters().GetNegativeFlag());
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag());
-    delete pInstruction;
-
-    return true;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool LsrUT()
-{
-    UnitTest unitTest("LSR Instruction Unit Test");
-    unitTest.SetSetup(setup);
-
-    unitTest.AddSubTest(LsrRegsTest);
-    unitTest.AddSubTest(LsrLiterals);
-    unitTest.AddSubTest(LsrsTest);
-
-    return unitTest.Run();
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(!myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetCarryFlag());
+        delete pInstruction;
+    }
 }
