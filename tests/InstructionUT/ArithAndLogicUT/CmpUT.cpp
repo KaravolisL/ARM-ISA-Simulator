@@ -13,66 +13,54 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTest.hpp"
+#include <catch2/catch.hpp>
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-static Process myProc = Process();
-static InstructionBuilder& builder = InstructionBuilder::GetInstance();
-static InstructionBase* pInstruction = nullptr;
-static std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-static void setup()
+TEST_CASE("CMP Instruction", "[instruction][ArithAndLogic]")
 {
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
-}
 
-////////////////////////////////
-/// CompareTest Function
-////////////////////////////////
-bool CompareTest()
-{
     instructionStr = "CMP R10, #10";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[10] == 10);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag() == true);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[10] == 10);
+    REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().GetZeroFlag() == true);
+    REQUIRE(myProc.GetProcessRegisters().GetCarryFlag() == true);
+    REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag() == false);
     delete pInstruction;
 
     instructionStr = "CMP R10, #6";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[10] == 10);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag() == false);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[10] == 10);
+    REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().GetZeroFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().GetCarryFlag() == true);
+    REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag() == false);
     delete pInstruction;
 
     instructionStr = "CMP R10, #16";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[10] == 10);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag() == true);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag() == false);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag() == false);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[10] == 10);
+    REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag() == true);
+    REQUIRE(myProc.GetProcessRegisters().GetZeroFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().GetCarryFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag() == false);
     delete pInstruction;
 
     // "MOV" R1, #0
@@ -82,26 +70,11 @@ bool CompareTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 0);
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 0);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetZeroFlag() == true);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    UNIT_ASSERT(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[0] == 0);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[1] == 0);
+    REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+    REQUIRE(myProc.GetProcessRegisters().GetZeroFlag() == true);
+    REQUIRE(myProc.GetProcessRegisters().GetCarryFlag() == true);
+    REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag() == false);
     delete pInstruction;
-
-    return true;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool CmpUT()
-{
-    UnitTest unitTest("CMP Instruction Unit Test");
-    unitTest.SetSetup(setup);
-
-    unitTest.AddSubTest(CompareTest);
-
-    return unitTest.Run();
 }
