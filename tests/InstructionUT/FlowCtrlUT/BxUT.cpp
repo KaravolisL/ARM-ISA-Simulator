@@ -13,78 +13,51 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTest.hpp"
+#include <catch2/catch.hpp>
 #include "InvalidSyntaxException.hpp"
 #include "Process.hpp"
 #include "FileIterator.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-static Process myProc = Process();
-static InstructionBuilder& builder = InstructionBuilder::GetInstance();
-static InstructionBase* pInstruction = nullptr;
-static std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-static void setup()
+TEST_CASE("BX Instruction", "[instruction][FlowCtrl]")
 {
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
     myProc.GetProcessRegisters().PC = 5;
     myProc.GetProcessRegisters().LR = 10;
     myProc.GetProcessRegisters().genRegs[1] = 15;
 
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
-}
 
-////////////////////////////////
-/// BranchExchangeTest Function
-////////////////////////////////
-bool BranchExchangeTest()
-{
-    instructionStr = "BX LR";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 10);
-    delete pInstruction;
-
-    instructionStr = "BX R1";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 15);
-    delete pInstruction;
-
-    instructionStr = "BX MyLabel";
-
-    try
+    SECTION("Branch exchange with link register")
     {
+        instructionStr = "BX LR";
+
         pInstruction = builder.BuildInstruction(instructionStr, &myProc);
         pInstruction->Execute(myProc.GetProcessRegisters());
-        UNIT_ASSERT(false);
+        REQUIRE(myProc.GetProcessRegisters().PC == 10);
+        delete pInstruction;
     }
-    catch(const InvalidSyntaxException& e)
+
+    SECTION("Branch exchange with register")
     {
-        std::cerr << e.what() << '\n';
+        instructionStr = "BX R1";
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().PC == 15);
+        delete pInstruction;
     }
 
-    return true;
-}
+    SECTION("Invalid syntax")
+    {
+        instructionStr = "BX MyLabel";
 
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool BxUT()
-{
-    UnitTest unitTest("BX Instruction Unit Test");
-    unitTest.SetSetup(setup);
-
-    unitTest.AddSubTest(BranchExchangeTest);
-
-    return unitTest.Run();
+        REQUIRE_THROWS_AS(builder.BuildInstruction(instructionStr, &myProc), InvalidSyntaxException);
+    }
 }

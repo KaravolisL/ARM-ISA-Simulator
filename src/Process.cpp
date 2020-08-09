@@ -23,6 +23,14 @@
 #include "Logger.hpp" // For Logger class
 #include "InstructionBuilder.hpp" // For InstructionBuilder
 
+/////////////////////////////////////
+/// Deconstructor
+/////////////////////////////////////
+Process::~Process()
+{
+    delete m_pFileIterator;
+}
+
 ////////////////////////////////
 /// METHOD NAME: Process::Initialize
 ////////////////////////////////

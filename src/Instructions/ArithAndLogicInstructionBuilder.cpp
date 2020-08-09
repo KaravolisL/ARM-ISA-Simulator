@@ -45,7 +45,7 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     Io::LineParser lineParser(&rInstruction);
     List<std::string> arguments;
     lineParser.Tokenize(arguments);
-    int argumentNumber = 0;
+    uint8_t argumentNumber = 0;
 
     // Parse the destination
     Register* pDestination = ParseRegister(arguments[argumentNumber++], pProcess);

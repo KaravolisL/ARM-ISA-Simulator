@@ -229,7 +229,7 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     }
 
     // For every token...
-    for (int i = 0; i < tokens.GetLength(); i++)
+    for (uint8_t i = 0; i < tokens.GetLength(); i++)
     {
         LOG_DEBUG("Current argument = %s", tokens[i].c_str());
         // Determine whether it's a range or not

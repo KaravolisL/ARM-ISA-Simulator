@@ -52,6 +52,11 @@ public:
         m_pFileIterator(nullptr)
     {}
 
+    /////////////////////////////////////
+    /// Deconstructor
+    /////////////////////////////////////
+    ~Process();
+
     ////////////////////////////////
     /// METHOD NAME: Initialize
     ///

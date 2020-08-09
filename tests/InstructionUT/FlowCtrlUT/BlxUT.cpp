@@ -13,25 +13,19 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTest.hpp"
+#include <catch2/catch.hpp>
 #include "Process.hpp"
 #include "FileIterator.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-static Process myProc = Process();
-static InstructionBuilder& builder = InstructionBuilder::GetInstance();
-static InstructionBase* pInstruction = nullptr;
-static std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-static void setup()
+TEST_CASE("BLX Instruction", "[instruction][FlowCtrl]")
 {
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
     myProc.GetProcessRegisters().PC = 5;
     myProc.GetProcessRegisters().LR = 10;
     myProc.GetProcessRegisters().genRegs[1] = 15;
@@ -40,49 +34,37 @@ static void setup()
 
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
-}
 
-////////////////////////////////
-/// BranchExchangeAndLinkTest Function
-////////////////////////////////
-bool BranchExchangeAndLinkTest()
-{
-    instructionStr = "BLX LR";
+    SECTION("Branch, Link, and Exchange with LR")
+    {
+        instructionStr = "BLX LR";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 10);
-    UNIT_ASSERT(myProc.GetProcessRegisters().LR == 6);
-    delete pInstruction;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().PC == 10);
+        REQUIRE(myProc.GetProcessRegisters().LR == 6);
+        delete pInstruction;
+    }
 
-    instructionStr = "BLX R1";
+    SECTION("Branch, Link, and Exchange with register")
+    {
+        instructionStr = "BLX R1";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 15);
-    UNIT_ASSERT(myProc.GetProcessRegisters().LR == 11);
-    delete pInstruction;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().PC == 15);
+        REQUIRE(myProc.GetProcessRegisters().LR == 6);
+        delete pInstruction;
+    }
 
-    instructionStr = "BLX MyLabel";
+    SECTION("Branch, Link, and Exchange with label")
+    {
+        instructionStr = "BLX MyLabel";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().PC == 20);
-    UNIT_ASSERT(myProc.GetProcessRegisters().LR == 16);
-    delete pInstruction;
-
-    return true;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool BlxUT()
-{
-    UnitTest unitTest("BLX Instruction Unit Test");
-    unitTest.SetSetup(setup);
-
-    unitTest.AddSubTest(BranchExchangeAndLinkTest);
-
-    return unitTest.Run();
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().PC == 20);
+        REQUIRE(myProc.GetProcessRegisters().LR == 6);
+        delete pInstruction;
+    }
 }

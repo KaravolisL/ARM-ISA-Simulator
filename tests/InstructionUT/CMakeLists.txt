@@ -37,13 +37,13 @@ set(MEMORY_UTS
 
 # Add executables (Suites)
 add_executable(ArithAndLogicTestSuite ArithAndLogicUT/ArithAndLogicTestSuite.cpp ${ARITH_AND_LOGIC_UTS})
-target_link_libraries(ArithAndLogicTestSuite PRIVATE Catch2::Catch2 instr_lib io_library keyword_dict)
+target_link_libraries(ArithAndLogicTestSuite PRIVATE Catch2::Catch2 instr_lib support io_library keyword_dict)
 
 add_executable(FlowCtrlTestSuite FlowCtrlUT/FlowCtrlTestSuite.cpp ${FLOW_CTRL_UTS})
-target_link_libraries(FlowCtrlTestSuite PRIVATE instr_lib support io_library keyword_dict)
+target_link_libraries(FlowCtrlTestSuite PRIVATE Catch2::Catch2 instr_lib support io_library keyword_dict)
 
 add_executable(MemoryInstructionTestSuite MemoryUT/MemoryInstructionTestSuite.cpp ${MEMORY_UTS})
-target_link_libraries(MemoryInstructionTestSuite PRIVATE instr_lib io_library keyword_dict)
+target_link_libraries(MemoryInstructionTestSuite PRIVATE instr_lib support io_library keyword_dict)
 
 # Add Unit Test Suite
 add_test(NAME ArithAndLogicTestSuite COMMAND ArithAndLogicTestSuite)

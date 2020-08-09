@@ -11,6 +11,7 @@ set(STUBS
     AssertMock.cpp
     FileIteratorMock.cpp
     LoggerMock.cpp
+    ProcessMock.cpp
 )
 
 # Create library
