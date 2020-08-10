@@ -7,35 +7,27 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "InvalidSyntaxException.hpp"
+#include <catch2/catch.hpp>
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 #include "MemoryApi.hpp"
 #include "MemoryConstants.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
-const uint32_t memAddress = 0x20000000;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
+TEST_CASE("LDM and STM Instructions", "[instruction][Memory]")
 {
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+    const uint32_t memAddress = 0x20000000;
+
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
@@ -43,89 +35,53 @@ void setup()
 
     myProc.GetProcessRegisters().SP = Memory::STACK_LOWER_BOUND;
 
-    KeywordDict::GetInstance().Initialize();
-
-    Memory::MemoryApi::Initialize();
-}
-
-////////////////////////////////
-/// StmTest Function
-////////////////////////////////
-void StmTest()
-{
-    instructionStr = "STMDB SP! {R0, R2}";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 2);
-    delete pInstruction;
-
-    myProc.GetProcessRegisters().genRegs[5] = memAddress;
-
-    instructionStr = "STMIB R5, {R1, R6-R9}";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 2);
-    assert(myProc.GetProcessRegisters().genRegs[5] = memAddress);
-    delete pInstruction;
-}
-
-////////////////////////////////
-/// LdmTest Function
-////////////////////////////////
-void LdmTest()
-{
-    // Invalidate registers
-    for (int i = 0; i < 13; i++)
+    SECTION("Push and Pop like instructions")
     {
-        myProc.GetProcessRegisters().genRegs[i] = 0xBEEFC0DE;
+        instructionStr = "STMDB SP! {R0, R2}";
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 2);
+        delete pInstruction;
+
+        instructionStr = "LDM SP! {R1, R3}";
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[1] == 0);
+        REQUIRE(myProc.GetProcessRegisters().genRegs[3] == 2);
+        delete pInstruction;
     }
 
-    instructionStr = "LDM SP! {R0, R2}";
+    SECTION("IB and DA")
+    {
+        instructionStr = "STMIB R5, {R1, R6-R9}";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 0);
-    assert(myProc.GetProcessRegisters().genRegs[2] == 2);
-    delete pInstruction;
+        myProc.GetProcessRegisters().genRegs[5] = memAddress;
 
-    myProc.GetProcessRegisters().genRegs[5] = memAddress + sizeof(uint32_t) * 5;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(Memory::MemoryApi::ReadWord(memAddress + 4) == 1);
+        REQUIRE(Memory::MemoryApi::ReadWord(memAddress + 8) == 6);
+        REQUIRE(Memory::MemoryApi::ReadWord(memAddress + 12) == 7);
+        REQUIRE(Memory::MemoryApi::ReadWord(memAddress + 16) == 8);
+        REQUIRE(Memory::MemoryApi::ReadWord(memAddress + 20) == 9);
+        REQUIRE(myProc.GetProcessRegisters().genRegs[5] == memAddress);
+        delete pInstruction;
 
-    instructionStr = "LDMDA R5! {R1, R6-R9}";
+        myProc.GetProcessRegisters().genRegs[5] = memAddress + sizeof(uint32_t) * 5;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[1] == 1);
-    assert(myProc.GetProcessRegisters().genRegs[6] == 6);
-    assert(myProc.GetProcessRegisters().genRegs[7] == 7);
-    assert(myProc.GetProcessRegisters().genRegs[8] == 8);
-    assert(myProc.GetProcessRegisters().genRegs[9] == 9);
-    delete pInstruction;
+        instructionStr = "LDMDA R5! {R2, R7-R10}";
 
-    assert(myProc.GetProcessRegisters().genRegs[5] == memAddress);
-}
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[2] == 1);
+        REQUIRE(myProc.GetProcessRegisters().genRegs[7] == 6);
+        REQUIRE(myProc.GetProcessRegisters().genRegs[8] == 7);
+        REQUIRE(myProc.GetProcessRegisters().genRegs[9] == 8);
+        REQUIRE(myProc.GetProcessRegisters().genRegs[10] == 9);
+        delete pInstruction;
 
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-int main(int argc, char* argv[])
-{
-    setup();
-
-    StmTest();
-    LdmTest();
-
-    teardown();
-
-    std::cout << "STM and LDM Instruction Unit Test Complete: SUCCESS";
-    return 0;
+        REQUIRE(myProc.GetProcessRegisters().genRegs[5] == memAddress);
+    }
 }

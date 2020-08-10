@@ -7,143 +7,127 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include <catch2/catch.hpp>
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
+TEST_CASE("ADD Instruction", "[instruction][ArithAndLogic]")
 {
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
 
-    KeywordDict::GetInstance().Initialize();
-}
+    SECTION("Add registers")
+    {
+        std::string instructionStr = "ADD R0, R1, R2";
+        int a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+        int b = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
 
-////////////////////////////////
-/// AddRegsTest Function
-////////////////////////////////
-void AddRegsTest()
-{
-    std::string instructionStr = "ADD R0, R1, R2";
+        myProc.GetProcessRegisters().genRegs[1] = a;
+        myProc.GetProcessRegisters().genRegs[2] = b;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 3);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == static_cast<uint32_t>((a + b)));
+        delete pInstruction;
+    }
 
-    instructionStr = "ADD R0, R1";
+    SECTION("Add to a register")
+    {
+        std::string instructionStr = "ADD R0, R1";
+        int a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+        int b = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 4);
-}
+        myProc.GetProcessRegisters().genRegs[0] = a;
+        myProc.GetProcessRegisters().genRegs[1] = b;
 
-////////////////////////////////
-/// AddLiterals Function
-////////////////////////////////
-void AddLiterals()
-{
-    std::string instructionStr = "ADD R0, R1, #0xA";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == static_cast<uint32_t>((a + b)));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 11);
+    SECTION("Add literal with a register")
+    {
+        int literal = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+        std::string baseInstructionStr = "ADD R0, R1, #";
+        std::string instructionStr = baseInstructionStr + std::to_string(literal);
+        myProc.GetProcessRegisters().genRegs[1] = 1;
 
-    instructionStr = "ADD R1, #0x11";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == static_cast<uint32_t>(1 + literal));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[1] == 18);    
-}
+    SECTION("Add literal to a register")
+    {
+        int literal = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+        std::string baseInstructionStr = "ADD R1, #";
+        std::string instructionStr = baseInstructionStr + std::to_string(literal);
+        myProc.GetProcessRegisters().genRegs[1] = 1;
 
-////////////////////////////////
-/// AddsTest Function
-////////////////////////////////
-void AddsTest()
-{
-    // Reset registers
-    setup();
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[1] == static_cast<uint32_t>(1 + literal));
+        delete pInstruction;
+    }
 
-    std::string instructionStr = "ADDS R0, R0";
+    SECTION("ADDS test")
+    {
+        std::string instructionStr = "ADDS R0, R0";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(!myProc.GetProcessRegisters().GetCarryFlag());
-    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetCarryFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetOverflowFlag());
+        delete pInstruction;
 
-    instructionStr = "ADDS R0, #-2";
+        instructionStr = "ADDS R0, #-2";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(!myProc.GetProcessRegisters().GetCarryFlag());
-    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(!myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetCarryFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetOverflowFlag());
+        delete pInstruction;
 
-    instructionStr = "ADDS R10, #0xFFFFFFFF";
+        instructionStr = "ADDS R10, #0xFFFFFFFF";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(myProc.GetProcessRegisters().GetCarryFlag());
-    assert(!myProc.GetProcessRegisters().GetOverflowFlag());
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(!myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetCarryFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetOverflowFlag());
+        delete pInstruction;
 
-    // "MOV" R1, #0x40000000
-    myProc.GetProcessRegisters().genRegs[1] = 0x40000000;
+        // "MOV" R1, #0x40000000
+        myProc.GetProcessRegisters().genRegs[1] = 0x40000000;
 
-    instructionStr = "ADDS R1, #0x40000000";
+        instructionStr = "ADDS R1, #0x40000000";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-    assert(!myProc.GetProcessRegisters().GetCarryFlag());
-    assert(myProc.GetProcessRegisters().GetOverflowFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-    delete pInstruction;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-int main(int argc, char* argv[])
-{
-    setup();
-
-    AddRegsTest();
-    AddLiterals();
-    AddsTest();
-
-    teardown();
-
-    std::cout << "ADD Instruction Unit Test Complete: SUCCESS";
-    return 0;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(!myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetCarryFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag());
+        delete pInstruction;
+    }
 }

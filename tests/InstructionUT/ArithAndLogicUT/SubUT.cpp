@@ -7,144 +7,122 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include <catch2/catch.hpp>
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
+TEST_CASE("SUB Instruction", "[instruction][ArithAndLogic]")
 {
-    for (int i = 0; i < 13; i++)
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
+    uint32_t a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+    uint32_t b = GENERATE(take(5, random(0, 32)));
+
+    SECTION("Subtract two registers")
     {
-        myProc.GetProcessRegisters().genRegs[i] = i;
+        instructionStr = "SUB R0, R1, R2";
+
+        myProc.GetProcessRegisters().genRegs[1] = a;
+        myProc.GetProcessRegisters().genRegs[2] = b;
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a - b));
+        delete pInstruction;
     }
 
-    KeywordDict::GetInstance().Initialize();
-}
+    SECTION("Subtract from a register")
+    {
+        instructionStr = "SUB R0, R1";
 
-////////////////////////////////
-/// SubRegsTest Function
-////////////////////////////////
-void SubRegsTest()
-{
-    instructionStr = "SUB R0, R2, R1";
+        myProc.GetProcessRegisters().genRegs[0] = a;
+        myProc.GetProcessRegisters().genRegs[1] = b;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 1);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a - b));
+        delete pInstruction;
+    }
 
+    SECTION("Subtract literal and a register")
+    {
+        instructionStr = "SUB R0, R1, #" + std::to_string(b);
 
-    instructionStr = "SUB R0, R1";
+        myProc.GetProcessRegisters().genRegs[1] = a;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 0);
-}
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a - b));
+        delete pInstruction;
+    }
 
-////////////////////////////////
-/// SubLiterals Function
-////////////////////////////////
-void SubLiterals()
-{
-    instructionStr = "SUB R0, R11, #0xA";
+    SECTION("Subtract literal from a register")
+    {
+        instructionStr = "SUB R0, #" + std::to_string(b);
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 1);
+        myProc.GetProcessRegisters().genRegs[0] = a;
 
-    instructionStr = "SUB R5, #0x4";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a - b));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
+    SECTION("SUBS Test")
+    {
+        for (int i = 0; i < 13; i++)
+        {
+            myProc.GetProcessRegisters().genRegs[i] = i;
+        }
 
-    assert(myProc.GetProcessRegisters().genRegs[5] == 1);
-}
+        instructionStr = "SUBS R10, #10";
 
-////////////////////////////////
-/// SubsTest Function
-////////////////////////////////
-void SubsTest()
-{
-    // Reset registers
-    setup();
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag() == true);
+        REQUIRE(myProc.GetProcessRegisters().GetCarryFlag() == true);
+        REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+        delete pInstruction;
 
-    instructionStr = "SUBS R10, #10";
+        instructionStr = "SUBS R9, #6";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
-    assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag() == false);
+        REQUIRE(myProc.GetProcessRegisters().GetCarryFlag() == true);
+        REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+        delete pInstruction;
 
-    instructionStr = "SUBS R9, #6";
+        instructionStr = "SUBS R10, #16";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
-    assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag() == true);
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag() == false);
+        REQUIRE(myProc.GetProcessRegisters().GetCarryFlag() == false);
+        REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+        delete pInstruction;
 
+        instructionStr = "SUBS R0, #0";
 
-    instructionStr = "SUBS R10, #16";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag() == true);
-    assert(myProc.GetProcessRegisters().GetZeroFlag() == false);
-    assert(myProc.GetProcessRegisters().GetCarryFlag() == false);
-    assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-
-    instructionStr = "SUBS R0, #0";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag() == false);
-    assert(myProc.GetProcessRegisters().GetZeroFlag() == true);
-    assert(myProc.GetProcessRegisters().GetCarryFlag() == true);
-    assert(myProc.GetProcessRegisters().GetOverflowFlag() == false);
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-    delete pInstruction;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-int main(int argc, char* argv[])
-{
-    setup();
-
-    SubRegsTest();
-    SubLiterals();
-    SubsTest();
-
-    teardown();
-
-    std::cout << "SUB Instruction Unit Test Complete: SUCCESS";
-    return 0;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag() == false);
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag() == true);
+        REQUIRE(myProc.GetProcessRegisters().GetCarryFlag() == true);
+        REQUIRE(myProc.GetProcessRegisters().GetOverflowFlag() == false);
+        delete pInstruction;
+    }
 }

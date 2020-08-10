@@ -7,34 +7,26 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "InvalidSyntaxException.hpp"
+#include <catch2/catch.hpp>
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
-#include "KeywordDict.hpp"
 #include "MemoryApi.hpp"
 #include "MemoryConstants.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
+TEST_CASE("PUSH and POP Instructions", "[instruction][Memory]")
 {
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
@@ -42,21 +34,11 @@ void setup()
 
     myProc.GetProcessRegisters().SP = Memory::STACK_LOWER_BOUND;
 
-    KeywordDict::GetInstance().Initialize();
-
-    Memory::MemoryApi::Initialize();
-}
-
-////////////////////////////////
-/// PushAndPopTest Function
-////////////////////////////////
-void PushAndPopTest()
-{
     instructionStr = "PUSH {R0}";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 0);
+    REQUIRE(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 0);
     delete pInstruction;
 
     // "MOV" R0, #1
@@ -72,7 +54,7 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 5);
+    REQUIRE(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 5);
     delete pInstruction;
 
     // "MOV" R1, #10
@@ -86,16 +68,16 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[5] == 5);
-    assert(myProc.GetProcessRegisters().genRegs[1] == 1);
-    assert(myProc.GetProcessRegisters().genRegs[2] == 2);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[5] == 5);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[1] == 1);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[2] == 2);
     delete pInstruction;
 
     instructionStr = "PUSH {R2, R5-R7, R0}";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 7);
+    REQUIRE(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 7);
     delete pInstruction;
 
     // "MOV" R0, #10
@@ -113,33 +95,10 @@ void PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 0);
-    assert(myProc.GetProcessRegisters().genRegs[2] == 2);
-    assert(myProc.GetProcessRegisters().genRegs[5] == 5);
-    assert(myProc.GetProcessRegisters().genRegs[6] == 6);
-    assert(myProc.GetProcessRegisters().genRegs[7] == 7);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[0] == 0);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[2] == 2);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[5] == 5);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[6] == 6);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[7] == 7);
     delete pInstruction;
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-int main(int argc, char* argv[])
-{
-    setup();
-
-    PushAndPopTest();
-
-    teardown();
-
-    std::cout << "PUSH and POP Instruction Unit Test Complete: SUCCESS";
-    return 0;
 }

@@ -7,104 +7,63 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include <catch2/catch.hpp>
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
-#include "KeywordDict.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
+TEST_CASE("MOV Instruction", "[instruction][ArithAndLogic]")
 {
-    for (int i = 0; i < 13; i++)
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
+    uint32_t a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+    myProc.GetProcessRegisters().genRegs[1] = a;
+
+    SECTION("Move a register")
     {
-        myProc.GetProcessRegisters().genRegs[i] = i;
+        instructionStr = "MOV R0, R1";
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == a);
+        delete pInstruction;
     }
 
-    KeywordDict::GetInstance().Initialize();
-}
+    SECTION("Move a literal")
+    {
+        instructionStr = "MOV R0, #" + std::to_string(a);
 
-////////////////////////////////
-/// MovRegTest Function
-////////////////////////////////
-void MovRegTest()
-{
-    instructionStr = "MOV R0, R1";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == a);
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 1);
-}
+    SECTION("MOVS Test")
+    {
+        instructionStr = "MOVS R0, #0";
 
-////////////////////////////////
-/// MovLiteralTest Function
-////////////////////////////////
-void MovLiteralTest()
-{
-    instructionStr = "MOV R0, #0xFF";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        delete pInstruction;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 0xFF);
-}
+        instructionStr = "MOVS R0, #0xFFFFFFFF";
 
-////////////////////////////////
-/// MovsTest Function
-////////////////////////////////
-void MovsTest()
-{
-    instructionStr = "MOVS R0, #0";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-
-    instructionStr = "MOVS R0, #0xFFFFFFFF";
-
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-    delete pInstruction;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-int main(int argc, char* argv[])
-{
-    setup();
-
-    MovRegTest();
-    MovLiteralTest();
-    MovsTest();
-
-    teardown();
-
-    std::cout << "MOV Instruction Unit Test Complete: SUCCESS";
-    return 0;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(!myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag());
+        delete pInstruction;
+    }
 }

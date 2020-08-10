@@ -7,119 +7,96 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include <catch2/catch.hpp>
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
-#include "KeywordDict.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
+TEST_CASE("EOR Instruction", "[instruction][ArithAndLogic]")
 {
-    for (int i = 0; i < 13; i++)
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
+    uint32_t a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+    uint32_t b = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+
+    SECTION("Xor two registers")
     {
-        myProc.GetProcessRegisters().genRegs[i] = i;
+        instructionStr = "EOR R0, R1, R2";
+
+        myProc.GetProcessRegisters().genRegs[1] = a;
+        myProc.GetProcessRegisters().genRegs[2] = b;
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a ^ b));
+        delete pInstruction;
     }
 
-    KeywordDict::GetInstance().Initialize();
-}
+    SECTION("Xor with a register")
+    {
+        instructionStr = "EOR R0, R1";
 
-////////////////////////////////
-/// EorRegsTest Function
-////////////////////////////////
-void EorRegsTest()
-{
-    instructionStr = "EOR R0, R5, R7";
+        myProc.GetProcessRegisters().genRegs[0] = a;
+        myProc.GetProcessRegisters().genRegs[1] = b;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 2);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a ^ b));
+        delete pInstruction;
+    }
 
-    instructionStr = "EOR R8, R9";
+    SECTION("Xor a register and a literal")
+    {
+        instructionStr = "EOR R0, R1, #" + std::to_string(b);
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[8] == 1);
-}
+        myProc.GetProcessRegisters().genRegs[1] = a;
 
-////////////////////////////////
-/// EorLiterals Function
-////////////////////////////////
-void EorLiterals()
-{
-    instructionStr = "EOR R0, R5, #0xF";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a ^ b));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 10);
+    SECTION("Xor with a literal")
+    {
+        instructionStr = "EOR R0, #" + std::to_string(b);
 
-    instructionStr = "EOR R1, #0x13";
+        myProc.GetProcessRegisters().genRegs[0] = a;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[1] == 0x12);
-}
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a ^ b));
+        delete pInstruction;
+    }
 
-////////////////////////////////
-/// EorsTest Function
-////////////////////////////////
-void EorsTest()
-{
-    // Reset registers
-    setup();
+    SECTION("EORS Test")
+    {
+        myProc.GetProcessRegisters().genRegs[1] = 1;
+        myProc.GetProcessRegisters().genRegs[2] = 2;
 
-    instructionStr = "EORS R1, R1";
+        instructionStr = "EORS R1, R1";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        delete pInstruction;
 
-    instructionStr = "EORS R2, #0xFFFFFFFF";
+        instructionStr = "EORS R2, #0xFFFFFFFF";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(!myProc.GetProcessRegisters().GetZeroFlag());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-    delete pInstruction;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-int main(int argc, char* argv[])
-{
-    setup();
-
-    EorRegsTest();
-    EorLiterals();
-    EorsTest();
-
-    teardown();
-
-    std::cout << "EOR Instruction Unit Test Complete: SUCCESS";
-    return 0;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(!myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag());
+        delete pInstruction;
+    }
 }

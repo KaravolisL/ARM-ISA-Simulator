@@ -80,7 +80,7 @@ public:
     ////////////////////////////////
     /// METHOD NAME: Size
     ////////////////////////////////
-    int Size() const
+    uint32_t Size() const
     {
         return m_Stack.GetLength();
     }

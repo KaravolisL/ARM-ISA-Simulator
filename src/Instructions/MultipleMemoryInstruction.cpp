@@ -32,7 +32,7 @@ void MultipleMemoryInstruction::Execute(Registers& rProcessRegisters)
     }
 
     // For every register in the list...
-    for (int i = 0; i < m_registerList.GetLength(); i++)
+    for (uint8_t i = 0; i < m_registerList.GetLength(); i++)
     {
         // Handle IB and DB
         if (m_addressingMode == AddressingMode::IB)

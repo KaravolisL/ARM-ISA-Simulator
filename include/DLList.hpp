@@ -58,7 +58,7 @@ public:
     DLList() :
         head(nullptr),
         tail(nullptr),
-        length(0)
+        m_Length(0)
     {}
 
     ////////////////////////////////
@@ -84,7 +84,7 @@ public:
             this->head = pNewNode;
         }
 
-        this->length++;
+        this->m_Length++;
     }
 
     ////////////////////////////////
@@ -110,7 +110,7 @@ public:
             this->tail = pNewNode;
         }
 
-        this->length++;
+        this->m_Length++;
     }
 
     ////////////////////////////////
@@ -120,7 +120,7 @@ public:
     /// @return Element at given value
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
-    T Get(int index) const
+    T Get(uint32_t index) const
     {
         for (Node* pCurrentNode = head;
              pCurrentNode != nullptr;
@@ -150,7 +150,7 @@ public:
         }
         this->head = nullptr;
         this->tail = nullptr;
-        this->length = 0;
+        this->m_Length = 0;
     }
 
     ////////////////////////////////
@@ -160,10 +160,10 @@ public:
     /// @return Data stored at given index
     /// @throw IndexOutOfBoundsException
     ////////////////////////////////
-    T Remove(int index)
+    T Remove(uint32_t index)
     {
         // Bounds check
-        if (index > (length - 1)) throw IndexOutOfBoundsException(index);
+        if ((index + 1) > m_Length) throw IndexOutOfBoundsException(index);
 
         Node* pOldNode;
         // Deleting only node
@@ -181,7 +181,7 @@ public:
                 this->head = pOldNode->next;
                 this->head->prev = nullptr;
             }
-            else if (index == length - 1)
+            else if (index == m_Length - 1)
             {
                 pOldNode = this->tail;
                 this->tail = pOldNode->prev;
@@ -207,18 +207,18 @@ public:
         // Delete the node and return it's data;
         T data = pOldNode->data;
         delete pOldNode;
-        this->length--;
+        this->m_Length--;
         return data;
     }
 
     ////////////////////////////////
     /// FUNCTION NAME: GetLength
     ///
-    /// @returns Length of list
+    /// @returns m_Length of list
     ////////////////////////////////
-    int GetLength(void) const
+    uint32_t GetLength(void) const
     {
-        return this->length;
+        return this->m_Length;
     }
 
     ////////////////////////////////
@@ -291,7 +291,7 @@ public:
         /// Constructor
         ////////////////////////////////
         DLListIterator() :
-            pNextNode(head)
+            pNextNode(nullptr)
         {}
 
         DLListIterator(Node* startingNode) :
@@ -384,7 +384,7 @@ private:
     Node* tail;
 
     /// Number of elements in the list
-    int length;
+    uint32_t m_Length;
 
 };
 

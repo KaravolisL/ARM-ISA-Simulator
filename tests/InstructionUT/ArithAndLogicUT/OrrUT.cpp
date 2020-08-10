@@ -7,118 +7,96 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-#include <assert.h>
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
+#include <catch2/catch.hpp>
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
-#include "KeywordDict.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-Process myProc = Process();
-InstructionBuilder& builder = InstructionBuilder::GetInstance();
-InstructionBase* pInstruction = nullptr;
-std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-void setup()
+TEST_CASE("ORR Instruction", "[instruction][ArithAndLogic]")
 {
-    for (int i = 0; i < 13; i++)
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
+    uint32_t a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));
+    uint32_t b = GENERATE(take(5, random(0, 32)));
+
+    SECTION("Or two registers")
     {
-        myProc.GetProcessRegisters().genRegs[i] = i;
+        instructionStr = "ORR R0, R1, R2";
+
+        myProc.GetProcessRegisters().genRegs[1] = a;
+        myProc.GetProcessRegisters().genRegs[2] = b;
+
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a | b));
+        delete pInstruction;
     }
 
-    KeywordDict::GetInstance().Initialize();
-}
+    SECTION("Or with a register")
+    {
+        instructionStr = "ORR R0, R1";
 
-////////////////////////////////
-/// OrrRegsTest Function
-////////////////////////////////
-void OrrRegsTest()
-{
-    instructionStr = "ORR R0, R1, R2";
+        myProc.GetProcessRegisters().genRegs[0] = a;
+        myProc.GetProcessRegisters().genRegs[1] = b;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 3);
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a | b));
+        delete pInstruction;
+    }
 
-    instructionStr = "ORR R0, R4";
+    SECTION("Or register and a literal")
+    {
+        instructionStr = "ORR R0, R5, #" + std::to_string(a);
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 7);
-}
+        myProc.GetProcessRegisters().genRegs[5] = b;
 
-////////////////////////////////
-/// OrrLiterals Function
-////////////////////////////////
-void OrrLiterals()
-{
-    instructionStr = "ORR R0, R5, #0xF";
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a | b));
+        delete pInstruction;
+    }
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[0] == 15);
+    SECTION("Or register with a literal")
+    {
+        instructionStr = "ORR R0, #" + std::to_string(a);
 
-    instructionStr = "ORR R1, #0x12";
+        myProc.GetProcessRegisters().genRegs[0] = b;
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().genRegs[1] == 0x13);
-}
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().genRegs[0] == (a | b));
+        delete pInstruction;
+    }
 
-////////////////////////////////
-/// OrrsTest Function
-////////////////////////////////
-void OrrsTest()
-{
-    // Reset registers
-    setup();
+    SECTION("ORRS Test")
+    {
+        myProc.GetProcessRegisters().genRegs[0] = 0;
+        myProc.GetProcessRegisters().genRegs[1] = 1;
+        myProc.GetProcessRegisters().genRegs[2] = 2;
 
-    instructionStr = "ORRS R1, R2, #0x80000000";
+        instructionStr = "ORRS R1, R2, #0x80000000";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetNegativeFlag());
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetNegativeFlag());
+        delete pInstruction;
 
-    instructionStr = "ORRS R0, #0";
+        instructionStr = "ORRS R0, #0";
 
-    pInstruction = builder.BuildInstruction(instructionStr, &myProc);
-    pInstruction->Execute(myProc.GetProcessRegisters());
-    assert(myProc.GetProcessRegisters().GetZeroFlag());
-    assert(!myProc.GetProcessRegisters().GetNegativeFlag());
-}
-
-////////////////////////////////
-/// Teardown Function
-////////////////////////////////
-void teardown()
-{
-    delete pInstruction;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-int main(int argc, char* argv[])
-{
-    setup();
-
-    OrrRegsTest();
-    OrrLiterals();
-    OrrsTest();
-
-    teardown();
-
-    std::cout << "ORR Instruction Unit Test Complete: SUCCESS";
-    return 0;
+        pInstruction = builder.BuildInstruction(instructionStr, &myProc);
+        pInstruction->Execute(myProc.GetProcessRegisters());
+        REQUIRE(myProc.GetProcessRegisters().GetZeroFlag());
+        REQUIRE(!myProc.GetProcessRegisters().GetNegativeFlag());
+        delete pInstruction;
+    }
 }

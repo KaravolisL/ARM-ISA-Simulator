@@ -23,12 +23,14 @@
 ////////////////////////////////
 void MemoryInstruction::Execute(Registers& rProcessRegisters)
 {   
-    ASSERT(m_pAddressRegister != nullptr);
+    // m_pAddressRegister could be null in the case of a constant being loaded
     ASSERT(m_pDestOrSrcRegister != nullptr);
 
     // If we're not updating the address register, modify a temporary register
     Register addressPlaceholder;
-    if (m_offsetType == OffsetType::ZERO || m_offsetType == OffsetType::PREINDEXED)
+    if ((m_offsetType == OffsetType::ZERO ||
+         m_offsetType == OffsetType::PREINDEXED) &&
+         (m_pAddressRegister != nullptr))
     {
         addressPlaceholder = *m_pAddressRegister;
         m_pAddressRegister = &addressPlaceholder;
@@ -60,6 +62,14 @@ void MemoryInstruction::Execute(Registers& rProcessRegisters)
     }
     else
     {
+        // If m_pAddressRegister is null, we are just loading a constant into m_pDestOrSrcRegister
+        // This constant should be stored in the offset field
+        if (m_pAddressRegister == nullptr)
+        {
+            *m_pDestOrSrcRegister = m_offset;
+            return;
+        }
+
         switch (m_transferType)
         {
             case MemoryTransferType::WORD:

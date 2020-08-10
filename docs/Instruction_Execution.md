@@ -90,6 +90,7 @@ InstructionBuilderRepository --> InstructionBuilders : > Contains
 
 class InstructionBase
 {
+    # m_OpCode
     {abstract} + Execute() = 0
 }
 
