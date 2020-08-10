@@ -3,44 +3,26 @@
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
+#define CATCH_CONFIG_RUNNER
 
 // SYSTEM INCLUDES
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTestSuite.hpp" // For UnitTestSuite
+#include <catch2/catch.hpp>
 #include "KeywordDict.hpp" // For KeywordDict
 #include "MemoryApi.hpp" // For MemoryApi
 
-// Individual unit tests
-extern bool LdmAndStmUT();
-extern bool LdrAndStrUT();
-extern bool PushAndPopUT();
-
-////////////////////////////////
-/// FUNCTION NAME: suiteSetup
-////////////////////////////////
-void suiteSetup()
+int main(int argc, char* argv[])
 {
     KeywordDict::GetInstance().Initialize();
 
     Memory::MemoryApi::Initialize();
-}
 
-////////////////////////////////
-/// FUNCTION NAME: main
-////////////////////////////////
-int main(int argc, char* argv[])
-{
-    UnitTestSuite memInstructionTestSuite("Memory Instruction Unit Test Suite");
-    memInstructionTestSuite.SetSetup(suiteSetup);
+    int result = Catch::Session().run(argc, argv);
 
-    memInstructionTestSuite.AddTest(LdmAndStmUT);
-    memInstructionTestSuite.AddTest(LdrAndStrUT);
-    memInstructionTestSuite.AddTest(PushAndPopUT);
-
-    return !(memInstructionTestSuite.Run());
+    return result;
 }

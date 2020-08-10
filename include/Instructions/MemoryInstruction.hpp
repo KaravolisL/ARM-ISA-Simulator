@@ -86,15 +86,6 @@ public:
     ////////////////////////////////
     void SetOffsetType(OffsetType offsetType) { m_offsetType = offsetType; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetAddressRegisterToOffset
-    ///
-    /// @brief This method is used when the address
-    /// for the instruction comes from the constants dictionary
-    /// In this case, it will be stored in the offset member variable
-    ////////////////////////////////
-    void SetAddressRegisterToOffset() { m_pAddressRegister = reinterpret_cast<Register*>(&m_offset); }
-
 protected:
 
 private:

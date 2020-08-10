@@ -16,7 +16,7 @@
 #include <catch2/catch.hpp>
 
 int main(int argc, char* argv[])
-{  
+{
   KeywordDict::GetInstance().Initialize();
 
   int result = Catch::Session().run( argc, argv );
