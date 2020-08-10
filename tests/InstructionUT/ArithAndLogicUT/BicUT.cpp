@@ -14,7 +14,6 @@
 
 // C++ PROJECT INCLUDES
 #include <catch2/catch.hpp>
-#include "UnitTest.hpp"
 #include "InstructionBase.hpp"
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"

@@ -5,7 +5,6 @@ find_package(Catch2 REQUIRED)
 # Add include path
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 include_directories("${PROJECT_SOURCE_DIR}/include/Memory")
-include_directories("${PROJECT_SOURCE_DIR}/tests/Framework")
 
 # Individual unit tests
 set(ARITH_AND_LOGIC_UTS

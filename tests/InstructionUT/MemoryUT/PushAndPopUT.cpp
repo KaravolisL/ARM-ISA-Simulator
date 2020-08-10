@@ -13,44 +13,32 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTest.hpp"
+#include <catch2/catch.hpp>
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
 #include "MemoryApi.hpp"
 #include "MemoryConstants.hpp"
 
-////////////////////////////////
-/// Test Objects
-////////////////////////////////
-static Process myProc = Process();
-static InstructionBuilder& builder = InstructionBuilder::GetInstance();
-static InstructionBase* pInstruction = nullptr;
-static std::string instructionStr;
-
-////////////////////////////////
-/// Setup Function
-////////////////////////////////
-static void setup()
+TEST_CASE("PUSH and POP Instructions", "[instruction][Memory]")
 {
+    Process myProc = Process();
+    InstructionBuilder& builder = InstructionBuilder::GetInstance();
+    InstructionBase* pInstruction = nullptr;
+    std::string instructionStr;
+
     for (int i = 0; i < 13; i++)
     {
         myProc.GetProcessRegisters().genRegs[i] = i;
     }
 
     myProc.GetProcessRegisters().SP = Memory::STACK_LOWER_BOUND;
-}
 
-////////////////////////////////
-/// PushAndPopTest Function
-////////////////////////////////
-bool PushAndPopTest()
-{
     instructionStr = "PUSH {R0}";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 0);
+    REQUIRE(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 0);
     delete pInstruction;
 
     // "MOV" R0, #1
@@ -66,7 +54,7 @@ bool PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 5);
+    REQUIRE(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 5);
     delete pInstruction;
 
     // "MOV" R1, #10
@@ -80,16 +68,16 @@ bool PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[5] == 5);
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[1] == 1);
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[2] == 2);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[5] == 5);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[1] == 1);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[2] == 2);
     delete pInstruction;
 
     instructionStr = "PUSH {R2, R5-R7, R0}";
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 7);
+    REQUIRE(Memory::MemoryApi::ReadWord(myProc.GetProcessRegisters().SP) == 7);
     delete pInstruction;
 
     // "MOV" R0, #10
@@ -107,25 +95,10 @@ bool PushAndPopTest()
 
     pInstruction = builder.BuildInstruction(instructionStr, &myProc);
     pInstruction->Execute(myProc.GetProcessRegisters());
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[0] == 0);
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[2] == 2);
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[5] == 5);
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[6] == 6);
-    UNIT_ASSERT(myProc.GetProcessRegisters().genRegs[7] == 7);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[0] == 0);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[2] == 2);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[5] == 5);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[6] == 6);
+    REQUIRE(myProc.GetProcessRegisters().genRegs[7] == 7);
     delete pInstruction;
-
-    return true;
-}
-
-////////////////////////////////
-/// Main Function
-////////////////////////////////
-bool PushAndPopUT()
-{
-    UnitTest pushAndPopUnitTest("Push And Pop Unit Test");
-    pushAndPopUnitTest.SetSetup(setup);
-
-    pushAndPopUnitTest.AddSubTest(PushAndPopTest);
-
-    return pushAndPopUnitTest.Run();
 }
