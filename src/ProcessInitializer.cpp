@@ -154,7 +154,7 @@ void ProcessInitializer::HandleMemoryDirective(Io::LineParser& rLineParser) cons
 
             // Only add the label for the first entry
             m_pProcess->m_labelDictionary.Insert(memLabel, nextMemoryAddress);
-            for (int i = 0; i < values.GetLength(); i++)
+            for (uint32_t i = 0; i < values.GetLength(); i++)
             {
                 // Write the word to memory
                 Memory::MemoryApi::WriteWord(nextMemoryAddress, values[i]);
@@ -172,7 +172,7 @@ void ProcessInitializer::HandleMemoryDirective(Io::LineParser& rLineParser) cons
             // Only add the label for the first entry
             m_pProcess->m_labelDictionary.Insert(memLabel, nextMemoryAddress);
             uint32_t concatenatedValue = 0;
-            for (int i = 0; i < values.GetLength(); i++)
+            for (uint32_t i = 0; i < values.GetLength(); i++)
             {
                 // Shift value over a byte
                 concatenatedValue <<= 8;
@@ -192,7 +192,7 @@ void ProcessInitializer::HandleMemoryDirective(Io::LineParser& rLineParser) cons
             {
                 LOG_DEBUG("Writing left over bytes");
                 // Push them over to the left
-                for (int i = 0; i < (4 - (values.GetLength() % 4)); i++)
+                for (uint32_t i = 0; i < (4 - (values.GetLength() % 4)); i++)
                 {
                     concatenatedValue <<= 8;
                 }
