@@ -35,25 +35,15 @@ void setup()
 ////////////////////////////////
 void WriteWordTest()
 {
-    memManager.WriteWord(0x2000013c, 8362);
+    memManager.Write<uint32_t>(0x2000013c, 8362);
     
-    memManager.WriteWord(0x20000000, 111);
+    memManager.Write<uint32_t>(0x20000000, 111);
 
-    memManager.WriteWord(0x20004000, 0xFFFFFFFF);
-
-    try
-    {
-        memManager.WriteWord(0x50000000, 123);
-        assert(false);
-    }
-    catch(const Memory::MemoryManager::MemoryException& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    memManager.Write<uint32_t>(0x20004000, 0xFFFFFFFF);
 
     try
     {
-        memManager.WriteWord(0x20001002, 8);
+        memManager.Write<uint32_t>(0x50000000, 123);
         assert(false);
     }
     catch(const Memory::MemoryManager::MemoryException& e)
@@ -69,13 +59,13 @@ void ReadWordTest()
 {
     uint32_t data;
 
-    data = memManager.ReadWord(0x2000013c);
+    data = memManager.Read<uint32_t>(0x2000013c);
     assert(data == 8362);
 
-    data = memManager.ReadWord(0x20000000);
+    data = memManager.Read<uint32_t>(0x20000000);
     assert(data == 111);
 
-    data = memManager.ReadWord(0x20004000);
+    data = memManager.Read<uint32_t>(0x20004000);
     assert(data == 0xFFFFFFFF);
 }
 
@@ -86,18 +76,18 @@ void UnsignedByteTest()
 {
     uint32_t data;
 
-    memManager.WriteWord(address, 0xFFFF);
-    memManager.WriteUnsignedByte(address, 0x55);
+    memManager.Write<uint32_t>(address, 0xFFFF);
+    memManager.Write<uint8_t>(address, 0x55);
 
-    data = memManager.ReadWord(address);
+    data = memManager.Read<uint32_t>(address);
     assert(data == 0x0000FF55);
 
-    memManager.WriteUnsignedByte(address, 0x1);
+    memManager.Write<uint8_t>(address, 0x1);
     
-    data = memManager.ReadWord(address);
+    data = memManager.Read<uint32_t>(address);
     assert(data == 0x0000FF01);
 
-    data = memManager.ReadUnsignedByte(address);
+    data = memManager.Read<uint8_t>(address);
     assert(data == 0x00000001);
 }
 
@@ -108,12 +98,12 @@ void SignedByteTest()
 {
     int32_t data;
 
-    memManager.WriteUnsignedByte(address, 0xAA);
-    data = memManager.ReadSignedByte(address);
+    memManager.Write<uint8_t>(address, 0xAA);
+    data = memManager.Read<int8_t>(address);
     assert(data == static_cast<int32_t>(0xFFFFFFAA));
 
-    memManager.WriteUnsignedByte(address, 0x55);
-    data = memManager.ReadSignedByte(address);
+    memManager.Write<uint8_t>(address, 0x55);
+    data = memManager.Read<int8_t>(address);
     assert(data == static_cast<int32_t>(0x00000055));
 }
 
@@ -124,15 +114,15 @@ void UnsignedHalfwordTest()
 {
     uint32_t data;
 
-    memManager.WriteWord(address, 0xFFFFFFFF);
-    memManager.WriteUnsignedHalfword(address, 0x5555);
-    data = memManager.ReadWord(address);
+    memManager.Write<uint32_t>(address, 0xFFFFFFFF);
+    memManager.Write<uint16_t>(address, 0x5555);
+    data = memManager.Read<uint32_t>(address);
     assert(data == 0xFFFF5555);
 
-    memManager.WriteUnsignedHalfword(address, 0x1);
-    data = memManager.ReadWord(address);
+    memManager.Write<uint16_t>(address, 0x1);
+    data = memManager.Read<uint32_t>(address);
     assert(data == 0x0FFFF0001);
-    data = memManager.ReadSignedHalfword(address);
+    data = memManager.Read<int16_t>(address);
     assert(data == 0x00000001);
 }
 
@@ -143,13 +133,18 @@ void SignedHalfwordTest()
 {
     int32_t data;
 
-    memManager.WriteUnsignedHalfword(address, 0xAAAA);
-    data = memManager.ReadSignedHalfword(address);
+    memManager.Write<uint16_t>(address, 0xAAAA);
+    data = memManager.Read<int16_t>(address);
     assert(data == static_cast<int32_t>(0xFFFFAAAA));
 
-    memManager.WriteUnsignedHalfword(address, 0x5555);
-    data = memManager.ReadSignedHalfword(address);
+    memManager.Write<uint16_t>(address, 0x5555);
+    data = memManager.Read<int16_t>(address);
     assert(data == static_cast<int32_t>(0x00005555));
+
+    memManager.Write<uint32_t>(address, 0x0000000B);
+    uint8_t data2 = memManager.Read<uint8_t>(address);
+    std::cout << static_cast<uint32_t>(data2) << std::endl;
+    assert(data2 == static_cast<uint8_t>(11));
 }
 
 ////////////////////////////////
@@ -157,7 +152,7 @@ void SignedHalfwordTest()
 ////////////////////////////////
 void teardown()
 {
-
+    memManager.Close();
 }
 
 ////////////////////////////////

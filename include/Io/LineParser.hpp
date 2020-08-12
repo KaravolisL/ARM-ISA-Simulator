@@ -21,12 +21,15 @@
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "DLB.hpp" // For DLB class
 #include "LineTypes.hpp" // For LineType enum
+#include "ExpressionParser.hpp" // For Io::ExpressionParser
 
 // FORWARD DECLARATIONS
 template<typename T>
 class List;
+
+template<typename T>
+class DLB;
 
 namespace Io
 {
@@ -87,14 +90,18 @@ public:
     ///
     /// @param[out] rLabel    Label on line
     ////////////////////////////////
-    void GetLabel(std::string& rLabel) const
-    {
-        assert(GetLineType() == LineType::EQU ||
-               GetLineType() == LineType::LABEL ||
-               GetLineType() == LineType::LABEL_AND_INSTRUCTION ||
-               GetLineType() == LineType::LABEL_AND_PROC);
-        GetToken(0, rLabel);
-    }
+    void GetLabel(std::string& rLabel) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: GetLabel
+    ///
+    /// @brief Retrieves the label 
+    /// following an EQU directive or
+    /// from a label line
+    ///
+    /// @return Label on the line
+    ////////////////////////////////
+    std::string GetLabel() const;
 
     ////////////////////////////////
     /// METHOD NAME: GetInstruction
@@ -127,6 +134,31 @@ public:
     /// @returns value as int
     ////////////////////////////////
     int GetValue(DLB<uint32_t>& rConstantsDictionary) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: GetValues
+    ///
+    /// @brief Retrieves the values included
+    /// in a DCB/DCD directive
+    ///
+    /// @param[out] rValueList              List to be filled with values
+    /// @param[in] rConstantsDictionary     Reference to constants dictionary
+    ///                                     that's being created
+    ////////////////////////////////
+    template <typename T>
+    void GetValues(DLB<uint32_t>& rConstantsDictionary, List<T>& rValueList) const
+    {
+        // Begin with the third token
+        for (int i = 2; i < GetNumberOfTokens(); i++)
+        {
+            std::string expression;
+            GetToken(i, expression);
+
+            // Create an expression parser and evaluate
+            ExpressionParser exParser(expression, &rConstantsDictionary);
+            rValueList.Append(static_cast<T>(exParser.Evaluate()));
+        }
+    }
 
     ////////////////////////////////
     /// METHOD NAME: GetLine

@@ -12,6 +12,7 @@
 // SYSTEM INCLUDES
 #include <iostream> // For std::cout
 #include <cstring>
+#include <sstream> // For std::stringstream
 
 // C PROJECT INCLUDES
 // (None)
@@ -198,6 +199,23 @@ public:
             m_list[i] = m_list[minsPosition];
             m_list[minsPosition] = currentElement;
         }
+    }
+
+    ////////////////////////////////
+    /// METHOD NAME: ToString
+    ////////////////////////////////
+    std::string ToString(void) const
+    {
+        std::stringstream stream;
+        for (int i = 0; i < m_length; i++)
+        {
+            stream << m_list[i];
+            if (i != m_length - 1)
+            {
+                stream << ", ";
+            }
+        }
+        return stream.str();
     }
 
     ////////////////////////////////

@@ -47,6 +47,9 @@ const uint32_t STACK_SIZE = STACK_LOWER_BOUND - STACK_UPPER_BOUND;
 /// Upper bound of process memory. Also bottom of stack
 const uint32_t GLOBAL_UPPER_BOUND = 0x20004000;
 
+/// A word is 4 bytes
+const uint8_t WORD_SIZE_IN_BYTES = 4;
+
 } // Memory
 
 #endif

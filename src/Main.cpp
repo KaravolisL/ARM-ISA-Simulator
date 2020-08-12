@@ -15,6 +15,7 @@
 // C++ PROJECT INCLUDES
 #include "Process.hpp"  // For Process
 #include "KeywordDict.hpp" // For KeywordDict class
+#include "MemoryApi.hpp" // For Memory::MemoryApi
 #include "Logger.hpp" // For Logger
 
 ////////////////////////////////
@@ -31,6 +32,9 @@ int main(int argc, char* argv[])
     // Initialize the keyword dictionary
     KeywordDict::GetInstance().Initialize();
 
+    // Initialize the memory subsystem
+    Memory::MemoryApi::Initialize();
+
     // Create empty Process in heap
     Process* pProcess = new Process();
 
@@ -40,6 +44,9 @@ int main(int argc, char* argv[])
     pProcess->Execute();
 
     pProcess->PrintSummary(&std::hex);
+
+    // Close the memory file
+    Memory::MemoryApi::Close();
 
     // Close the log file
     Logger::GetInstance().Close();
