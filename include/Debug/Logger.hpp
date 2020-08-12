@@ -51,7 +51,7 @@ public:
     ////////////////////////////////
     /// @enum LogLevel
     ////////////////////////////////
-    enum LogLevel
+    enum class LogLevel
     {
         INFO,
         DEBUG,

@@ -23,7 +23,7 @@
 ///
 /// @brief Enum for the addressing modes
 ////////////////////////////////
-enum AddressingMode
+enum class AddressingMode
 {
     IA,
     IB,

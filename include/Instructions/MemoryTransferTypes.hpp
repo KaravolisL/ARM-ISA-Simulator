@@ -23,7 +23,7 @@
 ///
 /// @brief Enum for the memory transfer types
 ////////////////////////////////
-enum MemoryTransferType
+enum class MemoryTransferType
 {
     WORD,
     UNSIGNED_BYTE, // B

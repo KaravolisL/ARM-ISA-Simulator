@@ -52,8 +52,8 @@ void GetLineTypeTest()
         Io::LineParser lineParser(&lines[i]);
 
         Io::LineType lineType = lineParser.GetLineType();
-        std::cout << "lineType = " << lineType << '\n';
-        assert(lineType == i);
+        std::cout << "lineType = " << static_cast<int>(lineType) << '\n';
+        assert(static_cast<int>(lineType) == i);
     }
 }
 

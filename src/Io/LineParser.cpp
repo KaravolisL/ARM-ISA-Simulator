@@ -166,7 +166,7 @@ void LineParser::Tokenize(List<std::string>& rTokens, const char* pDeliminators)
 std::string LineParser::GetTrimmedLine() const
 {
     std::string trimmedLine = *m_pLine;
-    if (GetLineType() == LABEL_AND_INSTRUCTION)
+    if (GetLineType() == LineType::LABEL_AND_INSTRUCTION)
     {
         std::string label;
         GetLabel(label);

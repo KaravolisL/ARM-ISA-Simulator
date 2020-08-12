@@ -23,7 +23,7 @@
 ///
 /// @brief Enum for types of conditional codes
 ////////////////////////////////
-enum ConditionalCode
+enum class ConditionalCode
 {
     EQ = 0, // Z == 1
     NE = 1, // Z == 0

@@ -31,7 +31,7 @@ namespace Io
 /// determine how the current line that's being parsed
 /// should be handled
 ////////////////////////////////
-enum LineType
+enum class LineType : uint8_t
 {
     INCLUDE,
     LABEL,
