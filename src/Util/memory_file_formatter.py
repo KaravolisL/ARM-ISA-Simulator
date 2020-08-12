@@ -14,9 +14,15 @@ STARTING_MEMORY_ADDRESS = 0x20000000
 ENDIANNESS = 'little'
 
 def read_and_format_file(input_file_name, output_file_name=None):
+    """Convert the given file to a memory format.
 
+    :param str input_file_name: Name of the file to be converted
+
+    """
+    logger.info('Input file name: %s', input_file_name)
     if (output_file_name == None):
-        output_file_name = input_file_name.rsplit('.')[0] + '_formatted.txt'
+        output_file_name = input_file_name[:input_file_name.rfind('.')] + '_formatted.txt'
+    logger.info('Output file name: %s', output_file_name)
 
     # Open files
     input_file = open(input_file_name, 'rb')
