@@ -35,7 +35,7 @@ def read_and_format_file(input_file_name, output_file_name=None):
     while (word):
         if (i % WORDS_PER_ROW == 0):
             output_file.write('\n0x{:X}: '.format(memory_address_label))
-            memory_address_label = memory_address_label + WORDS_PER_ROW
+            memory_address_label = memory_address_label + (WORDS_PER_ROW*WORD_SIZE_IN_BYTES)
         data = int.from_bytes(word, byteorder=ENDIANNESS)
         output_file.write('{:0{}X} '.format(data, WORD_SIZE_IN_BYTES * HEX_CHARACTERS_PER_BYTE))
         word = input_file.read(WORD_SIZE_IN_BYTES)
