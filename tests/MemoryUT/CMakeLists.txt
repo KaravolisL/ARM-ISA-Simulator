@@ -3,10 +3,15 @@ cmake_minimum_required(VERSION 3.16)
 # Add include path
 include_directories("${PROJECT_SOURCE_DIR}/include/Memory")
 
-# Add executables (Unit tests)
-add_executable(MemoryManagerUT MemoryManagerUT.cpp)
-target_link_libraries(MemoryManagerUT PRIVATE mem_library debug_lib)
+# Individual unit tests
+set(MEMORY_UTS
+    MemoryManagerUT.cpp
+)
+
+# Add executables (Suites)
+add_executable(MemoryTestSuite MemoryTestSuite.cpp ${MEMORY_UTS})
+target_link_libraries(MemoryTestSuite PRIVATE Catch2::Catch2 support mem_library)
 
 # Add Unit Tests
-add_test(NAME MemoryManagerUT COMMAND MemoryManagerUT)
+add_test(NAME MemoryTestSuite COMMAND MemoryTestSuite)
 

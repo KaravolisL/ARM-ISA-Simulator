@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
+# Find packages
+find_package(Catch2 REQUIRED)
+
 # Add include path
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include/Debug")
@@ -8,6 +11,9 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Io")
 include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 
 include_directories("${PROJECT_SOURCE_DIR}/tests/support")
+
+# Set preprocessor definition
+add_compile_definitions(BUILD_UNIT_TEST)
 
 # Add subdirectory
 add_subdirectory(support)

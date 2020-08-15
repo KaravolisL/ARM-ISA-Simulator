@@ -40,7 +40,7 @@ void MemoryManager::Initialize()
 ////////////////////////////////
 /// METHOD NAME: Memory::MemoryManager::GoToAddress
 ////////////////////////////////
-void MemoryManager::GoToAddress(uint32_t address)
+void MemoryManager::GoToAddress(const uint32_t address)
 {
     ValidateAddress(address);
 
@@ -50,7 +50,7 @@ void MemoryManager::GoToAddress(uint32_t address)
 ////////////////////////////////
 /// METHOD NAME: Memory::MemoryManager::ValidateAddress
 ////////////////////////////////
-void MemoryManager::ValidateAddress(uint32_t address)
+void MemoryManager::ValidateAddress(const uint32_t address) const
 {
     if (address < GLOBAL_LOWER_BOUND || address > GLOBAL_UPPER_BOUND)
     {

@@ -11,7 +11,7 @@ HEX_CHARACTERS_PER_BYTE = 2
 WORDS_PER_ROW = 16
 WORD_SIZE_IN_BYTES = 4
 STARTING_MEMORY_ADDRESS = 0x20000000
-ENDIANNESS = 'little'
+ENDIANNESS = 'big'
 
 def read_and_format_file(input_file_name, output_file_name=None):
     """Convert the given file to a memory format.

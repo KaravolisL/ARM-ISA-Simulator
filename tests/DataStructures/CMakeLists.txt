@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 # Add include path
 include_directories("${PROJECT_SOURCE_DIR}/tests/Framework")
 
-# Find Catch2 package
-find_package(Catch2 REQUIRED)
-
 # Individual unit tests
 set(DATA_STRUCTURE_UTS
     DLBUT.cpp

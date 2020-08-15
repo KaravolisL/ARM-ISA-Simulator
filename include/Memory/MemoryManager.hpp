@@ -44,8 +44,8 @@ public:
     static MemoryManager& GetInstance()
     {
         /// Singleton instance
-        static MemoryManager* instance = new MemoryManager();
-        return *instance;
+        static MemoryManager* pInstance = new MemoryManager();
+        return *pInstance;
     }
 
     ////////////////////////////////
@@ -74,13 +74,16 @@ public:
     /// @param[in] data     Data which to write
     ////////////////////////////////
     template <typename T>
-    void Write(uint32_t address, T data)
+    void Write(const uint32_t address, T data)
     {
-        GoToAddress(address);
-
         LOG_DEBUG("Writing %d to the address 0x%x", data, address);
 
-        m_memoryFile.write(reinterpret_cast<char*>(&data), sizeof(data));
+        GoToAddress(address);
+        m_memoryFile.write(reinterpret_cast<char*>(&data), sizeof(T));
+
+        #ifdef BUILD_UNIT_TEST
+        m_memoryFile.flush();
+        #endif
     }
 
     ////////////////////////////////
@@ -94,12 +97,14 @@ public:
     /// @return Data at given address
     ////////////////////////////////
     template <typename T>
-    T Read(uint32_t address)
+    T Read(const uint32_t address)
     {
         GoToAddress(address);
 
-        T data;
-        m_memoryFile.read(reinterpret_cast<char*>(&data), sizeof(data));
+        uint32_t word;
+        m_memoryFile.read(reinterpret_cast<char*>(&word), sizeof(uint32_t));
+
+        T data = static_cast<T>(word);
 
         LOG_DEBUG("Read %d from the address 0x%x", static_cast<uint32_t>(data), address);
 
@@ -135,7 +140,7 @@ private:
     ///
     /// @param[in] address  Address to which to go
     ////////////////////////////////
-    void GoToAddress(uint32_t address);
+    void GoToAddress(const uint32_t address);
 
     ////////////////////////////////
     /// METHOD NAME: ValidateAddress
@@ -146,7 +151,35 @@ private:
     /// @param[in] address  Address to validate
     /// @throw MemoryException
     ////////////////////////////////
-    void ValidateAddress(uint32_t address);
+    void ValidateAddress(const uint32_t address) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: ReverseBytes
+    ///
+    /// @brief Reverse the bytes in a given
+    /// integer
+    ///
+    /// @param[in] n Integer to reverse
+    /// @return Reversed integer
+    ////////////////////////////////
+    template <class T>
+    uint32_t ReverseBytes(T n) const
+    {
+        uint8_t numberOfBytes = 4;
+        uint32_t reversedInteger = 0;
+        uint8_t byteMask = 0xFF;
+
+        reversedInteger |= (n & byteMask);
+
+        for (uint8_t i = 0; i < (numberOfBytes - 1); i++)
+        {
+            reversedInteger <<= 8;
+            n >>= 8;
+            reversedInteger |= (n & byteMask);
+        }
+
+        return reversedInteger;
+    }
 
     ////////////////////////////////
     /// Constructor
