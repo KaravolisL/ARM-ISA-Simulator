@@ -23,7 +23,7 @@
 ///
 /// @brief Enum for types of offsets
 ////////////////////////////////
-enum OffsetType
+enum class OffsetType
 {
     ZERO,
     PREINDEXED,

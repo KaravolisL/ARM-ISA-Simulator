@@ -1,29 +1,26 @@
 /////////////////////////////////
-/// @file <TEST SUITE NAME>.cpp
+/// @file <NAME OF TEST SUITE>.cpp
 ///
-/// @author Luke Karavolis
+/// @author <Author>
 /////////////////////////////////
+#define CATCH_CONFIG_RUNNER
 
 // SYSTEM INCLUDES
-#include <iostream>
+// (None)
 
 // C PROJECT INCLUDES
 // (None)
 
 // C++ PROJECT INCLUDES
-#include "UnitTestSuite.hpp" // For UnitTestSuite
+#include <catch2/catch.hpp>
 
-// Individual unit tests
-extern bool nameOfUnitTest();
-
-////////////////////////////////
-/// FUNCTION NAME: main
-////////////////////////////////
 int main(int argc, char* argv[])
 {
-    UnitTestSuite nameOfTestSuite("<TEST SUITE NAME> Unit Test Suite");
+    // GLOBAL SETUP
 
-    nameOfTestSuite.AddTest(nameOfUnitTest);
+    int result = Catch::Session().run(argc, argv);
 
-    return !(nameOfTestSuite.Run());
+    // GLOBAL TEARDOWN
+
+    return result;
 }

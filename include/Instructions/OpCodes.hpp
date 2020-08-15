@@ -23,7 +23,7 @@
 ///
 /// @brief Enum for all op codes
 ////////////////////////////////
-enum OpCode
+enum class OpCode
 {
     ADD,
     B,

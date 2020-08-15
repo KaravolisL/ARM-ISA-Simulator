@@ -102,6 +102,25 @@ int LineParser::GetValue(DLB<uint32_t>& rConstantsDictionary) const
 }
 
 ////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetLabel
+////////////////////////////////
+void LineParser::GetLabel(std::string& rLabel) const
+{
+    GetToken(0, rLabel);
+}
+
+////////////////////////////////
+/// METHOD NAME: Io::LineParser::GetLabel
+////////////////////////////////
+std::string LineParser::GetLabel() const
+{
+    std::string label;
+    GetLabel(label);
+
+    return label;
+}
+
+////////////////////////////////
 /// METHOD NAME: Io::LineParser::GetInstruction
 ////////////////////////////////
 void LineParser::GetInstruction(std::string& rInstruction) const
@@ -147,7 +166,7 @@ void LineParser::Tokenize(List<std::string>& rTokens, const char* pDeliminators)
 std::string LineParser::GetTrimmedLine() const
 {
     std::string trimmedLine = *m_pLine;
-    if (GetLineType() == LABEL_AND_INSTRUCTION)
+    if (GetLineType() == LineType::LABEL_AND_INSTRUCTION)
     {
         std::string label;
         GetLabel(label);

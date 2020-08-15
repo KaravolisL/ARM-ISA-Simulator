@@ -35,6 +35,7 @@ void KeywordDict::Initialize()
     m_keywordDict.Insert("ENTRY", Io::LineType::ENTRY);
     m_keywordDict.Insert("EQU", Io::LineType::EQU);
     m_keywordDict.Insert("DCB", Io::LineType::DCB);
+    m_keywordDict.Insert("DCD", Io::LineType::DCD);
     m_keywordDict.Insert("PROC", Io::LineType::LABEL_AND_PROC);
 
     // Instructions
@@ -80,6 +81,9 @@ void KeywordDict::Initialize()
     m_conditionalCodeDict.Insert("HI", ConditionalCode::HI);
     m_conditionalCodeDict.Insert("LS", ConditionalCode::LS);
 
+    // Memory transfer types
+    static std::string memTransferTypes[] = {"B", "SB", "H", "SH"};
+
     // Instructions + appendages
     SLList<std::string> instructionList = m_instructionDict.GetKeys();
     SLList<std::string> conditionalCodeList = m_conditionalCodeDict.GetKeys();
@@ -90,11 +94,30 @@ void KeywordDict::Initialize()
         // For every instruction, add the base, base + s, base + conditional, base + s + conditional
         m_keywordDict.Insert(*it, Io::LineType::INSTRUCTION);
         m_keywordDict.Insert(*it + 'S', Io::LineType::INSTRUCTION);
+
+        // Memory instructions need their transfer types added
+        if ((*it == "LDR") || (*it == "STR"))
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                m_keywordDict.Insert(*it + memTransferTypes[i], Io::LineType::INSTRUCTION);
+            }
+        }
+
         for (SLList<std::string>::SLListIterator condIt = conditionalCodeList.GetBegin();
              condIt != conditionalCodeList.GetEnd(); condIt++)
         {
             m_keywordDict.Insert(*it + *condIt, Io::LineType::INSTRUCTION);
             m_keywordDict.Insert(*it + *condIt + 'S', Io::LineType::INSTRUCTION);
+
+            // Memory instructions need their transfer types added
+            if ((*it == "LDR") || (*it == "STR"))
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    m_keywordDict.Insert(*it + *condIt + memTransferTypes[i], Io::LineType::INSTRUCTION);
+                }
+            }
         }
     }
     

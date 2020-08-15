@@ -1,5 +1,5 @@
 /////////////////////////////////
-/// @file MemoryInstructionTestSuite.cpp
+/// @file MemoryTestSuite.cpp
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -13,13 +13,10 @@
 
 // C++ PROJECT INCLUDES
 #include <catch2/catch.hpp>
-#include "KeywordDict.hpp" // For KeywordDict
 #include "MemoryApi.hpp" // For MemoryApi
 
 int main(int argc, char* argv[])
 {
-    KeywordDict::GetInstance().Initialize();
-
     Memory::MemoryApi::Initialize();
 
     int result = Catch::Session().run(argc, argv);

@@ -33,6 +33,13 @@ namespace MemoryApi
 void Initialize();
 
 ////////////////////////////////
+/// METHOD NAME: Memory::MemoryApi::Close
+///
+/// @brief Closes the memory file
+////////////////////////////////
+void Close();
+
+////////////////////////////////
 /// METHOD NAME: Memory::MemoryApi::ReadWord
 ///
 /// @brief Reads a word from the given address

@@ -31,6 +31,7 @@ TEST_CASE("LDR and STR Instructions", "[instruction][Memory]")
     myProc.GetLabelDictionary().Insert("str", memAddress);
     myProc.GetProcessRegisters().genRegs[0] = memAddress;
 
+
     SECTION("STR Instruction")
     {
         uint32_t a = GENERATE(take(5, random(INT32_MIN, INT32_MAX)));

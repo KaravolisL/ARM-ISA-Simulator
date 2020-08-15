@@ -3,8 +3,8 @@
 ///
 /// @brief Declarations for MemoryManager class
 ///
-/// @details This class is responsible for 
-/// cooridinating operations with memory
+/// @details This class is responsible for
+/// coordinating operations with memory
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -20,6 +20,7 @@
 
 // C++ PROJECT INCLUDES
 #include "Assert.hpp" // For ASSERT
+#include "Logger.hpp" // For LOG_DEBUG
 
 // FORWARD DECLARATIONS
 // (None)
@@ -31,7 +32,7 @@ namespace Memory
 /// @class MemoryManager
 ///
 /// @brief Class responsible for managing
-/// memory operations 
+/// memory operations
 ////////////////////////////////
 class MemoryManager
 {
@@ -43,8 +44,16 @@ public:
     static MemoryManager& GetInstance()
     {
         /// Singleton instance
-        static MemoryManager* instance = new MemoryManager();
-        return *instance;
+        static MemoryManager* pInstance = new MemoryManager();
+        return *pInstance;
+    }
+
+    ////////////////////////////////
+    /// METHOD NAME: Close
+    ////////////////////////////////
+    void Close()
+    {
+        m_memoryFile.close();
     }
 
     ////////////////////////////////
@@ -56,89 +65,51 @@ public:
     void Initialize();
 
     ////////////////////////////////
-    /// METHOD NAME: ReadWord
+    /// METHOD NAME: Write
     ///
-    /// @brief Reads a word from the given
+    /// @brief Writes data to the given address
+    ///
+    /// @param[in] T        Size of data to write
+    /// @param[in] address  Address to which to read
+    /// @param[in] data     Data which to write
+    ////////////////////////////////
+    template <typename T>
+    void Write(const uint32_t address, T data)
+    {
+        LOG_DEBUG("Writing %d to the address 0x%x", data, address);
+
+        GoToAddress(address);
+        m_memoryFile.write(reinterpret_cast<char*>(&data), sizeof(T));
+
+        #ifdef BUILD_UNIT_TEST
+        m_memoryFile.flush();
+        #endif
+    }
+
+    ////////////////////////////////
+    /// METHOD NAME: Read
+    ///
+    /// @brief Reads data from the given
     /// address and returns it
     ///
     /// @param[in] address  Address to which to read
+    /// @param[in] T        Size of data to read
     /// @return Data at given address
     ////////////////////////////////
-    uint32_t ReadWord(uint32_t address);
+    template <typename T>
+    T Read(const uint32_t address)
+    {
+        GoToAddress(address);
 
-    ////////////////////////////////
-    /// METHOD NAME: ReadUnsignedByte
-    ///
-    /// @brief Reads an unsigned byte from the given
-    /// address and returns it as a uint32_t
-    ///
-    /// @param[in] address  Address to which to read
-    /// @return Data at given address
-    ////////////////////////////////
-    uint32_t ReadUnsignedByte(uint32_t address);
+        uint32_t word;
+        m_memoryFile.read(reinterpret_cast<char*>(&word), sizeof(uint32_t));
 
-    ////////////////////////////////
-    /// METHOD NAME: ReadSignedByte
-    ///
-    /// @brief Reads a signed byte from the given
-    /// address and returns it as a uint32_t
-    ///
-    /// @param[in] address  Address to which to read
-    /// @return Data at given address
-    ////////////////////////////////
-    uint32_t ReadSignedByte(uint32_t address);
+        T data = static_cast<T>(word);
 
-    ////////////////////////////////
-    /// METHOD NAME: ReadUnsignedHalfword
-    ///
-    /// @brief Reads an unsigned halfword from the given
-    /// address and returns it as a uint32_t
-    ///
-    /// @param[in] address  Address to which to read
-    /// @return Data at given address
-    ////////////////////////////////
-    uint32_t ReadUnsignedHalfword(uint32_t address);
+        LOG_DEBUG("Read %d from the address 0x%x", static_cast<uint32_t>(data), address);
 
-    ////////////////////////////////
-    /// METHOD NAME: ReadSignedHalfword
-    ///
-    /// @brief Reads a signed halfword from the given
-    /// address and returns it as a uint32_t
-    ///
-    /// @param[in] address  Address to which to read
-    /// @return Data at given address
-    ////////////////////////////////
-    uint32_t ReadSignedHalfword(uint32_t address);
-
-    ////////////////////////////////
-    /// METHOD NAME: WriteWord
-    ///
-    /// @brief Writes a word of data to the given address
-    ///
-    /// @param[in] address  Address to which to read
-    /// @param[in] data     Data which to write
-    ////////////////////////////////
-    void WriteWord(uint32_t address, uint32_t data);
-
-    ////////////////////////////////
-    /// METHOD NAME: WriteUnsignedByte
-    ///
-    /// @brief Writes an unsigned byte of data to the given address
-    ///
-    /// @param[in] address  Address to which to read
-    /// @param[in] data     Data which to write
-    ////////////////////////////////
-    void WriteUnsignedByte(uint32_t address, uint8_t data);
-
-    ////////////////////////////////
-    /// METHOD NAME: WriteUnsignedHalfword
-    ///
-    /// @brief Writes an unsigned halfword of data to the given address
-    ///
-    /// @param[in] address  Address to which to read
-    /// @param[in] data     Data which to write
-    ////////////////////////////////
-    void WriteUnsignedHalfword(uint32_t address, uint16_t data);
+        return data;
+    }
 
     ////////////////////////////////
     /// @struct MemoryException
@@ -161,27 +132,6 @@ private:
     /// File input stream
     std::fstream m_memoryFile;
 
-    /// Number of words per row of the memory file
-    static const uint16_t WORDS_PER_ROW = 16;
-
-    /// Number of hex characters in a word
-    static const uint16_t CHARACTERS_PER_WORD = 8;
-
-    /// Number of hex characters in a halfword
-    static const uint16_t CHARACTERS_PER_HALFWORD = 4;
-
-    /// Number of hex characters in a byte
-    static const uint16_t CHARACTERS_PER_BYTE = 2;
-
-    /// Offset to reach the least significant halfword
-    static const uint16_t OFFSET_FOR_HALFWORD = CHARACTERS_PER_WORD - CHARACTERS_PER_HALFWORD;
-
-    /// Offset to reach the least significant byte
-    static const uint16_t OFFSET_FOR_BYTE = CHARACTERS_PER_WORD - CHARACTERS_PER_BYTE;
-
-    /// Address plus two characters on each side then each word plus a character following it plus a new line character
-    static const uint32_t CHARACTERS_PER_LINE = 2 + CHARACTERS_PER_WORD + 2 + (WORDS_PER_ROW * (CHARACTERS_PER_WORD + 1)) + 2;
-
     ////////////////////////////////
     /// METHOD NAME: GoToAddress
     ///
@@ -190,7 +140,7 @@ private:
     ///
     /// @param[in] address  Address to which to go
     ////////////////////////////////
-    void GoToAddress(uint32_t address);
+    void GoToAddress(const uint32_t address);
 
     ////////////////////////////////
     /// METHOD NAME: ValidateAddress
@@ -201,7 +151,35 @@ private:
     /// @param[in] address  Address to validate
     /// @throw MemoryException
     ////////////////////////////////
-    void ValidateAddress(uint32_t address);
+    void ValidateAddress(const uint32_t address) const;
+
+    ////////////////////////////////
+    /// METHOD NAME: ReverseBytes
+    ///
+    /// @brief Reverse the bytes in a given
+    /// integer
+    ///
+    /// @param[in] n Integer to reverse
+    /// @return Reversed integer
+    ////////////////////////////////
+    template <class T>
+    uint32_t ReverseBytes(T n) const
+    {
+        uint8_t numberOfBytes = 4;
+        uint32_t reversedInteger = 0;
+        uint8_t byteMask = 0xFF;
+
+        reversedInteger |= (n & byteMask);
+
+        for (uint8_t i = 0; i < (numberOfBytes - 1); i++)
+        {
+            reversedInteger <<= 8;
+            n >>= 8;
+            reversedInteger |= (n & byteMask);
+        }
+
+        return reversedInteger;
+    }
 
     ////////////////////////////////
     /// Constructor
@@ -209,17 +187,12 @@ private:
     /// @note Private to ensure singleton
     ////////////////////////////////
     MemoryManager() :
-        m_memoryFile(std::fstream(MEMORY_FILE_NAME, std::fstream::in | std::fstream::out | std::fstream::trunc))
+        m_memoryFile(std::fstream(MEMORY_FILE_NAME, std::fstream::in    |
+                                                    std::fstream::out   |
+                                                    std::fstream::trunc |
+                                                    std::fstream::binary))
     {
         ASSERT(m_memoryFile.is_open(), "File did not open");
-    }
-
-    ////////////////////////////////
-    /// Deconstructor
-    ////////////////////////////////
-    ~MemoryManager()
-    {
-        m_memoryFile.close();
     }
 
     ////////////////////////////////
