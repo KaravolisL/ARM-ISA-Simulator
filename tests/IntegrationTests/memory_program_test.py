@@ -97,7 +97,7 @@ if __name__ == '__main__':
     output = open(OUTPUT_FILE_NAME, 'r')
 
     # Check for correct values in registers
-    expected_values = ['19', '1a', '1b', '20000008', '20000018', '0', '6e', 'FFFFFFFB']
+    expected_values = ['19', '1a', '1b', '20000008', '20000018', '0', '6e', 'fffffffb']
     lines = output.readlines()
 
     for i in range(0, len(expected_values)):
