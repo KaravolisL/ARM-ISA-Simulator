@@ -74,6 +74,12 @@ void ProcessInitializer::InitializeFile(const char* fileName) const
             {
                 std::string newFileName;
                 lineParser.GetFileName(newFileName);
+
+                // We need to add the path to the filename before recursing
+                std::string originalFileName = std::string(fileName);
+                std::string path = originalFileName.substr(0, originalFileName.rfind('/') + 1);
+                newFileName = path + newFileName;
+
                 // Recurse on the include file
                 InitializeFile(newFileName.c_str());
                 break;
