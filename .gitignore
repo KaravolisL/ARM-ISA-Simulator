@@ -42,3 +42,7 @@ build
 
 # Formatted memory files
 src/Util/*.txt
+
+# Test artifacts
+tests/IntegrationTests/Artifacts
+__pycache__/
