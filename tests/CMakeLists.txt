@@ -39,6 +39,6 @@ add_test(NAME LineParserUT COMMAND LineParserUT)
 
 include(FindPythonInterp)
 add_test(NAME simple_program_test COMMAND pytest ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/simple_program_test.py)
-# add_test(NAME conditional_program_test COMMAND pytest ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/conditional_program_test.py)
+add_test(NAME conditional_program_test COMMAND pytest ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/conditional_program_test.py)
 # add_test(NAME function_program_test COMMAND pytest ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/function_program_test.py)
 # add_test(NAME memory_program_test COMMAND pytest ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/memory_program_test.py)

@@ -28,6 +28,10 @@ jobs:
       run: cmake .
     - name: Build
       run: make
+
+    - name: Installing pytest
+      run: pip install pytest
+
     - name: Unit Tests
       run: make test
     - name: Upload test results

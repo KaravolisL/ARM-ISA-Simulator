@@ -1,5 +1,6 @@
-import pytest
+# Standard Libraries
 import os
+import pytest
 import subprocess
 
 TEST_PROGRAM = r"SourcePrograms/SimpleProgram.s"
