@@ -10,7 +10,7 @@ set(MEMORY_UTS
 
 # Add executables (Suites)
 add_executable(MemoryTestSuite MemoryTestSuite.cpp ${MEMORY_UTS})
-target_link_libraries(MemoryTestSuite PRIVATE Catch2::Catch2 support mem_library)
+target_link_libraries(MemoryTestSuite PRIVATE Catch2::Catch2 mem_library debug_lib)
 
 # Add Unit Tests
 add_test(NAME MemoryTestSuite COMMAND MemoryTestSuite)

@@ -29,7 +29,7 @@ add_executable(FileIteratorUT FileIteratorUT.cpp)
 target_link_libraries(FileIteratorUT PRIVATE io_library)
 
 add_executable(LineParserUT LineParserUT.cpp)
-target_link_libraries(LineParserUT PRIVATE io_library keyword_dict support)
+target_link_libraries(LineParserUT PRIVATE io_library keyword_dict debug_lib)
 
 # Add Unit Tests
 add_test(NAME LoggerUT COMMAND LoggerUT)

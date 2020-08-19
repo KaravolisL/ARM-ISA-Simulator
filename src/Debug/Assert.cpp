@@ -49,5 +49,8 @@ void Assert(bool expr, const char* fileName, int lineNumber, int numArgs, ...)
     std::cout << "Assertion failed: " << concatString << '\n';
     std::cout << "See Debug.log for more details\n";
 
+    // Close the log so it's preserved
+    Logger::GetInstance().Close();
+
     assert(expr);
 }
