@@ -26,7 +26,7 @@ jobs:
         cd ..
 
     - name: Run CMake
-      run: cmake .
+      run: cmake . -DENABLE_TESTS
     - name: Build
       run: make
 
