@@ -35,13 +35,11 @@ jobs:
         python-version: 3.8
 
     - name: Installing pytest
-      run: pip install pytest
-
-    - name: Check pytest version
-      run: pytest --version
+      run: |
+        pip install pytest
+        pytest --version
 
     - name: Unit Tests
-      shell: pwsh
       run: make test
     - name: Upload test results
       if: always()
