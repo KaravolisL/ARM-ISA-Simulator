@@ -5,6 +5,6 @@ IF NOT EXIST build (
 )
 
 cd build
-cmake .. -DENABLE_TESTS
+cmake .. -DENABLE_TESTS:BOOL=ON
 REM -G "MSYS Makefiles"
 make

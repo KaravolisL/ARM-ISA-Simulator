@@ -34,7 +34,7 @@ jobs:
         popd
 
     - name: Run CMake
-      run: cmake . -DENABLE_TESTS
+      run: cmake . -DENABLE_TESTS:BOOL=ON
     - name: Build
       run: make
 
