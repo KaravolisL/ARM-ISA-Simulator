@@ -25,8 +25,16 @@ jobs:
         sudo cmake --build build/ --target install
         cd ..
 
+    - name: Installing CLI11
+      run: |
+        git clone https://github.com/CLIUtils/CLI11.git
+        pushd CLI11
+        cmake -Bbuild -H. -DBUILD_TESTING=OFF
+        sudo cmake --build build/ --target install
+        popd
+
     - name: Run CMake
-      run: cmake . -DENABLE_TESTS:BOOL=ON
+      run: cmake . -DBUILD_TESTING:BOOL=ON
     - name: Build
       run: make
 

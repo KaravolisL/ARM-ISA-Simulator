@@ -14,8 +14,8 @@ add_compile_options(-Wall -Weffc++ -pedantic -std=c++0x -g)
 set(CMAKE_CXX_STANDARD 17)
 
 # Optionally build tests
-option(ENABLE_TESTS "Enable Testing" OFF)
-if(ENABLE_TESTS)
+option(BUILD_TESTING "Enable Testing" OFF)
+if(BUILD_TESTING)
     enable_testing()
     add_subdirectory(tests)
 endif()
