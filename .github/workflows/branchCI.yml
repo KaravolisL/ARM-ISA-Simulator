@@ -29,7 +29,7 @@ jobs:
       run: |
         git clone https://github.com/CLIUtils/CLI11.git
         pushd CLI11
-        cmake -Bbuild -H.
+        cmake -Bbuild -H. -DBUILD_TESTING=OFF
         sudo cmake --build build/ --target install
         popd
 
