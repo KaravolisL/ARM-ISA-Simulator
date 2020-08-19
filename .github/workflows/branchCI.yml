@@ -14,7 +14,8 @@ jobs:
     continue-on-error: true
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout current repository
+      uses: actions/checkout@v2
 
     - name: Installing Catch2
       run: |
