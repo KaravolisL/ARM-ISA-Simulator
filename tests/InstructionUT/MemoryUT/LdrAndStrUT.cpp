@@ -14,9 +14,11 @@
 
 // C++ PROJECT INCLUDES
 #include <catch2/catch.hpp>
+#include "FileIterator.hpp"
 #include "Process.hpp"
 #include "InstructionBuilder.hpp"
 #include "InstructionBase.hpp"
+#include "InvalidSyntaxException.hpp"
 #include "MemoryApi.hpp"
 #include "MemoryConstants.hpp"
 
@@ -144,5 +146,16 @@ TEST_CASE("LDR and STR Instructions", "[instruction][Memory]")
             REQUIRE(myProc.GetProcessRegisters().genRegs[0] == memAddress + 16);
             delete pInstruction;
         }
+    }
+
+    SECTION("Invalid Instructions")
+    {
+        myProc.SetFileIterator(new Io::FileIterator("TestFile.txt"));
+
+        instructionStr = "STRSB R5, [R0]";
+        REQUIRE_THROWS_AS(builder.BuildInstruction(instructionStr, &myProc), InvalidSyntaxException);
+    
+        instructionStr = "STRSH R5, [R0]";
+        REQUIRE_THROWS_AS(builder.BuildInstruction(instructionStr, &myProc), InvalidSyntaxException);
     }
 }

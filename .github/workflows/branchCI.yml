@@ -14,7 +14,8 @@ jobs:
     continue-on-error: true
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout current repository
+      uses: actions/checkout@v2
 
     - name: Installing Catch2
       run: |
@@ -28,6 +29,20 @@ jobs:
       run: cmake .
     - name: Build
       run: make
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+
+    - name: Installing pytest
+      run: |
+        pip install pytest
+        pytest --version
+
     - name: Unit Tests
       run: make test
     - name: Upload test results

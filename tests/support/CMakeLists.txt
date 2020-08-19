@@ -10,7 +10,6 @@ include_directories("${PROJECT_SOURCE_DIR}/include/Instructions")
 set(STUBS
     AssertMock.cpp
     FileIteratorMock.cpp
-    LoggerMock.cpp
     ProcessMock.cpp
 )
 

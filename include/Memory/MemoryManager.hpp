@@ -127,7 +127,7 @@ protected:
 private:
 
     /// Name of the memory file
-    const char* MEMORY_FILE_NAME = "Memory.txt";
+    const char* MEMORY_FILE_NAME = "Memory.bin";
 
     /// File input stream
     std::fstream m_memoryFile;
