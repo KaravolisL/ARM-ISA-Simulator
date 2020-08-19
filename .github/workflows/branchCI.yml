@@ -32,6 +32,9 @@ jobs:
     - name: Installing pytest
       run: pip install pytest
 
+    - name: Check pytest version
+      run: pytest --version
+
     - name: Unit Tests
       shell: pwsh
       run: make test
