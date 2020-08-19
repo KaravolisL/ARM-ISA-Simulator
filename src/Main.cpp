@@ -13,6 +13,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
+#include <CLI/CLI.hpp>
 #include "Process.hpp"  // For Process
 #include "KeywordDict.hpp" // For KeywordDict class
 #include "MemoryApi.hpp" // For Memory::MemoryApi

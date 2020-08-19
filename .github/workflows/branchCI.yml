@@ -20,10 +20,18 @@ jobs:
     - name: Installing Catch2
       run: |
         git clone https://github.com/catchorg/Catch2.git
-        cd Catch2
+        pushd Catch2
         cmake -Bbuild -H. -DBUILD_TESTING=OFF
         sudo cmake --build build/ --target install
-        cd ..
+        popd
+
+    - name: Installing CLI11
+      run: |
+        git clone https://github.com/CLIUtils/CLI11.git
+        pushd CLI11
+        cmake -Bbuild -H.
+        sudo cmake --build build/ --target install
+        popd
 
     - name: Run CMake
       run: cmake . -DENABLE_TESTS
