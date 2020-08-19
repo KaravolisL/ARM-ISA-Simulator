@@ -30,6 +30,7 @@ jobs:
       run: make
 
     - name: Installing pytest
+      shell: pwsh
       run: pip install pytest
 
     - name: Unit Tests
