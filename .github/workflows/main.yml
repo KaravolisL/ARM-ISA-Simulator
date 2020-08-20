@@ -61,4 +61,4 @@ jobs:
         name: Test Results
         path: |
           Testing/Temporary/LastTest.log
-          ../tests/IntegrationTests/Artifacts/
+          ${{ github.workspace }}/tests/IntegrationTests/Artifacts/
