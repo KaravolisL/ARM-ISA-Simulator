@@ -54,7 +54,7 @@ public:
     ///
     /// @returns Whether there are more lines in the file
     ////////////////////////////////
-    bool HasNext();
+    bool HasNext() const;
 
     ////////////////////////////////
     /// METHOD NAME: GoToLine

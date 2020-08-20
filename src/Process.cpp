@@ -44,7 +44,7 @@ void Process::Initialize(const char* fileName)
 ////////////////////////////////
 /// METHOD NAME: Process::Execute
 ////////////////////////////////
-void Process::Execute(bool debug)
+void Process::Execute(const bool debug)
 {
     LOG_DEBUG("Executing process. debug = %d", debug);
 
@@ -83,8 +83,10 @@ bool Process::Step()
     pInstruction = InstructionBuilder::GetInstance().BuildInstruction(instruction, this);
     pInstruction->Execute(this->GetProcessRegisters());
 
-    // Check if the instruction changed the PC, otherwise just increment it
-    if (m_processRegisters.PC != m_pFileIterator->GetLineNumber())
+    // If a branch instruction was executed, use the set PC
+    OpCode opCode = pInstruction->GetOpCode();
+    if ((opCode == OpCode::B) || (opCode == OpCode::BL) ||
+        (opCode == OpCode::BX) || (opCode == OpCode::BLX))
     {
         LOG_DEBUG("PC set to %d", m_processRegisters.PC);
     }
