@@ -26,6 +26,4 @@ __main PROC
 MyLabel MOV R0, #0xFF
     MOV R7, #7 ; R7 = 7
 
-stop B stop
-
     ENDP
