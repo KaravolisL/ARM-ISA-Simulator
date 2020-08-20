@@ -24,11 +24,17 @@
 ////////////////////////////////
 int main(int argc, char* argv[])
 {
-    if (argc != 2)
-    {
-        std::cout << "Invalid command line arguments";
-        exit(EXIT_FAILURE);
-    }
+    CLI::App app{"ARM Instruction Set Architecture Simulator"};
+
+    std::string filename = "";
+    CLI::Option* pFileOption = app.add_option("-f, --file", filename, "Main assembly code file");
+    pFileOption->required();
+    pFileOption->check(CLI::ExistingFile);
+
+    bool debug;
+    CLI::Option* pDebugOption = app.add_flag("-d, --debug", debug, "Runs the program in debug mode");
+
+    CLI11_PARSE(app, argc, argv);
 
     // Initialize the keyword dictionary
     KeywordDict::GetInstance().Initialize();
@@ -40,9 +46,9 @@ int main(int argc, char* argv[])
     Process* pProcess = new Process();
 
     // Initalize the process using the given file
-    pProcess->Initialize(argv[1]);
+    pProcess->Initialize(filename.c_str());
 
-    pProcess->Execute();
+    pProcess->Execute(debug);
 
     pProcess->PrintSummary(&std::hex);
 
@@ -51,6 +57,6 @@ int main(int argc, char* argv[])
 
     // Close the log file
     Logger::GetInstance().Close();
-    
+
     return 0;
 }

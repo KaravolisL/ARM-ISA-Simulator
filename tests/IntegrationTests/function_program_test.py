@@ -17,7 +17,7 @@ def test_function_program(find_executable, artifacts):
     output = open(os.path.join(artifacts, OUTPUT_FILE_NAME), 'w')
 
     # Execute simulator
-    program = subprocess.call(["./" + find_executable, TEST_PROGRAM], stdout=output)
+    program = subprocess.call(["./" + find_executable, "-f", TEST_PROGRAM], stdout=output)
     assert(program == 0), "Program did not execute successfully"
 
     # Close and reopen the output file

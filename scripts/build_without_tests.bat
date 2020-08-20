@@ -5,6 +5,6 @@ IF NOT EXIST build (
 )
 
 cd build
-cmake .. 
+cmake .. -DBUILD_TESTING:BOOL=OFF
 REM -G "MSYS Makefiles"
 make

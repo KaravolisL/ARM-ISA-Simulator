@@ -44,9 +44,18 @@ void Process::Initialize(const char* fileName)
 ////////////////////////////////
 /// METHOD NAME: Process::Execute
 ////////////////////////////////
-void Process::Execute()
+void Process::Execute(bool debug)
 {
-    while (this->Step()) {}
+    LOG_DEBUG("Executing process. debug = %d", debug);
+
+    do
+    {
+        if (debug)
+        {
+            std::cout << m_pFileIterator->GetCurrentLine();
+            while (std::cin.get() != '\n') {}
+        }
+    } while (this->Step());
 
     LOG_DEBUG("Execution Complete");
 }
@@ -79,7 +88,6 @@ bool Process::Step()
     // Check if the instruction changed the PC, otherwise just increment it
     if (m_processRegisters.PC != m_pFileIterator->GetLineNumber())
     {
-        m_pFileIterator->GoToLine(m_processRegisters.PC);
         LOG_DEBUG("PC set to %d", m_processRegisters.PC);
     }
     else
