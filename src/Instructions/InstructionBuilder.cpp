@@ -35,7 +35,7 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
     OpCode opCode = DetermineOpCode(keyword);
 
     // Determine whether instruction should be executed based on conditional code
-    if (CheckConditionalCode(keyword, pProcess->GetProcessRegisters()) == false || opCode == OpCode::NOP)
+    if ((CheckConditionalCode(keyword, pProcess->GetProcessRegisters()) == false) || (opCode == OpCode::NOP))
     {
         LOG_DEBUG("Instruction will not be executed");
         return new NOPInstruction();

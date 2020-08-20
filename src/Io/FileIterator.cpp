@@ -37,7 +37,7 @@ FileIterator::FileIterator(const std::string& fileName) :
 ////////////////////////////////
 /// METHOD NAME: HasNext
 ////////////////////////////////
-bool FileIterator::HasNext()
+bool FileIterator::HasNext() const
 {
     return !m_fileStream.eof();
 }

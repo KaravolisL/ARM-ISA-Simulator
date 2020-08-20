@@ -74,7 +74,7 @@ public:
     ///
     /// @param[in] debug    Whether to execute the program in debug mode
     ////////////////////////////////
-    void Execute(bool debug);
+    void Execute(const bool debug);
 
     ////////////////////////////////
     /// METHOD NAME: Step
