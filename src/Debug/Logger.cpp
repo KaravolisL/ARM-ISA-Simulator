@@ -9,6 +9,7 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
+#include <iostream>
 #include <string>
 #include <sstream>
 
@@ -22,7 +23,7 @@
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(std::string& rMsg, Logger::LogLevel logLevel)
+void Logger::Log(const std::string& rMsg, const Logger::LogLevel logLevel)
 {
     // Print log level
     switch (logLevel)
@@ -35,6 +36,9 @@ void Logger::Log(std::string& rMsg, Logger::LogLevel logLevel)
             break;
         case LogLevel::ERROR:
             m_logStream << "ERROR: ";
+            break;
+        case LogLevel::USER:
+            m_logStream << "USER: ";
             break;
         default:
             ASSERT(false, "logLevel = %d", logLevel);
@@ -50,7 +54,7 @@ void Logger::Log(std::string& rMsg, Logger::LogLevel logLevel)
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(const char* fileName, const char* funcName, int lineNumber, Logger::LogLevel logLevel, int numArgs, ...)
+void Logger::Log(const char* fileName, const char* funcName, const int lineNumber, const Logger::LogLevel logLevel, const int numArgs, ...)
 {
     // Concatenate given strings
     std::stringstream concatStream;
@@ -61,7 +65,8 @@ void Logger::Log(const char* fileName, const char* funcName, int lineNumber, Log
     va_start(valist, numArgs);
 
     // Concatenate given strings
-    concatStream << format(numArgs, valist);
+    std::string message = format(numArgs, valist);
+    concatStream << message;
 
     // Clean up memory
     va_end(valist);
@@ -69,4 +74,10 @@ void Logger::Log(const char* fileName, const char* funcName, int lineNumber, Log
     // Have to copy it because of how .str() works
     std::string concatString = concatStream.str();
     this->Log(concatString, logLevel);
+
+    // User logs also get printed to std::cout
+    if (logLevel == LogLevel::USER)
+    {
+        std::cout << message;
+    }
 }

@@ -52,7 +52,7 @@ void Process::Execute(bool debug)
     {
         if (debug)
         {
-            std::cout << m_pFileIterator->GetCurrentLine();
+            LOG_USER("Executing: %s", m_pFileIterator->GetCurrentLine().c_str());
             while (std::cin.get() != '\n') {}
         }
     } while (this->Step());
@@ -76,8 +76,6 @@ bool Process::Step()
     }
     // Update the pc once a valid line is found
     m_processRegisters.PC = m_pFileIterator->GetLineNumber();
-
-    LOG_DEBUG("Executing %s", m_pFileIterator->GetCurrentLine().c_str());
 
     std::string instruction = lineParser.GetTrimmedLine();
 

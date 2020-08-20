@@ -30,6 +30,7 @@
 #define LOG_DEBUG( ... ) Logger::GetInstance().Log(__FILENAME__, __PRETTY_FUNCTION__, __LINE__, Logger::LogLevel::DEBUG, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
 #define LOG_INFO( ... ) Logger::GetInstance().Log(__FILENAME__, __PRETTY_FUNCTION__, __LINE__, Logger::LogLevel::INFO, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
 #define LOG_ERROR( ... ) Logger::GetInstance().Log(__FILENAME__, __PRETTY_FUNCTION__, __LINE__, Logger::LogLevel::ERROR, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
+#define LOG_USER( ... ) Logger::GetInstance().Log(__FILENAME__, __PRETTY_FUNCTION__, __LINE__, Logger::LogLevel::USER, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
 
 ////////////////////////////////
 /// @class Logger
@@ -55,7 +56,8 @@ public:
     {
         INFO,
         DEBUG,
-        ERROR
+        ERROR,
+        USER
     };
 
     ////////////////////////////////
@@ -75,19 +77,19 @@ public:
     /// @param numArgs      Number of arguments passed in additionally
     /// @param ...          Format string followed by replacement variables
     ////////////////////////////////
-    void Log(const char* fileName, const char* funcName, int lineNumber, LogLevel logLevel, int numArgs, ...);
+    void Log(const char* fileName, const char* funcName, const int lineNumber, const LogLevel logLevel, const int numArgs, ...);
 
     ////////////////////////////////
     /// METHOD NAME: Log
     ///
     /// @brief This version is used for the
-    /// log macro. It's called after finding
+    /// assert macro. It's called after finding
     /// the number of arguments
     ///
     /// @param rMsg          Message to output
     /// @param logLevel     Level at which to print message
     ////////////////////////////////
-    void Log(std::string& rMsg, LogLevel logLevel);
+    void Log(const std::string& rMsg, const LogLevel logLevel);
 
     ////////////////////////////////
     /// METHOD NAME: Close

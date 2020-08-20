@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     pFileOption->check(CLI::ExistingFile);
 
     bool debug;
-    CLI::Option* pDebugOption = app.add_flag("-d, --debug", debug, "Runs the program in debug mode");
+    app.add_flag("-d, --debug", debug, "Runs the program in debug mode");
 
     CLI11_PARSE(app, argc, argv);
 
