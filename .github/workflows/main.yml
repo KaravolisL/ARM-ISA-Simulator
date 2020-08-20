@@ -49,6 +49,7 @@ jobs:
     - name: Installing pytest
       run: |
         pip install pytest
+        pip install pytest-timeout
         pytest --version
 
     - name: Unit Tests
