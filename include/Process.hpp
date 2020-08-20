@@ -71,8 +71,10 @@ public:
     /// METHOD NAME: Execute
     ///
     /// @brief Begins execution of instructions
+    ///
+    /// @param[in] debug    Whether to execute the program in debug mode
     ////////////////////////////////
-    void Execute();
+    void Execute(bool debug);
 
     ////////////////////////////////
     /// METHOD NAME: Step

@@ -209,7 +209,7 @@ public:
         std::stringstream stream;
         for (uint32_t i = 0; i < m_length; i++)
         {
-            stream << m_list[i];
+            stream << static_cast<uint32_t>(m_list[i]);
             if (i != m_length - 1)
             {
                 stream << ", ";

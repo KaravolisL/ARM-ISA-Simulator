@@ -72,7 +72,7 @@ public:
     ////////////////////////////////
     /// METHOD NAME: SetArgument1
     ////////////////////////////////
-    void SetArgument1(Register argument1) { m_argument1 = argument1; }
+    void SetArgument1(const Register argument1) { m_argument1 = argument1; }
 
     ////////////////////////////////
     /// METHOD NAME: GetArgument1
@@ -82,7 +82,7 @@ public:
     ////////////////////////////////
     /// METHOD NAME: SetArgument2
     ////////////////////////////////
-    void SetArgument2(Register argument2) { m_argument2 = argument2; }
+    void SetArgument2(const Register argument2) { m_argument2 = argument2; }
 
     ////////////////////////////////
     /// METHOD NAME: GetArgument2

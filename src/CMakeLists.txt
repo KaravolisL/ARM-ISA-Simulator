@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.16)
 add_compile_options(-Wall -Weffc++ -pedantic -std=c++0x)
 set(CMAKE_CXX_STANDARD 17)
 
+# Find packages
+find_package(CLI11 REQUIRED)
+
 # Set include directory
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/include/Io")
@@ -33,6 +36,7 @@ add_executable(ARM-ISA-SIMULATOR ${SOURCES})
 
 # Link in libraries
 target_link_libraries(ARM-ISA-SIMULATOR
+                      PRIVATE CLI11::CLI11
                       PRIVATE debug_lib
                       PRIVATE io_library
                       PRIVATE keyword_dict

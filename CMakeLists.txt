@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-# set(CMAKE_C_COMPILER "C:/MinGW/bin/gcc.exe")
-# set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")
-
 ### Require out-of-source builds
 file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
 if(EXISTS "${LOC_PATH}")
@@ -16,9 +13,12 @@ project(ARM_ISA_SIMULATOR)
 add_compile_options(-Wall -Weffc++ -pedantic -std=c++0x -g)
 set(CMAKE_CXX_STANDARD 17)
 
-# Enable testing
-enable_testing()
+# Optionally build tests
+option(BUILD_TESTING "Enable Testing" OFF)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 
-# Add subdirectories
-add_subdirectory (src)
-add_subdirectory (tests)
+# Add source subdirectory
+add_subdirectory(src)

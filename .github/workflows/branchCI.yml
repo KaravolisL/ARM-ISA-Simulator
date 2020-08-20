@@ -20,13 +20,21 @@ jobs:
     - name: Installing Catch2
       run: |
         git clone https://github.com/catchorg/Catch2.git
-        cd Catch2
+        pushd Catch2
         cmake -Bbuild -H. -DBUILD_TESTING=OFF
         sudo cmake --build build/ --target install
-        cd ..
+        popd
+
+    - name: Installing CLI11
+      run: |
+        git clone https://github.com/CLIUtils/CLI11.git
+        pushd CLI11
+        cmake -Bbuild -H. -DBUILD_TESTING=OFF
+        sudo cmake --build build/ --target install
+        popd
 
     - name: Run CMake
-      run: cmake .
+      run: cmake . -DBUILD_TESTING:BOOL=ON
     - name: Build
       run: make
 
@@ -41,13 +49,16 @@ jobs:
     - name: Installing pytest
       run: |
         pip install pytest
+        pip install pytest-timeout
         pytest --version
 
     - name: Unit Tests
       run: make test
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: Test Results
-        path: Testing/Temporary/LastTest.log
+        path: |
+          Testing/Temporary/LastTest.log
+          ${{ github.workspace }}/tests/IntegrationTests/Artifacts/
