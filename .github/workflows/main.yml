@@ -56,9 +56,9 @@ jobs:
       run: make test
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: Test Results
         path: |
           Testing/Temporary/LastTest.log
-          ../tests/IntegrationTests/Artifacts
+          ../tests/IntegrationTests/Artifacts/
