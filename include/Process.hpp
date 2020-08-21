@@ -23,6 +23,7 @@
 // C++ PROJECT INCLUDES
 #include "DLB.hpp" // For DLB
 #include "Registers.hpp" // For Registers struct
+#include "ProcessMetadata.hpp" // For ProcessMetadata
 
 // FORWARD DECLARATIONS
 namespace Io
@@ -33,11 +34,15 @@ namespace Io
 ////////////////////////////////
 /// @class Process
 ///
-/// @brief Declarations for the 
+/// @brief Declarations for the
 /// Process class
 ////////////////////////////////
 class Process
 {
+private:
+    // Forward declaration of StepType enum
+    enum class StepType : uint8_t;
+
 public:
     // Allow ProcessInitializers to access private members
     friend class ProcessInitializer;
@@ -49,7 +54,8 @@ public:
         m_processRegisters(Registers()),
         m_labelDictionary(DLB<uint32_t>()),
         m_constantsDictionary(DLB<uint32_t>()),
-        m_pFileIterator(nullptr)
+        m_pFileIterator(nullptr),
+        m_Metadata(ProcessMetadata())
     {}
 
     /////////////////////////////////////
@@ -81,9 +87,10 @@ public:
     ///
     /// @brief Executes the next instruction
     ///
+    /// @param[in] stepType     Type of step to perform
     /// @return Whether program has reached the end
     ////////////////////////////////
-    bool Step();
+    bool Step(const StepType stepType = StepType::STEP);
 
     ////////////////////////////////
     /// METHOD NAME: PrintSummary
@@ -142,6 +149,13 @@ public:
     ////////////////////////////////
     void SetFileIterator(Io::FileIterator* pFileIterator) { m_pFileIterator = pFileIterator; }
 
+    ////////////////////////////////
+    /// METHOD NAME: GetMetadata
+    ///
+    /// @return Process metadata
+    ////////////////////////////////
+    ProcessMetadata& GetMetadata() { return m_Metadata; }
+
 protected:
 
 
@@ -158,6 +172,37 @@ private:
 
     /// File Iterator used during execution
     Io::FileIterator* m_pFileIterator;
+
+    /// Metadata about the process
+    ProcessMetadata m_Metadata;
+
+    ////////////////////////////////
+    /// @enum StepType
+    ////////////////////////////////
+    enum class StepType : uint8_t
+    {
+        STEP_NULL,
+        STEP,
+        STEP_OVER,
+        STEP_OUT
+    };
+
+    ////////////////////////////////
+    /// METHOD NAME: HandleUserInput
+    ///
+    /// @brief Accepts user input and determines
+    /// which type of step to perfrom
+    ///
+    /// @details The user has the following options
+    /// when running their program in debug mode:
+    ///     @li 2     - Step Out Of
+    ///     @li 3     - Step Over
+    ///     @li Enter - Execute next instruction
+    ///     @li q     - Exit program
+    ///
+    /// @return Type of step to perform
+    ////////////////////////////////
+    StepType HandleUserInput() const;
 
     ////////////////////////////////
     /// Copy Constructer

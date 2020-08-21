@@ -47,6 +47,12 @@ InstructionBase* FlowCtrlInstructionBuilder::BuildInstruction(std::string& rInst
                                         pProcess->GetFileIterator()->GetCurrentLine(),
                                         pProcess->GetFileIterator()->GetLineNumber());
         }
+
+        if (m_opCode == OpCode::BL)
+        {
+            // Add to the call stack
+            pProcess->GetMetadata().GetCallStack().Push(arg);
+        }
     }
     catch(const DLB<uint32_t>::KeyNotFoundException& e)
     {
@@ -54,6 +60,9 @@ InstructionBase* FlowCtrlInstructionBuilder::BuildInstruction(std::string& rInst
         if (m_opCode == OpCode::BLX || m_opCode == OpCode::BX)
         {
             newPC = *(ParseRegister(arg, pProcess));
+
+            // Pop from the call stack
+            pProcess->GetMetadata().GetCallStack().Pop();
         }
         else
         {
