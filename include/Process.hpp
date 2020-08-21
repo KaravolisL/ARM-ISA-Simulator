@@ -205,6 +205,17 @@ private:
     StepType HandleUserInput() const;
 
     ////////////////////////////////
+    /// METHOD NAME: HandleStepType
+    ///
+    /// @brief Method to execute the program correctly
+    /// given the type of step that was requested
+    ///
+    /// @param[in] stepType     Type of step that's to be taken
+    /// @return Whether execution should continue
+    ////////////////////////////////
+    bool HandleStepType(StepType stepType);
+
+    ////////////////////////////////
     /// Copy Constructer
     ////////////////////////////////
     Process(Process const&);

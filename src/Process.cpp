@@ -49,14 +49,18 @@ void Process::Execute(const bool debug)
 {
     LOG_DEBUG("Executing process. debug = %d", debug);
 
-    StepType stepType = StepType::STEP;
+    bool continueExecution = true;
     do
     {
+        StepType stepType = StepType::STEP;
         if (debug)
         {
             stepType = HandleUserInput();
         }
-    } while (this->Step(stepType));
+
+        continueExecution = Step(stepType);
+
+    } while (continueExecution);
 
     LOG_DEBUG("Execution Complete");
 }
@@ -102,34 +106,7 @@ bool Process::Step(const StepType stepType)
     // Delete the instruction now that it's been executed
     delete pInstruction;
 
-    // Handle step type
-    switch (stepType)
-    {
-        case StepType::STEP_OVER:
-            ASSERT(false, "Step type not supported yet");
-            return true;
-        case StepType::STEP_OUT:
-        {
-            // If the call stack size shrinks, we know we've exited the current function
-            static uint8_t currentCallStackSize = 0;
-            if (currentCallStackSize == 0) { currentCallStackSize = m_Metadata.GetCallStack().Size(); }
-            if (currentCallStackSize <= m_Metadata.GetCallStack().Size())
-            {
-                bool result = Step(stepType);
-                currentCallStackSize = 0;
-                return result;
-            }
-        }
-            [[fallthrough]];
-        case StepType::STEP:
-            return true;
-        case StepType::STEP_NULL:
-            LOG_USER("Aborting program...\n");
-            return false;
-        default:
-            ASSERT(false, "Invalid step type %d", stepType);
-            return false;
-    }
+    return HandleStepType(stepType);
 }
 
 ////////////////////////////////
@@ -166,4 +143,38 @@ Process::StepType Process::HandleUserInput() const
     }
 
     return stepType;
+}
+
+////////////////////////////////
+/// METHOD NAME: Process::HandleStepType
+////////////////////////////////
+bool Process::HandleStepType(StepType stepType)
+{
+    switch (stepType)
+    {
+        case StepType::STEP_OVER:
+            ASSERT(false, "Step type not supported yet");
+            return true;
+        case StepType::STEP_OUT:
+        {
+            // If the call stack size shrinks, we know we've exited the current function
+            static uint8_t currentCallStackSize = 0;
+            if (currentCallStackSize == 0) { currentCallStackSize = m_Metadata.GetCallStack().Size(); }
+            if (currentCallStackSize <= m_Metadata.GetCallStack().Size())
+            {
+                bool result = Step(stepType);
+                currentCallStackSize = 0;
+                return result;
+            }
+        }
+            [[fallthrough]];
+        case StepType::STEP:
+            return true;
+        case StepType::STEP_NULL:
+            LOG_USER("Aborting program...\n");
+            return false;
+        default:
+            ASSERT(false, "Invalid step type %d", stepType);
+            return false;
+    }
 }
