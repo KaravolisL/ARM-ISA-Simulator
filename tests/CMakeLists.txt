@@ -18,13 +18,11 @@ add_compile_definitions(BUILD_UNIT_TEST)
 # Add subdirectory
 add_subdirectory(support)
 add_subdirectory(DataStructures)
+add_subdirectory(DebugUT)
 add_subdirectory(InstructionUT)
 add_subdirectory(MemoryUT)
 
 # Add executables (Unit tests)
-add_executable(LoggerUT LoggerUT.cpp)
-target_link_libraries(LoggerUT PRIVATE debug_lib)
-
 add_executable(FileIteratorUT FileIteratorUT.cpp)
 target_link_libraries(FileIteratorUT PRIVATE io_library)
 
@@ -32,8 +30,6 @@ add_executable(LineParserUT LineParserUT.cpp)
 target_link_libraries(LineParserUT PRIVATE io_library keyword_dict debug_lib)
 
 # Add Unit Tests
-add_test(NAME LoggerUT COMMAND LoggerUT)
-
 add_test(NAME FileIteratorUT COMMAND FileIteratorUT)
 add_test(NAME LineParserUT COMMAND LineParserUT)
 
