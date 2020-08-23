@@ -48,6 +48,9 @@ void ProcessInitializer::Initialize(const char* fileName) const
     m_pProcess->m_pFileIterator = new Io::FileIterator(fileName);
     m_pProcess->m_pFileIterator->GoToLine(m_pProcess->m_processRegisters.PC);
 
+    // Add to the call stack
+    m_pProcess->m_Metadata.GetCallStack().Push("__main");
+
     // Initialize the stack pointer
     // Note: Stack is full descending
     m_pProcess->m_processRegisters.SP = Memory::STACK_LOWER_BOUND;

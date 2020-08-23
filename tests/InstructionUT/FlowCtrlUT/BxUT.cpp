@@ -34,6 +34,9 @@ TEST_CASE("BX Instruction", "[instruction][FlowCtrl]")
     Io::FileIterator* pFileIterator = new Io::FileIterator("TestFile.txt");
     myProc.SetFileIterator(pFileIterator);
 
+    // Needed to avoid EmptyStackException
+    myProc.GetMetadata().GetCallStack().Push("DummyFunction");
+
     SECTION("Branch exchange with link register")
     {
         instructionStr = "BX LR";

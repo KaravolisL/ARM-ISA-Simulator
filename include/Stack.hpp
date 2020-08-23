@@ -86,6 +86,14 @@ public:
     }
 
     ////////////////////////////////
+    /// METHOD NAME: PrintStack
+    ////////////////////////////////
+    void PrintStack() const
+    {
+        return m_Stack.PrintList();
+    }
+
+    ////////////////////////////////
     /// @struct EmptyStackException
     ///
     /// @brief Exception used when operations

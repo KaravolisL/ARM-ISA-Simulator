@@ -52,7 +52,7 @@ public:
     ////////////////////////////////
     /// @enum LogLevel
     ////////////////////////////////
-    enum class LogLevel
+    enum class LogLevel : uint8_t
     {
         INFO,
         DEBUG,

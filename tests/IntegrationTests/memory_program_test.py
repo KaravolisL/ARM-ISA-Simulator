@@ -32,4 +32,6 @@ def test_memory_program(find_executable, artifacts):
         assert(expected_values[i] in lines[i]), lines[i] + " does not contain " + expected_values[i]
 
     output.close()
-    
+
+if __name__ == '__main__':
+    raise Exception("Run using pytest")

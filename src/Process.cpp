@@ -3,7 +3,7 @@
 ///
 /// @brief Implementation of Process class
 ///
-/// @copydetail Process 
+/// @copydetail Process
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -15,6 +15,7 @@
 // (None)
 
 // C++ PROJECT INCLUDES
+#include "Assert.hpp" // For ASSERT
 #include "Process.hpp"  // Header for class
 #include "ProcessInitializer.hpp" // For ProcessInitializer
 #include "FileIterator.hpp" // For Io::FileIterator
@@ -48,14 +49,18 @@ void Process::Execute(const bool debug)
 {
     LOG_DEBUG("Executing process. debug = %d", debug);
 
+    bool continueExecution = true;
     do
     {
+        StepType stepType = StepType::STEP;
         if (debug)
         {
-            LOG_USER("Executing: %s", m_pFileIterator->GetCurrentLine().c_str());
-            while (std::cin.get() != '\n') {}
+            stepType = HandleUserInput();
         }
-    } while (this->Step());
+
+        continueExecution = Step(stepType);
+
+    } while (continueExecution);
 
     LOG_DEBUG("Execution Complete");
 }
@@ -63,17 +68,19 @@ void Process::Execute(const bool debug)
 ////////////////////////////////
 /// METHOD NAME: Process::Step
 ////////////////////////////////
-bool Process::Step()
+bool Process::Step(const StepType stepType)
 {
     // Fetch the next line
     Io::LineParser lineParser(&m_pFileIterator->GoToLine(m_processRegisters.PC));
 
+    // Find next valid line
     while (lineParser.GetLineType() != Io::LineType::INSTRUCTION &&
            lineParser.GetLineType() != Io::LineType::LABEL_AND_INSTRUCTION)
     {
         if (lineParser.GetLineType() == Io::LineType::ENDP) return false;
         lineParser.SetLine(&m_pFileIterator->Next());
     }
+
     // Update the pc once a valid line is found
     m_processRegisters.PC = m_pFileIterator->GetLineNumber();
 
@@ -99,5 +106,76 @@ bool Process::Step()
     // Delete the instruction now that it's been executed
     delete pInstruction;
 
-    return true;
+    return HandleStepType(stepType);
+}
+
+////////////////////////////////
+/// METHOD NAME: Process::HandleUserInput
+////////////////////////////////
+Process::StepType Process::HandleUserInput() const
+{
+    LOG_USER("Executing: %s ", m_pFileIterator->GetCurrentLine().c_str());
+    LOG_USER("Debug Option: ");
+    StepType stepType = StepType::STEP;
+
+    std::string userInput;
+    do
+    {
+        userInput.push_back(std::cin.get());
+    } while (userInput.back() != '\n');
+    userInput.pop_back();
+
+    if (userInput.size() > 0)
+    {
+        switch (userInput.back())
+        {
+            case '2':
+                stepType = StepType::STEP_OUT;
+                break;
+            case '3':
+                stepType = StepType::STEP_OVER;
+                break;
+            case 'q':
+                stepType = StepType::STEP_NULL;
+                break;
+            default:
+                stepType = StepType::STEP;
+        }
+    }
+
+    return stepType;
+}
+
+////////////////////////////////
+/// METHOD NAME: Process::HandleStepType
+////////////////////////////////
+bool Process::HandleStepType(StepType stepType)
+{
+    switch (stepType)
+    {
+        case StepType::STEP_OVER:
+            ASSERT(false, "Step type not supported yet");
+            return true;
+        case StepType::STEP_OUT:
+        {
+            // If the call stack size shrinks, we know we've exited the current function
+            static uint8_t currentCallStackSize = 0;
+            if (currentCallStackSize == 0) { currentCallStackSize = m_Metadata.GetCallStack().Size(); }
+            if (currentCallStackSize <= m_Metadata.GetCallStack().Size())
+            {
+                bool result = Step(stepType);
+                currentCallStackSize = 0;
+                return result;
+            }
+        }
+            [[fallthrough]];
+        case StepType::STEP:
+            return true;
+        case StepType::STEP_NULL:
+            LOG_USER("Aborting program...\n");
+            return false;
+        default:
+            ASSERT(false, "Invalid step type %d", stepType);
+            return false;
+    }
 }
