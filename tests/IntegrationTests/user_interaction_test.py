@@ -17,14 +17,9 @@ def test_step_through(find_executable, artifacts):
     
     """
     TEST_PROGRAM = r"SourcePrograms/SimpleProgram.s"
-    OUTPUT_FILE_NAME = "user_interaction_step_through_output.txt"
-
-    # Create a file to hold the program output
-    output = open(os.path.join(artifacts, OUTPUT_FILE_NAME), 'w')
 
     # Execute simulator
     program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
-    program.logfile = sys.stdout
 
     while (True):
         try:
@@ -37,8 +32,6 @@ def test_step_through(find_executable, artifacts):
 
     returncode = program.wait()
     assert(returncode == 0), "Program did not execute successfully"
-
-    output.close()
 
 def test_step_out_of(find_executable, artifacts):
     """Test user's ability to step out of the currently executing function
@@ -55,7 +48,7 @@ def test_step_out_of(find_executable, artifacts):
     while (True):
 
         # Step out of every function we enter
-        if (program.before != None and program.before.find("BL") >= 0):
+        if (program.before != None and program.before.find(b"BL") >= 0):
             debug_option = '2'
         else:
             debug_option = ''
