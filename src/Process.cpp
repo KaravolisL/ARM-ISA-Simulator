@@ -115,6 +115,7 @@ bool Process::Step(const StepType stepType)
 Process::StepType Process::HandleUserInput() const
 {
     LOG_USER("Executing: %s ", m_pFileIterator->GetCurrentLine().c_str());
+    LOG_USER("Debug Option: ");
     StepType stepType = StepType::STEP;
 
     std::string userInput;
