@@ -45,10 +45,12 @@ def test_step_out_of(find_executable, artifacts):
     # Execute simulator
     program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
 
+    pattern = "BL" if sys.platform == 'win32' else b"BL"
+
     while (True):
 
         # Step out of every function we enter
-        if (program.before != None and program.before.find(b"BL") >= 0):
+        if (program.before != None and program.before.find(pattern) >= 0):
             debug_option = '2'
         else:
             debug_option = ''
