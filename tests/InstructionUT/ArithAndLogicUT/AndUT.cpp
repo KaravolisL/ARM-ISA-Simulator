@@ -18,7 +18,7 @@
 #include "InstructionBuilder.hpp"
 #include "Process.hpp"
 
-TEST_CASE("AND Instruction Test", "[instruction][ArithAndLogic]")
+TEST_CASE("AND Instruction", "[instruction][ArithAndLogic]")
 {
     Process myProc = Process();
     InstructionBuilder& builder = InstructionBuilder::GetInstance();
