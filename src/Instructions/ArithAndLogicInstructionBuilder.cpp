@@ -193,6 +193,12 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
         pInstruction->SetSFlag();
         pInstruction->VoidDestination();
         break;
+    case OpCode::TST:
+        // Set the flags, but "discard" result
+        pInstruction->SetOperation([](Register a, Register b) { return a & b; });
+        pInstruction->SetSFlag();
+        pInstruction->VoidDestination();
+        break;
     case OpCode::MOV:
         pInstruction->SetOperation([](Register a, Register b) { return b; });
         break;

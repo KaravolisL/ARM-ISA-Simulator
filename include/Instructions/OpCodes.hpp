@@ -39,6 +39,7 @@ enum class OpCode
     LSR,
     CMP,
     CMN,
+    TST,
     STR,
     LDR,
     PUSH,

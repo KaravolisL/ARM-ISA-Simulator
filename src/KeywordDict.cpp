@@ -60,6 +60,7 @@ void KeywordDict::Initialize()
     m_instructionDict.Insert("STR", OpCode::STR);
     m_instructionDict.Insert("CMP", OpCode::CMP);
     m_instructionDict.Insert("CMN", OpCode::CMN);
+    m_instructionDict.Insert("TST", OpCode::TST);
 
     // Conditional codes dictionary
     m_conditionalCodeDict.Insert("EQ", ConditionalCode::EQ);
