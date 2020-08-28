@@ -22,8 +22,8 @@ Currently, the following ARM instructions are supported:
 | ORR   | SUB        | BL           | STR    | CMP   |
 | BIC   |            | BX           | LDM    | CMN   |
 | EOR   |            | BLX          | STM    | TST   |
-| LSL   |            |              | PUSH   | NOP   |
-| LSR   |            |              | POP    |       |
+| LSL   |            |              | PUSH   | TEQ   |
+| LSR   |            |              | POP    | NOP   |
 
 Variants of these instructions are also supported according to the ARM instruction set architecture. For instance, conditional codes can be appended to enable conditional execution.
 

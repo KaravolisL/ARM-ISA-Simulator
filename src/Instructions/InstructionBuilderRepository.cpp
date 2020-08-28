@@ -43,6 +43,7 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
         case OpCode::EOR:
         case OpCode::CMP:
         case OpCode::CMN:
+        case OpCode::TEQ:
         case OpCode::TST:
         case OpCode::MOV:
         case OpCode::LSL:
