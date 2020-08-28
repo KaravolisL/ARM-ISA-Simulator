@@ -21,9 +21,9 @@ Currently, the following ARM instructions are supported:
 | AND   | ADD        | B            | LDR    | MOV   |
 | ORR   | SUB        | BL           | STR    | CMP   |
 | BIC   |            | BX           | LDM    | CMN   |
-| EOR   |            | BLX          | STM    | NOP   |
-| LSL   |            |              | PUSH   |       |
-| LSR   |            |              | POP    |       |
+| EOR   |            | BLX          | STM    | TST   |
+| LSL   |            |              | PUSH   | TEQ   |
+| LSR   |            |              | POP    | NOP   |
 
 Variants of these instructions are also supported according to the ARM instruction set architecture. For instance, conditional codes can be appended to enable conditional execution.
 
@@ -42,3 +42,8 @@ At startup, memory is allocated for the user's program. 1024 bytes are designate
    ```make test```
 4. To execute program, execute following command \
    ```./src/ARM-ISA-Simulator <Name of main file>```
+
+### Dependencies
+Two external libraries are used, Catch2 and CLI11. You can find their respective installation guides at the links below:
+* [CLI11](https://github.com/CLIUtils/CLI11#install)
+* [Catch2](https://github.com/catchorg/Catch2/blob/master/docs/cmake-integration.md#installing-catch2-from-git-repository)
