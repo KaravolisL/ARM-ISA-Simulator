@@ -52,6 +52,8 @@ int main(int argc, char* argv[])
 
     pProcess->PrintSummary(&std::hex);
 
+    delete pProcess;
+
     // Close the memory file
     Memory::MemoryApi::Close();
 

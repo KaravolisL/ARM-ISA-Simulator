@@ -154,14 +154,15 @@ bool Process::HandleStepType(StepType stepType)
     switch (stepType)
     {
         case StepType::STEP_OVER:
-            ASSERT(false, "Step type not supported yet");
+            ASSERT(false);
             return true;
         case StepType::STEP_OUT:
         {
             // If the call stack size shrinks, we know we've exited the current function
             static uint8_t currentCallStackSize = 0;
             if (currentCallStackSize == 0) { currentCallStackSize = m_Metadata.GetCallStack().Size(); }
-            if (currentCallStackSize <= m_Metadata.GetCallStack().Size())
+            if ((currentCallStackSize <= m_Metadata.GetCallStack().Size()) &&
+                (!m_Metadata.IsInMain()))
             {
                 bool result = Step(stepType);
                 currentCallStackSize = 0;

@@ -13,7 +13,7 @@ def test_step_through(find_executable, artifacts):
     """Test user's ability to step through a program instruction by instruction
 
     :param fixture find_executable: Finds and returns the simulator executable
-    :param fixture artifacts: Sets up the artifacts folder, organizes artifact at teardown
+    :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
     
     """
     TEST_PROGRAM = r"SourcePrograms/SimpleProgram.s"
@@ -37,7 +37,7 @@ def test_step_out_of(find_executable, artifacts):
     """Test user's ability to step out of the currently executing function
 
     :param fixture find_executable: Finds and returns the simulator executable
-    :param fixture artifacts: Sets up the artifacts folder, organizes artifact at teardown
+    :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
     
     """
     TEST_PROGRAM = r"SourcePrograms/FunctionProgram.s"
