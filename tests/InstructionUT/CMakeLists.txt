@@ -17,6 +17,8 @@ set(ARITH_AND_LOGIC_UTS
     ArithAndLogicUT/MovUT.cpp
     ArithAndLogicUT/OrrUT.cpp
     ArithAndLogicUT/SubUT.cpp
+    ArithAndLogicUT/TeqUT.cpp
+    ArithAndLogicUT/TstUT.cpp
 )
 
 set(FLOW_CTRL_UTS
