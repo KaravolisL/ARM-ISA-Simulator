@@ -49,37 +49,29 @@ void Process::Execute(const bool debug)
 {
     LOG_DEBUG("Executing process. debug = %d", debug);
 
-    bool continueExecution = true;
-    do
+    // Continue fetching instructions until we run out
+    while (FetchNextInstruction())
     {
-        StepType stepType = StepType::STEP;
         if (debug)
         {
-            stepType = HandleUserInput();
+            LOG_USER("Executing: %s ", m_pFileIterator->GetCurrentLine().c_str());
+            HandleUserInput();
         }
-
-        continueExecution = Step(stepType);
-
-    } while (continueExecution);
-
-    LOG_DEBUG("Execution Complete");
+        else
+        {
+            ExecuteNextInstruction();
+        }
+    }
 }
 
 ////////////////////////////////
-/// METHOD NAME: Process::Step
+/// METHOD NAME: Process::ExecuteNextInstruction
 ////////////////////////////////
-bool Process::Step(const StepType stepType)
+void Process::ExecuteNextInstruction()
 {
-    // Fetch the next line
-    Io::LineParser lineParser(&m_pFileIterator->GoToLine(m_processRegisters.PC));
-
-    // Find next valid line
-    while (lineParser.GetLineType() != Io::LineType::INSTRUCTION &&
-           lineParser.GetLineType() != Io::LineType::LABEL_AND_INSTRUCTION)
-    {
-        if (lineParser.GetLineType() == Io::LineType::ENDP) return false;
-        lineParser.SetLine(&m_pFileIterator->Next());
-    }
+    // Construct a line parser using the current line
+    Io::LineParser lineParser(&m_pFileIterator->GetCurrentLine());
+    LOG_DEBUG("Instruction to be executed: %s", m_pFileIterator->GetCurrentLine().c_str());
 
     // Update the pc once a valid line is found
     m_processRegisters.PC = m_pFileIterator->GetLineNumber();
@@ -105,16 +97,36 @@ bool Process::Step(const StepType stepType)
 
     // Delete the instruction now that it's been executed
     delete pInstruction;
+}
 
-    return HandleStepType(stepType);
+////////////////////////////////
+/// METHOD NAME: Process::FetchNextInstruction
+////////////////////////////////
+bool Process::FetchNextInstruction()
+{
+    // Fetch the next line
+    Io::LineParser lineParser(&m_pFileIterator->GoToLine(m_processRegisters.PC));
+
+    // Find next valid line
+    while (lineParser.GetLineType() != Io::LineType::INSTRUCTION &&
+           lineParser.GetLineType() != Io::LineType::LABEL_AND_INSTRUCTION)
+    {
+        if (lineParser.GetLineType() == Io::LineType::ENDP)
+        {
+            LOG_DEBUG("Execution Complete");
+            return false;
+        }
+        lineParser.SetLine(&m_pFileIterator->Next());
+    }
+
+    return true;
 }
 
 ////////////////////////////////
 /// METHOD NAME: Process::HandleUserInput
 ////////////////////////////////
-Process::StepType Process::HandleUserInput() const
+void Process::HandleUserInput()
 {
-    LOG_USER("Executing: %s ", m_pFileIterator->GetCurrentLine().c_str());
     LOG_USER("Debug Option: ");
     StepType stepType = StepType::STEP;
 
@@ -143,40 +155,42 @@ Process::StepType Process::HandleUserInput() const
         }
     }
 
-    return stepType;
+    HandleStepType(stepType);
 }
 
 ////////////////////////////////
 /// METHOD NAME: Process::HandleStepType
 ////////////////////////////////
-bool Process::HandleStepType(StepType stepType)
+void Process::HandleStepType(const StepType stepType)
 {
     switch (stepType)
     {
         case StepType::STEP_OVER:
             ASSERT(false);
-            return true;
+            break;
         case StepType::STEP_OUT:
         {
             // If the call stack size shrinks, we know we've exited the current function
-            static uint8_t currentCallStackSize = 0;
-            if (currentCallStackSize == 0) { currentCallStackSize = m_Metadata.GetCallStack().Size(); }
-            if ((currentCallStackSize <= m_Metadata.GetCallStack().Size()) &&
-                (!m_Metadata.IsInMain()))
+            uint8_t initialCallStackSize = m_Metadata.GetCallStack().Size();
+            do
             {
-                bool result = Step(stepType);
-                currentCallStackSize = 0;
-                return result;
-            }
+                ExecuteNextInstruction();
+                if ((initialCallStackSize > m_Metadata.GetCallStack().Size()) ||
+                    (m_Metadata.IsInMain()))
+                {
+                    break;
+                }
+            } while (FetchNextInstruction());
+            break;
         }
-            [[fallthrough]];
         case StepType::STEP:
-            return true;
-        case StepType::STEP_NULL:
-            LOG_USER("Aborting program...\n");
-            return false;
+            ExecuteNextInstruction();
+            break;
+        // case StepType::STEP_NULL:
+        //     LOG_USER("Aborting program...\n");
+        //     while (FetchNextInstruction()) {}
+        //     break;
         default:
             ASSERT(false, "Invalid step type %d", stepType);
-            return false;
     }
 }
