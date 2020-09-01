@@ -45,8 +45,8 @@ def test_step_out_of(find_executable, artifacts):
     # Execute simulator
     program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
 
+    # TEST 1: Step out of every function entered
     pattern = "BL" if sys.platform == 'win32' else b"BL"
-
     while (True):
 
         # Step out of every function we enter
@@ -70,8 +70,8 @@ def test_step_out_of(find_executable, artifacts):
     # Execute simulator
     program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
 
-    # Step out of while in __main
-    for debug_option in ('', '', '2'):
+    # TEST 2: Step out of while in __main (expected behavior is to just step)
+    for debug_option in ('2', '2', '2', '2', '2', '2'):
         try:
             print(program.before)
             program.expect("Debug Option: ", timeout=0.2)
@@ -80,6 +80,16 @@ def test_step_out_of(find_executable, artifacts):
             assert(program.isalive() == False), "Program is hung"
             break
         program.sendline(debug_option)
+
+    while (True):
+        try:
+            print(program.before)
+            program.expect("Debug Option: ", timeout=0.2)
+        except (xexpect.TIMEOUT, xexpect.EOF) as e:
+            print(e)
+            assert(program.isalive() == False), "Program is hung"
+            break
+        program.sendline('')
 
     returncode = program.wait()
     assert(returncode == 0), "Program did not execute successfully"
