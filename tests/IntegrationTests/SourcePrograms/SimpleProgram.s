@@ -11,6 +11,8 @@ __main PROC
 
     BIC R4, R1, #0x0F ; R4 = 0xA0
 
+    NOP
+
     MOV R0, #0x50
     EOR R5, R1, R0 ; R5 = 0xFA
 

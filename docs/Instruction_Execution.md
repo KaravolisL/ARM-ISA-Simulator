@@ -71,6 +71,9 @@ class FlowCtrlInstructionBuilder
 class MemoryInstructionBuilder
 {
     + BuildInstruction()
+    - BuildMemoryInstruction()
+    - BuildMultipleMemoryInstruction()
+    - ParseFlexOffset()
 }
 }
 
