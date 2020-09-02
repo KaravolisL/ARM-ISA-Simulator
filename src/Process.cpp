@@ -186,10 +186,13 @@ void Process::HandleStepType(const StepType stepType)
         case StepType::STEP:
             ExecuteNextInstruction();
             break;
-        // case StepType::STEP_NULL:
-        //     LOG_USER("Aborting program...\n");
-        //     while (FetchNextInstruction()) {}
-        //     break;
+        case StepType::STEP_NULL:
+            LOG_USER("Aborting program...\n");
+            while (FetchNextInstruction())
+            {
+                m_processRegisters.PC++;
+            }
+            break;
         default:
             ASSERT(false, "Invalid step type %d", stepType);
     }

@@ -1,8 +1,8 @@
 # Standard Libraries
 import os
 import sys
+import polling
 import pytest
-from time import sleep
 
 if (sys.platform == 'win32'):
     import wexpect as xexpect
@@ -14,7 +14,7 @@ def test_step_through(find_executable, artifacts):
 
     :param fixture find_executable: Finds and returns the simulator executable
     :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
-    
+
     """
     TEST_PROGRAM = r"SourcePrograms/SimpleProgram.s"
 
@@ -38,7 +38,7 @@ def test_step_out_of(find_executable, artifacts):
 
     :param fixture find_executable: Finds and returns the simulator executable
     :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
-    
+
     """
     TEST_PROGRAM = r"SourcePrograms/FunctionProgram.s"
 
@@ -54,7 +54,7 @@ def test_step_out_of(find_executable, artifacts):
             debug_option = '2'
         else:
             debug_option = ''
-        
+
         try:
             print(program.before)
             program.expect("Debug Option: ", timeout=0.2)
@@ -94,7 +94,39 @@ def test_step_out_of(find_executable, artifacts):
     returncode = program.wait()
     assert(returncode == 0), "Program did not execute successfully"
 
+def test_abort(find_executable, artifacts):
+    """Test user's ability to abort their program using the q input
+
+    :param fixture find_executable: Finds and returns the simulator executable
+    :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
+
+    """
+    TEST_PROGRAM = r"SourcePrograms/SimpleProgram.s"
+
+    # Execute simulator
+    program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
+
+    for debug_option in ('', '', '', 'q'):
+        try:
+            program.expect("Debug Option: ", timeout=0.2)
+        except (xexpect.TIMEOUT, xexpect.EOF) as e:
+            print(e)
+            assert(program.isalive() == False), "Program is hung"
+            break
+        program.sendline(debug_option)
+
+    try:
+        program.expect("Aborting program...", timeout=0.2)
+    except:
+        assert(False), "Program did not abort"
+
+    try:
+        polling.poll(lambda: program.isalive() == False, step=0.1, timeout=1)
+    except polling.TimeoutException as te:
+        assert(False), "Program is hung"
+
+    returncode = program.wait()
+    assert(returncode == 0), "Program did not execute successfully"
 
 if __name__ == '__main__':
     raise Exception("Run using pytest")
-    
