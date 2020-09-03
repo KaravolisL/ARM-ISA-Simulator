@@ -53,7 +53,7 @@ def test_step_out_of(find_executable, artifacts):
     pattern = "PUSH" if sys.platform == 'win32' else b"PUSH"
     while (True):
 
-        # Step out of every function we enter
+        # Step out of function we entered
         if (program.before != None and program.before.find(pattern) >= 0):
             debug_option = '2'
         else:
@@ -94,6 +94,43 @@ def test_step_out_of(find_executable, artifacts):
             assert(program.isalive() == False), "Program is hung"
             break
         program.sendline('')
+
+    returncode = program.wait()
+    assert(returncode == 0), "Program did not execute successfully"
+
+def test_step_over(find_executable, artifacts):
+    """Test user's ability to step over a function
+
+    :param fixture find_executable: Finds and returns the simulator executable
+    :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
+
+    Requirements:
+        - Step over shall execute a single instruction if the next instruction is not BL or BLX
+        - Step over shall execute until the next function returns if the next instruction is either BL or BLX
+
+    """
+    TEST_PROGRAM = r"SourcePrograms/FunctionProgram.s"
+
+    # Execute simulator
+    program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
+
+    pattern = "BL" if sys.platform == 'win32' else b"BL"
+    while (True):
+
+        # Step over functions
+        if (program.before != None and program.before.find(pattern) >= 0):
+            debug_option = '3'
+        else:
+            debug_option = ''
+
+        try:
+            print(program.before)
+            program.expect("Debug Option: ", timeout=0.2)
+        except (xexpect.TIMEOUT, xexpect.EOF) as e:
+            print(e)
+            assert(program.isalive() == False), "Program is hung"
+            break
+        program.sendline(debug_option)
 
     returncode = program.wait()
     assert(returncode == 0), "Program did not execute successfully"

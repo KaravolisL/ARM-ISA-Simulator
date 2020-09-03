@@ -166,8 +166,15 @@ void Process::HandleStepType(const StepType stepType)
     switch (stepType)
     {
         case StepType::STEP_OVER:
-            ASSERT(false);
+        {
+            uint8_t initialCallStackSize = m_Metadata.GetCallStack().Size();
+            // Continue executing instructions until our call stack has shrunk
+            do
+            {
+                ExecuteNextInstruction();
+            } while (initialCallStackSize < m_Metadata.GetCallStack().Size() && FetchNextInstruction());
             break;
+        }
         case StepType::STEP_OUT:
         {
             // If we're in main, just execute a single instruction
