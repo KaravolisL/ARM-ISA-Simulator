@@ -39,14 +39,18 @@ def test_step_out_of(find_executable, artifacts):
     :param fixture find_executable: Finds and returns the simulator executable
     :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
 
+    Requirements:
+        - Step out of shall execute a single instruction if the program is in __main
+        - Step out of shall execute instructions until the current function returns if inside a function
+
     """
     TEST_PROGRAM = r"SourcePrograms/FunctionProgram.s"
 
     # Execute simulator
     program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
 
-    # TEST 1: Step out of every function entered
-    pattern = "BL" if sys.platform == 'win32' else b"BL"
+    # TEST 1: Step out of function once entered
+    pattern = "PUSH" if sys.platform == 'win32' else b"PUSH"
     while (True):
 
         # Step out of every function we enter

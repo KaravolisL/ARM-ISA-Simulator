@@ -170,17 +170,21 @@ void Process::HandleStepType(const StepType stepType)
             break;
         case StepType::STEP_OUT:
         {
-            // If the call stack size shrinks, we know we've exited the current function
-            uint8_t initialCallStackSize = m_Metadata.GetCallStack().Size();
-            do
+            // If we're in main, just execute a single instruction
+            if (m_Metadata.IsInMain())
             {
                 ExecuteNextInstruction();
-                if ((initialCallStackSize > m_Metadata.GetCallStack().Size()) ||
-                    (m_Metadata.IsInMain()))
+            }
+            else
+            {
+                // Continue executing instructions until the call stack shrinks
+                uint8_t initialCallStackSize = m_Metadata.GetCallStack().Size();
+                do
                 {
-                    break;
-                }
-            } while (FetchNextInstruction());
+                    ExecuteNextInstruction();
+                    if (initialCallStackSize > m_Metadata.GetCallStack().Size()) break;
+                } while (FetchNextInstruction());
+            }
             break;
         }
         case StepType::STEP:
