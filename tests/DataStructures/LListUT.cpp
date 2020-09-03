@@ -15,7 +15,7 @@
 #include "DLList.hpp"   // Test class
 #include "SLList.hpp"
 
-TEMPLATE_TEST_CASE("DLList Basic Functionality", "[data_structure]", (DLList<uint32_t>), (SLList<uint32_t>))
+TEMPLATE_TEST_CASE("Linked List Basic Functionality", "[data_structure]", (DLList<uint32_t>), (SLList<uint32_t>))
 {
     TestType list = TestType();
 

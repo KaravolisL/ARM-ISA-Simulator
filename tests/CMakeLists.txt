@@ -18,13 +18,11 @@ add_compile_definitions(BUILD_UNIT_TEST)
 # Add subdirectory
 add_subdirectory(support)
 add_subdirectory(DataStructures)
+add_subdirectory(DebugUT)
 add_subdirectory(InstructionUT)
 add_subdirectory(MemoryUT)
 
 # Add executables (Unit tests)
-add_executable(LoggerUT LoggerUT.cpp)
-target_link_libraries(LoggerUT PRIVATE debug_lib)
-
 add_executable(FileIteratorUT FileIteratorUT.cpp)
 target_link_libraries(FileIteratorUT PRIVATE io_library)
 
@@ -32,8 +30,6 @@ add_executable(LineParserUT LineParserUT.cpp)
 target_link_libraries(LineParserUT PRIVATE io_library keyword_dict debug_lib)
 
 # Add Unit Tests
-add_test(NAME LoggerUT COMMAND LoggerUT)
-
 add_test(NAME FileIteratorUT COMMAND FileIteratorUT)
 add_test(NAME LineParserUT COMMAND LineParserUT)
 
@@ -42,4 +38,4 @@ add_test(NAME simple_program_test COMMAND pytest --timeout=5 ${CMAKE_CURRENT_SOU
 add_test(NAME conditional_program_test COMMAND pytest --timeout=5 ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/conditional_program_test.py)
 add_test(NAME function_program_test COMMAND pytest --timeout=5 ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/function_program_test.py)
 add_test(NAME memory_program_test COMMAND pytest --timeout=5 ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/memory_program_test.py)
-add_test(NAME user_interaction_test COMMAND pytest --timeout=15 ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/user_interaction_test.py)
+add_test(NAME user_interaction_test COMMAND pytest --timeout=30 ${CMAKE_CURRENT_SOURCE_DIR}/IntegrationTests/user_interaction_test.py)

@@ -83,16 +83,6 @@ public:
     void Execute(const bool debug);
 
     ////////////////////////////////
-    /// METHOD NAME: Step
-    ///
-    /// @brief Executes the next instruction
-    ///
-    /// @param[in] stepType     Type of step to perform
-    /// @return Whether program has reached the end
-    ////////////////////////////////
-    bool Step(const StepType stepType = StepType::STEP);
-
-    ////////////////////////////////
     /// METHOD NAME: PrintSummary
     ///
     /// @brief Prints information regarding the
@@ -188,6 +178,28 @@ private:
     };
 
     ////////////////////////////////
+    /// METHOD NAME: Step
+    ///
+    /// @brief Executes the next instruction
+    ////////////////////////////////
+    void ExecuteNextInstruction();
+
+    ////////////////////////////////
+    /// METHOD NAME: FetchNextInstruction
+    ///
+    /// @brief Method to fetch the next instruction
+    /// to be executed
+    ///
+    /// @post
+    ///     @li m_pFileIterator points to next instruction 
+    ///
+    /// @return Whether a next instruction was found
+    ///     @retval true    - Instruction was found
+    ///     @retval false   - Program has reached its end
+    ////////////////////////////////
+    bool FetchNextInstruction();
+
+    ////////////////////////////////
     /// METHOD NAME: HandleUserInput
     ///
     /// @brief Accepts user input and determines
@@ -199,10 +211,8 @@ private:
     ///     @li 3     - Step Over
     ///     @li Enter - Execute next instruction
     ///     @li q     - Exit program
-    ///
-    /// @return Type of step to perform
     ////////////////////////////////
-    StepType HandleUserInput() const;
+    void HandleUserInput();
 
     ////////////////////////////////
     /// METHOD NAME: HandleStepType
@@ -211,9 +221,8 @@ private:
     /// given the type of step that was requested
     ///
     /// @param[in] stepType     Type of step that's to be taken
-    /// @return Whether execution should continue
     ////////////////////////////////
-    bool HandleStepType(StepType stepType);
+    void HandleStepType(const StepType stepType);
 
     ////////////////////////////////
     /// Copy Constructer

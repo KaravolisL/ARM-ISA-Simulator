@@ -42,6 +42,11 @@ public:
     ////////////////////////////////
     Stack<std::string>& GetCallStack();
 
+    ////////////////////////////////
+    /// METHOD NAME: IsInMain
+    ////////////////////////////////
+    bool IsInMain();
+
 protected:
 
 private:
@@ -55,5 +60,10 @@ private:
 /// METHOD NAME: ProcessMetadata::GetCallStack
 ////////////////////////////////
 inline Stack<std::string>& ProcessMetadata::GetCallStack() { return m_CallStack; }
+
+////////////////////////////////
+/// METHOD NAME: ProcessMetadata::IsInMain
+////////////////////////////////
+inline bool ProcessMetadata::IsInMain() { return m_CallStack.Size() == 1; }
 
 #endif

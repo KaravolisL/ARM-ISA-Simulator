@@ -64,6 +64,9 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
         case OpCode::STR:
             pInstructionBuilder = &f_memoryInstructionBuilder;
             break;
+        case OpCode::NOP:
+            ASSERT(false, "Instruction should not be build for NOP");
+            break;
         default:
             ASSERT(false, "Invalid opCode %d", opCode);
     }
