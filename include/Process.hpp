@@ -172,6 +172,7 @@ private:
     enum class StepType : uint8_t
     {
         STEP_NULL,
+        STEP_ABORT,
         STEP,
         STEP_OVER,
         STEP_OUT
@@ -223,6 +224,14 @@ private:
     /// @param[in] stepType     Type of step that's to be taken
     ////////////////////////////////
     void HandleStepType(const StepType stepType);
+
+    ////////////////////////////////
+    /// METHOD NAME: InspectMemory
+    ///
+    /// @brief Method to allow the user to query either
+    /// a register or a memory address
+    ////////////////////////////////
+    void InspectMemory() const;
 
     ////////////////////////////////
     /// Copy Constructer

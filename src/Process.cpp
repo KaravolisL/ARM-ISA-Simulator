@@ -23,6 +23,7 @@
 #include "LineParser.hpp" // For Io::LineParser
 #include "Logger.hpp" // For Logger class
 #include "InstructionBuilder.hpp" // For InstructionBuilder
+#include "MemoryApi.hpp" // For Memory::ReadWord
 
 /////////////////////////////////////
 /// Deconstructor
@@ -147,7 +148,14 @@ void Process::HandleUserInput()
             case '3':
                 stepType = StepType::STEP_OVER;
                 break;
+            case 'Q':
             case 'q':
+                stepType = StepType::STEP_ABORT;
+                break;
+            case 'I':
+            case 'i':
+                // Allow user to inspect memory and don't execute an instruction
+                InspectMemory();
                 stepType = StepType::STEP_NULL;
                 break;
             default:
@@ -197,14 +205,87 @@ void Process::HandleStepType(const StepType stepType)
         case StepType::STEP:
             ExecuteNextInstruction();
             break;
-        case StepType::STEP_NULL:
+        case StepType::STEP_ABORT:
             LOG_USER("Aborting program...\n");
             while (FetchNextInstruction())
             {
                 m_processRegisters.PC++;
             }
             break;
+        case StepType::STEP_NULL:
+            break;
         default:
             ASSERT(false, "Invalid step type %d", stepType);
     }
+}
+
+////////////////////////////////
+/// METHOD NAME: Process::InspectMemory
+////////////////////////////////
+void Process::InspectMemory() const
+{
+    LOG_USER("Register or Memory Address to Inspect: ");
+
+    std::string userInput;
+    do
+    {
+        userInput.push_back(std::cin.get());
+    } while (userInput.back() != '\n');
+    userInput.pop_back();
+
+    if (userInput.size() == 0)
+    {
+        return;
+    }
+
+    uint32_t data;
+    if (userInput[0] != 'R' && userInput[0] != 'r')
+    {
+        if (userInput == "LR")
+        {
+            data = m_processRegisters.LR;
+        }
+        else if (userInput == "SP")
+        {
+            data = m_processRegisters.SP;
+        }
+        else if (userInput == "PC")
+        {
+            data = m_processRegisters.PC;
+        }
+        else
+        {
+            // It must be a memory address
+            try
+            {
+                uint32_t memAddress = static_cast<uint32_t>(std::stoul(userInput.c_str(), nullptr, 0));
+                data = Memory::MemoryApi::ReadWord(memAddress);
+            }
+            catch (const std::exception& e)
+            {
+                LOG_USER("Invalid Memory Address\n");
+                return;
+            }
+        }
+    }
+    else
+    {
+        try
+        {
+            // Convert string to register number
+            uint8_t regNumber = atoi(userInput.substr(1).c_str());
+            if (regNumber >= (sizeof(m_processRegisters) / sizeof(Register)))
+            {
+                throw IndexOutOfBoundsException();
+            }
+            data = m_processRegisters.genRegs[regNumber];
+        }
+        catch (const std::exception& e)
+        {
+            LOG_USER("Invalid Register\n");
+            return;
+        }
+    }
+
+    LOG_USER("Value of %s = 0x%x\n", userInput.c_str(), data);
 }
