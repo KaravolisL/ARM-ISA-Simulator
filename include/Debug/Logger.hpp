@@ -82,7 +82,8 @@ public:
     {
         PRINT_GROUP_GENERAL = 0,
         PRINT_GROUP_MEMORY = 1,
-        PRINT_GROUP_INSTRUCTION = 2
+        PRINT_GROUP_INSTRUCTION = 2,
+        PRINT_GROUP_ASSERT = 3
     };
 
     ////////////////////////////////
@@ -143,11 +144,12 @@ private:
     };
 
     /// Names of print groups
-    const char* PRINT_GROUP_NAMES[3] =
+    const char* PRINT_GROUP_NAMES[4] =
     {
         "GENERAL",
         "MEMORY",
-        "INSTRUCTION"
+        "INSTRUCTION",
+        "ASSERT"
     };
 
     ////////////////////////////////
