@@ -39,7 +39,7 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
         rInstruction.erase(0, 1);
     }
 
-    LOG_DEBUG("rInstruction = %s", rInstruction.c_str());
+    LOG_INSTRUCTION("rInstruction = %s", rInstruction.c_str());
 
     // Create a line parser to retrieve the remaining arguments
     Io::LineParser lineParser(&rInstruction);
@@ -153,7 +153,7 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     }
 
     // Add the actual operation based on the opcode
-    LOG_DEBUG("m_opCode = %d", m_opCode);
+    LOG_INSTRUCTION("m_opCode = %d", m_opCode);
 
     switch (m_opCode)
     {
@@ -223,7 +223,7 @@ bool ArithAndLogicInstructionBuilder::CheckSFlag(std::string& rKeyword) const
 {
     if (rKeyword.length() > 0 && rKeyword[0] == 'S')
     {
-        LOG_DEBUG("Instruction will set the flags");
+        LOG_INSTRUCTION("Instruction will set the flags");
         return true;
     }
     else

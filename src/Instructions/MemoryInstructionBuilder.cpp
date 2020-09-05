@@ -22,7 +22,7 @@
 #include "FileIterator.hpp" // For Io::FileIterator
 #include "Process.hpp" // Fpr Process
 #include "Assert.hpp" // For ASSERT
-#include "Logger.hpp" // For LOG_DEBUG
+#include "Logger.hpp" // For LOG_INSTRUCTION
 
 ////////////////////////////////
 /// METHOD NAME: MemoryInstructionBuilder::BuildInstruction 
@@ -31,7 +31,7 @@ InstructionBase* MemoryInstructionBuilder::BuildInstruction(std::string& rInstru
 {
     InstructionBase* pInstruction = nullptr;
 
-    LOG_DEBUG("m_opCode = %d", m_opCode);
+    LOG_INSTRUCTION("m_opCode = %d", m_opCode);
     switch (m_opCode)
     {
         case OpCode::PUSH:
@@ -97,7 +97,7 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
         // Transfer type was defaulted. Add back the token
         tokens.Insert(0, memoryTranserTypeStr);
     }
-    LOG_DEBUG("Memory transfer type %d", pMemoryInstruction->GetTransferType());
+    LOG_INSTRUCTION("Memory transfer type %d", pMemoryInstruction->GetTransferType());
     
     // Remove address register from tokens once parsing it
     Register* pDestOrSrcRegister = ParseRegister(tokens[0], pProcess);
@@ -109,7 +109,7 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
     {
         // Throw away the =
         if (tokens[0][0] == '=') tokens[0].erase(0, 1);
-        LOG_DEBUG("Address is stored as label %s", tokens[0].c_str());
+        LOG_INSTRUCTION("Address is stored as label %s", tokens[0].c_str());
 
         // In this case, we'll get the address from the label dictionary
         // and store it in the offset field of the instruction
@@ -133,7 +133,7 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
         // If there is still an argument, it's postindexed
         if (tokens.GetLength() > 1)
         {
-            LOG_DEBUG("Postindexed memory instruction");
+            LOG_INSTRUCTION("Postindexed memory instruction");
             pMemoryInstruction->SetOffsetType(OffsetType::POSTINDEXED);
         }
     }
@@ -148,7 +148,7 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
         if (tokens[0].back() == ']')
         {
             tokens[0].pop_back();
-            LOG_DEBUG("Preindexed memory instruction");
+            LOG_INSTRUCTION("Preindexed memory instruction");
             pMemoryInstruction->SetOffsetType(OffsetType::PREINDEXED);
         }
 
@@ -157,7 +157,7 @@ MemoryInstruction* MemoryInstructionBuilder::BuildMemoryInstruction(std::string&
 
     if (rInstruction.find('!') != std::string::npos)
     {
-        LOG_DEBUG("Preindexed memory instruction with update");
+        LOG_INSTRUCTION("Preindexed memory instruction with update");
         pMemoryInstruction->SetOffsetType(OffsetType::PREINDEXED_WITH_UPDATE);
     }
     
@@ -172,7 +172,7 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     MultipleMemoryInstruction* pMultipleMemoryInstruction = new MultipleMemoryInstruction(m_opCode);
     List<Register*>& rRegList = pMultipleMemoryInstruction->GetRegisterList();
 
-    LOG_DEBUG("rInstruction: %s", rInstruction.c_str());
+    LOG_INSTRUCTION("rInstruction: %s", rInstruction.c_str());
 
     List<std::string> tokens;
     Io::LineParser lineParser(&rInstruction);
@@ -230,7 +230,7 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
     // For every token...
     for (uint8_t i = 0; i < tokens.GetLength(); i++)
     {
-        LOG_DEBUG("Current argument = %s", tokens[i].c_str());
+        LOG_INSTRUCTION("Current argument = %s", tokens[i].c_str());
         // Determine whether it's a range or not
         if (tokens[i].find('-') == std::string::npos)
         {
@@ -284,7 +284,7 @@ MultipleMemoryInstruction* MemoryInstructionBuilder::BuildMultipleMemoryInstruct
 ////////////////////////////////
 int32_t MemoryInstructionBuilder::ParseFlexOffset(const std::string& rToken, const Process* pProcess)
 {
-    LOG_DEBUG("Parsing %s as a flex offset", rToken.c_str());
+    LOG_INSTRUCTION("Parsing %s as a flex offset", rToken.c_str());
     int32_t offset = 0;
     if (rToken[0] == '#')
     {
@@ -297,6 +297,6 @@ int32_t MemoryInstructionBuilder::ParseFlexOffset(const std::string& rToken, con
     {
         // TODO: Parse register as offset
     }
-    LOG_DEBUG("Offset parsed to be %d", offset);
+    LOG_INSTRUCTION("Offset parsed to be %d", offset);
     return offset;
 }

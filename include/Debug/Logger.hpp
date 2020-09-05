@@ -36,6 +36,7 @@
 // Print groups
 #define LOG_MEMORY( ... ) LOG_DEBUG_INTERNAL(Logger::PrintGroup::PRINT_GROUP_MEMORY, ##__VA_ARGS__)
 #define LOG_INSTRUCTION( ... ) LOG_DEBUG_INTERNAL(Logger::PrintGroup::PRINT_GROUP_INSTRUCTION, ##__VA_ARGS__)
+#define LOG_IO( ... ) LOG_DEBUG_INTERNAL(Logger::PrintGroup::PRINT_GROUP_IO, ##__VA_ARGS__)
 
 ////////////////////////////////
 /// @class Logger
@@ -83,7 +84,8 @@ public:
         PRINT_GROUP_GENERAL = 0,
         PRINT_GROUP_MEMORY = 1,
         PRINT_GROUP_INSTRUCTION = 2,
-        PRINT_GROUP_ASSERT = 3
+        PRINT_GROUP_IO = 3,
+        PRINT_GROUP_ASSERT = 4
     };
 
     ////////////////////////////////
@@ -144,11 +146,12 @@ private:
     };
 
     /// Names of print groups
-    const char* PRINT_GROUP_NAMES[4] =
+    const char* PRINT_GROUP_NAMES[5] =
     {
         "GENERAL",
         "MEMORY",
         "INSTRUCTION",
+        "IO",
         "ASSERT"
     };
 

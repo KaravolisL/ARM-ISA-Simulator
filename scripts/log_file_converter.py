@@ -67,14 +67,13 @@ def convert_log_file(input_file_name, output_file_name):
     # Convert the lines in the debug file
     with open(input_file_name, 'r') as input_file:
         for line in input_file:
-            entries = line.split(' : ')
-            if len(entries) != len(headers):
-                logger.error("len(entries) = {}, len(headers) = {}", len(entries), len(headers))
-                raise Exception("Invalid file formatting")
+            entries = line.split(' : ', len(headers) - 1)
+            if len(entries) < len(headers):
+                logger.warning("Invalid formatting detected on line %s", line)
             
             # Print the lines to the cells
             sheet.append(entries)
-    logger.info("Dimensions of sheet: {}".format(sheet.dimensions))
+    logger.info("Dimensions of sheet: %s", sheet.dimensions)
 
     # Apply style to cells
     stylize(sheet)
@@ -95,7 +94,7 @@ def main():
     args = argument_parser.parse_args()
 
     if not os.path.isfile(args.log_file):
-        raise ValueError("File {} does not exist".format(args.memory_file))
+        raise ValueError("File %s does not exist", args.memory_file)
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)

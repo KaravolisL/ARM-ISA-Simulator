@@ -24,19 +24,19 @@ void ArithAndLogicInstruction::Execute(Registers& rProcessRegisters)
 {
     ASSERT(m_pOperation != nullptr);
 
-    LOG_DEBUG("Argument 1: %d", m_argument1);
-    LOG_DEBUG("Argument 2: %d", m_argument2);
+    LOG_INSTRUCTION("Argument 1: %d", m_argument1);
+    LOG_INSTRUCTION("Argument 2: %d", m_argument2);
 
     Register result = m_pOperation(m_argument1, m_argument2);
 
     *m_pDestination = result;
 
-    LOG_DEBUG("Result = %d", result);
+    LOG_INSTRUCTION("Result = %d", result);
 
     // Set flags if necessary
     if (m_sFlag)
     {
-        LOG_DEBUG("Setting flags");
+        LOG_INSTRUCTION("Setting flags");
 
         // N and Z flags will be set the same way for all instructions
         (result & 0x80000000) != 0 ? rProcessRegisters.SetNegativeFlag() : rProcessRegisters.ClearNegativeFlag();
@@ -111,7 +111,7 @@ void ArithAndLogicInstruction::Execute(Registers& rProcessRegisters)
                 break;
             }
             default:
-                LOG_DEBUG("No additional flag operations for opcode %d", m_opCode);
+                LOG_INSTRUCTION("No additional flag operations for opcode %d", m_opCode);
         }
     }
 }
