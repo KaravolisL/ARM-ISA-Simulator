@@ -85,34 +85,35 @@ def convert_log_file(input_file_name, output_file_name):
 
 def main():
     argument_parser = ArgumentParser(
-        prog='python log_file_formatter.py log_file',
+        prog='python log_file_converter.py log_file',
         description='Converts a log file to a formatted excel file'
     )
-    argument_parser.add_argument('log_file')
+    argument_parser.add_argument('log_files', nargs='+')
     argument_parser.add_argument('--in_place', action='store_true', help='Saves the file in the location of this script')
     argument_parser.add_argument('--verbose', '-v', action='store_true')
     args = argument_parser.parse_args()
 
-    if not os.path.isfile(args.log_file):
-        raise ValueError("File %s does not exist", args.memory_file)
+    for log_file in args.log_files:
+        if not os.path.isfile(log_file):
+            raise ValueError("File %s does not exist", log_file)
 
-    if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.INFO)
+        if args.verbose:
+            logging.basicConfig(level=logging.DEBUG)
+        else:
+            logging.basicConfig(level=logging.INFO)
 
-    if os.path.splitext(args.log_file)[1] != '.log':
-        logger.warning("A file with extension .log is expected. Resulting file may be incorrect")
+        if os.path.splitext(log_file)[1] != '.log':
+            logger.warning("A file with extension .log is expected. Resulting file may be incorrect")
 
-    if args.in_place:
-        output_file_name = os.path.splitext(os.path.basename(args.log_file))[0] + '.xlsx'
-    else:
-        output_file_name = os.path.splitext(args.log_file)[0] + '.xlsx'
-    logger.info("Absolute path of output file here: %s", os.path.abspath(output_file_name))
+        if args.in_place:
+            output_file_name = os.path.splitext(os.path.basename(log_file))[0] + '.xlsx'
+        else:
+            output_file_name = os.path.splitext(log_file)[0] + '.xlsx'
+        logger.info("Absolute path of output file here: %s", os.path.abspath(output_file_name))
 
-    convert_log_file(args.log_file, output_file_name)
+        convert_log_file(log_file, output_file_name)
 
-    logger.info("Log file conversion complete: SUCCESS")
+        logger.info("Log file conversion complete: SUCCESS")
 
     return EXIT_SUCCESS
 
