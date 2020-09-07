@@ -17,7 +17,7 @@
 #include "ArithAndLogicInstructionBuilder.hpp" // For ArithAndLogicInstructionBuilder
 #include "FlowCtrlInstructionBuilder.hpp" // For FlowCtrlInstructionBuilder
 #include "MemoryInstructionBuilder.hpp" // For MemoryInstructionBuilder
-#include "Logger.hpp" // For LOG_DEBUG
+#include "Logger.hpp" // For LOG_INSTRUCTION
 #include "Assert.hpp" // For ASSERT
 
 static ArithAndLogicInstructionBuilder f_arithAndLogicInstructionBuilder;
@@ -31,7 +31,7 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
 {
     InstructionBuilder* pInstructionBuilder = nullptr;
 
-    LOG_DEBUG("opCode = %d", opCode);
+    LOG_INSTRUCTION("opCode = %d", opCode);
 
     switch(opCode)
     {
@@ -65,7 +65,7 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
             pInstructionBuilder = &f_memoryInstructionBuilder;
             break;
         case OpCode::NOP:
-            ASSERT(false, "Instruction should not be build for NOP");
+            ASSERT(false, "Instruction should not be built for NOP");
             break;
         default:
             ASSERT(false, "Invalid opCode %d", opCode);

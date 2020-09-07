@@ -44,7 +44,7 @@ void Assert(bool expr, const char* fileName, int lineNumber, int numArgs, ...)
 
     // We have to copy it because of how .str() works
     std::string concatString = concatStream.str();
-    Logger::GetInstance().Log(concatString, Logger::LogLevel::ERROR);
+    Logger::GetInstance().Log(concatString, Logger::LogLevel::ERROR, Logger::PrintGroup::PRINT_GROUP_ASSERT);
 
     std::cout << "Assertion failed: " << concatString << '\n';
     std::cout << "See Debug.log for more details\n";

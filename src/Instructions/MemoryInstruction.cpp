@@ -15,7 +15,6 @@
 // C++ PROJECT INCLUDES
 #include "MemoryInstruction.hpp" // Header for class
 #include "MemoryApi.hpp" // For MemoryApi
-#include "Logger.hpp"
 #include "Assert.hpp"
 
 ////////////////////////////////

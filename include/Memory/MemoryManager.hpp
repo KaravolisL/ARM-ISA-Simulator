@@ -20,7 +20,7 @@
 
 // C++ PROJECT INCLUDES
 #include "Assert.hpp" // For ASSERT
-#include "Logger.hpp" // For LOG_DEBUG
+#include "Logger.hpp" // For LOG_MEMORY
 
 // FORWARD DECLARATIONS
 // (None)
@@ -76,7 +76,7 @@ public:
     template <typename T>
     void Write(const uint32_t address, T data)
     {
-        LOG_DEBUG("Writing %d to the address 0x%x", data, address);
+        LOG_MEMORY("Writing %d to the address 0x%x", data, address);
 
         GoToAddress(address);
         m_memoryFile.write(reinterpret_cast<char*>(&data), sizeof(T));
@@ -106,7 +106,7 @@ public:
 
         T data = static_cast<T>(word);
 
-        LOG_DEBUG("Read %d from the address 0x%x", static_cast<uint32_t>(data), address);
+        LOG_MEMORY("Read %d from the address 0x%x", static_cast<uint32_t>(data), address);
 
         return data;
     }
