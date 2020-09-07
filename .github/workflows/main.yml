@@ -73,6 +73,8 @@ jobs:
           pwd
           ls
           cd docs
+          pwd
+          ls
 
       - name: Run Doxygen
         uses: mattnotmitt/doxygen-action@v1
