@@ -24,7 +24,7 @@
 ///
 /// @brief Stack data structure backed
 /// by a singly linked list
-/// @param E Type stored in stack
+/// @tparam E Type stored in stack
 ////////////////////////////////
 template <typename E>
 class Stack

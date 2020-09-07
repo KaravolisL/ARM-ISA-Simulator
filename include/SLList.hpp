@@ -1,8 +1,10 @@
 /////////////////////////////////
-/// SLList.hpp
+/// @file SLList.hpp
 ///
 /// @brief Declarations and implementation for 
 /// singly linked list
+///
+/// @author Luke Karavolis
 /////////////////////////////////
 #ifndef SLLIST_HPP
 #define SLLIST_HPP
@@ -17,10 +19,10 @@
 #include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
 
 ////////////////////////////////
-/// CLASS NAME: SLList
+/// @class SLList
 ///
 /// @brief Singly List class
-/// @param T type stored in list
+/// @tparam T type stored in list
 ////////////////////////////////
 template <typename T>
 class SLList
@@ -35,75 +37,91 @@ private:
     ////////////////////////////////
     typedef struct Node
     {
+        /// Data held by node
         T data;
+
+        /// Pointer to the next node
         Node* next;
 
+        /////////////////////////////////////
+        /// @brief Constructs a new Node object
+        /// 
+        /// @param[in] data Data to be held by node
+        /////////////////////////////////////
         Node(T data) :
             data(data),
             next(nullptr)
         {}
 
+        /////////////////////////////////////
+        /// @brief Assignment operator
+        /////////////////////////////////////
         Node& operator=(Node const&);
+
+        /////////////////////////////////////
+        /// @brief Copy constructor
+        /////////////////////////////////////
         Node(Node const&);
+
     } Node;
 
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new SLList object
+    /////////////////////////////////////
     SLList() :
         head(nullptr),
         m_length(0)
     {}
 
-    ////////////////////////////////
-    /// Deconstructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Destroys the SLList object
+    /////////////////////////////////////
     ~SLList()
     {
-        this->Clear();
+        Clear();
     }
 
     ////////////////////////////////
-    /// METHOD NAME: InsertFront
+    /// @brief Inserts an element at the beginning of the list
     ///
     /// @param element   Element to be inserted
     ////////////////////////////////
     void InsertFront(T element)
     {
         // If the list is empty, make new element the head
-        if (this->head == nullptr)
+        if (head == nullptr)
         {
-            this->head = new Node(element);
+            head = new Node(element);
         }
         else
         {
             // Make this new node the head of the list
             Node* newNode = new Node(element);
-            newNode->next = this->head;
-            this->head = newNode;
+            newNode->next = head;
+            head = newNode;
         }
 
-        this->m_length++;
+        m_length++;
     }
 
     ////////////////////////////////
-    /// METHOD NAME: InsertBack
+    /// @brief Insert an element at the end of the list
     ///
     /// @param element   Element to be inserted
     ////////////////////////////////
     void InsertBack(T element)
     {
         // If the list is empty, make new element the head
-        if (this->head == nullptr)
+        if (head == nullptr)
         {
-            this->head = new Node(element);
+            head = new Node(element);
         }
         else
         {
             // Traverse to the end of the list
-            Node* pCurrentNode = this->head;
+            Node* pCurrentNode = head;
             while (pCurrentNode->next != nullptr)
             {
                 pCurrentNode = pCurrentNode->next;
@@ -114,11 +132,11 @@ public:
             pCurrentNode->next = pNewNode;
         }
 
-        this->m_length++;
+        m_length++;
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Get
+    /// @brief Retrieves an element from the list
     ///
     /// @param index   Index of element to return
     /// @return Element at given value
@@ -129,9 +147,13 @@ public:
         return (*this)[index];
     }
 
-    ////////////////////////////////
-    /// METHOD NAME: operator[]
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @copybrief Get()
+    /// 
+    /// @param[in] index    Index of element to get
+    /// @return Reference to element
+    /// @throw IndexOutOfBoundsException
+    /////////////////////////////////////
     T& operator[](uint32_t index)
     {
         for (Node* pCurrentNode = head;
@@ -146,6 +168,9 @@ public:
         throw IndexOutOfBoundsException(index);
     }
 
+    /////////////////////////////////////
+    /// @copydoc T& operator[](uint32_t)  
+    /////////////////////////////////////
     const T& operator[](uint32_t index) const
     {
         for (Node* pCurrentNode = head;
@@ -161,7 +186,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Clear
+    /// @brief Frees all nodes in the list
     ////////////////////////////////
     void Clear(void)
     {
@@ -174,12 +199,12 @@ public:
             pNextNode = pCurrentNode->next;
             delete pCurrentNode;
         }
-        this->head = nullptr;
-        this->m_length = 0;
+        head = nullptr;
+        m_length = 0;
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Remove
+    /// @brief Removes a given item from the list
     ///
     /// @param index    Index to remove
     /// @return Data stored at given index
@@ -194,8 +219,8 @@ public:
         // Edge case of removing head
         if (index == 0)
         {
-            pOldNode = this->head;
-            this->head = this->head->next;
+            pOldNode = head;
+            head = head->next;
         }
         else
         {
@@ -216,22 +241,22 @@ public:
         // Delete the node and return it's data;
         T data = pOldNode->data;
         delete pOldNode;
-        this->m_length--;
+        m_length--;
         return data;
     }
 
-    ////////////////////////////////
-    /// METHOD NAME: GetLength
-    ///
-    /// @returns Length of list
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Gets the Length member
+    /// 
+    /// @return Length of the list
+    /////////////////////////////////////
     uint32_t GetLength(void) const
     {
-        return this->m_length;
+        return m_length;
     }
 
     ////////////////////////////////
-    /// METHOD NAME: PrintList
+    /// @brief Prints the list to std::cout
     ////////////////////////////////
     void PrintList(void) const
     {
@@ -256,15 +281,19 @@ public:
     class SLListIterator;
 
     ////////////////////////////////
-    /// METHOD NAME: GetBegin
+    /// @brief Obtains an iterator from the beginning
+    ///
+    /// @return SLListIterator from beginning
     ////////////////////////////////
     SLListIterator GetBegin() const
     {
-        return SLListIterator(this->head);
+        return SLListIterator(head);
     }
 
     ////////////////////////////////
-    /// METHOD NAME: GetEnd
+    /// @brief Obtains an iterator from the end
+    ///
+    /// @return SLListIterator from end
     ////////////////////////////////
     SLListIterator GetEnd() const
     {
@@ -272,7 +301,7 @@ public:
     }
 
     ////////////////////////////////
-    /// CLASS NAME: SLListIterator
+    /// @class SLListIterator
     ///
     /// @brief Class used to iterate
     /// through a linked list
@@ -280,40 +309,45 @@ public:
     class SLListIterator
     {
     public:
-        ////////////////////////////////
-        /// Constructor
-        ////////////////////////////////
+        /////////////////////////////////////
+        /// @brief Constructs a new SLListIterator object
+        /////////////////////////////////////
         SLListIterator() :
             pNextNode(nullptr)
         {}
 
+        /////////////////////////////////////
+        /// @brief Constructs a new SLListIterator object
+        /// 
+        /// @param[in] startingNode Node at which to begin
+        /////////////////////////////////////
         SLListIterator(Node* startingNode) :
             pNextNode(startingNode)
         {}
 
         ////////////////////////////////
-        /// Assignment Operator
+        /// @brief Assignment operator
         ////////////////////////////////
         SLListIterator& operator=(Node* pNode)
         { 
-            this->pNextNode = pNode; 
+            pNextNode = pNode; 
             return *this; 
         }
 
         ////////////////////////////////
-        /// Prefix ++ Operator
+        /// @brief Prefix ++ Operator
         //////////////////////////////// 
         SLListIterator& operator++() 
         { 
-            if (this->pNextNode != nullptr)
+            if (pNextNode != nullptr)
             {
-                this->pNextNode = this->pNextNode->next;
+                pNextNode = pNextNode->next;
             }
             return *this; 
         } 
   
         ////////////////////////////////
-        /// Postfix ++ Operator
+        /// @brief Postfix ++ Operator
         ////////////////////////////////
         SLListIterator operator++(int) 
         { 
@@ -323,19 +357,19 @@ public:
         }
 
         ////////////////////////////////
-        /// Not Equal Operator
+        /// @brief Not Equal Operator
         ////////////////////////////////
         bool operator!=(const SLListIterator& iterator) 
         { 
-            return this->pNextNode != iterator.pNextNode; 
+            return pNextNode != iterator.pNextNode; 
         }
 
         ////////////////////////////////
-        /// Dereference Operator
+        /// @brief Dereference Operator
         ////////////////////////////////
         T operator*() const
         {
-            return this->pNextNode->data;
+            return pNextNode->data;
         }
 
     private:
@@ -345,12 +379,12 @@ public:
     };
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Copy Constructer
     ////////////////////////////////
     SLList(SLList const&);
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ////////////////////////////////
     SLList& operator=(SLList const&);
 
