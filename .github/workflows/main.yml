@@ -60,3 +60,13 @@ jobs:
         path: |
           Testing/Temporary/LastTest.log
           ${{ github.workspace }}/tests/IntegrationTests/Artifacts/
+
+  build-documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Doxygen
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          working-directory: '${{ github.workspace }}/docs'
+          doxyfile-path: '${{ github.workspace }}/docs'
