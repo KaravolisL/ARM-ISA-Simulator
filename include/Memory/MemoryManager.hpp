@@ -3,9 +3,6 @@
 ///
 /// @brief Declarations for MemoryManager class
 ///
-/// @details This class is responsible for
-/// coordinating operations with memory
-///
 /// @author Luke Karavolis
 /////////////////////////////////
 #ifndef MEMORY_MANAGER_HPP
@@ -38,9 +35,11 @@ class MemoryManager
 {
 public:
 
-    ////////////////////////////////
-    /// METHOD NAME: GetInstance
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Get the singleton instance
+    /// 
+    /// @return singleton instance
+    /////////////////////////////////////
     static MemoryManager& GetInstance()
     {
         /// Singleton instance
@@ -48,28 +47,24 @@ public:
         return *pInstance;
     }
 
-    ////////////////////////////////
-    /// METHOD NAME: Close
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Closes the memory file
+    /////////////////////////////////////
     void Close()
     {
         m_memoryFile.close();
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Initialize
-    ///
-    /// @brief initializes the memory file
+    /// @brief Initializes the memory file
     /// by writing zeros.
     ////////////////////////////////
     void Initialize();
 
     ////////////////////////////////
-    /// METHOD NAME: Write
-    ///
     /// @brief Writes data to the given address
     ///
-    /// @param[in] T        Size of data to write
+    /// @tparam T       Size of data to write
     /// @param[in] address  Address to which to read
     /// @param[in] data     Data which to write
     ////////////////////////////////
@@ -87,13 +82,11 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Read
-    ///
     /// @brief Reads data from the given
     /// address and returns it
     ///
     /// @param[in] address  Address to which to read
-    /// @param[in] T        Size of data to read
+    /// @tparam T       Size of data to read
     /// @return Data at given address
     ////////////////////////////////
     template <typename T>
@@ -116,6 +109,11 @@ public:
     ////////////////////////////////
     struct MemoryException : public std::exception
     {
+        /////////////////////////////////////
+        /// @brief Returns the exception message
+        /// 
+        /// @return Exception message 
+        /////////////////////////////////////
         const char* what() const throw()
         {
             return "Memory Exception";
@@ -133,8 +131,6 @@ private:
     std::fstream m_memoryFile;
 
     ////////////////////////////////
-    /// METHOD NAME: GoToAddress
-    ///
     /// @brief Seeks the file stream
     /// to a given memory address
     ///
@@ -143,8 +139,6 @@ private:
     void GoToAddress(const uint32_t address);
 
     ////////////////////////////////
-    /// METHOD NAME: ValidateAddress
-    ///
     /// @brief Validates that the given
     /// address is within the bounds
     ///
@@ -154,8 +148,6 @@ private:
     void ValidateAddress(const uint32_t address) const;
 
     ////////////////////////////////
-    /// METHOD NAME: ReverseBytes
-    ///
     /// @brief Reverse the bytes in a given
     /// integer
     ///
@@ -181,11 +173,11 @@ private:
         return reversedInteger;
     }
 
-    ////////////////////////////////
-    /// Constructor
+    /////////////////////////////////////
+    /// @brief Construct a new Memory Manager object
     ///
-    /// @note Private to ensure singleton
-    ////////////////////////////////
+    /// @note Private to ensure singleton object
+    /////////////////////////////////////
     MemoryManager() :
         m_memoryFile(std::fstream(MEMORY_FILE_NAME, std::fstream::in    |
                                                     std::fstream::out   |
@@ -195,14 +187,14 @@ private:
         ASSERT(m_memoryFile.is_open(), "File did not open");
     }
 
-    ////////////////////////////////
-    /// Copy Constructer
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Copy Constructor
+    /////////////////////////////////////
     MemoryManager(MemoryManager const&);
 
-    ////////////////////////////////
-    /// Assignment operator
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Assignment Operator
+    /////////////////////////////////////
     MemoryManager& operator=(MemoryManager const&);
 
 };
