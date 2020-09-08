@@ -19,7 +19,7 @@
 #include "List.hpp" // For List
 #include "LineParser.hpp" // For Io::LineParser
 #include "FileIterator.hpp" // For Io::FileIterator
-#include "Logger.hpp" // For LOG_DEBUG
+#include "Logger.hpp" // For LOG_INSTRUCTION
 #include "Process.hpp" // For Process
 
 ////////////////////////////////
@@ -29,7 +29,7 @@ InstructionBase* FlowCtrlInstructionBuilder::BuildInstruction(std::string& rInst
 {
     FlowCtrlInstruction* pInstruction = new FlowCtrlInstruction(m_opCode);
 
-    LOG_DEBUG("rInstruction = %s", rInstruction.c_str());
+    LOG_INSTRUCTION("rInstruction = %s", rInstruction.c_str());
 
     Io::LineParser lineParser(&rInstruction);
     List<std::string> arguments;
@@ -66,7 +66,7 @@ InstructionBase* FlowCtrlInstructionBuilder::BuildInstruction(std::string& rInst
         }
         else
         {
-            LOG_DEBUG("Label %s not found", arg.c_str());
+            LOG_INSTRUCTION("Label %s not found", arg.c_str());
             throw InvalidSyntaxException("Label Not Found",
                                         pProcess->GetFileIterator()->GetCurrentLine(),
                                         pProcess->GetFileIterator()->GetLineNumber());

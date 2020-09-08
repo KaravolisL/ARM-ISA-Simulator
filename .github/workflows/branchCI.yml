@@ -52,6 +52,11 @@ jobs:
 
     - name: Unit Tests
       run: make test
+
+    - name: Convert debug log
+      if: failure()
+      run: python ${{ github.workspace }}/scripts/log_file_converter.py ${{ github.workspace }}/tests/IntegrationTests/Artifacts/*.log
+
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v2

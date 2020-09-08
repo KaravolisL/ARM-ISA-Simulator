@@ -40,8 +40,8 @@ build
 # Git diffs
 *.orig
 
-# Formatted memory files
-src/Util/*.txt
+# Formatted log files
+*.xlsx
 
 # Test artifacts
 tests/IntegrationTests/Artifacts

@@ -48,7 +48,7 @@ public:
     friend class ProcessInitializer;
 
     /////////////////////////////////////
-    /// Constructor
+    /// @brief Construct a new Process object
     /////////////////////////////////////
     Process() :
         m_processRegisters(Registers()),
@@ -59,7 +59,7 @@ public:
     {}
 
     /////////////////////////////////////
-    /// Deconstructor
+    /// @brief Destroy the Process object
     /////////////////////////////////////
     ~Process();
 

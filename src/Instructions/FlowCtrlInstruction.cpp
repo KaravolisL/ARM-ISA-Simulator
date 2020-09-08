@@ -26,7 +26,7 @@ void FlowCtrlInstruction::Execute(Registers& rProcessRegisters)
     {
         // Set the LR to the current PC + 1
         rProcessRegisters.LR = rProcessRegisters.PC + 1;
-        LOG_DEBUG("LR set to %d", rProcessRegisters.LR);
+        LOG_INSTRUCTION("LR set to %d", rProcessRegisters.LR);
     }
 
     // Set the new PC

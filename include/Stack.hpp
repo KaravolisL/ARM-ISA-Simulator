@@ -24,31 +24,31 @@
 ///
 /// @brief Stack data structure backed
 /// by a singly linked list
-/// @param E Type stored in stack
+/// @tparam E Type stored in stack
 ////////////////////////////////
 template <typename E>
 class Stack
 {
 public:
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new Stack object
+    /////////////////////////////////////
     Stack() :
         m_Stack(SLList<E>())
     {}
 
-    ////////////////////////////////
-    /// METHOD NAME: Push
-    ///
-    /// @param element      Element to push onto stack
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Places an element on the top of the stack
+    /// 
+    /// @param[in] element Element to push
+    /////////////////////////////////////
     void Push(E element)
     {
         m_Stack.InsertFront(element);
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Pop
+    /// @brief Removes the element on the top of the stack
     ///
     /// @returns Element on top of stack
     /// @throw EmptyStackException
@@ -56,14 +56,14 @@ public:
     E Pop()
     {
         // Bounds check
-        if (this->Size() == 0) throw EmptyStackException();
+        if (Size() == 0) throw EmptyStackException();
 
         // Remove and return the front of the list
         return m_Stack.Remove(0);
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Peek
+    /// @brief Returns the top of the stack
     ///
     /// @returns Element on top of stack
     /// @throw EmptyStackException
@@ -71,23 +71,25 @@ public:
     E Peek() const
     {
         // Bounds check
-        if (this->Size() == 0) throw EmptyStackException();
+        if (Size() == 0) throw EmptyStackException();
 
         // Return front of list
         return m_Stack.Get(0);
     }
 
-    ////////////////////////////////
-    /// METHOD NAME: Size
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Retrieves the size of the stack
+    /// 
+    /// @return Number of elements on stack
+    /////////////////////////////////////
     uint32_t Size() const
     {
         return m_Stack.GetLength();
     }
 
-    ////////////////////////////////
-    /// METHOD NAME: PrintStack
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Prints the stack to std::cout  
+    /////////////////////////////////////
     void PrintStack() const
     {
         return m_Stack.PrintList();
@@ -101,6 +103,11 @@ public:
     ////////////////////////////////
     struct EmptyStackException : public std::exception
     {
+        /////////////////////////////////////
+        /// @brief Returns the expection message
+        /// 
+        /// @return Exception message
+        /////////////////////////////////////
         const char* what() const throw()
         {
             return "Empty Stack Exception";

@@ -23,26 +23,13 @@
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(const std::string& rMsg, const Logger::LogLevel logLevel)
+void Logger::Log(const std::string& rMsg, const Logger::LogLevel logLevel, const Logger::PrintGroup printGroup)
 {
     // Print log level
-    switch (logLevel)
-    {
-        case LogLevel::INFO:
-            m_logStream << "INFO: ";
-            break;
-        case LogLevel::DEBUG:
-            m_logStream << "DEBUG: ";
-            break;
-        case LogLevel::ERROR:
-            m_logStream << "ERROR: ";
-            break;
-        case LogLevel::USER:
-            m_logStream << "USER: ";
-            break;
-        default:
-            ASSERT(false, "logLevel = %d", logLevel);
-    }
+    m_logStream << LOG_LEVEL_NAMES[static_cast<uint8_t>(logLevel)] << " : ";
+
+    // Print print group
+    m_logStream << PRINT_GROUP_NAMES[static_cast<uint8_t>(printGroup)] << " : ";
 
     // Print message
     m_logStream << rMsg << "\n";
@@ -54,7 +41,7 @@ void Logger::Log(const std::string& rMsg, const Logger::LogLevel logLevel)
 ////////////////////////////////
 /// METHOD NAME: Log
 ////////////////////////////////
-void Logger::Log(const char* fileName, const char* funcName, const int lineNumber, const Logger::LogLevel logLevel, const int numArgs, ...)
+void Logger::Log(const char* fileName, const char* funcName, const int lineNumber, const Logger::LogLevel logLevel, const Logger::PrintGroup printGroup, const int numArgs, ...)
 {
     // Concatenate given strings
     std::stringstream concatStream;
@@ -73,7 +60,7 @@ void Logger::Log(const char* fileName, const char* funcName, const int lineNumbe
 
     // Have to copy it because of how .str() works
     std::string concatString = concatStream.str();
-    this->Log(concatString, logLevel);
+    Log(concatString, logLevel, printGroup);
 
     // User logs also get printed to std::cout
     if (logLevel == LogLevel::USER)

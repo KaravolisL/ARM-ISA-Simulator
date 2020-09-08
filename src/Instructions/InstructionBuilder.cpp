@@ -20,7 +20,7 @@
 #include "InvalidSyntaxException.hpp" // For InvalidSyntaxException
 #include "Process.hpp" // For Process
 #include "Assert.hpp" // For ASSERT
-#include "Logger.hpp" // For LOB_DEBUG
+#include "Logger.hpp" // For LOG_INSTRUCTION
 #include "KeywordDict.hpp" // For KeywordDict
 
 ////////////////////////////////
@@ -29,7 +29,7 @@
 InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction, Process* pProcess)
 {
     std::string keyword = rInstruction.substr(0, rInstruction.find_first_of(' '));
-    LOG_DEBUG("Full keyword: %s", keyword.c_str());
+    LOG_INSTRUCTION("Full keyword: %s", keyword.c_str());
 
     // Determine the operation of the instruction
     OpCode opCode = DetermineOpCode(keyword);
@@ -37,7 +37,7 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
     // Determine whether instruction should be executed based on conditional code
     if ((CheckConditionalCode(keyword, pProcess->GetProcessRegisters()) == false) || (opCode == OpCode::NOP))
     {
-        LOG_DEBUG("Instruction will not be executed");
+        LOG_INSTRUCTION("Instruction will not be executed");
         return new NOPInstruction();
     }
 
@@ -45,7 +45,7 @@ InstructionBase* InstructionBuilder::BuildInstruction(std::string& rInstruction,
     uint8_t numCharsToRemove = rInstruction.substr(0, rInstruction.find_first_of(' ')).length() - keyword.length();
     rInstruction.erase(0, numCharsToRemove);
 
-    LOG_DEBUG("New Instruction: %s", rInstruction.c_str());
+    LOG_INSTRUCTION("New Instruction: %s", rInstruction.c_str());
 
     // Obtain a specific builder based on the opcode
     InstructionBuilder* pInstructionSpecificBuilder = InstructionBuilderRepository::GetInstructionBuilder(opCode);
@@ -104,7 +104,7 @@ OpCode InstructionBuilder::DetermineOpCode(std::string& rKeyword) const
         if (baseInstruction == "PUS") baseInstruction = "PUSH";
     }
 
-    LOG_DEBUG("Base Instruction: %s", baseInstruction.c_str());
+    LOG_INSTRUCTION("Base Instruction: %s", baseInstruction.c_str());
     
     try
     {
@@ -117,12 +117,12 @@ OpCode InstructionBuilder::DetermineOpCode(std::string& rKeyword) const
 
     ASSERT(opCode != OpCode::INVALID);
 
-    LOG_DEBUG("OpCode: %d", opCode);
+    LOG_INSTRUCTION("OpCode: %d", opCode);
 
     // Strip the opcode from the keyword
     rKeyword = rKeyword.substr(baseInstruction.length());
 
-    LOG_DEBUG("New Keyword: %s", rKeyword.c_str());
+    LOG_INSTRUCTION("New Keyword: %s", rKeyword.c_str());
 
     return opCode;   
 }
@@ -132,13 +132,13 @@ OpCode InstructionBuilder::DetermineOpCode(std::string& rKeyword) const
 ////////////////////////////////
 bool InstructionBuilder::CheckConditionalCode(std::string& rKeyword, const Registers& rRegisters) const
 {
-    LOG_DEBUG("rKeyword: %s", rKeyword.c_str());
+    LOG_INSTRUCTION("rKeyword: %s", rKeyword.c_str());
 
     // If the instruction is too short to contain a conditional code, it should be executed
     if (rKeyword.length() < 2) return true;
 
     std::string codeStr = rKeyword.substr(0, 2);
-    LOG_DEBUG("codeStr = %s", codeStr.c_str());
+    LOG_INSTRUCTION("codeStr = %s", codeStr.c_str());
 
     // If the conditional code is not in the dictionary, it should be executed
     if (!KeywordDict::GetInstance().GetConditionalCodeDict().Contains(codeStr)) return true;
@@ -146,7 +146,7 @@ bool InstructionBuilder::CheckConditionalCode(std::string& rKeyword, const Regis
     bool execute = false;
     ConditionalCode code = KeywordDict::GetInstance().GetConditionalCodeDict().Get(codeStr);
 
-    LOG_DEBUG("Checking flags : CPSR = %d", rRegisters.CPSR);
+    LOG_INSTRUCTION("Checking flags : CPSR = %d", rRegisters.CPSR);
 
     // Determine whether the instruction should be executed or not
     switch (code)
@@ -215,7 +215,7 @@ bool InstructionBuilder::CheckConditionalCode(std::string& rKeyword, const Regis
 ////////////////////////////////
 Register* InstructionBuilder::ParseRegister(const std::string& rRegStr, Process* pProcess) const
 {
-    LOG_DEBUG("Parsing %s", rRegStr.c_str());
+    LOG_INSTRUCTION("Parsing %s", rRegStr.c_str());
 
     if (rRegStr[0] != 'R' && rRegStr[0] != 'r')
     {

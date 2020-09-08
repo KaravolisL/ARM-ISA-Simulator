@@ -34,7 +34,7 @@ void MemoryManager::Initialize()
 
     m_memoryFile.seekg(0, std::fstream::beg);
 
-    LOG_INFO("MemoryManager Initialized");
+    LOG_MEMORY("MemoryManager Initialized");
 }
 
 ////////////////////////////////
