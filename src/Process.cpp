@@ -80,7 +80,7 @@ void Process::ExecuteNextInstruction()
 
     InstructionBase* pInstruction;
     pInstruction = InstructionBuilder::GetInstance().BuildInstruction(instruction, this);
-    pInstruction->Execute(this->GetProcessRegisters());
+    pInstruction->Execute(GetProcessRegisters());
 
     // If a branch instruction was executed, use the set PC
     OpCode opCode = pInstruction->GetOpCode();
