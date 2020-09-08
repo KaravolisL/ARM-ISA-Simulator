@@ -1,7 +1,7 @@
 /////////////////////////////////
-/// DLList.hpp
+/// @file DLList.hpp
 ///
-/// @brief Declarations and implementation for 
+/// @brief Declarations and implementation for
 /// doubly linked list
 /////////////////////////////////
 #ifndef DLLIST_HPP
@@ -18,10 +18,10 @@
 #include "IndexOutOfBoundsException.hpp" // For IndexOutOfBoundsException
 
 ////////////////////////////////
-/// CLASS NAME: DLList
+/// @class DLList
 ///
 /// @brief Doubly linked list class
-/// @param T type stored in list
+/// @tparam T type stored in list
 ////////////////////////////////
 template <typename T>
 class DLList
@@ -36,25 +36,43 @@ private:
     ////////////////////////////////
     typedef struct Node
     {
+        /// Data held by node
         T data;
+
+        /// Pointer to the next node
         Node* next;
+
+        /// Pointer to the previous node
         Node* prev;
 
+        /////////////////////////////////////
+        /// @brief Constructs a new Node object
+        ///
+        /// @param[in] data Data to be held by node
+        /////////////////////////////////////
         Node(T data) :
             data(data),
-            next(nullptr),
-            prev(nullptr)
+            prev(nullptr),
+            next(nullptr)
         {}
 
+        /////////////////////////////////////
+        /// @brief Assignment operator
+        /////////////////////////////////////
         Node& operator=(Node const&);
+
+        /////////////////////////////////////
+        /// @brief Copy constructor
+        /////////////////////////////////////
         Node(Node const&);
+
     } Node;
 
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new DLList object
+    /////////////////////////////////////
     DLList() :
         head(nullptr),
         tail(nullptr),
@@ -62,59 +80,59 @@ public:
     {}
 
     ////////////////////////////////
-    /// FUNCTION NAME: InsertFront
+    /// @brief Inserts an element at the front of the list
     ///
     /// @param element   Element to be inserted
     ////////////////////////////////
     void InsertFront(T element)
     {
         // If the list is empty, make new element the head and tail
-        if (this->head == nullptr)
+        if (head == nullptr)
         {
-            assert(this->tail == nullptr);
-            this->head = new Node(element);
-            this->tail = this->head;
+            assert(tail == nullptr);
+            head = new Node(element);
+            tail = head;
         }
         else
         {
             // Make this new node the head of the list
             Node* pNewNode = new Node(element);
-            pNewNode->next = this->head;
-            this->head->prev = pNewNode;
-            this->head = pNewNode;
+            pNewNode->next = head;
+            head->prev = pNewNode;
+            head = pNewNode;
         }
 
-        this->m_Length++;
+        m_Length++;
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: InsertBack
+    /// @brief Inserts an element at the back of the list
     ///
     /// @param element   Element to be inserted
     ////////////////////////////////
     void InsertBack(T element)
     {
         // If the list is empty, make new element the head and tail
-        if (this->head == nullptr)
+        if (head == nullptr)
         {
-            assert(this->tail == nullptr);
-            this->head = new Node(element);
-            this->tail = this->head;
+            assert(tail == nullptr);
+            head = new Node(element);
+            tail = head;
         }
         else
         {
             // Append new node to the end
             Node* pNewNode = new Node(element);
-            this->tail->next = pNewNode;
-            pNewNode->prev = this->tail;
-            this->tail = pNewNode;
+            tail->next = pNewNode;
+            pNewNode->prev = tail;
+            tail = pNewNode;
         }
 
-        this->m_Length++;
+        m_Length++;
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: Get
+    /// @brief Retrieves an element from the list
     ///
     /// @param index   Index of element to return
     /// @return Element at given value
@@ -135,7 +153,7 @@ public:
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: Clear
+    /// @brief Frees all nodes in the list
     ////////////////////////////////
     void Clear(void)
     {
@@ -148,13 +166,13 @@ public:
             pNextNode = pCurrentNode->next;
             delete pCurrentNode;
         }
-        this->head = nullptr;
-        this->tail = nullptr;
-        this->m_Length = 0;
+        head = nullptr;
+        tail = nullptr;
+        m_Length = 0;
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: Remove
+    /// @brief Removes an element from the list
     ///
     /// @param index    Index to remove
     /// @return Data stored at given index
@@ -167,25 +185,25 @@ public:
 
         Node* pOldNode;
         // Deleting only node
-        if (this->head == this->tail)
+        if (head == tail)
         {
-            pOldNode = this->head;
-            this->head = nullptr;
-            this->tail = nullptr;
+            pOldNode = head;
+            head = nullptr;
+            tail = nullptr;
         }
         else
         {
             if (index == 0)
             {
-                pOldNode = this->head;
-                this->head = pOldNode->next;
-                this->head->prev = nullptr;
+                pOldNode = head;
+                head = pOldNode->next;
+                head->prev = nullptr;
             }
             else if (index == m_Length - 1)
             {
-                pOldNode = this->tail;
-                this->tail = pOldNode->prev;
-                this->tail->next = nullptr;
+                pOldNode = tail;
+                tail = pOldNode->prev;
+                tail->next = nullptr;
             }
             else
             {
@@ -207,22 +225,22 @@ public:
         // Delete the node and return it's data;
         T data = pOldNode->data;
         delete pOldNode;
-        this->m_Length--;
+        m_Length--;
         return data;
     }
 
-    ////////////////////////////////
-    /// FUNCTION NAME: GetLength
+    /////////////////////////////////////
+    /// @brief Gets the Length member
     ///
-    /// @returns m_Length of list
-    ////////////////////////////////
+    /// @return Number of elements in the list
+    /////////////////////////////////////
     uint32_t GetLength(void) const
     {
-        return this->m_Length;
+        return m_Length;
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: PrintList
+    /// @brief Prints the list to std::cout
     ////////////////////////////////
     void PrintList(void) const
     {
@@ -239,7 +257,7 @@ public:
             {
                 std::cout << "\n";
             }
-            
+
         }
     }
 
@@ -247,39 +265,47 @@ public:
     class DLListIterator;
 
     ////////////////////////////////
-    /// FUNCTION NAME: GetBegin
+    /// @brief Obtains an iterator from the beginning
+    ///
+    /// @return DLListIterator from beginning
     ////////////////////////////////
     DLListIterator GetBegin()
     {
-        return DLListIterator(this->head);
+        return DLListIterator(head);
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: GetReverseBegin
+    /// @brief Obtains a reverse iterator from the beginning
+    ///
+    /// @return DLListIterator from beginning
     ////////////////////////////////
     DLListIterator GetReverseBegin()
     {
-        return DLListIterator(this->tail);
+        return DLListIterator(tail);
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: GetEnd
+    /// @brief Obtains an iterator from the end
+    ///
+    /// @return DLListIterator from end
     ////////////////////////////////
     DLListIterator GetEnd()
     {
-        return DLListIterator(this->tail->next);
+        return DLListIterator(tail->next);
     }
 
     ////////////////////////////////
-    /// FUNCTION NAME: GetReverseEnd
+    /// @brief Obtains a reverse iterator from the end
+    ///
+    /// @return DLListIterator from end
     ////////////////////////////////
     DLListIterator GetReverseEnd()
     {
-        return DLListIterator(this->head->prev);
+        return DLListIterator(head->prev);
     }
 
     ////////////////////////////////
-    /// CLASS NAME: DLListIterator
+    /// @class DLListIterator
     ///
     /// @brief Class used to iterate
     /// through a linked list
@@ -287,84 +313,89 @@ public:
     class DLListIterator
     {
     public:
-        ////////////////////////////////
-        /// Constructor
-        ////////////////////////////////
+        /////////////////////////////////////
+        /// @brief Constructs a new DLListIterator object
+        /////////////////////////////////////
         DLListIterator() :
             pNextNode(nullptr)
         {}
 
+        /////////////////////////////////////
+        /// @brief Constructs a new DLListIterator object
+        ///
+        /// @param[in] startingNode Node at which to start
+        /////////////////////////////////////
         DLListIterator(Node* startingNode) :
             pNextNode(startingNode)
         {}
 
         ////////////////////////////////
-        /// Assignment Operator
+        /// @brief Assignment Operator
         ////////////////////////////////
         DLListIterator& operator=(Node* pNode)
-        { 
-            this->pNextNode = pNode; 
-            return *this; 
+        {
+            pNextNode = pNode;
+            return *this;
         }
 
         ////////////////////////////////
-        /// Prefix ++ Operator
-        //////////////////////////////// 
-        DLListIterator& operator++() 
-        { 
-            if (this->pNextNode != nullptr)
+        /// @brief Prefix ++ Operator
+        ////////////////////////////////
+        DLListIterator& operator++()
+        {
+            if (pNextNode != nullptr)
             {
-                this->pNextNode = this->pNextNode->next;
+                pNextNode = pNextNode->next;
             }
-            return *this; 
-        } 
-  
-        ////////////////////////////////
-        /// Postfix ++ Operator
-        ////////////////////////////////
-        DLListIterator operator++(int) 
-        { 
-            DLListIterator iterator = *this; 
-            ++*this; 
-            return iterator; 
+            return *this;
         }
 
         ////////////////////////////////
-        /// Prefix -- Operator
-        //////////////////////////////// 
-        DLListIterator& operator--() 
-        { 
-            if (this->pNextNode != nullptr)
+        /// @brief Postfix ++ Operator
+        ////////////////////////////////
+        DLListIterator operator++(int)
+        {
+            DLListIterator iterator = *this;
+            ++*this;
+            return iterator;
+        }
+
+        ////////////////////////////////
+        /// @brief Prefix -- Operator
+        ////////////////////////////////
+        DLListIterator& operator--()
+        {
+            if (pNextNode != nullptr)
             {
-                this->pNextNode = this->pNextNode->prev;
+                pNextNode = pNextNode->prev;
             }
-            return *this; 
-        } 
-  
-        ////////////////////////////////
-        /// Postfix -- Operator
-        ////////////////////////////////
-        DLListIterator operator--(int) 
-        { 
-            DLListIterator iterator = *this; 
-            --*this; 
-            return iterator; 
+            return *this;
         }
 
         ////////////////////////////////
-        /// Not Equal Operator
+        /// @brief Postfix -- Operator
         ////////////////////////////////
-        bool operator!=(const DLListIterator& iterator) 
-        { 
-            return this->pNextNode != iterator.pNextNode; 
+        DLListIterator operator--(int)
+        {
+            DLListIterator iterator = *this;
+            --*this;
+            return iterator;
         }
 
         ////////////////////////////////
-        /// Dereference Operator
+        /// @brief Not Equal Operator
+        ////////////////////////////////
+        bool operator!=(const DLListIterator& iterator)
+        {
+            return pNextNode != iterator.pNextNode;
+        }
+
+        ////////////////////////////////
+        /// @brief Dereference Operator
         ////////////////////////////////
         T operator*() const
         {
-            return this->pNextNode->data;
+            return pNextNode->data;
         }
 
     private:
