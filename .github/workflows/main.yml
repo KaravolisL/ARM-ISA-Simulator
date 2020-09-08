@@ -77,5 +77,5 @@ jobs:
       - name: Run Doxygen
         uses: mattnotmitt/doxygen-action@v1.1.0
         with:
-          working-directory: '${{ github.workspace }}/docs/'
-          doxyfile-path: '${{ github.workspace }}/docs'
+          working-directory: './Doxyfile'
+          doxyfile-path: '.'
