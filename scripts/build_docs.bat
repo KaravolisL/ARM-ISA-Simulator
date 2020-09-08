@@ -1,4 +1,4 @@
-cd ..
+cd ../docs
 
 doxygen Doxyfile
 
