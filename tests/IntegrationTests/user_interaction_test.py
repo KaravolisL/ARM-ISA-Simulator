@@ -169,5 +169,75 @@ def test_abort(find_executable, artifacts):
     returncode = program.wait()
     assert(returncode == 0), "Program did not execute successfully"
 
+def test_inspect(find_executable, artifacts):
+    """Test user's ability to inspect both registers and memory locations
+
+    :param fixture find_executable: Finds and returns the simulator executable
+    :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
+
+    """
+    TEST_PROGRAM = r"SourcePrograms/MemoryProgram.s"
+
+    # Execute simulator
+    program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
+
+    pattern = "NOP" if sys.platform == 'win32' else b"NOP"
+    while (True):
+
+        try:
+            print(program.before)
+            program.expect("Debug Option: ", timeout=0.2)
+
+        except (xexpect.TIMEOUT, xexpect.EOF) as e:
+            print(e)
+            program.kill()
+            assert(False), "Program didn't respond as expected"
+
+        # Stop once we see the nop at the end of the program
+        if (program.before != None and program.before.find(pattern) >= 0):
+            break
+
+        program.sendline('')
+
+    # Expected register and memory values
+    expected_values = {
+        'R0' : '0x19',
+        'R1' : '0x1a',
+        'R2' : '0x1b',
+        'R3' : '0x20000008',
+        'R4' : '0x20000018',
+        'R5' : '0x0',
+        'R6' : '0x6e',
+        'R7' : '0xfffffffb',
+        '0x20000000' : '0x19',
+        '0x20000004' : '0x1a',
+        '0x20000010' : '0xe0c0a08'
+    }
+
+    for key in expected_values:
+        program.sendline('i')
+        try:
+            print(program.before)
+            program.expect("Register or Memory Address to Inspect: ", timeout=0.3)
+        except (xexpect.TIMEOUT, xexpect.EOF) as e:
+            print(e)
+            program.kill()
+            assert(False), "Program responded unexpectedly"
+
+        # Enter the register/memory address
+        program.sendline(key)
+        try:
+            print(program.before)
+            program.expect("Value of " + key + " = " + expected_values[key], timeout=0.5)
+        except (xexpect.TIMEOUT, xexpect.EOF) as e:
+            print(program.after)
+            program.kill()
+            assert(False), "Program responded unexpectedly"
+
+    # Finish executing the program
+    program.sendline('')
+    returncode = program.wait()
+    assert(returncode == 0), "Program did not execute successfully"
+
 if __name__ == '__main__':
     raise Exception("Run using pytest")

@@ -52,8 +52,8 @@ private:
         /////////////////////////////////////
         Node(T data) :
             data(data),
-            prev(nullptr),
-            next(nullptr)
+            next(nullptr),
+            prev(nullptr)
         {}
 
         /////////////////////////////////////

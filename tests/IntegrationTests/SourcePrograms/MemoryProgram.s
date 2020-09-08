@@ -28,6 +28,8 @@ end
     LDR r7, =myInt
     LDRSB r7, [r7]
 
+    NOP
+
     ENDP
 
 array DCD 25, 26, 27
