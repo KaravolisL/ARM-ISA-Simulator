@@ -58,21 +58,3 @@ jobs:
         path: |
           Testing/Temporary/LastTest.log
           ${{ github.workspace }}/tests/IntegrationTests/Artifacts/
-
-  build-documentation:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Run Doxygen
-        uses: mattnotmitt/doxygen-action@v1.1.0
-        with:
-          working-directory: 'docs/'
-
-      - name: Upload documentation
-        uses: actions/upload-artifact@v2
-        with:
-          name: Documentation
-          path: ${{ github.workspace }}/docs/build/
