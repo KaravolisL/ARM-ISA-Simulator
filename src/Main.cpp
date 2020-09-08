@@ -19,9 +19,13 @@
 #include "MemoryApi.hpp" // For Memory::MemoryApi
 #include "Logger.hpp" // For Logger
 
-////////////////////////////////
-/// FUNCTION NAME: main
-////////////////////////////////
+/////////////////////////////////////
+/// @brief main function
+/// 
+/// @param argc Number of arguments from command line
+/// @param argv Command line arguments
+/// @return Exit code
+/////////////////////////////////////
 int main(int argc, char* argv[])
 {
     CLI::App app{"ARM Instruction Set Architecture Simulator"};

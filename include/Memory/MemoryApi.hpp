@@ -26,79 +26,52 @@ namespace MemoryApi
 {
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::Initialize
-///
-/// @brief Initializes the memory subsystem
+/// @copydoc Memory::MemoryManager::Initialize()
 ////////////////////////////////
 void Initialize();
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::Close
-///
-/// @brief Closes the memory file
+/// @copydoc Memory::MemoryManager::Close()
 ////////////////////////////////
 void Close();
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::ReadWord
-///
-/// @brief Reads a word from the given address
-///
-/// @param[in] address      Address from which to read
-/// @return Word of data at that address
+/// @copydoc Memory::MemoryManager::Read()
 ////////////////////////////////
 uint32_t ReadWord(uint32_t address);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::ReadUnsignedByte
-///
-/// @copydoc Memory::MemoryManager::ReadUnsignedByte
+/// @copydoc Memory::MemoryManager::Read()
 ////////////////////////////////
 uint32_t ReadUnsignedByte(uint32_t address);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::ReadSignedByte
-///
-/// @copydoc Memory::MemoryManager::ReadSignedByte
+/// @copydoc Memory::MemoryManager::Read()
 ////////////////////////////////
 uint32_t ReadSignedByte(uint32_t address);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::ReadUnsignedHalfword
-///
-/// @copydoc Memory::MemoryManager::ReadUnsignedHalfword
+/// @copydoc Memory::MemoryManager::Read()
 ////////////////////////////////
 uint32_t ReadUnsignedHalfword(uint32_t address);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::ReadSignedHalfword
-///
-/// @copydoc Memory::MemoryManager::ReadSignedHalfword
+/// @copydoc Memory::MemoryManager::Read()
 ////////////////////////////////
 uint32_t ReadSignedHalfword(uint32_t address);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::WriteWord
-///
-/// @brief Writes the given data to the given address.
-/// overloaded to allow for different types of writes
-///
-/// @param[in] address      Address at which to write
-/// @param[in] data         Data to write
+/// @copydoc Memory::MemoryManager::Write()
 ////////////////////////////////
 void WriteWord(uint32_t address, uint32_t data);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::WriteUnsignedByte
-///
-/// @copydoc Memory::MemoryManager::WriteUnsignedByte
+/// @copydoc Memory::MemoryManager::Write()
 ////////////////////////////////
 void WriteUnsignedByte(uint32_t address, uint8_t data);
 
 ////////////////////////////////
-/// METHOD NAME: Memory::MemoryApi::WriteUnsignedHalfword
-///
-/// @copydoc Memory::MemoryManager::WriteUnsignedHalfword
+/// @copydoc Memory::MemoryManager::Write()
 ////////////////////////////////
 void WriteUnsignedHalfword(uint32_t address, uint16_t data);
 
