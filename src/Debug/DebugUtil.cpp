@@ -1,7 +1,7 @@
 /////////////////////////////////
 /// @file DebugUtil.cpp
 ///
-/// @copybrief DebugUtil.hpp
+/// @brief Implementations for debug utility functions
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -19,7 +19,7 @@
 ////////////////////////////////
 /// FUNCTION NAME: format
 ////////////////////////////////
-std::string format(int numArgs, va_list valist)
+std::string format(const int numArgs, va_list valist)
 {
     std::stringstream formattedString;
     
