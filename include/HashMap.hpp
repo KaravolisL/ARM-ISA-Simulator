@@ -24,15 +24,17 @@
 /// @class HashMap
 ///
 /// @brief HashMap data structure
-/// @param T Type of values stored
+/// @tparam T Type of values stored
 ////////////////////////////////
 template <typename T>
 class HashMap
 {
 public:
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new HashMap object
+    /// 
+    /// @param[in] size Initial size of the hashmap
+    /////////////////////////////////////
     HashMap(uint32_t size = 11) :
         m_pKeys(new std::string[size]),
         m_pValues(new T[size]),
@@ -40,9 +42,9 @@ public:
         m_size(size)
     {}
 
-    ////////////////////////////////
-    /// Deconstructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Destroys the HashMap object
+    /////////////////////////////////////
     ~HashMap()
     {
         delete[] m_pKeys;
@@ -50,7 +52,7 @@ public:
     }
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Copy Constructer
     ////////////////////////////////
     HashMap(const HashMap& rOther) :
         m_pKeys(new std::string[rOther.m_size]),
@@ -66,7 +68,8 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Insert
+    /// @brief Inserts an element into the hashmap
+    /// using the given key
     ///
     /// @param key      Key at which to insert
     /// @param value    Value to associate with key
@@ -104,7 +107,8 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Get
+    /// @brief Obtains an element corresponding
+    /// to the given key
     ///
     /// @param rKey      Key whose value to retrieve
     /// @return Values associated with key
@@ -132,7 +136,8 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Remove
+    /// @brief Removes the element associated
+    /// with the given key
     ///
     /// @param rKey      Key to remove
     /// @return Value associated with key that was removed
@@ -163,12 +168,13 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Contains
+    /// @brief Determines if an element exists
+    /// for the given key
     ///
     /// @param rKey      Key to look for
     /// @return Whether key exists in the hash
-    /// @retval true    - Key is in hash
-    /// @retval false   - Key is not in hash
+    ///     @retval true    - Key is in hash
+    ///     @retval false   - Key is not in hash
     ////////////////////////////////
     bool Contains(const std::string& rKey) const
     {
@@ -184,7 +190,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: GetKeys
+    /// @brief Obtains a list of all the keys
     ///
     /// @return A linked list of the keys in the hash map
     ////////////////////////////////
@@ -209,6 +215,11 @@ public:
     ////////////////////////////////
     struct KeyNotFoundException : public std::exception
     {
+        /////////////////////////////////////
+        /// @brief Returns the exception message
+        /// 
+        /// @return Exception message
+        /////////////////////////////////////
         const char* what() const throw()
         {
             return "Key Not Found Exception";
@@ -233,12 +244,11 @@ private:
     uint32_t m_size;
 
     ////////////////////////////////
-    /// METHOD NAME: CalculateHash
-    ///
     /// @brief Calculates the index of the string
     /// using Horner's method
     ///
     /// @param rStr     String to be hashed
+    /// @return         Hash of the string
     ////////////////////////////////
     uint32_t CalculateHash(const std::string& rStr) const
     {
@@ -252,8 +262,6 @@ private:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Rehash
-    ///
     /// @brief Increases the size of the hash
     /// map to the next prime number. Subsequently,
     /// all key:value pairs will be rehashed
@@ -298,8 +306,6 @@ private:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: NextPrime
-    ///
     /// @brief Helper method to determine the
     /// next prime number after the given number
     ///
@@ -330,8 +336,6 @@ private:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: IsPrime
-    ///
     /// @brief Helper method to determine if
     /// a number is prime or not
     ///
@@ -361,7 +365,7 @@ private:
     }
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ///
     /// @note Disallow assignment operator
     ////////////////////////////////
