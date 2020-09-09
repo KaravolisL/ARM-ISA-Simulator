@@ -29,22 +29,21 @@
 ///
 /// @brief Data structure associating
 /// a string key to a value
+/// @tparam T Type of values
 ////////////////////////////////
 template <typename T>
 class DLB
 {
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new DLB object
+    /////////////////////////////////////
     DLB() :
         m_pRoot(nullptr)
     {}
 
     ////////////////////////////////
-    /// METHOD NAME: Insert
-    ///
     /// @brief Adds a key:value pair
     /// to the trie
     ///
@@ -86,10 +85,8 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Update
-    ///
-    /// @brief Adds a key:value pair
-    /// to the trie
+    /// @brief Updates a key:value pair
+    /// in the trie
     ///
     /// @param key      Key to be added
     /// @param value    Value to be associated with key
@@ -102,8 +99,6 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Get
-    ///
     /// @brief Retrieves the value associated
     /// with the given key
     ///
@@ -151,15 +146,13 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Contains
-    ///
     /// @brief Determines whether a key
     /// was added to the trie
     ///
     /// @param key      Key to be searched
     /// @return Whether a value exists for the key
-    /// @retval true     - A value exists
-    /// @retval false    - No value exists
+    ///     @retval true     - A value exists
+    ///     @retval false    - No value exists
     ////////////////////////////////
     bool Contains(const std::string& key) const
     {
@@ -182,6 +175,11 @@ public:
     ////////////////////////////////
     struct KeyNotFoundException : public std::exception
     {
+        /////////////////////////////////////
+        /// @brief Returns the exception message
+        /// 
+        /// @return Exception message
+        /////////////////////////////////////
         const char* what() const throw()
         {
             return "Key Not Found Exception";
@@ -202,12 +200,26 @@ private:
     class DLBNode
     {
     public:
+        /// Character of the node
         char character;
+
+        /// Value that the node holds
         T value;
+
+        /// Node to the right
         DLBNode* pRightSib;
+
+        /// Child node
         DLBNode* pChild;
+
+        /// Whether this node is a terminating node
         bool terminating;
 
+        /////////////////////////////////////
+        /// @brief Constructs a new DLBNode object
+        /// 
+        /// @param[in] character Character for node to hold
+        /////////////////////////////////////
         DLBNode(char character) :
             character(character),
             value(),
@@ -221,8 +233,6 @@ private:
     DLBNode* m_pRoot;
 
     ////////////////////////////////
-    /// METHOD NAME: FindOrAddNode
-    ///
     /// @brief Finds a node given a starting node.
     /// Adds a new node if one isn't found
     ///
