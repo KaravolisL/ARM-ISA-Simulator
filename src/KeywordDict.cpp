@@ -41,6 +41,7 @@ void KeywordDict::Initialize()
     // Instructions
     m_instructionDict.Insert("ADD", OpCode::ADD);
     m_instructionDict.Insert("SUB", OpCode::SUB);
+    m_instructionDict.Insert("MUL", OpCode::MUL);
     m_instructionDict.Insert("AND", OpCode::AND);
     m_instructionDict.Insert("ORR", OpCode::ORR);
     m_instructionDict.Insert("BIC", OpCode::BIC);

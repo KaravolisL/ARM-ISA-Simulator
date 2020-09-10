@@ -20,9 +20,9 @@
 #include "Logger.hpp" // For LOG_INSTRUCTION
 #include "Assert.hpp" // For ASSERT
 
-static ArithAndLogicInstructionBuilder f_arithAndLogicInstructionBuilder;
-static FlowCtrlInstructionBuilder f_flowCtrlInstructionBuilder;
-static MemoryInstructionBuilder f_memoryInstructionBuilder;
+static ArithAndLogicInstructionBuilder arithAndLogicInstructionBuilder;
+static FlowCtrlInstructionBuilder flowCtrlInstructionBuilder;
+static MemoryInstructionBuilder memoryInstructionBuilder;
 
 ////////////////////////////////
 /// METHOD NAME: InstructionBuilderRepository::GetInstructionBuilder 
@@ -37,6 +37,7 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
     {
         case OpCode::ADD:
         case OpCode::SUB:
+        case OpCode::MUL:
         case OpCode::BIC:
         case OpCode::AND:
         case OpCode::ORR:
@@ -48,13 +49,13 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
         case OpCode::MOV:
         case OpCode::LSL:
         case OpCode::LSR:
-            pInstructionBuilder = &f_arithAndLogicInstructionBuilder;
+            pInstructionBuilder = &arithAndLogicInstructionBuilder;
             break;
         case OpCode::B:
         case OpCode::BL:
         case OpCode::BX:
         case OpCode::BLX:
-            pInstructionBuilder = &f_flowCtrlInstructionBuilder;
+            pInstructionBuilder = &flowCtrlInstructionBuilder;
             break;
         case OpCode::PUSH:
         case OpCode::POP:
@@ -62,7 +63,7 @@ InstructionBuilder* InstructionBuilderRepository::GetInstructionBuilder(const Op
         case OpCode::STM:
         case OpCode::LDR:
         case OpCode::STR:
-            pInstructionBuilder = &f_memoryInstructionBuilder;
+            pInstructionBuilder = &memoryInstructionBuilder;
             break;
         case OpCode::NOP:
             ASSERT(false, "Instruction should not be built for NOP");

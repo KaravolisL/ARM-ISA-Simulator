@@ -25,6 +25,10 @@ __main PROC
 
     MOV R7, #0xBEEF
 
+    MOV R8, #8
+    MOV R9, #11
+    MUL R8, R9
+
 MyLabel MOV R0, #0xFF
     MOV R7, #7 ; R7 = 7
 

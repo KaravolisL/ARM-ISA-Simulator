@@ -163,6 +163,9 @@ InstructionBase* ArithAndLogicInstructionBuilder::BuildInstruction(std::string& 
     case OpCode::SUB:
         pInstruction->SetOperation([](Register a, Register b) { return a - b; });
         break;
+    case OpCode::MUL:
+        pInstruction->SetOperation([](Register a, Register b) { return a * b; });
+        break;
     case OpCode::AND:
         pInstruction->SetOperation([](Register a, Register b) { return a & b; });
         break;
