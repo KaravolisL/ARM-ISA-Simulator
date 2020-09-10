@@ -33,9 +33,11 @@ class MemoryInstruction : public InstructionBase
 {
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new MemoryInstruction object
+    ///
+    /// @param[in] opCode Opcode of the instruction
+    /////////////////////////////////////
     MemoryInstruction(OpCode opCode) :
         InstructionBase(opCode),
         m_pDestOrSrcRegister(nullptr),
@@ -46,8 +48,6 @@ public:
     {};
 
     ////////////////////////////////
-    /// METHOD NAME: Execute
-    ///
     /// @brief Executes the given operation
     /// on the arguments and places the result
     /// into the destination
@@ -56,34 +56,48 @@ public:
     ////////////////////////////////
     void Execute(Registers& rProcessRegisters);
 
-    ////////////////////////////////
-    /// METHOD NAME: SetDestOrSrcRegister
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the DestOrSrcRegister member
+    ///
+    /// @param[in] pDestinationRegister Pointer to the destination
+    /// or source register
+    /////////////////////////////////////
     void SetDestOrSrcRegister(Register* pDestinationRegister) { m_pDestOrSrcRegister = pDestinationRegister; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetAddressRegister
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the AddressRegister member
+    /// 
+    /// @param[in] pAddressRegister Pointer to the register
+    /// containing the memory address
+    /////////////////////////////////////
     void SetAddressRegister(Register* pAddressRegister) { m_pAddressRegister = pAddressRegister; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetTransferType
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the TransferType member
+    ///
+    /// @param[in] transferType 
+    /////////////////////////////////////
     void SetTransferType(MemoryTransferType transferType) { m_transferType = transferType; }
 
-    ////////////////////////////////
-    /// METHOD NAME: GetTransferType
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Gets the TransferType member
+    ///
+    /// @return Instruction's transfer type
+    /////////////////////////////////////
     MemoryTransferType GetTransferType() const { return m_transferType; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetOffset
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the Offset member
+    ///
+    /// @param[in] offset Offset for instruction
+    /////////////////////////////////////
     void SetOffset(int32_t offset) { m_offset = offset; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetOffsetType
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the OffsetType member
+    ///
+    /// @param[in] offsetType Type of offset to be performed
+    /////////////////////////////////////
     void SetOffsetType(OffsetType offsetType) { m_offsetType = offsetType; }
 
 protected:
@@ -106,12 +120,12 @@ private:
     OffsetType m_offsetType;
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Copy Constructer
     ////////////////////////////////
     MemoryInstruction(MemoryInstruction const&);
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ////////////////////////////////
     MemoryInstruction& operator=(MemoryInstruction const&);
 
