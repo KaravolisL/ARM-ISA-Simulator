@@ -30,9 +30,11 @@ class FlowCtrlInstruction : public InstructionBase
 {
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new FlowCtrlInstruction object
+    ///
+    /// @param[in] opCode Opcode of instruction
+    /////////////////////////////////////
     FlowCtrlInstruction(OpCode opCode) :
         InstructionBase(opCode),
         m_linkFlag(false),
@@ -40,8 +42,6 @@ public:
     {};
 
     ////////////////////////////////
-    /// METHOD NAME: Execute
-    ///
     /// @brief Executes a branch instruction
     /// and optionally links and/or exchanges
     ///
@@ -49,14 +49,16 @@ public:
     ////////////////////////////////
     void Execute(Registers& rProcessRegisters);
 
-    ////////////////////////////////
-    /// METHOD NAME: SetNewPC
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the NewPC member
+    ///
+    /// @param[in] newPC New PC value
+    /////////////////////////////////////
     void SetNewPC(Register newPC) { m_newPC = newPC; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetLinkFlag
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the LinkFlag member
+    /////////////////////////////////////
     void SetLinkFlag() { m_linkFlag = true; }
 
 protected:
@@ -70,12 +72,12 @@ private:
     Register m_newPC;
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Copy Constructer
     ////////////////////////////////
     FlowCtrlInstruction(FlowCtrlInstruction const&);
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ////////////////////////////////
     FlowCtrlInstruction& operator=(FlowCtrlInstruction const&);
 
