@@ -9,7 +9,7 @@
 /////////////////////////////////
 
 // SYSTEM INCLUDES
-// (None)
+#include <functional> // For std::function
 
 // C PROJECT INCLUDES
 // (None)
@@ -158,6 +158,11 @@ void Process::HandleUserInput()
                 InspectMemory();
                 stepType = StepType::STEP_NULL;
                 break;
+            case 'E':
+            case 'e':
+                EditMemory();
+                stepType = StepType::STEP_NULL;
+                break;
             default:
                 stepType = StepType::STEP;
         }
@@ -288,4 +293,88 @@ void Process::InspectMemory() const
     }
 
     LOG_USER("Value of %s = 0x%x\n", userInput.c_str(), data);
+}
+
+////////////////////////////////
+/// METHOD NAME: Process::EditMemory
+////////////////////////////////
+void Process::EditMemory()
+{
+    LOG_USER("Register or Memory Address to Edit: ");
+
+    // Get the register or memory address from the user
+    std::string userInput;
+    do
+    {
+        userInput.push_back(std::cin.get());
+    } while (userInput.back() != '\n');
+    userInput.pop_back();
+
+    if (userInput.size() == 0)
+    {
+        return;
+    }
+
+    uint32_t data;
+    std::function<void(uint32_t)> setData;
+    if (userInput[0] != 'R' && userInput[0] != 'r')
+    {
+        // It must be a memory address
+        try
+        {
+            uint32_t memAddress = static_cast<uint32_t>(std::stoul(userInput.c_str(), nullptr, 0));
+            data = Memory::MemoryApi::ReadWord(memAddress);
+            setData = [memAddress](uint32_t newValue) { Memory::MemoryApi::WriteWord(memAddress, newValue); };
+        }
+        catch (const std::exception& e)
+        {
+            LOG_USER("Invalid Memory Address\n");
+            return;
+        }
+    }
+    else
+    {
+        try
+        {
+            // Convert string to register number
+            uint8_t regNumber = atoi(userInput.substr(1).c_str());
+            if (regNumber >= (sizeof(m_processRegisters) / sizeof(Register)))
+            {
+                throw IndexOutOfBoundsException();
+            }
+            data = m_processRegisters.genRegs[regNumber];
+            setData = [this, regNumber](uint32_t newValue) { this->GetProcessRegisters().genRegs[regNumber] = newValue; };
+        }
+        catch (const std::exception& e)
+        {
+            LOG_USER("Invalid Register\n");
+            return;
+        }
+    }
+
+    LOG_USER("Current value of %s = 0x%x\n", userInput.c_str(), data);
+    LOG_USER("New value of %s: ", userInput.c_str());
+
+    // Get the new value from the user
+    userInput.clear();
+    do
+    {
+        userInput.push_back(std::cin.get());
+    } while (userInput.back() != '\n');
+    userInput.pop_back();
+
+    // Try converting it
+    uint32_t newValue;
+    try
+    {
+        newValue = static_cast<uint32_t>(std::stoul(userInput.c_str(), nullptr, 0));
+    }
+    catch(const std::exception& e)
+    {
+        LOG_USER("Invalid value entered\n");
+        return;
+    }
+
+    // Actually set the new value
+    setData(newValue);
 }
