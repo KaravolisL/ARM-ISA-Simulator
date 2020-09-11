@@ -31,6 +31,7 @@ enum class OpCode
     BX,
     BLX,
     SUB,
+    MUL,
     BIC,
     ORR,
     AND,

@@ -3,8 +3,6 @@
 ///
 /// @brief Implementation of Assert functions
 ///
-/// @copydetail Assert.hpp
-///
 /// @author Luke Karavolis
 /////////////////////////////////
 
@@ -24,7 +22,7 @@
 ////////////////////////////////
 /// FUNCTION NAME: Assert
 ////////////////////////////////
-void Assert(bool expr, const char* fileName, int lineNumber, int numArgs, ...)
+void Assert(bool expr, const char* fileName, const int lineNumber, const int numArgs, ...)
 {
     if (expr) return;
 

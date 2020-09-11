@@ -25,7 +25,7 @@ def test_simple_program(find_executable, artifacts):
     output = open(os.path.join(artifacts, OUTPUT_FILE_NAME), 'r')
 
     # Check for correct values in registers
-    expected_values = ['ff', 'aa', 'b4', '22', 'a0', 'fa', 'eb', '7']
+    expected_values = ['ff', 'aa', 'b4', '22', 'a0', 'fa', 'eb', '7', '58']
     lines = output.readlines()
 
     for i in range(0, 7):

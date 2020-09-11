@@ -29,16 +29,14 @@ class NOPInstruction : public InstructionBase
 {
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new NOPInstruction object
+    /////////////////////////////////////
     NOPInstruction() :
         InstructionBase(OpCode::NOP)
     {}
 
     ////////////////////////////////
-    /// METHOD NAME: Execute
-    ///
     /// @brief ... does absolutely nothing
     ///
     /// @copydoc InstructionBase::Execute()
@@ -48,7 +46,6 @@ public:
 protected:
 
 private:
-
 
 };
 

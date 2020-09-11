@@ -15,6 +15,7 @@ set(ARITH_AND_LOGIC_UTS
     ArithAndLogicUT/LslUT.cpp
     ArithAndLogicUT/LsrUT.cpp
     ArithAndLogicUT/MovUT.cpp
+    ArithAndLogicUT/MulUT.cpp
     ArithAndLogicUT/OrrUT.cpp
     ArithAndLogicUT/SubUT.cpp
     ArithAndLogicUT/TeqUT.cpp

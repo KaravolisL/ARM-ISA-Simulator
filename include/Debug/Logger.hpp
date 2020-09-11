@@ -49,9 +49,11 @@ class Logger
 {
 public:
 
-    ////////////////////////////////
-    /// METHOD NAME: GetInstance
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Gets the singleton instance
+    /// 
+    /// @return Logger instance
+    /////////////////////////////////////
     static Logger& GetInstance()
     {
         /// Singleton instance
@@ -89,8 +91,6 @@ public:
     };
 
     ////////////////////////////////
-    /// METHOD NAME: Log
-    ///
     /// @brief This version is used for the
     /// log macro. It's called after finding
     /// the number of arguments
@@ -109,8 +109,6 @@ public:
     void Log(const char* fileName, const char* funcName, const int lineNumber, const LogLevel logLevel, const PrintGroup printGroup, const int numArgs, ...);
 
     ////////////////////////////////
-    /// METHOD NAME: Log
-    ///
     /// @brief This version is used for the
     /// assert macro. It's called after finding
     /// the number of arguments
@@ -121,9 +119,9 @@ public:
     ////////////////////////////////
     void Log(const std::string& rMsg, const LogLevel logLevel, const PrintGroup printGroup = PrintGroup::PRINT_GROUP_GENERAL);
 
-    ////////////////////////////////
-    /// METHOD NAME: Close
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Closes the log file
+    /////////////////////////////////////
     void Close() { m_logStream.close(); }
 
 protected:
@@ -155,22 +153,22 @@ private:
         "ASSERT"
     };
 
-    ////////////////////////////////
-    /// Constructer
-    ///
+    /////////////////////////////////////
+    /// @brief Constructs a new Logger object
+    /// 
     /// @note Private to ensure singleton
-    ////////////////////////////////
+    /////////////////////////////////////
     Logger() :
         m_logStream(std::ofstream(LOG_FILENAME, std::ofstream::out))
     {}
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Copy Constructer
     ////////////////////////////////
     Logger(Logger const&);
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ////////////////////////////////
     Logger& operator=(Logger const&);
 

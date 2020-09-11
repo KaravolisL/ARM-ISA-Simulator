@@ -3,11 +3,6 @@
 ///
 /// @brief Declarations for KeywordDict class
 ///
-/// @details This class contains a dictionary
-/// containing the relationship keyword:constant
-/// It's used to determine whether a given string is
-/// a keyword. If so, what kind.
-///
 /// @author Luke Karavolis
 /////////////////////////////////
 #ifndef KEYWORD_DICT_HPP
@@ -33,14 +28,21 @@
 /// @class KeywordDict
 ///
 /// @brief Class containing dictionary of keywords
+///
+/// @details This class contains a dictionary
+/// containing the relationship keyword:constant
+/// It's used to determine whether a given string is
+/// a keyword. If so, what kind.
 ////////////////////////////////
 class KeywordDict
 {
 public:
 
-    ////////////////////////////////
-    /// METHOD NAME: GetInstance
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Gets the singleton instance
+    /// 
+    /// @return KeywordDict instance
+    /////////////////////////////////////
     static KeywordDict& GetInstance()
     {
         /// Singleton instance
@@ -49,36 +51,38 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Initialize
-    ///
     /// @brief Adds keywords to the dictionary
     /// at startup time
     ////////////////////////////////
     void Initialize();
 
     ////////////////////////////////
-    /// METHOD NAME: Get
+    /// @brief Retrieves a keyword from dictionary
     ///
     /// @param[in] rKeyword      Keyword to search in dictionary for
     ////////////////////////////////
     Io::LineType Get(std::string& rKeyword) const;
 
     ////////////////////////////////
-    /// METHOD NAME: Contains
+    /// @brief Checks whether keyword is in the dictionary
     ///
     /// @param[in] rKeyword      Keyword to search in dictionary for
     /// @return Whether keyword is in the dictionary
     ////////////////////////////////
     bool Contains(std::string& rKeyword) const { return m_keywordDict.Contains(rKeyword); }
 
-    ////////////////////////////////
-    /// METHOD NAME: GetInstructionDict
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Gets the InstructionDict member
+    /// 
+    /// @return Instruction dictionary
+    /////////////////////////////////////
     const HashMap<OpCode>& GetInstructionDict() const { return m_instructionDict; }
 
-    ////////////////////////////////
-    /// METHOD NAME: GetConditionalCodeDict
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Gets the ConditionalCodeDict member
+    /// 
+    /// @return Conditional code dictionary
+    /////////////////////////////////////
     const HashMap<ConditionalCode>& GetConditionalCodeDict() const { return m_conditionalCodeDict; }
 
 protected:
@@ -100,11 +104,11 @@ private:
     /// Number of conditional codes
     static const uint8_t NUMBER_OF_COND_CODES = 18;
 
-    ////////////////////////////////
-    /// Constructor
-    ///
+    /////////////////////////////////////
+    /// @brief Constructs a new KeywordDict object
+    /// 
     /// @note Private to ensure singleton
-    ////////////////////////////////
+    /////////////////////////////////////
     KeywordDict() :
         m_keywordDict(DLB<Io::LineType>()),
         m_instructionDict(HashMap<OpCode>(INSTRUCTION_DICT_SIZE)),
@@ -112,12 +116,12 @@ private:
     {}
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Copy Constructer
     ////////////////////////////////
     KeywordDict(KeywordDict const&);
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ////////////////////////////////
     KeywordDict& operator=(KeywordDict const&);
 

@@ -31,9 +31,11 @@ class ArithAndLogicInstruction : public InstructionBase
 {
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new ArithAndLogicInstruction object
+    ///
+    /// @param[in] opCode Opcode of the instruction
+    /////////////////////////////////////
     ArithAndLogicInstruction(OpCode opCode) :
         InstructionBase(opCode),
         m_pDestination(nullptr),
@@ -44,8 +46,6 @@ public:
     {};
 
     ////////////////////////////////
-    /// METHOD NAME: Execute
-    ///
     /// @brief Executes the given operation
     /// on the arguments and places the result
     /// into the destination
@@ -54,49 +54,59 @@ public:
     ////////////////////////////////
     void Execute(Registers& rProcessRegisters);
 
-    ////////////////////////////////
-    /// METHOD NAME: SetDestination
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the Destination member
+    /// 
+    /// @param[in] pDestination Pointer to the destination register
+    /////////////////////////////////////
     void SetDestination(Register* pDestination) { m_pDestination = pDestination; }
 
     ////////////////////////////////
-    /// METHOD NAME: VoidDestination
-    ///
-    /// @note Voiding the destination will actually
+    /// @brief Voiding the destination will actually
     /// just make the destination the member variable
     /// itself. This is done if the result of an 
     /// operation is not wanted.
     ////////////////////////////////
     void VoidDestination() { m_pDestination = reinterpret_cast<Register*>(&m_pDestination); }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetArgument1
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the Argument1 member
+    /// 
+    /// @param[in] argument1 First operand
+    /////////////////////////////////////
     void SetArgument1(const Register argument1) { m_argument1 = argument1; }
 
-    ////////////////////////////////
-    /// METHOD NAME: GetArgument1
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Gets the Argument1 member
+    ///
+    /// @return Reference to first operand
+    /////////////////////////////////////
     Register& GetArgument1() { return m_argument1; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetArgument2
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the Argument2 member
+    ///
+    /// @param[in] argument2 Second operand
+    /////////////////////////////////////
     void SetArgument2(const Register argument2) { m_argument2 = argument2; }
 
-    ////////////////////////////////
-    /// METHOD NAME: GetArgument2
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Gets the Argument2 member
+    ///
+    /// @return Reference to second operand
+    /////////////////////////////////////
     Register& GetArgument2() { return m_argument2; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetOperation
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the Operation member
+    ///
+    /// @param[in] pOperation Operation of the instruction
+    /////////////////////////////////////
     void SetOperation(Register (*pOperation)(Register, Register)) { m_pOperation = pOperation; }
 
-    ////////////////////////////////
-    /// METHOD NAME: SetSFlag
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Sets the sFlag member
+    /////////////////////////////////////
     void SetSFlag() { m_sFlag = true; }
 
 protected:
@@ -119,12 +129,12 @@ private:
     bool m_sFlag;
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Copy Constructer
     ////////////////////////////////
     ArithAndLogicInstruction(ArithAndLogicInstruction const&);
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ////////////////////////////////
     ArithAndLogicInstruction& operator=(ArithAndLogicInstruction const&);
 

@@ -27,56 +27,47 @@ struct Registers;
 ////////////////////////////////
 /// @class InstructionBase
 ///
-/// @brief Base class used by 
+/// @brief Base class used by
 /// specific instruction classes
 ////////////////////////////////
 class InstructionBase
 {
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new InstructionBase object
+    ///
+    /// @param[in] opCode Opcode of the instruction
+    /////////////////////////////////////
     InstructionBase(OpCode opCode) :
         m_opCode(opCode)
     {}
 
-    ////////////////////////////////
-    /// Deconstructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Destroys the InstructionBase object
+    /////////////////////////////////////
     virtual ~InstructionBase() {}
 
     ////////////////////////////////
-    /// METHOD NAME: Execute
+    /// @brief Executes the instruction
     ///
     /// @param[in,out] rProcessRegisters    Set of registers to manipulate
     ////////////////////////////////
     virtual void Execute(Registers& rProcessRegisters) = 0;
 
-    ////////////////////////////////
-    /// METHOD NAME: GetOpCode
+    /////////////////////////////////////
+    /// @brief Gets the OpCode member
     ///
-    /// @return Opcode of instruction
-    ////////////////////////////////
+    /// @return Instruction's Opcode
+    /////////////////////////////////////
     OpCode GetOpCode() const { return m_opCode; }
 
 protected:
-
-    // PROTECTED METHODS
-    // (None)
-
-    // PROTECTED MEMBERS
 
     /// OpCode of instruction
     OpCode m_opCode;
 
 private:
-
-    // PRIVATE METHODS
-    // (None)
-
-    // PRIVATE MEMBERS
-    // (None)
 
 };
 

@@ -28,21 +28,22 @@
 /// @class Queue
 ///
 /// @brief Queue data structure
+/// @tparam T Type of objects the queue holds
 ////////////////////////////////
 template <typename T>
 class Queue
 {
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new Queue object
+    /////////////////////////////////////
     Queue() :
         m_Queue(SLList<T>())
     {}
 
     ////////////////////////////////
-    /// METHOD NAME: Push
+    /// @brief Pushes an element onto the queue
     ///
     /// @param element      Element to push onto queue
     ////////////////////////////////
@@ -52,7 +53,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Pop
+    /// @brief Pops an element from the queue
     ///
     /// @return Element at front of queue
     /// @throw EmptyQueueException
@@ -65,7 +66,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Peek
+    /// @brief Returns the next element in the queue
     ///
     /// @returns Element at front of queue
     /// @throw EmptyQueueException
@@ -80,7 +81,9 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Size
+    /// @brief Returns the size of the queue
+    ///
+    /// @return Number of elements in the queue
     ////////////////////////////////
     int Size() const
     {
@@ -92,6 +95,11 @@ public:
     ////////////////////////////////
     struct EmptyQueueException : public std::exception
     {
+        /////////////////////////////////////
+        /// @brief Returns the exception message
+        /// 
+        /// @return Exception message
+        /////////////////////////////////////
         const char* what() const throw()
         {
             return "Empty Queue Exception";

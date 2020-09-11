@@ -1,9 +1,7 @@
 /////////////////////////////////
 /// @file Logger.cpp
 ///
-/// @brief Declaration for Logger class
-///
-/// @copydetail Logger
+/// @brief Implementations for Logger class
 ///
 /// @author Luke Karavolis
 /////////////////////////////////
@@ -21,7 +19,7 @@
 #include "Logger.hpp" // Header for class
 
 ////////////////////////////////
-/// METHOD NAME: Log
+/// METHOD NAME: Logger::Log
 ////////////////////////////////
 void Logger::Log(const std::string& rMsg, const Logger::LogLevel logLevel, const Logger::PrintGroup printGroup)
 {
@@ -39,7 +37,7 @@ void Logger::Log(const std::string& rMsg, const Logger::LogLevel logLevel, const
 }
 
 ////////////////////////////////
-/// METHOD NAME: Log
+/// METHOD NAME: Logger::Log
 ////////////////////////////////
 void Logger::Log(const char* fileName, const char* funcName, const int lineNumber, const Logger::LogLevel logLevel, const Logger::PrintGroup printGroup, const int numArgs, ...)
 {

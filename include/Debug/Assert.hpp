@@ -33,8 +33,6 @@
 #define ASSERT( expr, ... ) Assert(expr, __FILENAME__, __LINE__, _COUNT_VARARGS(__VA_ARGS__), ##__VA_ARGS__)
 
 ////////////////////////////////
-/// FUNCTION NAME: Assert
-///
 /// @brief This function wraps the traditional
 /// assert statement. If false, this function
 /// will print the provided messages to the debug
@@ -52,6 +50,6 @@
 /// @param numArgs      Number of arguments passed in additionally
 /// @param ...          Format string followed by replacement variables
 ////////////////////////////////
-void Assert(bool expr, const char* fileName, int lineNumber, int numArgs, ...);
+void Assert(bool expr, const char* fileName, const int lineNumber, const int numArgs, ...);
 
 #endif

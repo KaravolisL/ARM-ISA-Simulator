@@ -39,8 +39,6 @@
 
 
 ////////////////////////////////
-/// FUNCTION NAME: format
-///
 /// @brief Formats a string in the same
 /// way done by printf
 ///
@@ -48,6 +46,6 @@
 /// @param valist   Initialized argument list
 /// @return         A string with formats replaced
 ////////////////////////////////
-std::string format(int numArgs, va_list valist);
+std::string format(const int numArgs, va_list valist);
 
 #endif

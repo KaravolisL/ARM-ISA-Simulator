@@ -24,32 +24,34 @@
 /// @class List
 ///
 /// @brief Array-backed list class
-/// @param T type stored in list
+/// @tparam T type stored in list
 ////////////////////////////////
 template <typename T>
 class List
 {
 public:
 
-    ////////////////////////////////
-    /// Constructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Constructs a new List object
+    ///
+    /// @param[in] initialSize Initial size of list
+    /////////////////////////////////////
     List(uint32_t initialSize = 10) :
         m_length(0),
         m_arraySize(initialSize),
         m_list(new T[initialSize])
     {}
 
-    ////////////////////////////////
-    /// Deconstructor
-    ////////////////////////////////
+    /////////////////////////////////////
+    /// @brief Destroys the List object
+    /////////////////////////////////////
     ~List()
     {
         delete[] m_list;
     }
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Copy Constructer
     ////////////////////////////////
     List(const List& rOther) :
         m_length(rOther.m_length),
@@ -60,7 +62,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Append
+    /// @brief Appends an element to the end of the list
     ///
     /// @param element   Element to be inserted
     ////////////////////////////////
@@ -76,7 +78,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Operator[]
+    /// @brief Operator[]
     ////////////////////////////////
     T& operator[](const uint32_t index)
     {
@@ -84,6 +86,9 @@ public:
         return m_list[index];
     }
 
+    ////////////////////////////////
+    /// @brief Operator[]
+    ////////////////////////////////
     const T& operator[](const uint32_t index) const
     {
         if (index >= m_length) throw IndexOutOfBoundsException(index);
@@ -91,7 +96,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Insert
+    /// @brief Inserts an element at a given index
     ///
     /// @param[in] index     Index at which to insert element
     /// @param[in] element   Element to be inserted
@@ -117,13 +122,11 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Clear
+    /// @brief Clears the list
     ////////////////////////////////
     void Clear(void) { m_length = 0; }
 
     ////////////////////////////////
-    /// METHOD NAME: Remove
-    ///
     /// @brief Removes the element at the given
     /// index and shifts all elements to the left
     ///
@@ -147,7 +150,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: GetLength
+    /// @brief Gets the length member
     ///
     /// @returns Length of list
     ////////////////////////////////
@@ -157,7 +160,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: IsEmpty
+    /// @brief Determines whether the list is empty
     ///
     /// @returns Whether the list is empty
     ////////////////////////////////
@@ -167,8 +170,6 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: Sort
-    ///
     /// @brief Sorts the list using an
     /// insertion sort algorithm. Allows
     /// the user to specify how elements are compared
@@ -202,7 +203,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: ToString
+    /// @brief Converts the list to a string object
     ////////////////////////////////
     std::string ToString(void) const
     {
@@ -219,7 +220,7 @@ public:
     }
 
     ////////////////////////////////
-    /// METHOD NAME: PrintList
+    ///@brief Prints the list to std::cout
     ////////////////////////////////
     void PrintList(void) const
     {
@@ -248,8 +249,6 @@ private:
     T* m_list;
 
     ////////////////////////////////
-    /// METHOD NAME: Resize
-    ///
     /// @brief Resizes the internal array
     /// by a factor of two
     ////////////////////////////////
@@ -266,7 +265,7 @@ private:
     }
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ///
     /// @note Private to prevent use
     ////////////////////////////////
