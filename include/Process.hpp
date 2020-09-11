@@ -64,8 +64,6 @@ public:
     ~Process();
 
     ////////////////////////////////
-    /// METHOD NAME: Initialize
-    ///
     /// @brief Initializes the process given
     /// code in a file
     ///
@@ -74,8 +72,6 @@ public:
     void Initialize(const char* fileName);
 
     ////////////////////////////////
-    /// METHOD NAME: Execute
-    ///
     /// @brief Begins execution of instructions
     ///
     /// @param[in] debug    Whether to execute the program in debug mode
@@ -83,8 +79,6 @@ public:
     void Execute(const bool debug);
 
     ////////////////////////////////
-    /// METHOD NAME: PrintSummary
-    ///
     /// @brief Prints information regarding the
     /// values held in registers
     ////////////////////////////////
@@ -179,15 +173,11 @@ private:
     };
 
     ////////////////////////////////
-    /// METHOD NAME: Step
-    ///
     /// @brief Executes the next instruction
     ////////////////////////////////
     void ExecuteNextInstruction();
 
     ////////////////////////////////
-    /// METHOD NAME: FetchNextInstruction
-    ///
     /// @brief Method to fetch the next instruction
     /// to be executed
     ///
@@ -201,8 +191,6 @@ private:
     bool FetchNextInstruction();
 
     ////////////////////////////////
-    /// METHOD NAME: HandleUserInput
-    ///
     /// @brief Accepts user input and determines
     /// which type of step to perfrom
     ///
@@ -216,8 +204,6 @@ private:
     void HandleUserInput();
 
     ////////////////////////////////
-    /// METHOD NAME: HandleStepType
-    ///
     /// @brief Method to execute the program correctly
     /// given the type of step that was requested
     ///
@@ -226,20 +212,24 @@ private:
     void HandleStepType(const StepType stepType);
 
     ////////////////////////////////
-    /// METHOD NAME: InspectMemory
-    ///
     /// @brief Method to allow the user to query either
     /// a register or a memory address
     ////////////////////////////////
     void InspectMemory() const;
 
     ////////////////////////////////
-    /// Copy Constructer
+    /// @brief Method to allow the user to edit either
+    /// a register or a memory address
+    ////////////////////////////////
+    void EditMemory();
+
+    ////////////////////////////////
+    /// @brief Copy Constructer
     ////////////////////////////////
     Process(Process const&);
 
     ////////////////////////////////
-    /// Assignment operator
+    /// @brief Assignment operator
     ////////////////////////////////
     Process& operator=(Process const&);
 

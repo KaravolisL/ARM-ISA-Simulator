@@ -239,5 +239,57 @@ def test_inspect(find_executable, artifacts):
     returncode = program.wait()
     assert(returncode == 0), "Program did not execute successfully"
 
+def test_edit(find_executable, artifacts):
+    """Test user's ability to edit both registers and memory locations
+
+    :param fixture find_executable: Finds and returns the simulator executable
+    :param fixture artifacts: Sets up the artifacts folder, organizes artifacts at teardown
+
+    """
+    TEST_PROGRAM = r"SourcePrograms/SimpleProgram.s"
+
+    # Execute simulator
+    program = xexpect.spawn("./" + find_executable, ["-f" + TEST_PROGRAM, "-d"])
+
+    # New values to be written to memory
+    new_values = {
+        'R0' : '0x19',
+        'R1' : '0x1a',
+        'R2' : '0x1b',
+        'R3' : '0x20000008',
+        'R4' : '0x20000018',
+        'R5' : '0x0',
+        'R6' : '0x6e',
+        'R7' : '0xfffffffb',
+        '0x20000000' : '0x19',
+        '0x20000004' : '0x1a',
+        '0x20000010' : '0xe0c0a08'
+    }
+
+    for key in new_values:
+        program.expect("Debug Option: ", timeout=0.2)
+        program.sendline('e')
+        program.expect("Register or Memory Address to Edit: ", timeout=0.2)
+        program.sendline(key)
+        program.expect("New value of " + key + ":", timeout=0.2)
+        program.sendline(new_values[key])
+
+    for key in new_values:
+        program.expect("Debug Option: ", timeout=0.2)
+        program.sendline('i')
+        program.expect("Register or Memory Address to Inspect: ", timeout=0.2)
+        program.sendline(key)
+        try:
+            program.expect("Value of " + key + " = " + new_values[key], timeout=0.2)
+        except:
+            print(program.before)
+            program.kill()
+            assert(False), "Program responded unexpectedly"
+
+    # Finish executing the program
+    program.sendline('q')
+    returncode = program.wait()
+    assert(returncode == 0), "Program did not execute successfully"
+
 if __name__ == '__main__':
     raise Exception("Run using pytest")
