@@ -19,6 +19,7 @@ jobs:
       run: |
         git clone https://github.com/catchorg/Catch2.git
         pushd Catch2
+        git checkout v2.13.2
         cmake -Bbuild -H. -DBUILD_TESTING=OFF
         sudo cmake --build build/ --target install
         popd
